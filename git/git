@@ -1,0 +1,53 @@
+0.安装git
+	sudo apt-get install git		//安装git
+	git config --global user.name "name"	//设置用户名
+	git config --global user.email "email"	//设置邮箱
+1.初始化仓库
+	创建/选择文件夹
+	git init
+2.添加（更新）/删除文件
+	git add <file>		//把工作区文件添加到版本库的stage（暂存区）
+	git rm <file>		//删除
+	git commit -m "变动描述"		//提交暂存区变动给分支 -m参数表示给出描述
+3.查看状态
+	git status	//查看文件变动
+	git diff <file>		//查看修改内容
+4.版本回退
+	git log		//查看提交历史，以便确定回退到哪个版本
+	git reset --hard commit_id 	//回退到指定版本
+  如git reset --hard HEAD^		//HEAD表示当前版本，HEAD^表示上一版本，HEAD^^表示上上版本，HEAD~100表示上100版本
+ 又如git reset --hard 3628163	//3628163即为版本号
+	git reflog		//记录每一次命令，可以看到已经删除的版本号
+5.分支管理
+	git branch		//查看分支
+	git branch <name>		//创建分支
+	git checkout <name>		//切换分支
+	git checkout -b <name>		//创建并切换到分支
+	git merge <name>		//合并某分支到当前分支
+	git branch -d <name>	//删除分支
+	git stash		//保存分支现场
+	git stash apply		//恢复保存的现场
+	git stash drop		//删除stash
+	git stash pop		//恢复保存的现场，并删除stash
+	git stash list		//查看stash
+6.标签管理
+	git tag <name> [commit_id]		//给当前版本或指定id贴标签
+  如git tag v1.0; git tag v0.9 6224937
+	git tag -a <tagname> -m "描述内容"		//指定标签信息 
+	git tag		//查看标签
+	git show <tagname>		//查看标签信息
+	git push origin <tagname>		//推送本地标签
+	git push origin --tags		//推送全部未推送的本地标签
+	git tag -d <tagname>	删除本地标签
+	git push origin :refs/tags/<tagname>	//删除远程标签
+7.远程仓库
+	ssh-keygen -t rsa -C "email"	//创建SSH KEY
+	在用户目录下找到.ssh,里面有id_rsa（私钥）,id_rsa.pub（公钥）
+	在github的ssh keys页面add ssh key把公钥内容复制粘贴进去
+	git remote add origin git@server-name:path/repo_name.git	//关联远程库,github的server-name是github
+	git push -u origin master	//推送到远程，加u会关联本地和远程分支
+	git clone git@github.com:path/repo_name.git		//克隆
+	git pull		//抓取远程新的提交
+8.忽略特殊文件
+	编写.gitignore，里面的内容会被忽略
+
