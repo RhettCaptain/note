@@ -4,3 +4,5 @@
 	ls -ah
 3.source <file>
 	执行脚本
+4.重命名
+	mv <file> <new_name>	//和移动一样
