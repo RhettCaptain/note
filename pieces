@@ -1,0 +1,6 @@
+1.删除有内容的文件夹
+	rm -rf <name>
+2.查看隐藏文件
+	ls -ah
+3.source <file>
+	执行脚本
