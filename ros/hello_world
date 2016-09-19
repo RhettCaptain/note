@@ -1,0 +1,49 @@
+1.安装与配置
+	（1)检测ros版本和ubuntu版本是否支持
+	（2)安装镜像
+		可自行选择镜像进行安装，命令类似
+		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+	（3)安装密钥
+		类似sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
+	（4)安装（更新）
+		sudo apt-get update
+	（5)初始化
+		sudo rosdep init
+		rosdep update
+	（6)环境配置
+		echo "source /opt/ros/<ros_ver>/setup.bash" >> ~/.bashrc
+		//<ros_ver>改成自己的ros版本，写入~/.bashrc则每次打开终端自动配置
+		source ~/.bashrc	//执行一次完成配置
+	（7)安装命令行工具
+		sudo apt-get install python-rosinstall
+	（8)最好还算看官网安装指南，本文旨在帮助理解
+
+2.创建工作空间（work space)
+	（1)新建一个文件夹如ws作为工作空间
+	（2)在ws下创建一个src文件夹
+	（3)在src文件夹下运行catkin_init_workspace进行初始化
+	（4)退到ws运行catkin_make进行编译
+	（5)source devel/setup.bash把地址配置到环境变量，建议写入~/.bashrc，写入时地址需改成绝对地址
+	（*)工作空间结构
+		src 目录是src space的默认所在位置，用于存放源代码，不包含编译产生的中间件和可执行文件
+		build 目录是build space的默认所在位置，同时cmake 和 make也是在这里被调用来配置并编译你的程序包。
+		devel 目录是devel space的默认所在位置, 同时也是在你安装程序包之前存放可执行文件和库文件的地方。
+
+3.创建程序包（package）
+	在src目录下运行
+	catkin_create_pkg <package_name> [depend1] [depend2] [depend3]
+	创建程序包。一般依赖性至少加个roscpp,当然后面也可以在xml和cmake文件里改。一个工作空间可以有多个程序包，一个程序包也可以有多个节点（可执行文件/main函数）。但一个程序包一般只有一个CMakeLists.txt和一个package.xml
+
+4*.使用rosed编辑ROS中的文件
+	使用 rosed
+	使用方法:
+	$ rosed [package_name] [filename]
+	例子:
+	$ rosed roscpp Logger.msg
+	编辑器
+	rosed默认的编辑器是vim。如果想要将其他的编辑器设置成默认的，你需要修改你的 ~/.bashrc 文件，增加如下语句:
+	export EDITOR='gedit'
+	可以使用
+	echo "export EDITOR='gedit'" >> ~/.bashrc	实现修改
+	source ~/.bashrc	立即生效 
+	这将gedit设置成为默认编辑器。

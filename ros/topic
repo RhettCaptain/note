@@ -1,0 +1,126 @@
+1.话题 消息
+	ros的节点通信有话题和服务两种，这里介绍话题
+	节点可以给订阅了某一话题的其他节点发布消息，也可以接受别的节点发布的关于某一话题的消息。
+	即话题在节点之间，建立起消息传输的通道
+
+2.创建消息
+	（1)在pkg下创建msg文件夹，在msg文件夹下编写.msg文件，如MSG_NUM.msg
+	Header header
+	int16 num1
+	int16 num2
+	（*）消息支持的数据类型可以是
+	int8,int16,int32,int64
+	float32,float64
+	string
+	time,duration
+	其他封装消息
+	动态数组，静态数组
+	（*）如何定义使用封装消息，数组。。
+	/** TO DO **/
+	
+	（2)在pkg下修改packages.xml
+	添加<build_depend>message_generation</build_depend>		//编译需要
+	    <run_depend>message_runtime</run_depend>	//运行需要
+
+	（3)在pkg下修改CMakeLists.txt
+	--find_package(catkin REQUIRED COMPONENTS message_generation)  //里面添加message_generation
+	--catkin_package(...
+  			CATKIN_DEPENDS message_runtime  //这里添加message_runtime
+  			...)
+	--add_message_files(
+ 			 FILES
+  			 MSG_NUM.msg	//在这里添加创建的消息文件
+			)
+	--generate_messages(	//添加（去掉注释）这部分
+			 DEPENDENCIES
+ 			 std_msgs
+			)
+
+	（4)编译消息
+		在work space下catkin_make,会在devel/include/<pkg>目录下产生消息相关的头文件MSG_NUM.h
+
+3.编写发布器节点
+	示例：
+	#include "ros/ros.h"	//引用ROS大部分常用头文件
+	#include "pkg/MSG_NUM.h"	//引用生成的消息（数据结构），头文件格式<包名>/<消息名>.h
+	int main(int argc, char **argv)
+	{
+		ros::init(argc,argv,"talker");	
+		//初始化，第三个参数给当前节点起一个独立的名字，如talker，以便名称重映射
+		ros::NodeHandle n;	
+		//为这个进程的节点创建一个句柄,可用于产生发布类对象，订阅类对象等操作。第一个创建的NodeHandle会为节点进行初始化，最后一个销毁的会清理节点使用的所有资源。
+		ros::Publisher pub = n.advertise<pkg::MSG_NUM>("topic_num",1000);	
+		//用句柄的advertise实例化一个发布器对象。模板类型为设计的消息，类名为包名::消息名。第一个参数为话题名，节点之间通过这个名字建立联系。第二个参数为缓冲区大小，当消息个数超过该参数时则丢弃先前发布的消息。
+		pkg::MSG_NUM msg_num;
+		//创建一个消息类型的对象，用于实际操作消息。
+		ros::Rate loop_rate(10);
+		//ros::Rate对象可以允许你指定自循环的频率。它会追踪记录自上一次调用Rate::sleep()后时间的流逝，并休眠直到一个频率周期的时间。我们让它以10hz的频率运行。
+		int count = 0;
+		while (ros::ok()) 
+		{	
+		//roscpp会默认安装一个SIGINT句柄，它负责处理Ctrl-C键盘操作——使得ros::ok()返回FALSE。如果下列条件之一发生，ros::ok()返回false：
+		--SIGINT接收到(Ctrl-C)
+		--被另一同名节点踢出ROS网络
+		--ros::shutdown()被程序的另一部分调用
+		--所有的ros::NodeHandles都已经被销毁
+		一旦ros::ok()返回false, 所有的ROS调用都会失效。
+		msg_num.num1 = count;
+		msg_num.num2 = count++;
+		//给消息赋值
+		pub.publish(msg_num);	
+		//通过发布器对象的publish方法发布消息对象
+		ROS_INFO("num1%d,num2%d",msg_num.num1,msg_num.num2);
+		//ROS_INFO和类似的函数用来替代printf/cout,自带\n\r和时间戳
+		ros::spinOnce();	
+		//在这个例子中并不是一定要调用ros::spinOnce()，因为我们不接受回调。然而，如果你想拓展这个程序，却又没有在这调用ros::spinOnce()，你的回调函数就永远也不会被调用。所以，在这里最好还是加上这一语句。
+		loop_rate.sleep();	
+		//调用ros::Rate对象来休眠一段时间以使得发布频率为10hz。
+		}
+	}
+
+4.编写订阅器节点
+	示例
+	#include "ros/ros.h"
+	#include "pkg/MSG_NUM.h"
+	void callBackFunc(const pkg::MSG_NUM::ConstPtr& msg)
+	{
+		ROS_INFO("GET %d and %d",msg->num1,msg->num2);
+	}
+	//回调函数，收到消息时会调用回调函数进行处理，名字随便起。
+	//参数为消息类型的引用，格式const 包名::消息名::ConstPtr& 引用名。可以看作是一个指针，这个指针指向实际的消息对象。
+	int main(int argc, char **argv)
+	{
+		ros::init(argc,argv,"listener");
+		ros::NodeHandle n;
+		ros::Subscriber sub = n.subscribe("topic_num",1000,callBackFunc);
+		//告诉master要订阅topic_num这个话题的消息，当有消息到达时则调用callBackFunc回调函数
+		//只能调用一个回调函数
+		ros::spin();	//循环
+	}
+
+5.编译和运行
+	（1)在CMakeLists.txt中添加
+	include_directories(include ${catkin_INCLUDE_DIRES})
+	//包含目录，一般这句话是有的，如果没有加一下
+	add_executable(node_talker src/talker.cpp)
+	//第一个参数是节点名，即生成的可执行文件叫啥名，可以自己定。第二个是cpp地址
+	target_link_libraries(node_talker ${catkin_LIBRARIES})
+	//链接库，区分大小写，不然会出现大量ros未定义的引用
+	add_executable(node_listener src/listener.cpp)
+	target_link_libraries(node_listener ${catkin_LIBRARIES})
+	
+	（2)运行
+	先运行roscore开启服务主机master
+	通过rosrun <pkg> <node> 运行节点
+	
+6.使用launch
+	/* TO DO */
+
+7.其他
+	（1)同一个work space下完全可以用别的包（pkg）的消息和其节点通信
+	如pkg2下的节点可以通过#include "pkg1/MSG_XX.h" 包含pkg1中的消息MSG_XX,当然下面用到的类也要用pkg1::MSG_XX
+	能不能跨work space通信，以及跨电脑通信尚未研究
+	（2)一个节点可以订阅或发布多个消息，也可以有多个回调函数。
+	通过多定义几个NodeHandle句柄可以实现。
+	但一个句柄能不能订阅/发布多个消息，处理多个回调函数就不知道了。
+	
