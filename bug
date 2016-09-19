@@ -1,0 +1,4 @@
+1.ros 大量未定义的引用
+答：关键在于CMakefile中正确引用ros的库，
+如target_link_libraries(node ${catkin_LIBRARIES})
+虽然cmake理论上不区分大小写，但catkin_LIBRARIES好像必须这么写
