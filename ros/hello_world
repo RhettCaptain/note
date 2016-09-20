@@ -34,7 +34,12 @@
 	catkin_create_pkg <package_name> [depend1] [depend2] [depend3]
 	创建程序包。一般依赖性至少加个roscpp,当然后面也可以在xml和cmake文件里改。一个工作空间可以有多个程序包，一个程序包也可以有多个节点（可执行文件/main函数）。但一个程序包一般只有一个CMakeLists.txt和一个package.xml
 
-4*.使用rosed编辑ROS中的文件
+4.编写hello_world
+	（1)在pkg的src下编写cpp
+	（2)头文件放在include目录下面，并在CMakeListst.txt中的include_directories()中加入include目录即可
+	（3)生成可执行文件，在CMakeList.txt中添加add_executable(hello src/hello.cpp)即可，生成在devel的share对应的包下。
+
+5*.使用rosed编辑ROS中的文件
 	使用 rosed
 	使用方法:
 	$ rosed [package_name] [filename]
