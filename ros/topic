@@ -46,7 +46,7 @@
 	int main(int argc, char **argv)
 	{
 		ros::init(argc,argv,"talker");	
-		//初始化，第三个参数给当前节点起一个独立的名字，如talker，以便名称重映射
+		//初始化，第三个参数给当前节点起一个独立的名字，如talker，以便名称重映射。如果两个节点用同一个名字，则打开新的节点会使旧的强制关闭。
 		ros::NodeHandle n;	
 		//为这个进程的节点创建一个句柄,可用于产生发布类对象，订阅类对象等操作。第一个创建的NodeHandle会为节点进行初始化，最后一个销毁的会清理节点使用的所有资源。
 		ros::Publisher pub = n.advertise<pkg::MSG_NUM>("topic_num",1000);	

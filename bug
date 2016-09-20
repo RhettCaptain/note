@@ -2,3 +2,6 @@
 答：关键在于CMakefile中正确引用ros的库，
 如target_link_libraries(node ${catkin_LIBRARIES})
 虽然cmake理论上不区分大小写，但catkin_LIBRARIES好像必须这么写
+
+2.cannot pass objects of non-trivially-copyable type 'std::string {aka struct std::basic_string<char>}' through '...' 
+	用ROS_INFO,printf,scanf等输出string型时，在加上c.str(),如msg.c_str();
