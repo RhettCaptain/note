@@ -1,0 +1,4 @@
+1.github 静态网页
+	建个项目叫做用户名.github.com，即可通过www.用户名.github.io访问
+2.取消部署git文件夹
+	git的控制文件都在.git下，不想要删掉这个就好

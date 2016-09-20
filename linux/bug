@@ -1,0 +1,6 @@
+1.curses
+  (1)没有curses.h:
+	sudo apt-get install libncurses5-dev安装下
+  (2)未定义的引用：
+	cmake/catkin_make:在target_link_libraries（）链上库地址，如/usr/lib/x86/libncurses.so
+	g++/gcc: 加上-lncurses

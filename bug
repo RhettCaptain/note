@@ -1,15 +1,4 @@
-1.ros 大量未定义的引用
-答：关键在于CMakefile中正确引用ros的库，
-如target_link_libraries(node ${catkin_LIBRARIES})
-虽然cmake理论上不区分大小写，但catkin_LIBRARIES好像必须这么写
 
-2.cannot pass objects of non-trivially-copyable type 'std::string {aka struct std::basic_string<char>}' through '...' 
-	用ROS_INFO,printf,scanf等输出string型时，在加上c.str(),如msg.c_str();
 
-3.git fetal:remote origin already exists
-	git remote rm origin	//去除关联，因为一般只能关联一个远程库，弄错了更新需要先去除错误关联
-4.git 无法创建、切换分支
-	必须要有文件才能创建分支，所以新文件夹要先commit后才能操作分支
-5.curses
-  没有curses.h:sudo apt-get install libncurses5-dev安装下
-  未定义的引用：在target_link_libraries（）链上库地址，如/usr/lib/x86/libncurses.so
+
+
