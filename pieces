@@ -9,3 +9,7 @@
 5.ros::init()
 	原型：void ros::init(int& argc, char** argv, const std::string& node_name, unit32_t options=0)
 	node_name 在被重映射参数覆盖之前，这个名字会用来命名节点名。节点名字在ROS系统中必须唯一。如果有第二个同名的节点启动，则第一个会自动被关闭。有时你需要运行多个同样的节点，则可以通过下面描述init_options::AnonymousName来解决。
+6.github 静态网页
+	建个项目叫做用户名.github.com，即可通过www.用户名.github.io访问
+7.取消部署git文件夹
+	git的控制文件都在.git下，不想要删掉这个就好
