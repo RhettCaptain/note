@@ -44,8 +44,10 @@
 	ssh-keygen -t rsa -C "email"	//创建SSH KEY
 	在用户目录下找到.ssh,里面有id_rsa（私钥）,id_rsa.pub（公钥）
 	在github的ssh keys页面add ssh key把公钥内容复制粘贴进去
-	git remote add origin git@server-name:path/repo_name.git	//关联远程库,github的server-name是github
+	git remote add origin git@server-name:path/repo_name.git	//关联远程库,github的server-name是github.com
+	git remote rm origin	//去除关联，因为一般只能关联一个远程库，弄错了更新需要先去除错误关联
 	git push -u origin master	//推送到远程，加u会关联本地和远程分支
+	git push -f [origin master]	//强制推送，完全覆盖
 	git clone git@github.com:path/repo_name.git		//克隆
 	git pull		//抓取远程新的提交
 8.忽略特殊文件
