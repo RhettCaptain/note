@@ -25,6 +25,7 @@
 	git checkout -b <name>		//创建并切换到分支
 	git merge <name>		//合并某分支到当前分支
 	git branch -d <name>	//删除分支
+	git push origin --delete <name>		//删除远程分支
 	git stash		//保存分支现场
 	git stash apply		//恢复保存的现场
 	git stash drop		//删除stash
