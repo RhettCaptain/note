@@ -21,7 +21,7 @@
 2.创建工作空间（work space)
 	（1)新建一个文件夹如ws作为工作空间
 	（2)在ws下创建一个src文件夹
-	（3)在src文件夹下运行catkin_init_workspace进行初始化
+	（3)在src文件夹下运行catkin_init~/.ros/log/run_id/node_name-number-stout.log_workspace进行初始化
 	（4)退到ws运行catkin_make进行编译
 	（5)source devel/setup.bash把地址配置到环境变量，建议写入~/.bashrc，写入时地址需改成绝对地址
 	（*)工作空间结构
@@ -36,7 +36,7 @@
 
 4.编写hello_world
 	（1)在pkg的src下编写cpp
-	（2)头文件放在include目录下面，并在CMakeListst.txt中的include_directories()中加入include目录即可
+	（2)头文件放在include目录下面，并~/.ros/log/run_id/node_name-number-stout.log在CMakeListst.txt中的include_directories()中加入include目录即可
 	（3)生成可执行文件，在CMakeList.txt中添加add_executable(hello src/hello.cpp)即可，生成在devel的share对应的包下。
 
 5*.使用rosed编辑ROS中的文件
@@ -52,3 +52,26 @@
 	echo "export EDITOR='gedit'" >> ~/.bashrc	实现修改
 	source ~/.bashrc	立即生效 
 	这将gedit设置成为默认编辑器。
+
+6.使用roslaunch同时打开多个节点
+	（1)在pkg下创建launch文件夹
+	（2)在launch文件夹下创建.launch文件，如key.launch
+		<launch>
+			<node pkg="pkg_key" name="key_pub" type="node_pub"/>
+			//pkg为包名，type是节点名，name给节点重命名
+			<node pkg="pkg_key" name="key_show" type="node_show" output="screen"/>
+			//默认输出在日志~/.ros/log/run_id/node_name-number-stout.log，设置output为screen可输出在屏幕
+			//此外，respawn="true"为复位属性，即该节点停止时，系统会自动重启该节点。
+			//required = "true"为必要属性，即该节点停止时，系统会停止其他所有节点。
+			<group ns="key1">
+				<node ...>
+			</group>
+			//通过命名空间group可以使用并区分多个同一节点
+			<node pkg="turtlesim" name="mimic" type="mimic">
+				<remap from="input" to="turtlesim1/turtle1"/>
+				<remap from="output" to="turtlesim2/turtle1"/>
+			</node>
+			//remap可以实现重映射，如将消息发布到turtlesim1/turtle1而不是input和output
+		</launch>
+	（3)roslaunch [package] [filename.launch]
+
