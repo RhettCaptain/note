@@ -1,0 +1,65 @@
+入门小程序
+
+0.关于Java
+JDK:java development kits，java开发套件，将java程序翻译成0和1。包括编译器，JRE,基础类。
+JRE:java runtime environment，java运行环境。
+Java SE：编辑器+基础类构成的java标准版。
+JVM:java virtual machine，java虚拟机。
+运行：程序在内存中运行，内存分为堆和栈。栈先进后出，堆没有管理限制。Frame w = new Frame（）可以在堆中分配一块内存，而赋值则将该内存块的引用地址给栈中的w。
+
+1.画王八
+主函数 public static void main(String args[]){ };
+导入类：import java.awt.*;
+继承：class MyPanel extends Panel{}
+Frame类：Frame w = new Frame();
+       w.setSize();w.add();w.setVisible();
+Graphics类：Graphics g; g.drawLine();g.drawOval(x,y,m,n);//(x,y)左上角坐标，m横轴长，n纵轴长。g.fillRect();g.setColor();
+
+关闭程序：w.addWindowsListener();//添加监听
+          括号里是接收对象 new WindowAdapter(){ }
+          中括号里是监听事件函数 public void windowClosing(WindowEvent e){ }
+          再中括号里面是处理机制，System.exit(0);
+
+2.满天星
+随机函数：Math.random()  //产生0-1内随机数
+
+3.飞行的小球
+线程与进程：我们要同时运行5个程序，CPU轮转，每个运行10ms，看起来像同时运行，这是进程（5个）。如果把不同程序换成一个程序里的不同代码，就是线程。
+线程使用：线程会有创建、就绪、运行、阻塞、死亡5种状态。有1-10的优先级，默认5，可通过setPriority（6）来改变优先级。
+    创建：Thread t = new Thread(myPanel);
+          这个线程t会和myPanel里的run函数（要自己写）对应起来(需要在MyPanel类声明后面加implements Runnable）
+         class MyPanel extends Panel implements Runnable
+         {
+           public void run(){ }; 
+         }
+    就绪：t.start();
+    运行：就绪了等CPU轮到它就执行
+    阻塞：Thread.sleep(30);//当线程处于阻塞状态时，CPU不会轮到这个线程上
+    死亡：run方法执行结束后，线程就死亡了。
+强制重绘：repaint();
+异常处理机制：try{ }catch(Exception e){ };
+
+4.小球撞墙
+
+5.下大雪
+构造函数：public MyPanel{ }
+    
+6.键盘控制小球
+抽象方法：只有声明，没有实现的方法是抽象方法，需要加关键词abstract，如public abstract void eat();
+抽象类 ：有抽象方法的类必须声明为抽象类，如abstract class Animal{ }，抽象类无法产生对象。
+纯抽象类/接口：只有抽象方法，没有具体方法和变量。接口的作用，既是项目成员之间的强制性约定，也是前人和后人之间的约定。
+事件处理：（1）实现接口（2）注册事件（3）编写事件处理程序
+        （1）实现接口：interface Animal{public void eat();}
+         （2）注册事件：w.addKeyListener(mp);//KeyListener是用于处理按键的接口，向窗体w注册画板mp对键盘事件的          处理，即对于按键这一事件，w是发出者，mp是处理者。mp.addKeyListner(mp)也是可以且必要的。
+          （3）编写事件处理程序：class Person implements Animal{  public void eat(){ ...}};//需要实现接口的所有方法。
+控制台输出：System.out.print();  System.out.println();
+按键接口：KeyListener  方法：KeyPressed(KeyEvent arg0),KeyReleased(KeyEvent arg0),KeyTyped(KeyEvent arg0);
+
+7.打字母游戏
+字符转字符串：Character c = new Character(char);  c.toString();
+字母ASCII:a-97
+bool类型：boolean
+字符串显示int型数值变量score：g.drawString("显示:" + score,1,1);
+
+8.鼠标拖动小球
+鼠标类接口：MouseListener 静止相关操作，MouseMotionListener运动相关操作

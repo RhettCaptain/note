@@ -1,0 +1,93 @@
+算法与数据结构  
+
+一、数组
+二、链表
+	用类来实现
+	class Node{
+		public char value = ' ';  	//内容本身
+		public Node next = null;	//一个Node类，指向下一个Node对象。
+	}
+	使用
+	定义链表头对象：  Node fristNode = new Node();
+	定义链表尾对象：  Node nowNode = firstNode;
+	插入新链表对象：  Node newNode = new Node();
+					newNode.value = 'h';
+					nowNode.next = newNode;
+					nowNode = newNode;
+	遍   历   链   表：   Node tempNode = firstNode;
+					while(tempNode.next!=null){ } 
+三、集合
+1.java库实现
+	数组：ArrayList al = new ArrayList();
+	链表：LinkedList ll = new LinkedList();
+	一些方法：ll.add(con);ll.add(index,con);ll.remove(index);ll.get(index)...
+2.关于集合
+	数组，链表等类被一同称为集合，集合就是能够装东西的容积。	
+3.泛型
+	（1）链表，数组等集合的内容，我们希望能接受几乎所有的东西，而不是只是int或char或XX，在JAVA和C#中利用上溯，接受Object就能接收所有对象取出来的时候，再下溯造型就可以了。
+	（2）模板：C++不是单根结构，所以用模板临时代替未知的类型，使用如下
+	//先声明一个模板
+	template <class T1>
+	//声明类时使用模板
+	class ArrayList{
+		public void add(T1 value) {...};
+		public T1 get(int index) {...};
+	}
+	//使用ArrayList类时
+	main(){
+	ArrayList <int> al = new ArrayList<int>();	//此时接收的类是int
+	（3）泛型：java和C#借鉴模板避免了非法的类型转换，泛型用于让编译器知道如何检查上溯和下溯类型一致，且使用时不再需要下溯造型。如：ArrayList<Integer> al = new ArrayList<Integer>();
+4.Set集合
+	可以有重复值的集合称作List，不可以重复的称为Set。
+	HashSet是利用Hash值定位的一种集合。使用如下：
+	HashSet<Integer> hs = new HashSet<Integer>();
+5.Map
+	两列，第一列Key，第二列Value
+  java中Map,List与Set的区别
+	java集合的主要分为三种类型：Set（集）List（列表）Map（映射）
+Collection接口
+Collection是最基本的集合接口，声明了适用于JAVA集合（只包括Set和List）的通用方法。 Set 和List 都继承了Conllection,Map。
+ Set(集合) 
+Set是最简单的一种集合。集合中的对象不按特定的方式排序，并且没有重复对象。 Set接口主要实现了两个实现类：HashSet： HashSet类按照哈希算法来存取集合中的对象，存取速度比较快 
+TreeSet ：TreeSet类实现了SortedSet接口，能够对集合中的对象进行排序。 
+List(列表)
+List的特征是其元素以线性方式存储，集合中可以存放重复对象。 
+List接口主要实现类包括：（参考文章：ArrayList与LinkedList的区别）
+ArrayList() : 代表长度可以改变得数组。可以对元素进行随机的访问，向ArrayList()中插入与删除元素的速度慢。 
+LinkedList(): 在实现中采用链表数据结构。插入和删除速度快，访问速度慢。 
+Map(映射)
+Map 是一种把键对象和值对象映射的集合，它的每一个元素都包含一对键对象和值对象。 Map没有继承于Collection接口 从Map集合中检索元素时，只要给出键对象，就会返回对应的值对象。 
+
+四、算法
+1.冒泡法排序
+	如数组A[10],第一轮从i=0开始，A[i]和A[i+1]比较，如果后者小，则交换位置。直到i=9。第二轮从i=0开始，直到i=8.以此类推，如果某一轮没有替换，则排序结束。
+2.二叉树
+	JAVA提供的二叉树集合TreeSet
+	自己定义二叉树类（节点）
+3.文件操作+递归
+（1）文件选择对话框
+	类JFileChooser，主要方法showOpenDialog，showSaveDialog，showDialog
+	对话框有两种，一种不依附其他窗体，独立显示，叫做无模式对话框。
+				另一种依附其他窗体，在显示时，不能操作其他窗体，叫做有模式对话框。
+	JFileChooser fc = new JFileChooser();
+	fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);//选择文件夹模式
+	DIRECTORIES_ONLY是int宏，JFileChooser里还有其他选项。
+（2）列出所有文件（文件夹）
+	File f = new File("...");
+	String sub[] = f.list();//返回路径
+	File sub[] = f.listFiles();//返回文件
+	f.isDirectory()//返回是否是文件夹
+	f.isFile()//返回是否是文件
+	f.mkdir();	//创建目录
+（3）递归
+	函数中包含自己
+
+五、QQ项目改良
+1.保存用户的Socket
+    用户a的客户端连接用户a的服务器线程，用户b的客户端连接用户b的服务器线程。
+    如果a客户端发给a服务器线程，再发给b服务器线程，再发给b客户端，则b的线程需要等待a的线程。
+我们可以用阻塞代码让线程停下了等待另一个线程，这种技术叫线程同步。但主要用于流，内存中线程同步很困难。
+    如果a客户端发给a服务器线程，再直接发给b客户端，则需要知道b客户端的socket。可以使用HashMap记录所有的Scoket信息。创建HashMap使用HashMap<string,Socket> hm = new ...();放入时使用hm.put();
+2.同步用户名
+如a，b在线，此时c上线，则c要从hashmap中找到a，b的socket把自己的名字发给它，并把他们的名字发给自己。
+下线时类似。
