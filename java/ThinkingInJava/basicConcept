@@ -1,0 +1,67 @@
+1.权限
+public：类外可访问
+private：仅类内部可用
+protected：与private相当，但是继承的类可以访问protected成员，但不能访问private成员
+包访问权限：java默认类可以访问同一个包（库构件）中的其他类的成员
+
+2.继承差异化
+两种方法：
+（1)添加新方法
+（2)覆盖/重写（overriding）已有方法
+
+3.转型
+（1)向上转型/上塑（upcasting）：将导出类看作是它的基类的过程
+（2)向下转型/下塑（downcasting）：将类型具体化，需要知道具体的对象类型。
+	从java SE5开始引入参数化类型/范型确保向下转型的正确，如
+	ArrayList<Shape> shapes = new ArrayList<Shape>(); 
+
+4.单根继承
+终极基类Object
+
+5.容器
+持有对其他对象的引用的一种对象，如List，Map，Set等。有的地方也称集合，不过java中集合另有他意。
+
+6.对象与引用
+	操作的标志符实际是对象的一个引用。String s所创建的也只是一个引用而不是对象。引用可以看作遥控器。
+	引用带来的一个别名问题在操作符和控制流程（operatorsAndControl）章节会具体介绍。
+
+7.存储场所
+（1)寄存器
+	最快的存储器，有限，不能直接控制
+（2)堆栈
+	位于通用RAM，可以从处理器获得支持，次快。指针下移分配内存，指针上移释放内存。对象的引用和基本类型一般在这里。
+（3)堆
+	通用内存池，也位于RAM区，用于存放所有对象。
+（4)常量存储
+	一般直接存放在代码内部
+（5)非RAM存储
+	存活于程序之外的数据
+
+8.基本类型
+	boolean，char（16位，无符号），byte（8位），short（16位），int（32位），long（64位），float（32位），double（64位）
+
+9.static关键字
+（1)无论创造多少对象，只为特定域分配单一存储空间
+（2)即使没有创建对象，也可以调用方法
+可以修饰域和方法
+
+10.编译与运行
+编译：javac hello.java append.java
+运行：java hello append（虽然是hello.class，但运行hello就好）
+环境配置：
+
+11.注释与javadoc
+（1)注释风格：
+//	用这个吧
+/**/
+（2)javadoc注释风格：
+/**
+*
+*/
+（3)使用javadoc：
+eclipse中project->Generate Javadoc
+或命令行javadoc -d 文档存放目录 -author -version 源文件名.java
+	这条命令编译一个名为"源文件名.java"的 java 源文件，并将生成的文档存放在"文档存放目录"指定的目录下，生成的文档中 index.html 就是文档的首页。-author 和 -version 两个选项可以省略。
+
+12.编码风格
+	类首字母大写，其他小写，camel命名风格，不要混用。

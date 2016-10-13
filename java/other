@@ -1,0 +1,7 @@
+1.随机数
+（1)Math.random()产生0-1的随机数
+（2)Random ra = new Random();
+ra.nextInt(n),ra.nextDouble(n)...产生0-n随机数。
+ra.nextInt();产生随机整形数
+
+2.String类有toCharArray方法
