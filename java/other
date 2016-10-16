@@ -5,3 +5,10 @@ ra.nextInt(n),ra.nextDouble(n)...产生0-n随机数。
 ra.nextInt();产生随机整形数
 
 2.String类有toCharArray方法
+
+3.空数组
+	int[] a;
+	int[] b={1,2,3};
+//	a[0] = 1;	//这样不对，因为a只是一个引用，没有实际对象空间
+	a = b;	//但这样是可以的
+
