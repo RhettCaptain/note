@@ -1,0 +1,231 @@
+1.冒泡排序：
+算法：
+	第一轮：（1,2)，（2,3)。。。（n-1,n)两两比较，如果后者小于前者就两者对调，第一轮最大数会到最后一位
+	第二轮：（1,2)，（2,3)。。。（n-2,n-1)两两比较，最后一个不用。
+	依次类推，如果某一轮没有交换，则说明以排好序。
+复杂度：n2
+实现：
+	//java
+	public void bubbleSort(int[] array)
+	{
+		for(int times=0;times<array.length;times++)
+		{
+			boolean swap = false;
+			for(int i=1;i<array.length-times;i++)
+			{
+				if(array[i] < array[i-1])
+				{
+					int temp = array[i];
+					array[i] = array[i-1];
+					array[i-1] = temp;
+					swap = true;
+				}
+			}
+			if(swap)
+			{
+				break;
+			}
+		}
+	}
+
+2.插入排序
+算法：
+	从第二个数开始，依次插入，如果比前面小，则把前面的数后移，并继续往前比较，直到不比前面小，则放在此数后面。
+	实际上，每次插入前，前面的数已经排好序
+复杂度：n2
+实现：
+	//java
+	public void insertSort(int[] array)
+	{
+		for(int i=1;i<array.length;i++)
+		{
+			int cur = array[i];
+			for(int j=i-1;j>=0;j--)
+			{	
+				if(cur < array[j])
+				{
+					array[j+1] = array[j];
+					array[j] = cur;
+				}
+			}
+		}
+	}
+
+3.归并排序
+算法：
+	将数组从中间分成左右两个数组，将两个数组分别排序，然后再融合排序。
+	对于分成的数组排序，继续向下迭代完成排序，当只有一个数（数组左右下标相同），自然是拍好序的。
+	对于排好序的左右数组，在每组最后加一个无穷大，然后依次比较两个数组最前面的数，较小的填入新数组最前面位置，排过的舍去，依次排完。
+复杂度：nlgn
+实现：
+	//java
+	public void mergeSort(int[] array)
+	{
+		sort(array,0,array.length-1);
+	}
+	private void sort(int[] array,int left,int right)
+	{
+		if(left < right)
+		{
+			int mid = (left+right)/2;
+			sort(array,left,mid);
+			sort(array,mid+1,right);
+			merge(array,left,right,mid);
+		}
+	}
+	private void merge(int[] array,int left,int right,int mid)
+	{
+		int[] leftArray = new int[mid-left+2];
+		int[] rightArray = new int[right-mid+1];
+		for(int i=0;i<leftArray.length-1;i++)
+		{
+			leftArray[i] = array[left+i];
+		}
+		leftArray[leftArray.length-1] = 65535;
+		for(int i=0;i<rightArray.length-1;i++)
+		{
+			rightArray[i] = array[mid+1+i];
+		}
+		rightArray[rightArray.length-1] = 65535;
+		int leftIdx=0,rightIdx=0;
+		for(int i=0;i<array.length;i++)
+		{
+			if(leftArray[leftIdx] < rightArray[rightIdx])
+			{
+				array[left+i] = leftArray[leftIdx];
+				leftIdx++;
+			}
+			else
+			{
+				array[left+i] = rightArray[rightIdx];
+				rightIdx++;
+			}
+		}
+	}
+
+4.堆排序
+算法：
+	对于最大堆，第一个节点必然最大。将第一个节点与最后一个对调，并从堆中去除最大节点。
+	维护去除了最大节点的堆，此时第一节点左子堆和右子堆均是最大堆。将第一节点与其两个子节点比较，如果有把它大的，则与最大的那个换，同时对最大的那个节点做相同的工作。从而保证维护后仍是最大堆。此时第一个节点必然是第二大的，将第一个节点与出去最大节点的最后一个节点对调，并从堆中去除第二大节点，依次类推。
+	对于建堆，从N/2节点往上依次维护即可完成。
+复杂度：nlgn
+实现：
+	//java
+	public void heapSort(int[] array)
+	{
+		buildMaxHeap(array);
+		for(int i=0;i<array.length;i++)
+		{
+			int temp = array[0];
+			array[0] = array[array.length-1-i];
+			array[array.length-1-i] = temp;
+			maxHeapify(array,1,array.length-i);
+		}
+	}
+	private void builMaxHeap(int[] array)
+	{
+		for(int i=array.length/2;i>=0;i--)
+		{
+			maxHeapify(array,i,array.length);
+		}
+	}
+	private void maxHeapify(int[] array,int node,int heapSize)
+	{
+		int leftNode = node*2;
+		int rightNode = node*2+1;
+		int largestVal = array[node-1];
+		int largestIdx = node-1;
+		if(leftNode<=heapSize && largestVal < array[leftNode-1])
+		{
+			largestIdx = leftNode - 1;
+			largestVal = array[largestIdx];
+		}
+		if(rightNode<=heapSize && largestVal < array[rightNode-1])
+		{
+			largestIdx = rightNode - 1;
+			largestVal = array[largestIdx];
+		}
+		if(largestIdx != node-1)
+		{
+			array[largestIdx] = array[node-1];
+			array[node-1] = largestVal;
+			maxHeapify(array,largestIdx+1,heapSize);
+		}
+	}
+
+5.快速排序
+算法：
+	对数组进行重排，使能在数组中找到一个数，使得左边的都比它小，右边的都比他大。然后对两边用同样的方法。依次迭代。
+复杂度：nlgn
+实现：
+	//java
+	public void quickSort(int[] array)
+	{
+		sort(array,0,array.length-1);
+		
+	}
+	private void sort(int[] array,int left,int right)
+	{
+		if(left < right)
+		{
+			int mid = partition(array,left,right);
+			sort(array,left,mid-1);
+			sort(array,mid+1,right);
+		}
+	}
+	private int partition(int[] array,int left,int right)
+	{
+		int splitIdx = left-1;
+		for(int cursor = left; cursor<=right; cursor++)
+		{
+			if(array[cursor] <= array[right])
+			{
+				splitIdx++;
+				int temp = array[cursor];
+				array[cursor] = array[splitIdx];
+				array[splitIdx] = temp; 
+			}
+		}
+		return splitIdx;
+	}
+
+6.计数排序
+算法：
+	用一个数组记录待排序数组所有元素的个数，并进而得到小于某个元素的个数，则该元素应该排在数组中，小于它个数+1的位置。
+	为了防止有相同的，放置一个元素后，记录的小于他的个数要减去1.
+复杂度：n
+实现：
+	//java
+	public void countSortUp(int[] array)
+	{
+		int[] countTemp = new int[101];
+		int[] newArray = new int[array.length];
+		for(int i=0;i<array.length;i++)
+		{
+			countTemp[array[i]]++;
+		}
+		for(int i=1;i<101;i++)
+		{
+			countTemp[i] = countTemp[i-1] + countTemp[i];
+		}
+		for(int i=0;i<array.length;i++)
+		{
+			newArray[countTemp[array[i]]-1] = array[i];
+			countTemp[array[i]]--;
+		}
+		for(int i=0;i<array.length;i++)
+		{
+			array[i] = newArray[i];
+		}
+	}
+
+7.基数排序
+算法：
+	同位数的一组数，先对最低位排序，再依次排高位。
+复杂度：n
+
+8.桶排序
+算法：
+	分入有序的桶中，放入的时候插入排序，最后将有序桶排在一起。
+复杂度：n
+

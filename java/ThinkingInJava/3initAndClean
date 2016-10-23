@@ -1,0 +1,64 @@
+初始化与清理
+1.构造器
+	有一个默认的，如果显式定义，则默认的无效。可重载。
+2.重载
+	必须有独一无二的参数列表（形参），返回值不同不能用于区分重载
+3.this
+	this可以在方法内部获得当前对象的引用
+4.static
+	static方法没有this
+	static方法内部不能调用非静态方法
+	在没有创建任何对象的前提下，可以通过类本身调用static方法（类似全局方法）
+5.清理*
+（1）.垃圾回收器
+	对象可能不被垃圾回收。负责回收无用对象占据的内存资源，但如果对象并非通过new获得了特殊的内存区域，回收器无法释放。且如果java虚拟机并未面临内存耗尽的情形，它是不会浪费时间去执行垃圾回收以回复内存的。
+	垃圾回收不等于析构
+	垃圾回收只与内存相关	
+（2）.finalize（）（终结）
+	java允许在类中定义一个名为finalize（）的方法，可以用于清理特殊的内存释放。垃圾回收器准备好释放对象占用的存储空间，将首先调用其finalize方法，并在下一次垃圾回收动作发送时，真正回收对象占用的内存。
+	System.gc()用于强制进行终结动作。
+（3）.垃圾回收技术
+	-引用计数
+	-停止-复制
+	-标记-清除
+6.初始化
+	顺序：静态域-构造器-正常域
+	静态初始化：只有必要时刻才进行（创建new，或调用引用Table.b1),否则不会创建/初始化
+				初始化后的静态对象不会再初始化。
+7.可变参数列表
+	...
+	例：
+	public class PrintArgs{
+	{
+		static void printArray(Object... args)
+		{
+			for(Object obj:args)
+			{
+				System.out.print(obj+" ");
+			}
+		}
+		public static void main(String[] args)
+		{
+			printArray(37,"one",new Float(3.14));	//上塑+多态
+		}
+	}
+8.枚举
+	public enum Money
+	{
+		ONE, FIVE, TEN		//一般大写
+	}
+	public class UseMoney()
+	{
+		public static void main(String[] args)
+		{
+			Money money = Money.FIVE;	
+			for(Money m:Money.values())		//values()方法以申明顺序构成数组
+			{
+				System.out.println(m + m.ordinal());	//ordinal()方法表明声明顺序
+			}
+		}
+	}
+
+
+
+

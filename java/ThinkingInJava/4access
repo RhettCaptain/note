@@ -1,0 +1,19 @@
+访问权限控制
+1.访问权限控制等级：
+	public > protect > 包访问权限 > private
+	protect可以在导出类中被访问。
+2.代码组织
+	（1)包(pakage):库单元。
+	包内含有一组编译单元(.java)，他们在单一的名字空间下被组织
+	（2)编译单元(.java)
+	可以有一个pubic类，该类的名称必须与文件名相同。但只能有一个public类，但可以有多个包访问权限类。
+	编译时，.java文件中的每个类都会有一个输出文件且与类名相同，后缀为.class
+	（3)java文档文件JAR
+	java可运行程序是一组可以打包并压缩为一个Java文档文件（JAR，使用java的jar文档生成器）的.class文件。java解释器负责这些文件的查找、装载和解释。
+3.import
+	命令行：配置CLASSPATH使得包所在目录被包含，jar文件需要指明目录和文件名，即绝对路径。
+	eclipse：properties-java build path-根据需要add
+	导入静态方法：import SomeClass.someStaticMethod;则可直接使用someStaticMethod();
+4.封装
+	访问权限的控制常被称为是具体实现的隐藏。把数据和方法包装进类中，以及具体实现的隐藏，常共同被称作是封装。
+
