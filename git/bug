@@ -2,3 +2,8 @@
 	git remote rm origin	//去除关联，因为一般只能关联一个远程库，弄错了更新需要先去除错误关联
 2.git 无法创建、切换分支
 	必须要有文件才能创建分支，所以新文件夹要先commit后才能操作分支
+3.git commit 出错
+	error:insufficient permission for adding an object to repository database .git/objects
+	error:无法创建子树对象
+	网上大多说法是git push出现的错误，在服务器端修改权限即可。但未能成功。
+	最终解决方案：git clone github上的版本，用里面的.git替换文档的.git
