@@ -1,1 +1,149 @@
-堆，队列
+一、图
+1.图G=(V,E)是一个二元组,其中V是图G的顶点集，E是G的边集，其元素称为边。
+2.顶点的度：无向图-关联于该顶点的边的数目
+			有向图-出度（离开该顶点的边的数目），入度（进入该顶点的边的数目）
+3.简单路径：如果路径中所有顶点互不相同，则称路径是简单的。
+4.连通：如果一个无向图中每个顶点从所有其他顶点都是可达的，则称该图是连通的。
+		图的连通分量可以看作一个连通的子图。只有一个连通分量的无向图是连通的。
+		如果一个有向图中任意两个顶点互相可达，则该有向图是强连通的。
+
+二、树
+1.自由树
+	自由树是一个连通的、无环的无向图。通常的树都是指自由树。
+	称一个不连通的无向无环图为森林。
+	|E|=|V|-1
+2.有根树和有序树
+	考虑以r为根的有根树T中的一个结点x。
+	祖先/后代：从r到x的唯一简单路径上任意结点y为x的一个祖先,x为y的后代。x不等于y时为真祖先/后代
+	双亲/孩子/兄弟：到x的简单路径的最后一条边（y,x），y为x的双亲（Parent），x为y的孩子（child），如果两个结点有相同的双亲，则他们是兄弟。根是树中唯一没有双亲的结点。
+	叶结点/内部结点:一个没有孩子的结点为叶结点，一个非叶结点是内部结点。
+	度/深度/高度：有根树T中一个结点x的孩子数目等于结点x的度。从根r到结点x的一条简单路径的长度即为x在T中的深度。结点在树中的高度是指从该结点到叶结点最长的一条简单路径上边的数目。树的高度等于树中的点的最大深度。
+	有序树：有序树是一棵有根树，其中每个结点的孩子是有序的。也就是说，如果一个结点有k个孩子，则这些孩子之间会区分哪个结点是第一个孩子，哪个结点是第二个。。。
+3.二叉树和位置树
+	二叉树：二叉树T是定义在有限结点集上的结构，它或者不包括任何结点，或者包含三个不相交的结点集合：一个根结点，一棵称为左子树的二叉树，以及一棵称为右子树的二叉树。
+	满二叉树：每个结点是叶结点或者度为2.
+	完全k叉树：所有叶就结点深度相同，且所有内部结点度为k的k叉树。一棵高度为h的完全k叉树的内部结点数目为：
+			1+k+k^2+..k^(h-1) = (k^h-1)/(k-1)
+
+三、堆
+	1.（二叉）堆是一个数组，它可以被看成一个近似的完全二叉树。树上的每一个结点对应数组中的一个元素。除了最底层外，该树是完全充满的，而且是从左向右填充。如果用1,2..依次标号，则根结点为1,对结点i，其父结点为[i/2]，左结点为2i,右结点为2i+1
+	2.最大堆/最小堆：最大堆性质是指除了根以外的所有结点i都要满足A[Parent(i)]>=A[i],也就是说某个结点的值最多与其父结点一样大。因此，堆中的最大元素存放在根结点中。
+	3.维护堆的性质
+		对于一个堆，如果其左子堆和右子堆都是最大堆，则通过算法MAX-HEAPIFY可使其变成最大堆
+		MAX-HEAPIFY（A,i)
+		l=LEFT(i)
+		r=RIGHT(i)
+		if l<=A.heap-size and A[l]>A[i]
+			largest = l
+		else
+			largest = i
+		if r<=A.heap-size and A[r]>A[largest]
+			largest = r
+		if largest != i
+			exchange A[i] with A[largest]
+			MAX-HEAPIFY(A,largest)
+	4.对与一个数组A，可通过算法BUILD-MAX-HEAP建堆
+		BUILD-MAX-HEAP(A)
+		A.heap-size = A.length
+		for i=[A.length/2] downto 1
+			MAX-HEAPIFY(A,i)
+	5.对于最大堆可用堆排序算法HEAPSORT实现堆排序
+		HEAPSORT（A）
+		BUILD-MAX-HEAP（A）
+		for i=A.length downto 2
+			exchange A[1] with A[i]
+			A.heap-size = A.heap-size -1
+			MAX-HEAPIFY(A,1)
+
+四、栈和队列
+1.栈
+	后进先出(LIFO），类似盘子栈
+	属性：
+		S.top指向当前栈顶，即最新插入的元素。
+	方法：
+		INSERT操作称为压入（PUSH）
+		DELETE操作称为弹出（POP）
+	算法：
+		STACK-EMPTY（S）
+		if S.top == 0
+			return true
+		else 
+			return false
+
+		PUSH(S,x)
+		if(S.top == MAX)	//上溢
+			error "overflow"
+		else
+			S.top = S.top+1
+			S[S.top] =x
+
+		POP(S)
+		if STACK-EMPTY(S)
+			error "underflow"
+		else
+			S.top = S.top -1
+			return S[S.top+1]
+2.队列
+	先进先出（FIFO），类似购物排队。
+	属性：
+		队头（head）指向队头元素
+		队尾（tail）指向下一个新元素将要插入的位置
+	队列的元素存放在Q.head,Q.head+1,...Q.tail-1,并在最后位置“环绕”。
+	方法：
+		入队（ENQUEUE）
+		出队（DEQUEUE）
+	算法：
+		ENQUEUE（Q,x)
+		if Q.head == Q.tail		//上溢
+			error "flow"
+		else
+			Q[Q.tail] = x
+			if Q.tail == Q.length
+				Q.tail = 1
+			else 
+				Q.tail = Q.tail+1
+		
+		DEQUEUE(Q)
+		if Q.head == Q.tail		//下溢
+			error "flow"
+		else
+			x = Q[Q.head]
+			if Q.head = Q.length
+				Q.head = 1
+			else 
+				Q.head = Q.head+1
+			return x
+
+五、链表
+1.单向链表
+	key（键值），[辅助数据/卫星数据]（可选），next（指向后继元素）
+2.双向链表
+	prev（指向前驱元素），key（键值），[辅助数据/卫星数据]（可选），next（指向后继元素）
+3.表头表尾
+	表头（head),链表的第一个元素，head.prev = NIL
+	表尾（tail)，链表的最后一个元素，tail.next = NIL
+4.循环链表
+	表头元素的prev指针指向表尾元素，表尾元素的next指针则指向表头元素。
+5.链表的搜索
+	LIST-SEARCH（L，k）
+	X=L.head
+	while x!=NIL and x.key !=k
+		x=x.next
+	return x
+6.链表的插入
+	LIST-INSERT（L，x)
+	x.next = L.head
+	if L.head != NIL
+		L.head.prev = x
+	L.head = x
+	x.prev = NIL
+7.链表的删除
+	LIST-DELETE（L，x）
+	if x.prev != NIL
+		x.prev.next = x.next
+	else
+		L.head = x.next
+	if x.next != NIL
+		x.next.prev = x.prev
+8.哨兵
+	一个哑对象/元素，用于取代表头，简化边界条件。
