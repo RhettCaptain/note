@@ -1,0 +1,109 @@
+(二叉）搜索树
+一、定义
+1.满足二叉搜索树性质的二叉树
+2.二叉搜索树性质：
+	设x是二叉搜索树中的一个结点。如果y是左子树中的一个结点，那么y.key<=x.key。如果y是x右子树中的一个结点，那么y.key>=x.key
+3.支持操作
+	SEARCH（查询），MINIMUM（最小值），MAXIMUM（最大值），PREDECESSOR（前驱），SUCCESSOR（后继），INSERT（插入），DELETE（删除）
+
+二、遍历
+1.中序遍历
+	输出的子树根的关键字位于其左子树的关键字和右子树的关键字之间
+	INDRDER-TREE-WALK(x)
+	if x!=NIL
+		INORDER-TREE-WALK(x.left)
+		print x.key
+		INORDER-TREE-WALK(x.right)
+2.先序遍历
+	输出的根的关键字在其左右子树的关键字值之前
+3.后序遍历
+	输出的根的关键字在其左右子树的关键字值之后
+
+三、查询
+1.查询某个关键字
+	THREE-SEARCH(x,k)
+	while x!=NIL and k!=x.key
+		if k<x.key
+			x=x.left
+		else
+			x=x.right
+	return x
+2.查询最大/最小关键字
+	TREE-MINIMUM(x)
+	while x.left!=NIL
+		x=x.left
+	return x
+
+	TREE-MAXIMUM(x)
+	while x.right != NIL
+		x=x.right
+	return x
+3.查询前驱和后继
+	如果所有关键字互不相同，则一个结点x的后继是大于x.key的最小关键字的结点，前驱类似
+	如果结点x的右子树非空，那么x的后继恰是x右子树的最左结点。如果x的右子树为空，并有一个后继y，那么y就是x的有左孩子，且该孩子也是x祖先的，最底层的祖先。
+	TREE-SUCCESSOR(x)
+	if x.right != NIL
+		return TREE-MINIMUM(x.right)
+	y=x.p
+	while y!=NIL and x==y.right
+		x=y
+		y=y.p
+	return y
+4.上述查询时间均为O(h),h为树高
+
+四、插入和删除
+1.插入
+	TREE-INSERT（T,z)
+	y=NIL
+	x=T.root
+	while x!=NIL
+		y=x
+		if z.key<x.key
+			x=x.left
+		else
+			x=x.right
+	z.p = y
+	if y==NIL
+		T.root =z	//T was empty
+	elseif z.key<y.key
+		y.left = z
+	else
+		y.right = z
+2.删除
+（1)三种基本情况
+	-如果z没有孩子结点，那么只是简单的将他删除，并修改他的父结点，用NIL作为孩子来替换z
+	-如果z只有一个孩子，那么将这个孩子提升到树中z的位置上，并修改z的父结点，用z的孩子来替换z
+	-如果z有两个孩子，那么找z的后继y，并让y占据树中z的位置。z的原来右子树部分成为y的心的右子树，并且z的左子树成为y的新的左子树。
+(2)算法
+	-用另一棵以v为根的子树替换一棵以u为根的子树
+	TRANSPLANT（T,u,v)
+	if u.p == NIL
+		T.root = v
+	elseif u == u.p.left
+		u.p.left = v
+	else
+		u.p.right = v
+	if v!=NIL
+		v.p = u.p
+	-从二叉搜索树T中删除结点z
+	TREE-DELETE(T,z)
+	if z.left == NIL
+		TRANSPLANT(T,z,z.right)
+	elseif z.right == NIL
+		TRANSPLANT(T,z,z.left)
+	else
+		y = TREE-MINIMUM(z.right)
+		if y.p != z
+			TRANSPLANT(T,y,y.right)
+			y.right = z.right
+			y.right.p = y
+		TRANSPLANT(T,z,y)
+		y.left = z.left
+		y.left.p = y
+(3)插入或删除运行时间O（h)
+
+五、随机构建二叉搜索树
+	当一棵二叉搜索树同时由插入和删除操作生成时，我们对这颗树的平均高度了解甚少。当树有插入操作单独生成时，分析就容易得多。
+	我们定义n个关键字的一棵随机构建二叉搜索树为按随机次序插入这些关键字到一棵初始的空树中而生成的树。
+	一棵有n个不同关键字的随机构建二叉搜索树的期望高度为O（lgn)
+
