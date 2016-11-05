@@ -1,0 +1,45 @@
+DIV布局
+1.html三部分
+(1)<!DOCTYPE ...dtd>
+(2)<head>   </head>
+(3)<body>   </body>
+
+2.常用DOCTYPE
+HTML5.0 <!DOCTYPE html>
+HTML 4.01 Strict
+该 DTD 包含所有 HTML 元素和属性，但不包括展示性的和弃用的元素（比如 font）。不允许框架集（Framesets）。
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+HTML 4.01 Transitional
+该 DTD 包含所有 HTML 元素和属性，包括展示性的和弃用的元素（比如 font）。不允许框架集（Framesets）。
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+HTML 4.01 Frameset
+该 DTD 等同于 HTML 4.01 Transitional，但允许框架集内容。
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" 
+"http://www.w3.org/TR/html4/frameset.dtd">
+
+3.CSS控制DIV
+(1)DIV在body区，进行区域划分，可命名id，但id 不能为数字，格式如下
+<div id="header">头</div>
+<div id="main">主</div>
+<div id="footer>脚</div>
+(2)CSS在head区，style下，控制div具体内容，可以统一规划，也可以针对个体div设计。格式如下
+<style>
+	div{ height:200px;background:green;}
+	#main{background:red;}
+</style>
+(3)div也可以用class归类，用.（类名）统一处理，如
+<style>
+	.test{ height:200px;background:green;}
+</style>
+<div class="test">头</div>
+<div class="test">主</div>
+
+4.浮动布局
+默认下div独占一行，可用float设置浮动，用clear清除浮动。格式如下
+#main{width:20px;float:left}
+#footer{height:300px;clear:left}//即左浮动对footer无效，footer不会在main下面，而是会转行。
+
+5.文件编码
+在head区，<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+charset决定编码方式，文件编码要与charset声明一致，不然会乱码

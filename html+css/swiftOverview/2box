@@ -1,0 +1,25 @@
+盒模型
+1.margin
+--不同盒子间的间距，如
+<style>div{margin:50}</style>		//上下左右都保持50间距
+如果margin：10,20，则上10，右20，没赋值的和对边相同，即下10，左20
+也可以设置margin-top:10.则只控制上边距
+--margin：10，auto，则可实现水平居中
+--普通元素之间的margin会叠加，如上div保持下间距20，下div保持上间距30，则两者实际间距为30
+但漂浮元素不叠加
+
+2.border
+盒边，三要素：宽，形状，颜色，如
+border：50px dashed purple；
+border style有：none，hidden，dotted，dashed，solid，double，groove，ridge，inset，outset
+
+3.padding
+内间距，即盒边框与实际文字编辑区的距离。
+
+4.span
+内联元素，可在行间编辑，如<div>我是<span>哈哈</span></div>
+span{color:red},哈哈两字就会变成红色，且不会换行独占（div会）。
+span区定义宽，高是无效的，竖直padding也无效，水平padding有效。
+
+5.内联与块状的转换
+div{display:inline}就实现了div转内联，display：block可实现内联转块状，display：none不显示。

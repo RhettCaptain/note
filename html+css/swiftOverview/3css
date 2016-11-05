@@ -1,0 +1,32 @@
+CSS
+1.css控制段落
+段落标识<p> </p>,css使用和操作div类似。一些内容如下：
+text-indent:20px	//缩进  
+text-align:right   //对齐
+text-decoration:underline		//线条装饰
+。。。
+
+2.css控制字体
+font-style:italic	//斜体。。
+font-weight:bold	//加粗
+font-size:23px	//字号
+line-height:34px;	//行高
+font-family：'微软雅黑‘，’黑体‘，sans-serif;	//字体，优先用微软雅黑，用户没有就用黑体，再没有就在sans-serif类字体中选一个，相应的还有serif类字体。
+
+3.css控制图片
+background-image：url(../bin/1.jpg);	//显示图片
+background-repeat:repeat-y;	//垂直重复
+background-position：right，center；	//在右边中部显示
+background-position：190px,280px；	//从190,280开始显示图片
+
+4.css选择器和优先级
+div：范围最大，优先级最低
+.class：范围次大，优先级次低
+#id：范围次小，优先级次高
+#div id:范围最小，优先级最高
+
+5.css引入方式
+1.<style>编写
+2.直接在内容处编写
+3.<link rel="stylesheet" href="./23css.css"/>
+4.import url(23-2.css);

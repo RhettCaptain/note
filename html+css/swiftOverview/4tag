@@ -1,0 +1,36 @@
+语义标签
+1.h和p
+h1-h6定义标题，级别递减，字号递减。p定义段落
+
+2.img和embed
+img定义图片
+<img src="地址，可以是本地，也可以是网络“ alt="说明，给搜索引擎用" title="鼠标放上去显示的说明" />
+embed:嵌入音视频，如<embed src="movie.swf" height="200" width="200"/>
+
+3.有序列表和无序列表
+<ul><li>1</li><li>2</li><ul>//无序列表
+<ol><li>1</li><li>2</li><ol>//无序列表
+用list-style-type属性控制列表元素类型
+
+4.表格
+<table>		//表
+	<tr>		//行
+		<td colspan="4">1</td>	//四列融合
+	</tr>
+	<tr>
+		<td>2</td>
+		<td rowspan="2">3</td>	//两行融合
+	</tr>
+</table>
+通过border-collapse:separate|collapse改变边框融合分离
+border-spacing设置分离间隔
+
+5.超链接，锚点，伪类
+<a href="链接地址">显示的内容</a>
+<a href="xx" target="_blank" title="鼠标放上来显示">xx</a>在新页面显示
+<a name="p1"></a>//锚点。可以通过锚点连接到某个位置
+css允许我们针对a标签的4种状态设置各自的css，称为css伪类
+a:link{} 正常状态 a:visited{}访问过  a:hover{}放上鼠标 a:active{}点击时  顺序不能变
+
+6.字符实体
+有的字符不能直接显示，要用&显然，如&gt大于，&lt小于，&amp &，&quot “ 。。。
