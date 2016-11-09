@@ -1,3 +1,7 @@
 1.ros::init()
 	原型：void ros::init(int& argc, char** argv, const std::string& node_name, unit32_t options=0)
 	node_name 在被重映射参数覆盖之前，这个名字会用来命名节点名。节点名字在ROS系统中必须唯一。如果有第二个同名的节点启动，则第一个会自动被关闭。有时你需要运行多个同样的节点，则可以通过下面描述init_options::AnonymousName来解决。
+
+2.移植
+	为了避免路径问题，通常只移植pkg，然后在本地工作空间重新编译。
+	此外，需要先在CMakeList中把生成可执行文件的语句注释掉编译一次，生成消息，服务等的头文件，再重新编译生成可执行文件
