@@ -61,7 +61,7 @@
 	RB-INSERT-FIXUP(T,z)	//对结点重新着色并旋转
 
 	RB-INSERT-FIXUP(T,z)
-	while z.p.color == RED			// 若“当前节点(z)的父节点是红色”，则进行以下处理。
+	while z.p!=NIL && z.p.p!=NIL && z.p.color == RED			// 若“当前节点(z)的父节点是红色”，则进行以下处理。
 		if z.p == z.p.p.left	 	// 若“z的父节点”是“z的祖父节点的左孩子”，则进行以下处理。
 			y = z.p.p.right			// 将y设置为“z的叔叔节点(z的祖父节点的右孩子)”
 			if y.color ==RED		// Case 1条件：叔叔是红色
