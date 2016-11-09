@@ -14,6 +14,7 @@
 	git status	//查看文件变动
 	git diff <file>		//查看修改内容
 4.版本回退
+	git checkout -- <file> 		//尚未提交变动，通过此指令放弃变动
 	git log		//查看提交历史，以便确定回退到哪个版本
 	git reset --hard commit_id 	//回退到指定版本
   如git reset --hard HEAD^		//HEAD表示当前版本，HEAD^表示上一版本，HEAD^^表示上上版本，HEAD~100表示上100版本
