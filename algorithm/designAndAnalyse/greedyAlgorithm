@@ -14,8 +14,112 @@
 二、经典问题
 1.活动选择问题
 （1)问题
+	假定有一个n个活动的集合S={a1,a2,...,an},这些活动使用同一个资源，而这个资源在某个时刻只能提供一个活动使用。每个活动ai都有一个开始时间si和一个结束时间fi，其中0<=si<fi。如果[si,fi),[sj,fj)不重叠，则称它们是兼容的。选出一个最大兼容活动集。
 （2)算法
+	贪心策略（局部最优）：选择结束时间最早的。
+	迭代/递归：对选择后的集合继续贪心。
+	证明：如果am是Sk中最早结束的活动，它一定在某个最大兼容活动集中
 （3)实现
+package demo1;
+import static com.github.rhettcaptain.Printer.print;
+import static com.github.rhettcaptain.Printer.println;
+
+import java.util.ArrayList;
+public class Activity {
+	private int[] start = {1,3,0,5,3,5,6,8,8,2,12};
+	private int[] finish = {4,5,6,7,9,9,10,11,12,14,16};
+	private ArrayList<Integer> set = new ArrayList<Integer>();
+	private ArrayList<Integer> solution = new ArrayList<Integer>();
+	private int actCount = 0;
+	public Activity()
+	{
+		for(int i=1;i<=11;i++)
+		{
+			set.add(i);
+		}
+	}
+	public int solve()
+	{
+		int actCount = 0;
+		
+		while(!set.isEmpty())
+		{
+			int greedyIdx = 0;
+			int greedyFin = Integer.MAX_VALUE;
+			for(Integer i:set)
+			{
+				if(finish[i-1] < greedyFin)
+				{
+					greedyIdx = i;
+					greedyFin = finish[i-1];
+				}
+			}
+			solution.add(greedyIdx);
+			actCount++;
+			ArrayList<Integer> clearTemp = new ArrayList<Integer>();
+			for(Integer i:set)
+			{
+				if(start[i-1] < greedyFin)
+				{
+					clearTemp.add(i);
+				}
+			}
+			for(Integer i:clearTemp)
+			{
+				set.remove(i);
+			}
+		}
+		return actCount;
+	}
+	public int solve2()
+	{;
+		if(!set.isEmpty())
+		{
+			int greedyIdx = 0;
+			int greedyFin = Integer.MAX_VALUE;
+			for(Integer i:set)
+			{
+				if(finish[i-1] < greedyFin)
+				{
+					greedyIdx = i;
+					greedyFin = finish[i-1];
+				}
+			}
+			solution.add(greedyIdx);
+			actCount++;
+			ArrayList<Integer> clearTemp = new ArrayList<Integer>();
+			for(Integer i:set)
+			{
+				if(start[i-1] < greedyFin)
+				{
+					clearTemp.add(i);
+				}
+			}
+			for(Integer i:clearTemp)
+			{
+				set.remove(i);
+			}
+			solve2();
+		}
+		return actCount;
+	}
+	
+	public void display()
+	{
+		println(solve2());
+		for(Integer i:solution)
+		{
+			print(i+"\t");
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		Activity act = new Activity();
+		act.display();
+	}
+}
+
 
 2.霍夫曼编码
 （1)问题
