@@ -7,3 +7,5 @@
 	error:无法创建子树对象
 	网上大多说法是git push出现的错误，在服务器端修改权限即可。但未能成功。
 	最终解决方案：git clone github上的版本，用里面的.git替换文档的.git
+4.Permission denied (publickey). 
+	windows下使用ssh,生成的id_rsa和id_rsa.pub要放在C:\User\.ssh下面
