@@ -1,0 +1,112 @@
+
+一、常用基本标签
+1.HTML 标题
+HTML 标题（Heading）是通过 <h1> - <h6> 等标签进行定义的。
+实例
+<h1>This is a heading</h1>
+<h2>This is a heading</h2>
+
+2.HTML 段落
+HTML 段落是通过 <p> 标签进行定义的。
+实例
+<p>This is a paragraph.</p>
+
+3.HTML 链接
+HTML 链接是通过 <a> 标签进行定义的。
+实例
+<a href="http://www.w3school.com.cn">This is a link</a>
+
+4.HTML 图像
+HTML 图像是通过 <img> 标签进行定义的。
+实例
+<img src="w3school.jpg" width="104" height="142" />
+
+二、元素
+标签里面的如
+<p>YS</p>中的YS就是元素，可以为空，一般具有属性
+
+三、属性
+1.HTML 标签可以拥有属性。属性提供了有关 HTML 元素的更多的信息。
+属性总是以名称/值对的形式出现，比如：name="value"。
+属性总是在 HTML 元素的开始标签中规定。
+属性实例
+HTML 链接由 <a> 标签定义。链接的地址在 href 属性中指定：
+<a href="http://www.w3school.com.cn">This is a link</a>
+
+四、标题
+1.HTML 水平线
+<hr /> 标签在 HTML 页面中创建水平线。
+hr 元素可用于分隔内容。
+实例
+<p>This is a paragraph</p>
+<hr />
+<p>This is a paragraph</p>
+
+2.HTML 注释
+可以将注释插入 HTML 代码中，这样可以提高其可读性，使代码更易被人理解。浏览器会忽略注释，也不会显示它们。
+注释是这样写的：
+实例
+<!-- This is a comment -->
+
+五、段落
+1.HTML 换行
+如果您希望在不产生一个新段落的情况下进行换行（新行），请使用 <br /> 标签：
+<p>This is<br />a paragraph with line breaks</p>
+
+六、样式
+1.style 属性用于改变 HTML 元素的样式
+2.不赞成使用的标签和属性
+<center>，<font> 和 <basefont>，<s> 和 <strike>，<u>，align，bgcolor，color
+3.HTML 样式实例 - 背景颜色
+background-color 属性为元素定义了背景颜色：
+<h2 style="background-color:red">This is a heading</h2>
+4.HTML 样式实例 - 字体、颜色和尺寸
+font-family、color 以及 font-size 属性分别定义元素中文本的字体系列、颜色和字体尺寸
+<p style="font-family:arial;color:red;font-size:20px;">A paragraph.</p>
+5.HTML 样式实例 - 文本对齐
+text-align 属性规定了元素中文本的水平对齐方式：
+<h1 style="text-align:center">This is a heading</h1>
+
+七、格式化
+1.文本格式化标签
+<b>	定义粗体文本。
+<big>	定义大号字。
+<em>	定义着重文字。
+<i>	定义斜体字。
+<small>	定义小号字。
+<strong>	定义加重语气。
+<sub>	定义下标字。
+<sup>	定义上标字。
+<ins>	定义插入字。
+<del>	定义删除字。
+
+2.“计算机输出”标签
+标签	描述
+<code>	定义计算机代码。
+<kbd>	定义键盘码。
+<samp>	定义计算机代码样本。
+<tt>	定义打字机代码。
+<var>	定义变量。
+<pre>	定义预格式文本。
+
+3.引用、引用和术语定义
+标签	描述
+<abbr>	定义缩写。
+<acronym>	定义首字母缩写。
+<address>	定义地址。
+<bdo>	定义文字方向。
+<blockquote>	定义长的引用。
+<q>	定义短的引用语。
+<cite>	定义引用、引证。
+<dfn>	定义一个定义项目。
+
+八、引用
+HTML 引文、引用和定义元素
+标签	描述
+<abbr>	定义缩写或首字母缩略语。
+<address>	定义文档作者或拥有者的联系信息。
+<bdo>	定义文本方向。
+<blockquote>	定义从其他来源引用的节。
+<dfn>	定义项目或缩略词的定义。
+<q>	定义短的行内引用。
+<cite>	定义著作的标题。
