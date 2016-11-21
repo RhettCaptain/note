@@ -100,13 +100,290 @@ text-align 属性规定了元素中文本的水平对齐方式：
 <cite>	定义引用、引证。
 <dfn>	定义一个定义项目。
 
-八、引用
-HTML 引文、引用和定义元素
-标签	描述
-<abbr>	定义缩写或首字母缩略语。
-<address>	定义文档作者或拥有者的联系信息。
-<bdo>	定义文本方向。
-<blockquote>	定义从其他来源引用的节。
-<dfn>	定义项目或缩略词的定义。
-<q>	定义短的行内引用。
-<cite>	定义著作的标题。
+八、CSS
+1.如何使用样式
+（1）外部样式表
+当样式需要被应用到很多页面的时候，外部样式表将是理想的选择。使用外部样式表，你就可以通过更改一个文件来改变整个站点的外观。
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+（2）内部样式表
+当单个文件需要特别样式时，就可以使用内部样式表。你可以在 head 部分通过 <style> 标签定义内部样式表。
+<head>
+<style type="text/css">
+body {background-color: red}
+p {margin-left: 20px}
+</style>
+</head>
+（3）内联样式
+当特殊的样式需要应用到个别元素时，就可以使用内联样式。 使用内联样式的方法是在相关的标签中使用样式属性。样式属性可以包含任何 CSS 属性。以下实例显示出如何改变段落的颜色和左外边距。
+<p style="color: red; margin-left: 20px">
+This is a paragraph
+</p>
+
+2.标签	描述
+<style>	定义样式定义。
+<link>	定义资源引用。
+<div>	定义文档中的节或区域（块级）。
+<span>	定义文档中的行内的小块或区域。
+<font>	规定文本的字体、字体尺寸、字体颜色。不赞成使用。请使用样式。
+<basefont>	定义基准字体。不赞成使用。请使用样式。
+<center>	对文本进行水平居中。不赞成使用。请使用样式。
+
+九、链接
+1.我们通过使用 <a> 标签在 HTML 中创建链接。
+有两种使用 <a> 标签的方式：
+通过使用 href 属性 - 创建指向另一个文档的链接
+通过使用 name 属性 - 创建文档内的书签
+例：<a href="http://www.w3school.com.cn/">Visit W3School</a>
+
+2.target 属性
+使用 Target 属性，你可以定义被链接的文档在何处显示。
+下面的这行会在新窗口打开文档：
+<a href="http://www.w3school.com.cn/" target="_blank">Visit W3School!</a>
+
+3.name 属性
+name 属性规定锚（anchor）的名称。
+您可以使用 name 属性创建 HTML 页面中的书签。
+书签不会以任何特殊方式显示，它对读者是不可见的。
+当使用命名锚（named anchors）时，我们可以创建直接跳至该命名锚（比如页面中某个小节）的链接，这样使用者就无需不停地滚动页面来寻找他们需要的信息了。
+命名锚的语法：
+<a name="label">锚（显示在页面上的文本）</a>
+实例
+首先，我们在 HTML 文档中对锚进行命名（创建一个书签）：
+<a name="tips">基本的注意事项 - 有用的提示</a>
+然后，我们在同一个文档中创建指向该锚的链接：
+<a href="#tips">有用的提示</a>
+您也可以在其他页面中创建指向该锚的链接：
+<a href="http://www.w3school.com.cn/html/html_links.asp#tips">有用的提示</a>
+在上面的代码中，我们将 # 符号和锚名称添加到 URL 的末端，就可以直接链接到 tips 这个命名锚了。
+
+十、图像
+1.图像标签（<img>）和源属性（Src）
+在 HTML 中，图像由 <img> 标签定义。
+<img> 是空标签，意思是说，它只包含属性，并且没有闭合标签。
+要在页面上显示图像，你需要使用源属性（src）。src 指 "source"。源属性的值是图像的 URL 地址。
+定义图像的语法是：
+<img src="url" />
+URL 指存储图像的位置。
+浏览器将图像显示在文档中图像标签出现的地方。如果你将图像标签置于两个段落之间，那么浏览器会首先显示第一个段落，然后显示图片，最后显示第二段。
+2.替换文本属性（Alt）
+alt 属性用来为图像定义一串预备的可替换的文本。替换文本属性的值是用户定义的。
+<img src="boat.gif" alt="Big Boat">
+在浏览器无法载入图像时，替换文本属性告诉读者她们失去的信息。此时，浏览器将显示这个替代性的文本而不是图像。为页面上的图像都加上替换文本属性是个好习惯，这样有助于更好的显示信息，并且对于那些使用纯文本浏览器的人来说是非常有用的。
+3.基本的注意事项 - 有用的提示：
+假如某个 HTML 文件包含十个图像，那么为了正确显示这个页面，需要加载 11 个文件。加载图片是需要时间的，所以我们的建议是：慎用图片。
+
+十一、表格
+1.表格
+表格由 <table> 标签来定义。每个表格均有若干行（由 <tr> 标签定义），每行被分割为若干单元格（由 <td> 标签定义）。字母 td 指表格数据（table data），即数据单元格的内容。数据单元格可以包含文本、图片、列表、段落、表单、水平线、表格等等。
+<table border="1">
+<tr>
+<td>row 1, cell 1</td>
+<td>row 1, cell 2</td>
+</tr>
+<tr>
+<td>row 2, cell 1</td>
+<td>row 2, cell 2</td>
+</tr>
+</table>
+在浏览器显示如下：
+row 1, cell 1	row 1, cell 2
+row 2, cell 1	row 2, cell 2
+2.边框属性
+如果不定义边框属性，表格将不显示边框。有时这很有用，但是大多数时候，我们希望显示边框。
+使用边框属性来显示一个带有边框的表格：
+<table border="1">
+<tr>
+<td>Row 1, cell 1</td>
+<td>Row 1, cell 2</td>
+</tr>
+</table>
+3.表头
+表格的表头使用 <th> 标签进行定义。
+大多数浏览器会把表头显示为粗体居中的文本：
+<table border="1">
+<tr>
+<th>Heading</th>
+<th>Another Heading</th>
+</tr>
+<tr>
+<td>row 1, cell 1</td>
+<td>row 1, cell 2</td>
+</tr>
+<tr>
+<td>row 2, cell 1</td>
+<td>row 2, cell 2</td>
+</tr>
+</table>
+在浏览器显示如下：
+Heading	Another Heading
+row 1, cell 1	row 1, cell 2
+row 2, cell 1	row 2, cell 2
+4.空单元格
+在一些浏览器中，没有内容的表格单元显示得不太好。如果某个单元格是空的（没有内容），浏览器可能无法显示出这个单元格的边框。
+为了避免这种情况，在空单元格中添加一个空格占位符，就可以将边框显示出来。
+
+十二、列表
+1.无序列表
+无序列表是一个项目的列表，此列项目使用粗体圆点（典型的小黑圆圈）进行标记。
+无序列表始于 <ul> 标签。每个列表项始于 <li>。
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+浏览器显示如下：
+Coffee
+Milk
+列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+2.有序列表
+同样，有序列表也是一列项目，列表项目使用数字进行标记。
+有序列表始于 <ol> 标签。每个列表项始于 <li> 标签。
+<ol>
+<li>Coffee</li>
+<li>Milk</li>
+</ol>
+浏览器显示如下：
+Coffee
+Milk
+列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+3.定义列表
+自定义列表不仅仅是一列项目，而是项目及其注释的组合。
+自定义列表以 <dl> 标签开始。每个自定义列表项以 <dt> 开始。每个自定义列表项的定义以 <dd> 开始。
+<dl>
+<dt>Coffee</dt>
+<dd>Black hot drink</dd>
+<dt>Milk</dt>
+<dd>White cold drink</dd>
+</dl>
+浏览器显示如下：
+Coffee
+Black hot drink
+Milk
+White cold drink
+定义列表的列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+
+十三、块
+1.块元素 与 内联元素
+大多数 HTML 元素被定义为块级元素或内联元素。
+编者注：“块级元素”译为 block level element，“内联元素”译为 inline element。
+块级元素在浏览器显示时，通常会以新行来开始（和结束）。
+例子：<h1>, <p>, <ul>, <table>
+内联元素在显示时通常不会以新行开始。
+例子：<b>, <td>, <a>, <img>
+2.<div> 元素
+HTML <div> 元素是块级元素，它是可用于组合其他 HTML 元素的容器。
+<div> 元素没有特定的含义。除此之外，由于它属于块级元素，浏览器会在其前后显示折行。
+如果与 CSS 一同使用，<div> 元素可用于对大的内容块设置样式属性。
+<div> 元素的另一个常见的用途是文档布局。它取代了使用表格定义布局的老式方法。使用 <table> 元素进行文档布局不是表格的正确用法。<table> 元素的作用是显示表格化的数据。
+3.<span> 元素
+HTML <span> 元素是内联元素，可用作文本的容器。
+<span> 元素也没有特定的含义。
+当与 CSS 一同使用时，<span> 元素可用于为部分文本设置样式属性。
+
+十四、类
+对 HTML 进行分类（设置类），使我们能够为元素的类定义 CSS 样式。
+为相同的类设置相同的样式，或者为不同的类设置不同的样式。
+用class="xx"定义，.xx使用
+例：
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.cities {
+    background-color:black;
+    color:white;
+    margin:20px;
+    padding:20px;
+} 
+</style>
+</head>
+
+<body>
+
+<div class="cities">
+<h2>London</h2>
+<p>
+London is the capital city of England. 
+It is the most populous city in the United Kingdom, 
+with a metropolitan area of over 13 million inhabitants.
+</p>
+</div> 
+
+</body>
+</html>
+
+十五、布局
+1.一般用div
+2.使用 HTML5 的网站布局
+HTML5 提供的新语义元素定义了网页的不同部分：
+HTML5 语义元素
+header	定义文档或节的页眉
+nav	定义导航链接的容器
+section	定义文档中的节
+article	定义独立的自包含文章
+aside	定义内容之外的内容（比如侧栏）
+footer	定义文档或节的页脚
+details	定义额外的细节
+summary	定义 details 元素的标题
+
+十六、响应式 Web 设计
+1.什么是响应式 Web 设计？
+RWD 指的是响应式 Web 设计（Responsive Web Design）
+RWD 能够以可变尺寸传递网页
+RWD 对于平板和移动设备是必需的
+2.创建响应式设计的一个方法，是自己来创建它（呵呵O(∩_∩)O~）
+3.使用 Bootstrap
+另一个创建响应式设计的方法，是使用现成的 CSS 框架。
+Bootstrap 是最流行的开发响应式 web 的 HTML, CSS, 和 JS 框架。
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" 
+  href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+
+十七、框架
+1.什么是框架
+通过使用框架，你可以在同一个浏览器窗口中显示不止一个页面。每份HTML文档称为一个框架，并且每个框架都独立于其他的框架。
+使用框架的坏处：
+开发人员必须同时跟踪更多的HTML文档
+很难打印整张页面
+2.框架结构标签（<frameset>）
+框架结构标签（<frameset>）定义如何将窗口分割为框架
+每个 frameset 定义了一系列行或列
+rows/columns 的值规定了每行或每列占据屏幕的面积
+3.框架标签（Frame）
+Frame 标签定义了放置在每个框架中的 HTML 文档。
+在下面的这个例子中，我们设置了一个两列的框架集。第一列被设置为占据浏览器窗口的 25%。第二列被设置为占据浏览器窗口的 75%。HTML 文档 "frame_a.htm" 被置于第一个列中，而 HTML 文档 "frame_b.htm" 被置于第二个列中：
+<frameset cols="25%,75%">
+   <frame src="frame_a.htm">
+   <frame src="frame_b.htm">
+</frameset>
+4.基本的注意事项 - 有用的提示：
+假如一个框架有可见边框，用户可以拖动边框来改变它的大小。为了避免这种情况发生，可以在 <frame> 标签中加入：noresize="noresize"。
+为不支持框架的浏览器添加 <noframes> 标签。
+重要提示：不能将 <body></body> 标签与 <frameset></frameset> 标签同时使用！不过，假如你添加包含一段文本的 <noframes> 标签，就必须将这段文字嵌套于 <body></body> 标签内。（在下面的第一个实例中，可以查看它是如何实现的。）
+
+十八、内联框架
+1.什么是内联框架（iframe）
+iframe 用于在网页内显示网页。
+2.添加 iframe 的语法
+<iframe src="URL"></iframe>
+URL 指向隔离页面的位置。
+3.Iframe - 设置高度和宽度
+height 和 width 属性用于规定 iframe 的高度和宽度。
+属性值的默认单位是像素，但也可以用百分比来设定（比如 "80%"）。
+实例
+<iframe src="demo_iframe.htm" width="200" height="200"></iframe>
+4.Iframe - 删除边框
+frameborder 属性规定是否显示 iframe 周围的边框。
+设置属性值为 "0" 就可以移除边框：
+实例
+<iframe src="demo_iframe.htm" frameborder="0"></iframe>
+5.使用 iframe 作为链接的目标
+iframe 可用作链接的目标（target）。
+链接的 target 属性必须引用 iframe 的 name 属性：
+实例
+<iframe src="demo_iframe.htm" name="iframe_a"></iframe>
+<p><a href="http://www.w3school.com.cn" target="iframe_a">W3School.com.cn</a></p>
