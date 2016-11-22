@@ -387,3 +387,142 @@ iframe 可用作链接的目标（target）。
 实例
 <iframe src="demo_iframe.htm" name="iframe_a"></iframe>
 <p><a href="http://www.w3school.com.cn" target="iframe_a">W3School.com.cn</a></p>
+
+十九、背景
+1.背景（Backgrounds）
+<body> 拥有两个配置背景的标签。背景可以是颜色或者图像。
+2.背景颜色（Bgcolor）
+背景颜色属性将背景设置为某种颜色。属性值可以是十六进制数、RGB 值或颜色名。
+<body bgcolor="#000000">
+<body bgcolor="rgb(0,0,0)">
+<body bgcolor="black">
+以上的代码均将背景颜色设置为黑色。
+3.背景图像
+背景属性将背景设置为图像。属性值为图像的URL。如果图像尺寸小于浏览器窗口，那么图像将在整个浏览器窗口进行复制。
+<body background="clouds.gif">
+<body background="http://www.w3school.com.cn/clouds.gif">
+URL可以是相对地址，如第一行代码。也可以使绝对地址，如第二行代码。
+
+二十、脚本
+1.script 元素
+<script> 标签用于定义客户端脚本，比如 JavaScript。
+script 元素既可包含脚本语句，也可通过 src 属性指向外部脚本文件。
+必需的 type 属性规定脚本的 MIME 类型。
+JavaScript 最常用于图片操作、表单验证以及内容动态更新。
+下面的脚本会向浏览器输出“Hello World!”：
+<script type="text/javascript">
+document.write("Hello World!")
+</script>
+2.<noscript> 标签
+<noscript> 标签提供无法使用脚本时的替代内容，比方在浏览器禁用脚本时，或浏览器不支持客户端脚本时。
+noscript 元素可包含普通 HTML 页面的 body 元素中能够找到的所有元素。
+只有在浏览器不支持脚本或者禁用脚本时，才会显示 noscript 元素中的内容：
+<script type="text/javascript">
+document.write("Hello World!")
+</script>
+<noscript>Your browser does not support JavaScript!</noscript>
+
+十三、头部元素
+1.<head> 元素
+<head> 元素是所有头部元素的容器。<head> 内的元素可包含脚本，指示浏览器在何处可以找到样式表，提供元信息，等等。
+以下标签都可以添加到 head 部分：<title>、<base>、<link>、<meta>、<script> 以及 <style>。
+2.<title> 元素
+<title> 标签定义文档的标题。
+title 元素在所有 HTML/XHTML 文档中都是必需的。
+title 元素能够：
+定义浏览器工具栏中的标题
+提供页面被添加到收藏夹时显示的标题
+显示在搜索引擎结果中的页面标题
+3.<base> 元素
+<base> 标签为页面上的所有链接规定默认地址或默认目标（target）：
+<head>
+<base href="http://www.w3school.com.cn/images/" />
+<base target="_blank" />
+</head>
+4.<link> 元素
+<link> 标签定义文档与外部资源之间的关系。
+<link> 标签最常用于连接样式表：
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css" />
+</head>
+5. <style> 元素
+<style> 标签用于为 HTML 文档定义样式信息。
+您可以在 style 元素内规定 HTML 元素在浏览器中呈现的样式：
+<head>
+<style type="text/css">
+body {background-color:yellow}
+p {color:blue}
+</style>
+</head>
+6.<meta> 元素
+元数据（metadata）是关于数据的信息。
+<meta> 标签提供关于 HTML 文档的元数据。元数据不会显示在页面上，但是对于机器是可读的。
+典型的情况是，meta 元素被用于规定页面的描述、关键词、文档的作者、最后修改时间以及其他元数据。
+<meta> 标签始终位于 head 元素中。
+元数据可用于浏览器（如何显示内容或重新加载页面），搜索引擎（关键词），或其他 web 服务。
+针对搜索引擎的关键词
+一些搜索引擎会利用 meta 元素的 name 和 content 属性来索引您的页面。
+下面的 meta 元素定义页面的描述：
+<meta name="description" content="Free Web tutorials on HTML, CSS, XML" />
+下面的 meta 元素定义页面的关键词：
+<meta name="keywords" content="HTML, CSS, XML" />
+name 和 content 属性的作用是描述页面的内容。
+
+十四、字符实体
+1.HTML 实体
+在 HTML 中，某些字符是预留的。
+在 HTML 中不能使用小于号（<）和大于号（>），这是因为浏览器会误认为它们是标签。
+如果希望正确地显示预留字符，我们必须在 HTML 源代码中使用字符实体（character entities）。
+字符实体类似这样：
+&entity_name;
+或者
+&#entity_number;
+如需显示小于号，我们必须这样写：&lt; 或 &#60;
+提示：使用实体名而不是数字的好处是，名称易于记忆。不过坏处是，浏览器也许并不支持所有实体名称（对实体数字的支持却很好）。
+2.不间断空格（non-breaking space）
+HTML 中的常用字符实体是不间断空格(&nbsp;)。
+浏览器总是会截短 HTML 页面中的空格。如果您在文本中写 10 个空格，在显示该页面之前，浏览器会删除它们中的 9 个。如需在页面中增加空格的数量，您需要使用 &nbsp; 字符实体。
+3.HTML 中有用的字符实体
+注释：实体名称对大小写敏感！
+显示结果	描述	实体名称	实体编号
+ 	空格	&nbsp;	&#160;
+<	小于号	&lt;	&#60;
+>	大于号	&gt;	&#62;
+&	和号	&amp;	&#38;
+"	引号	&quot;	&#34;
+'	撇号 	&apos; (IE不支持)	&#39;
+￠	分	&cent;	&#162;
+￡	镑	&pound;	&#163;
+￥	日圆	&yen;	&#165;
+�	欧元	&euro;	&#8364;
+§	小节	&sect;	&#167;
+?	版权	&copy;	&#169;
+?	注册商标	&reg;	&#174;
+?	商标	&trade;	&#8482;
+×	乘号	&times;	&#215;
+÷	除号	&divide;	&#247;
+
+十五、统一资源定位器（URL）
+1.URL - Uniform Resource Locator
+当您点击 HTML 页面中的某个链接时，对应的 <a> 标签指向万维网上的一个地址。
+遵守以下的语法规则：
+scheme://host.domain:port/path/filename
+解释：
+scheme - 定义因特网服务的类型。最常见的类型是 http
+host - 定义域主机（http 的默认主机是 www）
+domain - 定义因特网域名，比如 w3school.com.cn
+:port - 定义主机上的端口号（http 的默认端口号是 80）
+path - 定义服务器上的路径（如果省略，则文档必须位于网站的根目录中）。
+filename - 定义文档/资源的名称
+2.URL Schemes
+以下是其中一些最流行的 scheme：
+Scheme	访问	用于...
+http	超文本传输协议	以 http:// 开头的普通网页。不加密。
+https	安全超文本传输协议	安全网页。加密所有信息交换。
+ftp	文件传输协议	用于将文件下载或上传至网站。
+file	 	您计算机上的文件。
+
+十六、<!DOCTYPE> 声明
+Web 世界中存在许多不同的文档。只有了解文档的类型，浏览器才能正确地显示文档。
+HTML 也有多个不同的版本，只有完全明白页面中使用的确切 HTML 版本，浏览器才能完全正确地显示出 HTML 页面。这就是 <!DOCTYPE> 的用处。
+<!DOCTYPE> 不是 HTML 标签。它为浏览器提供一项信息（声明），即 HTML 是用什么版本编写的。
