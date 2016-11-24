@@ -1,0 +1,57 @@
+异常处理
+1.抛出异常throw
+例：if(t == null)
+	{	throw new NullPointerException(); }
+函数中有throw的在使用时，必须要try/catch或者上级throws声明
+throw完同级后面的程序都不执行了。
+在catch中或其他地方也可以重新抛出异常，给上一级处理
+例：catch(Exception e)
+{ throw e;}
+
+2.捕获异常
+try
+{}
+catch(Type1 id1)
+{}
+catch(Type2 id2)
+{}
+catch(Exception e)
+{	//最后加傻姑娘Exception以包含一切可能的异常 }
+finally	//可以不要
+{}
+	finally子句无论异常是否抛出都会执行。
+	当要把出内存之外的资源回复到它们的初始状态时，就要用到finally，如已经打开的文件或网络连接，在屏幕上画的图像，甚至可以是外部世界的某个开关。
+	对于在构造阶段可能会抛出异常，并且要求清理的类，最安全的使用方式是使用嵌套的try子句。
+
+3.异常说明throws
+	异常说明使用附加的关键字throws，后面接一个所有潜在的异常类型的列表
+	例：void f() throws TooBig,TooSmall{}
+	当覆盖方法的时候，只能抛出在基类方法的异常说明里列出的那些异常。
+
+4.自定义异常
+	必须从已有的异常类继承，最好使用默认构造器，也可以自己定义
+	例：class MyException extends Exception{
+			public MyException(){}	//自动调用基类默认构造器
+			public MyException(String msg){super(msg);}	//super明确调用基类构造器
+		}
+
+5.*记录日志
+使用java.util.logging工具
+了解Logger类与对象
+
+6.栈轨迹
+	打印Throwable和Throwable的调用栈轨迹（Throwable是Exception的基类）
+	告诉你什么异常，在哪发生
+	void printStackTrace()
+	void printStackTrace(PrintStream)
+	void printStackTrace(java.io.PrintWriter)
+	printStackTree()方法所提供的信息可以通过getStackTrace()方法来直接访问，这个方法将返回一个由栈轨迹中的元素所构成的数组，其中每一个元素都表示栈中的一帧。数组元素类型StackTraceElement
+
+7.*异常链
+	常常会想要在捕获一个异常后抛出另一个异常，并希望把原始异常的信息保留下来，这被称为异常链。
+
+8.RuntimeException
+	如果对null引用进行调用，Java会自动抛出NullPointerException异常，它属于Java标准运行时检查的一部分。运行时异常会自动被Java虚拟机抛出，无需异常说明，不受检查异常，他们都从RuntimeException类继承。
+
+
+

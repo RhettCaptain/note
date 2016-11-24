@@ -1,0 +1,128 @@
+字符串
+一、String
+1.String不变性
+	String对象是不可变的。String类中每一个看起来会修改String值的方法，实际上都是创建了一个全新的String对象
+	例：public static String upcase(String s)
+		{ return s.toUpperCase();}
+
+2."+"与StringBuilder
+	StringBuilder result = new StringBuilder();
+	for(int i=0;i<fields.length;i++)
+	{
+		result.append(fields[i]);
+	}
+	StringBuilder append的参数不能用+，打印需要用toString()方法
+	"+"内部也使用StringBuilder,因此，显式使用StringBuilder在循环时更短，更高效。同时创建时还允许预先指定大小，从而避免多次重新分配缓存。
+
+3.String对象基本方法
+	构造器	//创建String对象
+	length()	//String中字符的个数
+	charAt(idx)		//取得String中该索引位置上的char
+	getBytes/getChars(srcBegin, srcEnd, dst, dstBegin)		//复制char或byte到一个目标数组中
+	toCharArray()		//生成一个char[],包含String的所有字符
+	equals(str)/equalsIgnoreCase(str)		//比较两个String的内容是否相同
+	compareTo(str)		//按词典顺序比较String的内容，比较结果为负数，零或正数。大小写不等价
+	contains(str)		//判断是否包含str
+	contentEquals(str)	//判断是否与str内容是否相同
+	equalsIgnoreCase(str)	//忽略大小写，判断与str内容是否相同
+	regionMatcher(toffset, other, ooffset, len)		//与比较区域是否相等
+	startsWith(str)		//是否以str开头
+	endsWith(str)		//是否以str结尾
+	indexOf(str)/lastIndexOf(str)		//如果不包含str返回-1,否则返回起始索引，后者从后向前搜索（但索引仍是正索引）
+	substring(begin)/substring(begin,end)		//返回一个新的子String
+	concat(str)		//附加连接str
+	replace(char1,char2)	//将char1替换成char2
+	toLowerCase()/toUpperCase()		//变小写/大写
+	trim()		//去掉两端的空格返回
+	valueOf()	//返回一个表示参数内容的String？
+	intern()	//为每个唯一的字符序列生成一个且仅生成一个String引用？
+
+4.格式化输出
+（1)方法
+	-System.out.printf()/System.out.format()
+	-由java.util.Formatter类处理，可以用Formatter处理，并选择输出地址
+	例：Formatter f = new Formatter(System.out);
+		f.format("p:%d\n",10);
+	-静态方法：String.format();
+（2)格式化说明符
+	%[argument_index$][flags][width][.precision]conversion
+	argument_index$:引用哪个参数。例：printf("%2$%d",1,2);	//输出2
+	flags:修改输出格式的字符集。有效标志集取决于转换类型。
+	width:表明要向输出中写入的最少字符数。默认数据右对齐，加"-"可以左对齐。例:printf("flag:%5d\n", 1);	//flag:    1
+	precision:指明最大尺寸,特定行为取决于转换类型。例：printf("flag:%5.4f\n", 1.23456);	//flag:1.2346
+	conversion:
+	d 整数型（十进制），c Unicode字符， b Boolean值， s String，	f 浮点数（十进制）， e 浮点数（科学计数）， x 整数（十六进制）， h 散列码（十六进制），% 字符'%'
+
+二、正则表达式
+1.正则表达式概念
+	正则表达式就是以某种方法来描述字符串，它是一种强大而灵活的文本处理工具。使用正则表达式，我们能够以编程的方式，构造复杂的文本模式，并对输入的字符串进行搜索。
+
+2.正则表达式规范
+（1)字符类
+	[abc]			包含a,b和c的任一字符（和a|b|c作用相同）
+	[^abc]			出来a,b,c之外的任一字符
+	[a-zA-Z]		从a到z或A到Z的任一字符
+	[abc[hij]		a,b,c,h,i,j中的任一字符（和a|b|c|h|i|j作用相同）
+	\s				空白符（空格、tab、换行、换页和回车）
+	\S				非空白符（[^\s]),输入时要输\\s，因为\需要转意
+	\d				数字[0-9]
+	\D				非数字[^0-9]
+	\w				词字符[a-zA-Z0-9]
+	\W				非词字符[^\w]
+（2)逻辑操作符
+	XY				Y跟在X后面
+	X|Y				X或Y
+	(X)				捕获组，可以在表达式中用\i引用第i个捕获组
+（3)边界匹配符
+	^				一行的开始
+	$				一行的结束
+	\b				词的边界
+	\B				非词的边界
+	\G				前一个匹配的结束
+*（4)量词
+	描述一个模式吸收输入文本的方式，有贪婪型，勉强型，占有型
+
+3.java中使用正则表达式
+（1)String
+	String.matches("正则表达式");	成员方法，检查字符串是否匹配正则表达式
+	String.split("正则表达式");		成员方法，将字符串从正则表达式匹配的地方切开
+	例:str = "rhett";	regex = "[h]";
+	   str.matches(regex);	//false 要完全匹配才是true，如regex为[a-z]hett
+	   String[] sp = str.split(regex);	//sp[0] = r,sp[1] = ett;
+（2)Pattern和Matcher
+	-导入java.util.regex包
+	-用static Pattern.compile()方法来编译正则表达式，生成一个Pattern对象
+	-通过Pattern对象的matcher()方法检索字符串，生成一个Matcher对象。
+	-使用Matcher对象的各种功能
+	例：Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(str);
+		while(m.find())
+		{	print("Match \" + m.group() + "\" at positions" + m.start() + "-" + (m.end()-1)); }
+	-Pattern类提供静态方法
+		static boolean matches(String regex, CharSequence input);
+	-Matcher对象提供基本方法
+		boolean matches();		//是否完全匹配
+		boolean lookingAt();	//字符串（不必是整个字符串）的始部分是否匹配
+		例:str = "rhett";regex="rhe" 返回true
+		boolean find([start]);	//查找多个匹配，即有匹配部分即可
+	-Matcher对象提供组相关方法
+		组是用括号划分的正则表达式,组号0表示整个表达式，组号1表示被第一对括号括起的组，如A(B(C))D中有三个组，组0：ABCD，组：1BC，组2:C
+		int groupCount();		//返回该匹配器的模式中的分组数目，第0组不包括在内。
+		String group([n]);		//返回前一次匹配操作的第0/n组
+		int start([int group]);	//返回前一次匹配操作中找到的组的起始索引
+		int end([int group]);	//返回前一次匹配操作中找到的组的最后一个字符索引+1
+		例: str="rherh";regex="(rh)(e)";m.find();
+		m.groupCount();	//2
+		m.group();		//rhe
+		m.start(2);		//2
+		m.end(1);		//2
+	-Matcher对象提供替换操作
+		String replaceFirst(String rep);	//以rep替换掉第一个匹配成功的部分
+		String replaceAll(String rep);		//以rep替换掉所有匹配部分
+		?appendRepalcement(StringBuffer sbuf,String rep);	//渐进式替换
+		?appendTil(StringBuffer sbuf);		//在执行一次或多次appendReplacement()后，调用此方法将输入字符串余下的部分复制到sbuf中
+	-reset()
+		Matcher对象提供reset(str）方法将现有Matcher对象应用于一个新的字符序列
+		
+		
+

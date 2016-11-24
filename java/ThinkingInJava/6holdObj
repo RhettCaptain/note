@@ -1,0 +1,102 @@
+持有对象
+一、整体
+1.容器及其基本种类
+	数组和容器都可以用于持有对象。数组尺寸固定，容器可以调整尺寸。
+	Java中的基本容器类有List，Set，Queue，Map。这些对象类型也称作集合类。
+	List必须按照插入顺序保arg0存元素
+	Set不能有重复元素
+	Queue俺排队规则产生顺序
+	Map是一组成对的键值对对象
+
+2.容器的分类与关系
+	容器按概念可分为Collection和Map两类。
+	Collection是一个独立元素的序列，List，Set,Queue都属于Collection。
+	Map是一组成对的“键值对”对象，可以使用键来查找值。也被称作关联数组或字典。
+	HashMap（常用）和TreeMap是Map接口的具体实现。LinkedHashMap是HashMap的具体实现。
+	Collection可以由Map生成，List，Set，Queue都是Collection接口的接口实现。ArrayList（常用），LInkedList（常用）是List接口的具体实现。HashSet（常用），TreeSet是Set的具体实现。LinkedList（常用），PriorityQueue是Queue的具体实现。LinkedHashSet是HashSet的具体实现。
+	Iterator可以由Collection生成，ListIterator是Iterator接口的接口实现，可有List生成。
+
+3.使用泛型与类型参数
+	（个人理解）容器都是泛型，因此可以通过<类型参数（可有多个）>使用泛型。类型参数指定了这个容器实例可以保存的类型。
+
+4.添加一组元素
+（1)Arrays.asList()方法接受一个数组或一个用逗号分隔的元素列表，并将其转换成一个List对象。此时底层表现是数组，不能调整尺寸，不能add()或delete().
+例：List l = Arrays.asList(1,2,3);
+（2)Collections.addAll()方法接受一个Collection对象，以及一个数组或用逗号分隔的列表，将元素添加到这个Collection对象中。
+例：Collection collection = new ArrayList<Integer>(l);
+	Collections.addAll(collection,4,5,6);
+（3)Collection.addAll()成员方法只能接受另一个Collection对象作为参数
+例：collection.addAll(l);
+
+5.打印
+	数组需要使用Arrays.toString()，如int[] a={1,2};print(Arrays.toString(a));容器可以直接打印，如print(l);
+	打印结果用中括号扩住，如[1,2]，Map则是用大括号，如{dog=spot,cat=rag}
+	
+
+二、List
+（1)整体
+ArrayList：长于随机访问元素，但是在List的中间茶如何移除元素时较慢。
+LinkedList：插入和删除快，顺序访问快，随机访问慢，特性集比ArrayList大。
+List.add(Object obj)成员方法，添加元素
+List.remove(int index)成员方法，删除index处的元素
+List.remove(Object obj)成员方法，删除obj元素
+List.retainAll(Collection c)成员方法，保留List中c包含的元素（交集）
+List.removeAll(Collection c)成员方法，去除List中c包含的元素
+List.contains(Object obj)成员方法，确定某个对象是否在列表中
+List.indexOf(Object obj)成员方法，返回某元素第一个位置索引
+List.set(int index,Object obj)成员方法，将index处的元素替换为obj
+List.subList(int fromIdx, int toIdx)成员方法，创建一个子集
+List.toArray()成员方法，转换为数组
+（2)LinkedList
+可以用作栈，队列或双端队列
+LinkedList.getFirst()/element()/peek()成员方法，返回列表头第一个元素，而不移除它.为空时，前两者抛出异常，后者返回null
+LinkedList.removeFirst()/remove()/poll()成员方法，移除并返回列表头，为空时，前两者抛出异常，后者返回null
+LinkedList.addFirst()/add()/addLast()成员方法，将元素插入尾部
+LinkedList.removeLast()成员方法，移除并返回最后一个元素
+
+三、Set
+（1)整体
+与Collection具有完全一样的接口，只是行为不同
+元素不能重复
+（2)HashSet
+采用散列函数存储元素，能最快获取元素，但没有存储顺序
+（3)TreeSet
+将元素存储在红黑树数据结构中，按元素比较结果的升序保存对象
+（4)LinkedHashSet
+也使用散列，按添加顺序保存对象
+
+四、Queue
+（1)整体
+Queue.offer(Object obj)成员方法，将一个元素插入队尾或返回false
+Queue.peek()/element()成员方法，不移除的情况下返回队头，为空时前者返回null，后者抛出异常
+Queue.poll()/remove()成员方法，移除并返回队头，为空时前者返回null，后者抛出异常
+（2)LinkedList
+可以将LinkedList向上转型为Queue或通过LinkedList实现Queue
+（3)PriorityQueue
+优先队列声明下一个弹出元素是最需要的元素（具有最高的优先级）。
+offer()方法插入一个对象时，该对象会在队列中被排序。默认是自然顺序，也可以通过Comparator修改这个顺序。
+
+五、Map
+Map<类型，类型> m = new HashMap/TreeMap<类型，类型>();初始化
+Map.put(key,value)成员方法增加值
+Map.get(key)成员方法获取键对应的值
+Map.containsKey(key)成员方法测试是否有键
+Map.containsValue(value)成员方法测试是否有值
+一个键只能对应/存储一个值
+
+六、迭代器
+（1)Iterator
+迭代器是一个对象，它的工作是遍历并选择序列中的对象。
+Java中的Iterator只能单向移动
+使用方法iterator()要求容器返回一个Iterator。Iterator将准备好返回序列的第一个元素
+使用next()获得序列中的下一个元素
+使用hasNext()检查序列中是否还有元素
+使用remove()将迭代器新近返回的元素删除
+例：List l = Arrays.asList(1,2,3);
+	Iterator<Integer> it = l.iterator();
+	while(it.hasNext())
+	{
+		println(it.next());
+	}
+（2)ListIterator
+可以双向移动，可以产生相对于迭代器在列表中指向的当前位置的前一个和后一个元素的索引，并且剋使用set()方法替换它访问过的最后一个元素。
