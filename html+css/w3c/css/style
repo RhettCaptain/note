@@ -1,0 +1,201 @@
+样式
+一、背景
+1.背景色
+可以使用 background-color 属性为元素设置背景色。这个属性接受任何合法的颜色值。
+这条规则把元素的背景设置为灰色：
+p {background-color: gray;}
+如果您希望背景色从元素中的文本向外少有延伸，只需增加一些内边距：
+p {background-color: gray; padding: 20px;}
+2.背景图像
+要把图像放入背景，需要使用 background-image 属性。background-image 属性的默认值是 none，表示背景上没有放置任何图像。
+如果需要设置一个背景图像，必须为这个属性设置一个 URL 值：
+body {background-image: url(/i/eg_bg_04.gif);}
+3.背景重复
+如果需要在页面上对背景图像进行平铺，可以使用 background-repeat 属性。
+属性值 repeat 导致图像在水平垂直方向上都平铺，就像以往背景图像的通常做法一样。repeat-x 和 repeat-y 分别导致图像只在水平或垂直方向上重复，no-repeat 则不允许图像在任何方向上平铺。
+默认地，背景图像将从一个元素的左上角开始。请看下面的例子：
+body
+  { 
+  background-image: url(/i/eg_bg_03.gif);
+  background-repeat: repeat-y;
+  }
+4.背景定位
+可以利用 background-position 属性改变图像在背景中的位置。
+下面的例子在 body 元素中将一个背景图像居中放置：
+body
+  { 
+    background-image:url('/i/eg_bg_03.gif');
+    background-repeat:no-repeat;
+    background-position:center;
+  }
+可以用关键字，百分比，长度值
+5.背景关联
+如果文档比较长，那么当文档向下滚动时，背景图像也会随之滚动。当文档滚动到超过图像的位置时，图像就会消失。
+您可以通过 background-attachment 属性防止这种滚动。通过这个属性，可以声明图像相对于可视区是固定的（fixed），因此不会受到滚动的影响：
+body 
+  {
+  background-image:url(/i/eg_bg_02.gif);
+  background-repeat:no-repeat;
+  background-attachment:fixed
+  }
+  
+二、文本
+1.缩进文本
+把 Web 页面上的段落的第一行缩进，这是一种最常用的文本格式化效果。
+CSS 提供了 text-indent 属性，该属性可以方便地实现文本缩进。
+通过使用 text-indent 属性，所有元素的第一行都可以缩进一个给定的长度，甚至该长度可以是负值。
+这个属性最常见的用途是将段落的首行缩进，下面的规则会使所有段落的首行缩进 5 em：
+p {text-indent: 5em;}
+-使用负值
+text-indent 还可以设置为负值。利用这种技术，可以实现很多有趣的效果，比如“悬挂缩进”，即第一行悬挂在元素中余下部分的左边：
+p {text-indent: -5em;}
+-使用百分比值
+text-indent 可以使用所有长度单位，包括百分比值。
+-继承
+text-indent 属性可以继承，请考虑如下标记
+2.水平对齐
+text-align 是一个基本的属性，它会影响一个元素中的文本行互相之间的对齐方式。它的前 3 个值相当直接，不过第 4 个和第 5 个则略有些复杂。
+值 left、right 和 center 会导致元素中的文本分别左对齐、右对齐和居中。
+3.字间隔
+word-spacing 属性可以改变字（单词）之间的标准间隔。其默认值 normal 与设置值为 0 是一样的。
+word-spacing 属性接受一个正长度值或负长度值。如果提供一个正长度值，那么字之间的间隔就会增加。为 word-spacing 设置一个负值，会把它拉近：
+4.字母间隔
+letter-spacing 属性与 word-spacing 的区别在于，字母间隔修改的是字符或字母之间的间隔。
+5.字符转换
+text-transform 属性处理文本的大小写。这个属性有 4 个值：
+none
+uppercase
+lowercase
+capitalize
+默认值 none 对文本不做任何改动，将使用源文档中的原有大小写。顾名思义，uppercase 和 lowercase 将文本转换为全大写和全小写字符。最后，capitalize 只对每个单词的首字母大写。
+6.文本装饰
+接下来，我们讨论 text-decoration 属性，这是一个很有意思的属性，它提供了很多非常有趣的行为。
+text-decoration 有 5 个值：
+none
+underline
+overline
+line-through
+blink
+7.CSS 文本属性
+属性	描述
+color	设置文本颜色
+direction	设置文本方向。
+line-height	设置行高。
+letter-spacing	设置字符间距。
+text-align	对齐元素中的文本。
+text-decoration	向文本添加修饰。
+text-indent	缩进元素中文本的首行。
+text-shadow	设置文本阴影。CSS2 包含该属性，但是 CSS2.1 没有保留该属性。
+text-transform	控制元素中的字母。
+unicode-bidi	设置文本方向。
+white-space	设置元素中空白的处理方式。
+word-spacing	设置字间距。
+
+三、字体
+1.指定字体系列
+使用 font-family 属性 定义文本的字体系列。
+使用通用字体系列
+如果你希望文档使用一种 sans-serif 字体，但是你并不关心是哪一种字体，以下就是一个合适的声明：
+body {font-family: sans-serif;}
+在 CSS 中，有两种不同类型的字体系列名称：
+通用字体系列 - 拥有相似外观的字体系统组合（比如 "Serif" 或 "Monospace"）
+特定字体系列 - 具体的字体系列（比如 "Times" 或 "Courier"）
+除了各种特定的字体系列外，CSS 定义了 5 种通用字体系列：
+Serif 字体
+Sans-serif 字体
+Monospace 字体
+Cursive 字体
+Fantasy 字体
+2.字体风格
+font-style 属性最常用于规定斜体文本。
+该属性有三个值：
+normal - 文本正常显示
+italic - 文本斜体显示
+oblique - 文本倾斜显示
+3.字体变形
+font-variant 属性可以设定小型大写字母。
+小型大写字母不是一般的大写字母，也不是小写字母，这种字母采用不同大小的大写字母。
+实例
+p {font-variant:small-caps;}
+4.字体加粗
+font-weight 属性设置文本的粗细。
+使用 bold 关键字可以将文本设置为粗体。
+关键字 100 ~ 900 为字体指定了 9 级加粗度。如果一个字体内置了这些加粗级别，那么这些数字就直接映射到预定义的级别，100 对应最细的字体变形，900 对应最粗的字体变形。数字 400 等价于 normal，而 700 等价于 bold。
+5.字体大小
+font-size 属性设置文本的大小。
+
+四、链接
+1.设置链接的样式
+链接的四种状态：
+a:link {color:#FF0000;}		/* 未被访问的链接 */
+a:visited {color:#00FF00;}	/* 已被访问的链接 */
+a:hover {color:#FF00FF;}	/* 鼠标指针移动到链接上 */
+a:active {color:#0000FF;}	/* 正在被点击的链接 */
+当为链接的不同状态设置样式时，请按照以下次序规则：
+a:hover 必须位于 a:link 和 a:visited 之后
+a:active 必须位于 a:hover 之后
+
+五、列表
+1.列表类型
+要影响列表的样式，最简单（同时支持最充分）的办法就是改变其标志类型。
+例如，在一个无序列表中，列表项的标志 (marker) 是出现在各列表项旁边的圆点。在有序列表中，标志可能是字母、数字或另外某种计数体系中的一个符号。
+要修改用于列表项的标志类型，可以使用属性 list-style-type：
+ul {list-style-type : square}
+上面的声明把无序列表中的列表项标志设置为方块。
+2.列表项图像
+有时，常规的标志是不够的。你可能想对各标志使用一个图像，这可以利用 list-style-image 属性做到：
+ul li {list-style-image : url(xxx.gif)}
+只需要简单地使用一个 url() 值，就可以使用图像作为标志。
+3.列表标志位置
+CSS2.1 可以确定标志出现在列表项内容之外还是内容内部。这是利用 list-style-position 完成的。
+4.简写列表样式
+为简单起见，可以将以上 3 个列表样式属性合并为一个方便的属性：list-style，就像这样：
+li {list-style : url(example.gif) square inside}
+list-style 的值可以按任何顺序列出，而且这些值都可以忽略。只要提供了一个值，其它的就会填入其默认值。
+5.表格
+1.表格边框
+如需在 CSS 中设置表格边框，请使用 border 属性。
+下面的例子为 table、th 以及 td 设置了蓝色边框：
+table, th, td
+  {
+  border: 1px solid blue;
+  }
+2.折叠边框
+border-collapse 属性设置是否将表格边框折叠为单一边框：
+table
+  {
+  border-collapse:collapse;
+  }
+
+table,th, td
+  {
+  border: 1px solid black;
+  }
+3.表格宽度和高度
+通过 width 和 height 属性定义表格的宽度和高度。
+4.表格文本对齐
+text-align 和 vertical-align 属性设置表格中文本的对齐方式。
+5.表格内边距
+如需控制表格中内容与边框的距离，请为 td 和 th 元素设置 padding 属性：
+6.表格颜色
+下面的例子设置边框的颜色，以及 th 元素的文本和背景颜色：
+table, td, th
+  {
+  border:1px solid green;
+  }
+
+th
+  {
+  background-color:green;
+  color:white;
+  }
+
+六、轮廓
+轮廓（outline）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。
+CSS outline 属性规定元素轮廓的样式、颜色和宽度。
+"CSS" 列中的数字指示哪个 CSS 版本定义了该属性。
+属性	描述	CSS
+outline	在一个声明中设置所有的轮廓属性。	2
+outline-color	设置轮廓的颜色。	2
+outline-style	设置轮廓的样式。	2
+outline-width	设置轮廓的宽度。	2

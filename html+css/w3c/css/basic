@@ -1,0 +1,154 @@
+一、简介
+1.层叠
+多重样式将层叠为一个
+样式表允许以多种方式规定样式信息。样式可以规定在单个的 HTML 元素中，在 HTML 页的头元素中，或在一个外部的 CSS 文件中。甚至可以在同一个 HTML 文档内部引用多个外部样式表。
+层叠次序
+当同一个 HTML 元素被不止一个样式定义时，会使用哪个样式呢？
+一般而言，所有的样式会根据下面的规则层叠于一个新的虚拟样式表中，其中数字 4 拥有最高的优先权。
+1浏览器缺省设置
+2外部样式表
+3内部样式表（位于 <head> 标签内部）
+4内联样式（在 HTML 元素内部）
+因此，内联样式（在 HTML 元素内部）拥有最高的优先权，这意味着它将优先于以下的样式声明：<head> 标签中的样式声明，外部样式表中的样式声明，或者浏览器中的样式声明（缺省值）。
+
+二、语法
+1.构成
+CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明。
+selector {declaration1; declaration2; ... declarationN }
+选择器通常是您需要改变样式的 HTML 元素。
+每条声明由一个属性和一个值组成。
+
+2.记得写引号
+提示：如果值为若干单词，则要给值加引号：
+p {font-family: "sans serif";}
+
+3.多重声明：
+如果要定义不止一个声明，则需要用分号将每个声明分开。
+你应该在每行只描述一个属性，这样可以增强样式定义的可读性。
+
+4.选择器的分组
+你可以对选择器进行分组，这样，被分组的选择器就可以分享相同的声明。用逗号将需要分组的选择器分开。在下面的例子中，我们对所有的标题元素进行了分组。所有的标题元素都是绿色的。
+h1,h2,h3,h4,h5,h6 {
+  color: green;
+  }
+  
+5.继承及其问题
+根据 CSS，子元素从父元素继承属性。但是它并不总是按此方式工作。
+属性（property）是您希望设置的样式属性（style attribute）。每个属性有一个值。属性和值被冒号分开。
+selector {property: value}
+下面这行代码的作用是将 h1 元素内的文字颜色定义为红色，同时将字体大小设置为 14 像素。
+在这个例子中，h1 是选择器，color 和 font-size 是属性，red 和 14px 是值。
+h1 {color:red; font-size:14px;}
+
+三、选择器
+1.派生选择器
+通过依据元素在其位置的上下文关系来定义样式，你可以使标记更加简洁。
+在 CSS1 中，通过这种方式来应用规则的选择器被称为上下文选择器 (contextual selectors)，这是由于它们依赖于上下文关系来应用或者避免某项规则。在 CSS2 中，它们称为派生选择器，但是无论你如何称呼它们，它们的作用都是相同的。
+派生选择器允许你根据文档的上下文关系来确定某个标签的样式。通过合理地使用派生选择器，我们可以使 HTML 代码变得更加整洁。
+比方说，你希望列表中的 strong 元素变为斜体字，而不是通常的粗体字，可以这样定义一个派生选择器：
+li strong {
+    font-style: italic;
+    font-weight: normal;
+  }
+请注意标记为 <strong> 的蓝色代码的上下文关系：
+<p><strong>我是粗体字，不是斜体字，因为我不在列表当中，所以这个规则对我不起作用</strong></p>
+<ol>
+<li><strong>我是斜体字。这是因为 strong 元素位于 li 元素内。</strong></li>
+<li>我是正常的字体。</li>
+</ol>
+
+2.id选择器
+id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。
+id 选择器以 "#" 来定义。
+下面的两个 id 选择器，第一个可以定义元素的颜色为红色，第二个定义元素的颜色为绿色：
+#red {color:red;}
+#green {color:green;}
+下面的 HTML 代码中，id 属性为 red 的 p 元素显示为红色，而 id 属性为 green 的 p 元素显示为绿色。
+<p id="red">这个段落是红色。</p>
+<p id="green">这个段落是绿色。</p>
+注意：id 属性只能在每个 HTML 文档中出现一次。
+在现代布局中，id 选择器常常用于建立派生选择器。
+#sidebar p {
+	font-style: italic;
+	text-align: right;
+	margin-top: 0.5em;
+	}
+	
+3.类选择器
+在 CSS 中，类选择器以一个点号显示：
+.center {text-align: center}
+在上面的例子中，所有拥有 center 类的 HTML 元素均为居中。
+在下面的 HTML 代码中，h1 和 p 元素都有 center 类。这意味着两者都将遵守 ".center" 选择器中的规则。
+<h1 class="center">
+This heading will be center-aligned
+</h1>
+<p class="center">
+This paragraph will also be center-aligned.
+</p>
+注意：类名的第一个字符不能使用数字！它无法在 Mozilla 或 Firefox 中起作用。
+和 id 一样，class 也可被用作派生选择器：
+.fancy td {
+	color: #f60;
+	background: #666;
+	}
+	元素也可以基于它们的类而被选择：
+td.fancy {
+	color: #f60;
+	background: #666;
+	}
+	
+4. 属性选择器
+对带有指定属性的 HTML 元素设置样式。
+可以为拥有指定属性的 HTML 元素设置样式，而不仅限于 class 和 id 属性。
+注释：只有在规定了 !DOCTYPE 时，IE7 和 IE8 才支持属性选择器。在 IE6 及更低的版本中，不支持属性选择。
+属性选择器
+下面的例子为带有 title 属性的所有元素设置样式：
+[title]
+{
+color:red;
+}
+属性和值选择器
+下面的例子为 title="W3School" 的所有元素设置样式：
+[title=W3School]
+{
+border:5px solid blue;
+}
+选择器	描述
+[attribute]	用于选取带有指定属性的元素。
+[attribute=value]	用于选取带有指定属性和值的元素。
+[attribute~=value]	用于选取属性值中包含指定词汇的元素。
+[attribute|=value]	用于选取带有以指定值开头的属性值的元素，该值必须是整个单词。
+[attribute^=value]	匹配属性值以指定值开头的每个元素。
+[attribute$=value]	匹配属性值以指定值结尾的每个元素。
+[attribute*=value]	匹配属性值中包含指定值的每个元素。
+
+四、创建 CSS
+插入样式表的方法有三种：
+1.外部样式表
+当样式需要应用于很多页面时，外部样式表将是理想的选择。在使用外部样式表的情况下，你可以通过改变一个文件来改变整个站点的外观。每个页面使用 <link> 标签链接到样式表。<link> 标签在（文档的）头部：
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css" />
+</head>
+浏览器会从文件 mystyle.css 中读到样式声明，并根据它来格式文档。
+外部样式表可以在任何文本编辑器中进行编辑。文件不能包含任何的 html 标签。样式表应该以 .css 扩展名进行保存。下面是一个样式表文件的例子：
+hr {color: sienna;}
+p {margin-left: 20px;}
+body {background-image: url("images/back40.gif");}
+不要在属性值与单位之间留有空格。假如你使用 “margin-left: 20 px” 而不是 “margin-left: 20px” ，它仅在 IE 6 中有效，但是在 Mozilla/Firefox 或 Netscape 中却无法正常工作。
+2.内部样式表
+当单个文档需要特殊的样式时，就应该使用内部样式表。你可以使用 <style> 标签在文档头部定义内部样式表，就像这样:
+<head>
+<style type="text/css">
+  hr {color: sienna;}
+  p {margin-left: 20px;}
+  body {background-image: url("images/back40.gif");}
+</style>
+</head>
+3.内联样式
+由于要将表现和内容混杂在一起，内联样式会损失掉样式表的许多优势。请慎用这种方法，例如当样式仅需要在一个元素上应用一次时。
+要使用内联样式，你需要在相关的标签内使用样式（style）属性。Style 属性可以包含任何 CSS 属性。本例展示如何改变段落的颜色和左外边距：
+<p style="color: sienna; margin-left: 20px">
+This is a paragraph
+</p>
+4.多重样式
+如果某些属性在不同的样式表中被同样的选择器定义，那么属性值将从更具体的样式表中被继承过来。
