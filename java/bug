@@ -1,0 +1,5 @@
+1.Jpanel无法paint
+	不设计布局或尺寸，可能size为0,所以绘制了也无法看到。
+
+2.Thread无法执行到
+	start的时候，会到new的地方跑一下，如Thread t = new Thread(obj),如果obj为null则没法执行。
