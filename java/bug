@@ -3,3 +3,6 @@
 
 2.Thread无法执行到
 	start的时候，会到new的地方跑一下，如Thread t = new Thread(obj),如果obj为null则没法执行。
+
+3.repaint()不重绘
+	paint(g)里要加super.paint(g),不然不会清除之前的东西
