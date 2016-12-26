@@ -1,0 +1,10 @@
+1.函数模板的格式：
+　　template <class 形参名，class 形参名，......> 返回类型 函数名(参数列表)
+　　{函数体}
+		如　template <class T> void swap(T& a, T& b){}
+2.类模板的格式为：
+　　template<class  形参名，class 形参名，…>   class 类名
+　　{ ... };
+		如 template<class T> class A{public: T a; T b; T hy(T c, T &d);};
+3.参考
+	http://www.cnblogs.com/gw811/archive/2012/10/25/2738929.html

@@ -1,0 +1,41 @@
+一、声明与定义
+1.声明.h
+class Point
+{
+public:
+     void setPoint(int x, int y);
+private:
+     int xPos;
+     int yPos;
+};  	//要有分号的
+2.定义.cpp
+Point::setPoint(int x,int y){}
+3.参考网站
+	http://www.cnblogs.com/xiongxuanwen/p/4290086.html
+	
+二、拷贝与赋值
+1.定义
+		如果对象在申明的同时马上进行的初始化操作，则称之为拷贝运算。例如：
+        class1 A("af"); class1 B=A;
+    此时其实际调用的是B(A)这样的浅拷贝操作。
+    如果对象在申明之后，在进行的赋值运算，我们称之为赋值运算。例如：
+        class1 A("af"); class1 B;
+        B=A;
+    此时实际调用的类的缺省赋值函数B.operator=(A);默认也可以认为是浅拷贝。
+    实际这个过程是通过成员复制来完成的，即将一个对象的成员值一一复制给另一对象的对应成员。
+2.浅拷贝与深拷贝
+		浅拷贝是默认的拷贝函数，B=A会把A中变量的的指针给B。但如果A析构了，B中成员就成了野指针。
+		深拷贝是完全赋值，即给B中成员也分配内存空间。
+3.重载拷贝与赋值
+	public class A
+{
+    public:
+        ...
+        A(A &a);//重载拷贝函数
+        A& operator=(A &b);//重载赋值函数
+        //或者 我们也可以这样重载赋值运算符 void operator=(A &a);即不返回任何值。如果这样的话，他将不支持客户代买中的链式赋值 ，例如a=b=c will be prohibited!
+    private:
+    		...
+}
+4.参考网站
+	http://www.cnblogs.com/alexusli/archive/2008/08/27/1277683.html

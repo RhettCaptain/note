@@ -1,0 +1,52 @@
+1 基本操作
+(1)头文件#include<vector>.
+(2)创建vector对象，vector<int> vec;
+(3)尾部插入数字：vec.push_back(a);
+(4)使用下标访问元素，cout<<vec[0]<<endl;记住下标是从0开始的。
+(5)使用迭代器访问元素.
+vector<int>::iterator it;
+for(it=vec.begin();it!=vec.end();it++)
+    cout<<*it<<endl;
+(6)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
+(7)删除元素：    vec.erase(vec.begin()+2);删除第3个元素
+vec.erase(vec.begin()+i,vec.end()+j);删除区间[i,j-1];区间从0开始
+(8)向量大小:vec.size();
+(9)清空:vec.clear();
+
+2.初始化
+vector< int > ivec( 10 );  //类似数组定义int ia[ 10 ];
+vector< int > ivec( 10, -1 ); //定义了 ivec 它包含十个int型的元素 每个元素都被初始化为-1 
+vector<vector<int> > ivec;		//定义二维vector，注意vector<int>后加个空格
+ivec[i].resize(Col);	//每行初始化列数
+
+3.将一个vector内容赋值给另一个vector
+方法1：
+vector<int > v1(v2);//声明
+方法2：使用swap进行赋值：
+vector<int > v1();v1.swap(v2);//将v2赋值给v1，此时v2变成了v1
+方法3：使用函数assign进行赋值：
+vector<int > v1;//声明v1
+v1.assign(v2.begin(), v2.end());//将v2赋值给v1
+ 方法4：使用循环语句赋值，效率较差
+vector<int >::iterator it;//声明迭代器
+for(it = v2.begin();it!=v2.end();++it){//遍历v2,赋值给v1
+
+4.清空
+第一种办法使用 clear ，清空元素，但不回收空间
+    vecInt.clear();
+    j= vecInt.capacity();      //j=512
+    i = vecInt.size();         //i=0
+     v1.push_back(it);}
+第二种办法使用 erase循环删除，结果同上
+vector <int>::iterator iter=vecInt.begin();
+    for ( ;iter!=vecInt.end();)
+    {
+        iter=vecInt.erase(iter);
+    }
+    j= vecInt.capacity();      //j=512
+    i = vecInt.size();         //i=0       
+第三种办法 最简单的使用swap,清除元素并回收内存
+    vector <int>().swap(vecInt);  //清除容器并最小化它的容量，
+//   vecInt.swap(vector<int>()) ;     另一种写法
+    j= vecInt.capacity();       //j=0  
+    i = vecInt.size();          //i=0         

@@ -1,0 +1,49 @@
+一、转换
+1.string与int,float,double转换
+# 方法一： 使用stringstream
+#include <sstream>    //使用stringstream需要引入这个头文件 
+stringstream stream;
+stream<<t;//向流中传值
+out_type result;//这里存储转换结果
+stream>>result;//向result中写入值
+
+#方法二：使用atoi()、 atol() 、atof()函数  -----------------实际上是char类型向数值类型的转换
+注意：使用 atoi 的话，如果 string s 为空，返回值为0.则无法判断s是0还是空
+char szInput [256];  
+fgets ( szInput, 256, stdin );  
+i = atoi (szInput);  
+反之使用itoa(),ltoa()等
+
+2.string与char*转换
+string可以被看成是以字符为元素的一种容器。与char*不同的是，string不一定以NULL('\0')结束。
+方法1.data 
+如： string str="abc"; 
+		 char *p=str.data(); 
+方法2.c_str 
+如：string str="gdfd"; 
+    char *p=str.c_str(); 
+方法3 copy 
+比如： string str="hello"; 
+			 char p[40]; 
+			 str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置
+			 *(p+5)='/0'; //要手动加上结束符
+方法4.char *转换成string
+如：string s;
+	  char *p = "adghrtyh";
+		s = p;
+
+二、char*操作
+1.字符串分割
+头文件：#include <string.h>
+定义函数：char * strtok(char *s, const char *delim);
+函数说明：strtok()用来将字符串分割成一个个片段。参数s 指向欲分割的字符串，参数delim 则为分割字符串，当strtok()在参数s 的字符串中发现到参数delim 的分割字符时则会将该字符改为\0 字符。在第一次调用时，strtok()必需给予参数s 字符串，往后的调用则将参数s 设置成NULL。每次调用成功则返回下一个分割后的字符串指针。
+返回值：返回下一个分割后的字符串指针，如果已无从分割则返回NULL。
+
+2.查找字符串
+头文件：string.h
+原型：char *strstr(char *str1, char *str2)
+功能：找出str2字符串在str1字符串中第一次出现的位置。
+
+三、string操作
+1.获取长度
+str.length()；

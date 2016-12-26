@@ -41,4 +41,35 @@
 	（2)颜色
 	绿色表示可执行，蓝色表示文件夹（文件夹一定要可执行，不然无权限访问），红色是压缩文件
 	绿底表示other权限
+9.cp 复制文件/目录
+	将文件file复制到目录/usr/men/tmp下，并改名为file1 
+	cp file /usr/men/tmp/file1
+	将目录/usr/men下的所有文件及其子目录复制到目录/usr/zh中 
+	cp -r /usr/men /usr/zh
+	交互式地将目录/usr/men中的以m打头的所有.c文件复制到目录/usr/zh中 
+	cp -i /usr/men m*.c /usr/zh
+10.配置opencv
+	-1.配置库
+	sudo gedit /etc/ld.so.conf.d/opencv.conf
+	在文尾添加
+	/usr/local/lib
+	然后
+	sudo ldconfig
+	完成配置
+	-2.添加路径
+	sudo gedit /etc/bash.bashrc
+	在文尾添加
+	PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+	export PKG_CONFIG_PATH
+	-3.可能需要重启
+	-4.测试
+	（1）命令行
+	g++ `pkg-config --cflags opencv` -o hello hello.cpp `pkg-config --libs opencv`
+	（2）cmake/ROS
+	在CMakeLists添加：
+	project( DisplayImage )
+	find_package( OpenCV REQUIRED )
+	add_executable( DisplayImage DisplayImage.cpp )
+	target_link_libraries( DisplayImage ${OpenCV_LIBS} )
+
 	
