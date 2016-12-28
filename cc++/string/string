@@ -44,6 +44,16 @@ string可以被看成是以字符为元素的一种容器。与char*不同的是
 原型：char *strstr(char *str1, char *str2)
 功能：找出str2字符串在str1字符串中第一次出现的位置。
 
+3.格式化写入
+int sprintf(char *char,char *format[,argument,...]);
+如：sprintf(s,"0x%8x",4567);		//0x+小写16禁止，宽8右对齐
+
+4.复制
+头文件：string.h,stdio.h
+原型：char *strcpy(char* dest, const char*src);
+功能：把从src地址开始且含有NULL结束符的字符串复制到以dest开始的地址空间
+
+
 三、string操作
 1.获取长度
 str.length()；
