@@ -49,9 +49,16 @@ int sprintf(char *char,char *format[,argument,...]);
 如：sprintf(s,"0x%8x",4567);		//0x+小写16禁止，宽8右对齐
 
 4.复制
-头文件：string.h,stdio.h
+（1）strcpy
+头文件：string.h
 原型：char *strcpy(char* dest, const char*src);
 功能：把从src地址开始且含有NULL结束符的字符串复制到以dest开始的地址空间
+（2）memcpy
+头文件：string.h
+原型：void *memcpy(void*dest, const void *src, size_t n);
+功能:由src指向地址为起始地址的连续n个字节的数据复制到以destin指向地址为起始地址的空间内。
+区别：与strcpy相比，memcpy并不是遇到'\0'就结束，而是一定会拷贝完n个字节。
+memcpy用来做内存拷贝，你可以拿它拷贝任何数据类型的对象，可以指定拷贝的数据长度；
 
 
 三、string操作
