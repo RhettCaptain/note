@@ -1,0 +1,98 @@
+*图形化用户界面（基于Swing）
+一、基础
+1.基本容器
+JFrame,JDialog,JPanel等
+
+2.demo
+JFrame frame = new JFrame("hello world");
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		//关闭时退出程序
+frame.setSize(300,100);
+frame.setVisible(true);
+
+二、布局（Layout）
+1.BorderLayout
+	将版面划分成东、西、南、北、中五个区域，将添加的组件按指定位置放置。
+    BorderLayout.EAST
+    BorderLayout.WEST
+    BorderLayout.SOUTH
+    BorderLayout.NORTH
+    BorderLayout.CENTER
+	构造函数：
+	BorderLayout()	建立组件间无间距的BorderLayout
+	BorderLayout(int hgap,int vgap)	建立组件间水平间距为hgap,垂直间距为vgap的BorderLayout
+2.FlowLayout
+	组件按从左到右而后从上到下的顺序依次排列，一行不能放完则折到下一行。
+	FlowLayout()	建立一个默认为居中对齐,组件彼此有5单位的水平与垂直间距的FlowLayout
+	FlowLayout(int align)	建立一个可设置排列方式且组件彼此有5单位的水平与垂直间距的FlowLayout
+	FlowLayout(int align,int hgap,int vgap)	建立一个可设置排列方式与组件间距的FlowLayout
+3.GridLayout
+	矩形网格形式对容器的组件进行布置
+	GridLayout()	建立一个默认为一行一列的GridLayout
+	GridLayout(int rows,int cols)	建立一个指定行(rows)和列(cols)的GridLayout
+	GridLayout(int rows,int cols,int hgap,int vgap)	建立一个指定行(rows)和列(cols)，且组件间水平间距为hgap、垂直间距为vgap的GridLayout
+4.其他
+	GridBagLayout，CardLayout，BoxLayout...
+
+
+
+三、事件模型
+1.概述
+	当用户点击按钮或选择菜单项目时，Swing组件会产生一个Event。Swing组件会产生许多事件，如ActionEvents,ChangeEvents,ItemEvents等，来响应用户的鼠标点击行为，列表框中值的改变，计时器的开始计时等行为。通过注册监听器，我们可以监听事件源产生的事件，从而在事件处 理程序中处理我们所需要处理的用户行为。
+	事件处理一般流程是：（1）实现接口（2）注册事件（3）编写事件处理程序
+    （1）实现接口：如interface Animal{public void eat();}//此处如ActionListener等接口已实现，可省略
+    （2）注册事件：w.addKeyListener(mp);//KeyListener是用于处理按键的接口，向窗体w注册画板mp对键盘事件的处理，即对于按键这一事件，w是发出者，mp是处理者。mp.addKeyListner(mp)也是可以且必要的。
+    （3）编写事件处理程序：class Person implements Animal{  public void eat(){ ...}};//需要实现接口的所有方法。
+2.编写事件处理程序的三种方法
+（1)内部类
+	 private class Button1Handler implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+		}
+	}
+　　  button1.addActionListener(new Button1Handler());
+　　  button2.addActionListener(new Button1Handler());	//可以，但建议针对2再写一个
+（2)匿名内部类
+	button1.addActionListener(
+	    new ActionListener(){
+       		public void actionPerformed(ActionEvent e){
+		    }
+		}
+	);
+（3)匿名内部对象
+	ActionListener Button1Handler = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+		}
+	};
+	button1.addActionListener(new Button1Handler());
+
+四、组件
+按钮：JButton
+图标：Icon
+工具提示：JComponet.setToolTipText(String);
+文本域：JTextField
+边框：JComponet.setBorder();
+迷你编辑器：JTextPane
+复选框：JCheckBox
+单选按钮：JRadioButton
+组合框：JComboBox
+列表框：JList
+页签面板：JTabbedPane
+消息框：JOPtionPane
+	JOptionPane.showMessageDialog()消息对话框
+	JOptionPane.showConfirmDialog()确认对话框
+菜单：JMenuBar
+弹出式菜单：JPopupMenu
+绘图：继承JPanel，覆写paintComponent(Graphics g)方法。
+	不能重绘时试试在方法内加上super.paintComponent(Graphics g)和调节窗体大小
+对话框：JDialog
+文件对话框：JFileChooser
+	常用方法,变量：showOpen/SaveDialog();APPROVE_OPTION;getSelectedFile();getCurrentDirectory();setFileFilter()
+滑块与进度条：JProgressBar，JSlider
+选择外观：
+	//尝试选择当前系统外观,在main开头加上
+	try{
+		UIManager.setLookAndFeel(
+			UIManager.getSystemLookAndFeelClassName());
+	}catch(Exception e){
+	throw new RuntimeException(e);
+	}
+

@@ -1,0 +1,105 @@
+泛型
+一、基础
+1.概念
+	泛型的意思是适用于许多许多的类型。
+	JAVA泛型的核心概念：告诉编译器想使用什么类型，然后编译器帮你处理一切细节。
+2.泛型类（以元祖类为例）
+	元祖是将一组对象直接打包存储于其中的一个单一对象。这个容器对象允许读取其中的元素，但是不允许向其中存放新的对象。元祖隐含的保持了其中元素的次序。
+	可以利用继承机制实现长度更长的元祖。
+	代码：
+	//2维元祖
+	public class TwoTuple<A,B>{
+		public final A first;
+		public final B second;
+		public TwoTuple(A a, B b){
+			first = a;
+			second = b;
+		}
+		public String toString(){
+			return "(:" + first + "." + second + ")";
+		}
+	}
+	//3维元祖
+	public class ThreeTuple<A,B,C> extends TwoTuple<A,B>{
+		public final C third;
+		public ThreeTuple(A a, B b, C c){
+			super(a,b);
+			third = c;
+		}
+	}
+3.泛型方法
+	是否拥有泛型方法，与其所在的类是否是泛型没有关系
+	基本指导原则：无论何时，只要你能做到，就应该进来使用泛型方法。
+	对于一个static方法而言，无法访问泛型类的类型参数，所以，如果static方法需要使用泛型能力，就必须使其成为泛型方法。
+	类型参数推断：在使用泛型类时，必须在创建对象的时候指定类型参数的值，而使用泛型方法的时候，通常不必指明参数类型，因为编译器会为我们找出具体的类型。这称为类型参数推断。泛型方法与可变参数列表能够很好的共存。
+	代码：
+	public static <A,B> TwoTuple<A,B> tuple(A a, B b){
+		return new TwoTuple<A,B>(a,b);
+	}
+	public static <A,B,C> ThreeTuple<A,B,C> tuple(A a, B b,C c){
+		return new ThreeTuple<A,B,C>(a,b,c);
+	}
+
+二、擦除
+1.概念
+	Java泛型是使用擦除来实现的，这意味着当你在使用泛型时，任何具体的类型信息都被擦除了，你唯一知道的就是你在使用一个对象。
+	因此List<String>和List<Integer>在运行时事实上是相同的类型。这两种形式都被擦除成他们的原生类型，即List
+2.边界
+	因为擦除移除了类型信息，所以，可以用无界泛型参数调用的方法只是那些可以用Object调用的方法。但是，如果能够将这个参数限制为某个类型子集，就可以用这些类型子集来调用方法。
+	为了执行这种限制，Java泛型重用extends关键字。
+	class Hasf{ public void f(){} }
+	//此处extends重用作为边界，声明T必须具有类型Hasf或其导出类型，否则怎么确定T拥有f()方法呢？！
+	class Man<T extends Hasf>{		
+		private T sth;
+		public Man(T x){
+			sht = x;
+		}
+		public void man(){
+			sth.f();
+		}
+3.通配符
+（1)通配符
+	List<? extends Fruit> flist = new ArrayList<Apple>();
+	List<? extends Fruit>可以读座具有任何从Fruit继承的类型的列表，但这并不意味着这个List将持有任何类型的Fruit。通配符引用的是确定的类型，因此它意味着，“某种flist引用没有指定的具体类型”。因此这个被赋值的List必须持有诸如Fruit或Apple这样的某种指定类型。
+（2)超类型通配符
+	可以声明通配符是由某个特定类的任何基类来界定的。	
+	<? super Fruit>
+（3)无界通配符
+	List<?>
+	List实际上表示“持有任何Object类型的原生List",而List<?>表示”具有某种特定类型的非原生List，只是我们不知道那种类型是什么".
+	
+4.问题
+（1)任何基本类型都不能作为类型参数
+	如不能创建ArrayList<int>但可以用ArrayList<Integer>
+（2)实现参数化接口
+	一个类不能实现同一个泛型接口的两种变体，由于擦除的原因，这两个变体会成为相同的接口。
+	interface Payable<T>{}
+	class Employee implements Payable<Employee>{}
+	class Hourly extends Employee implements Payable<Hourly>{}
+	Hourly不能编译，因为擦除会将Payable<Employee>和Payable<Hourly>简化为相同的类Payable，这样，上面代码意味着重复两次实现相同的接口。
+（3)转型和警告
+	使用带有泛型类型参数的转型或instanceof不会有任何效果。
+	class Stack<T>{
+		private int index =0;
+		private Object[] storage;
+		@SupperessWarnings("unchecked")
+		public T pop(){
+			return (T)storage[--index];
+		}
+	}
+	如果没有@SuppressWarning注解，编译器将对pop（）产生”unchecked cast“警告。由于擦除的原因，编译器无法知道这个转型是否安全。
+	并且pop()实际上并没有执行任何转型，因为T被擦除道它的第一个边界，默认情况下是Object。
+（4)重载
+	public class UseList<W,T>{
+		void f(List<T> v){}
+		void f(List<W> v){}
+	}
+	不能编译，因为擦除的原因，重载方法将产生相同的类型签名。
+（5)基类劫持了接口
+	public class Comparable<ComparablePet>{
+		public int compareTo(ComparablePet arg){ return 0;}
+	}
+	class Cat extends ComparablePet implements Comparable<Cat>{
+		public int compareTo(Cat arg){ return 0;}
+	}
+	不能工作，因为一旦为Comparable确定了ComparablePet参数，那么其他任何实现类都不能与ComparablePet之外的任何对象比较。

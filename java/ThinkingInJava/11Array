@@ -1,0 +1,27 @@
+数组
+一、数组与容器
+	数组与其他种类的容器之间的区别有三方面：效率、类型、保存基本类型的能力
+	数组是一种效率最高的存储和随机访问对象引用序列的方式。但这种速度所付出的代价是数组对象的大小被固定，并且在其生命周期中不可改变。
+
+二、多维数组
+1.例子
+	int[][] a = { {1,2,3},{2,5} };
+	Integer[][][] b = new Integer[2][][];
+	数组中构成矩阵的每个向量都可以具有任意的长度（粗糙数组）
+2.方法
+	Arrays.fill():填充数组
+	Arrays.equals():用于比较两个数组是否相等（deepEquals()用于多维数组）
+	Arrays.sort():用于对数组排序
+	Arrays.binarySearch():用于在已经排序的数组中查找元素
+	Arrays.toString():产生数组的String表示（deepToString()用于多维数组）
+	Arrays.binarySearch():用于产生数组的散列码
+	System.arraycopy():用于复制数组，比for循环快很多
+	
+
+三、数组与泛型
+	通常数组与泛型不能很好的结合。你不能实例化具有参数化类型的数组
+	Peel<Banana>[] peels = new Peel<Banana>[10];	是非法的
+	但是可以参数化数组本身的类型
+	class ClassParameter<T>{
+		public T[] f(T[] arg){ return args;}
+	}	是可以的

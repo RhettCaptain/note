@@ -1,0 +1,60 @@
+运行时类型信息
+一、RTTI概念
+1.含义：
+	在运行时，识别一个对象的类型
+2.为什么需要
+	面向对象的基本目的是：让代码只操作对基类（如Shape）的引用。这样如果要添加一个新类（如从Shape派生的Circle）来扩展程序，就不会影响到原来的代码。例如可以Shape接口中动态绑定了draw（）方法，目的就是使用泛化的Shape引用来调用draw（）。（多态，不同派生类有自己特有的方法）。RTTI保证了多态的实现。
+3.两种方式
+	（1)传统RTTI，假定我们在编译时已经知道了所有的类型。
+	（2)反射，它运行我们在运行时发现和使用类的信息。
+
+二、Class对象
+1.概念
+	类型信息在运行时的表示是由称为Class对象的特殊对象完成的，它包含了与类有关的信息。
+	事实上，Class对象就是用来创建类的所有的“常规”对象的。Java使用Class对象来执行其RTTI。
+	类是程序的一部分，每个类都有一个Class对象。每当编写并编译一个新类，就会产生一个Class对象，被保存在一个同名的.class文件中。
+	为了生成这个类的对象，运行这个程序的JAVA虚拟机（JVM）将使用被称为“类加载器”的子系统。
+	Class对象仅在需要的时候才被加载，static初始化是在类加载时进行的。
+2.Class.forName()
+	这个方法是Class类（所有Class对象都属于这个类）的一个static成员。
+	forName()是去的Class对象的引用的一种方法。它是用一个包含目标类的文本名的String做输入参数，返回的是一个Class对象的引用。
+	对forName（）的调用是为了产生它的副作用：如果类还没有被加载就加载它。在加载过程中，该类的static子句被执行。
+3.getClass（）
+	该方法属于根类Object的一部分，它将返回表示该对象。
+	forName（）便捷，不需要为了获得Class引用而持有该类型的对象。
+	但如果有一个感兴趣的类型的对象，就可以通过调用getClass（）来获取Class引用了。
+	forName返回Class<?>,getClass返回Class<? extends M>,具体区别不是很清楚。
+4.instanceof
+	它返回一个bool值，告诉我们对象是不是某个特定类型的实例。如
+	if(x instanceof DOg)
+	{ (Dog)x).bark();}
+	Class.isInstance方法提供了一种动态的测试对象的途径，可以取代所有instanceof语句。如
+	Pet pet = new Pet();
+	class Dog extends Pet{}
+	Dog dog = new Dog();
+	Class ref  = Class.forName("pkg.Pet");
+	if(ref.isInstance(dog)){...}		//yes,说明dog是Pet类
+5.类似的
+	getInterfaces()，newInstance()，getSimpleName()等
+
+三、反射
+1.RTTI限制
+	这个类型在编译时必须已知。在给予构建的编程的快速应用开发（RAD)中，远程方法调用（RMI）等情况中，往往无法得知具体类型（只知道它是个类）。
+2.反射支持
+	Class类与java.lang.reflect类库一起对反射的概念进行了支持。
+	该类库包含了Field、Method以及Constructor类（每个类都实现了Member接口）。这些类型的对象是由JVM在运行时创建的，用以表示未知类里对应的成员。这样你就可以
+	使用Constructor创建新的对象，
+	用get()，set（）方法读取和修改与Field对象关联的字段，
+	用invoke（）方法调用与Method对象关联的方法。
+	另外还可以调用getFields()、getMethods()和getConstructors()等很便利的方法。
+3.实质与区别
+	反射与一个未知类型的对象打交道时，JVM只是简单的检查这个对象，看他属于哪个特定的类（就像RTTI那样）。在用它做其他事情之前必须先加载那个类的Class对象。
+	RTTI和反射之间真正的区别只在于，对RTTI来说，编译器在编译时打开和检查.class文件。而对于反射机制来说，.class文件在编译时是不可获取的，所以是在运行时打开和检查.class文件。
+
+
+四、设计模式
+1.注册工厂？
+2.动态代理？
+
+
+
