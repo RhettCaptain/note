@@ -6,3 +6,10 @@
 
 3.repaint()不重绘
 	paint(g)里要加super.paint(g),不然不会清除之前的东西
+
+4.eclipse编译的程序用控制台无法运行
+（1）检查classpath是否正确
+（2）eclipse编译一般是带包的，如pkg1包下有一个hello.class类。
+通常系统的路径时pkg1\hello.class,
+但java编译的路径时pkg1.hello.class
+所以到pkg1目录下java pkg1.hello即可，而不是java pkg1\hello
