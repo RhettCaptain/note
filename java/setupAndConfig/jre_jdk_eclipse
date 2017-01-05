@@ -1,0 +1,13 @@
+1.安装java
+（1）安装
+java包括jre和jdk，其中jre为运行环境，jdk为开发包
+官方官方版本是oracle收购的sun提供的java，一般去官网下载安装会依此安装jdk和jre
+
+此外还有openjdk等版本，ubuntu下eclipse默认好像用的是openjdk
+（2）配置
+配置环境路径，即jre和jdk的bin文件夹路径，这样javac（编译）和java（运行）指令才能运行，
+eclipse也才能启动。
+
+2.安装eclipse
+eclipse有诸多版本，标准版用于java se开发，也有c++，web，J2ee，php等版本。
+可以直接下载对应版本，也可以通过help-install new software下载插件。
