@@ -13,6 +13,7 @@ char szInput [256];
 fgets ( szInput, 256, stdin );  
 i = atoi (szInput);  
 反之使用itoa(),ltoa()等
+char *ltoa(long value,char *string,int radix)；
 
 2.string与char*转换
 string可以被看成是以字符为元素的一种容器。与char*不同的是，string不一定以NULL('\0')结束。
