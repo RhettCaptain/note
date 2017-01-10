@@ -85,7 +85,7 @@ O_RDWR		以读写方式打开
 O_APPEND	写入数据追加在文末
 O_TRUNC		把文件长度设置为0，丢弃已有内容
 O_CREAT 若此文件不存在则创建它。使用此选项时需要提供第三个参数mode ,表示该文件
-                 的访问权限。
+                 的访问权限。如S_IRUSR|S_IWUSR
 O_EXCL 如果同时指定了O_CREAT,并且文件已存在,则出错返回。
 
 4.close
