@@ -1,0 +1,192 @@
+一、JDBC（java database connection）简介
+1.JDBC 简介
+	JDBC是Java语言提供访问和操作数据库的一种途径
+	C/S:客户端机器	 JAVA APP,JDBC 
+	    数据库服务器 DBMS
+	B/S:客户端机器	 HTML ...
+	    服务器机器   JAVA APP,JDBC
+	    数据库服务器 DBMS
+	
+2.JDBC 驱动
+	JDBC是一种跨平台的实现机制，是一个接口规范的定义。
+	使用不同的数据库需要加载不同的数据库驱动实现。
+	这样就提供了操作数据库的统一方式。
+
+3.JDBC 包
+	（1）java.sql
+		JDBC的核心类和接口
+	（2）javax.sql
+		数据库连接池，数据源，JNDI和Rowset等高级特征
+
+4.JDBC 常用接口和类
+	（1）DriverManager
+		驱动管理器获得数据库连接
+	（2）Connection
+		数据库连接接口
+	（3）Statement
+		语句接口，用来静态操作SQL语句
+	（4）PreparedStatement
+		预定义语句，用来动态操作SQL语句
+	（5）CallableStatement
+		可以调用存储过程的预定义语句
+	（6）ResultSet
+		结果集，保存数据记录的结果集合
+	（7）ResultSetMetaData
+		结果集元数据，如：列名称，列类型等
+	（8）DatabaseMetaData
+		数据元数据，如：数据库名称，版本等
+	
+5.JDBC 编程步骤
+	（1）加载数据库驱动（jar文件）
+	（2）获得数据库连接
+	（3）创建语句
+	（4）执行查询
+	（5）遍历结果集
+	（6）关闭数据库连接
+
+6.demo实例
+	(1)加载数据库驱动
+		把jar包，如mysql-conn-bin.jar复制粘贴到WEB-INFO-lib下
+       （2）获得数据库连接
+		Class.forName("com.mysql.jdbc.Driver");	//加载类，执行静态代码
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbname","username","password");	
+       （3）创建语句
+		Statement stmt = conn.createStatement();
+       （4）执行查询
+		ResultSet rs = stmt.executeQuery("select * from UserTb1");
+       （5）遍历结果集
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String username = rs.getString("username");	//列名称
+			String password = rs.getString(3);		//列索引
+			System.out.println(id+":"+username+":"+password);
+		}
+       （6）关闭数据库连接
+		conn.close();
+
+二、Connection要点
+1.Connection简介
+	-获得数据库连接是操作数据库的第一步，是应用程序和数据库的一个“握手”过程。
+	-数据库打开的连接数是有限的，所以连接使用完成需要关闭。
+
+2.获得数据连接Connection
+	-获得数据库连接的步骤
+	（1）Class.forName加载驱动
+		Class.forName（"com.mysql.jdbc.Driver）;
+	（2）DriverManager获得连接
+		DriverManager是获得数据连接的一个工厂
+		DriverManager.getConnection("jdbc:mysql://localhost:3306/dbname","username","password");
+
+3.获得一个可配置的连接
+	（1）方式1-写死
+	public Connection getConn(){
+		//省略了try/catch
+		Class.forName("com.mysql.jdbc.Driver");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/dbname","username","password");
+	}
+	（2）方式2-参数
+	public Connection getConn(String driver,String database,String username,String password){
+		//省略了try/catch
+		Class.forName(driver);
+		return DriverManager.getConnection(database,username,password);
+	}
+	（3）方式3-配置文件
+	public Connection openConn(){
+		Properties prop = new Properties();
+		String driver = null;
+		String url = null;
+		String username = null;
+		String password = null;
+		//省略了try/catch
+		prop.load(this.getClass().getClassLoader().getResourceAsStream("DBConfig.properties"));
+		driver = prop.getProperty("driver");
+		url = prop.getProperty("url");
+		username = prop.getProperty("username");
+		password = prop.getProperty("password");
+		Class.forName(driver);
+		return DriverManager.getConnection(database,username,password);
+	}
+	//配置文件DBConfig.properties,放在src下
+	driver=com.mysql.jdbc.Driver
+	url=jdbc:mysql://localhost:3306/jdbc_db
+	username=root
+	password=redrain
+4.其他
+	conn.setAutoCommit(true/false);		//设置事务是否自动提交
+	conn.commit();		//显式提交
+	conn.rollback();	//恢复到未操作的状态，比如try里面存取两条指令，一条成功，一条失败，则应该在catch里面撤销成功的那条 
+
+三、Statement要点
+1.Statement简介
+	Statement提供了一个操作数据库sql语句的功能，
+	可通过它来创建表、插入记录、修改记录、删除记录等操作
+2.获得Statement
+	可以从数据库连接Connection中获得Statement
+	Statement stmt = conn.createStatement();
+3.使用Statement执行DDL,DML
+	(1)方法
+	conn.createStatement();
+	boolean execute();
+	ResultSet executeQuery();	//select等SQL查询
+	int executeUpdate();	//INSERT,UPDATE,DELETE等不返回内容的SQL更新
+	void close();
+	（2）demo_update:
+	String sqlIns = "insert into UserTbl(username,password)values('rhett','123')";
+	String sqlDel = "delete from stuTbl where id=1";
+	String sqlUpd = "update stuTbl set name='bigtom' where id = 1";
+	Statement stmt = conn.createStatement();
+	stmt.executeUpdate(sqlIns);
+	stmt.executeUpdate(sqlDel);
+	stmt.executeUpdate(sqlUpd);
+	（3）demo_query
+	String sql = "select id,name from stuTbl";
+	Statement stmt = conn.createStatement();
+	ResultSet rs = stmt.xecuteQuery(sql);
+	while(rs.next()){
+		int id = rs.getInd(1);
+		String name = rs.getString("name");
+	}
+
+
+四、ResultSet要点
+1.ResultSet简介
+	用来获取SQL语句的查询结果
+	结果集包含了SQL语句的查询结果数据
+	调用语句的executeQuery方法返回结果集对象
+2.Java数据类型与SQL数据类型的映射
+	JAVA			SQL
+	String			char varchar longvarchar
+	java.math.BigDecimal	numeric	decimal 
+	boolean			bit
+	byte			tinwint
+	short 			smallint
+	int 			integer
+	long			bigint
+	float			real
+	double			float	double
+	byte[]			binary	varbinary longvarbinary
+	java.sql.Date		date 
+3.ResultSet常用方法
+	(1)默认不可更新,常用next(),getXXX()
+	(2)设置更新
+		createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+		rs.absolute();		//定位
+		//更新
+		rs.updateString("name","tom");	
+		rs.updateRow();			
+		//插入
+		rs.moveToInsetRow();
+		rs.updateString("name","kite");
+		rs.updateInt(3,1);
+		rs.insertRow();
+	（3）常用包装
+		static List ListStu{
+			List list = new ArrayList();
+			...
+			while(rs.next()){
+				...
+				list.add();
+			}
+			return list;	
+		}
+
