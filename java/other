@@ -30,3 +30,13 @@ ra.nextInt();产生随机整形数
 	？？能否通过转型完成方法a对B.c的操作，即用父类方法调用处理子类成员？？
 	？？如何在B中重写方法a的时候，实现复用a并改进？？
 	参考问题：红黑树继承二叉搜索树
+
+7.获取当前日期/时间
+	使用Calendar类
+	（1）demo1 获得当前分钟
+	Calender cal = Calendar.getInstance();
+	int minute = cal.get(Calendar.MINUTE);
+	（2）获取文件修改时间
+	long time = f.lastModified();
+	cal.setTimeinMillis(time);
+	String timeStr = cal.getTime().toString();
