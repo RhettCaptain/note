@@ -21,6 +21,10 @@
 	}
 	例1中改为path.list(".app");即可获取所有包含.app的文件/文件夹。
 	若要完全匹配，可以将find()改为matches()
+3.创建、删除文件（夹）
+	f.mkdirs();	//创建文件夹
+	f.createNewFile();	//创建文件
+	f.delete();	//删除文件（夹）
 
 二、输入输出
 
