@@ -190,3 +190,64 @@
 			return list;	
 		}
 
+五、MetaData要点
+1.结果集的MetaData
+	ResultSet的getMetaData方法返回结果集元数据对象ResultSetMetaData
+	demo:
+	ResultSetMetaData rsmd = rs.getMetaData();
+	int columnCount = rsmd.getColumnCount();
+	for(int i=1;i<=columnCoun;i++){
+		String columnName = rsmd.getColumnName(i);
+	}
+2.数据库的MetaData
+	通过数据库连接的getMetaData方法可以获得数据库连接的对象实例DatabaseMetaData
+	demo:
+	DatabaseMetaData dbmd = conn.getMetaData();
+	String dbName = dbmd.getDatabaseProductName();
+	int dbMajorVersion = dbmd.getDatabaseMajorVersion();
+	
+六、PreparedStatement要点
+	通过预定义的Statement可以动态执行SQL语句，即给定一个带有参数的语句模板。Statement是静态的。
+	demo：
+	String sql = "select id,name,age from StuTbl where id = ?";
+	//省略try/catch
+	PrepareStatement pstmt = conn.prepareStatement(sql);
+	pstmt.setInt(1,1);		//将第一个参数赋值为（int）1
+	ResultSet rs = pstmt.executeQuer();
+	
+七、CallableStatement
+1.CallableStatement简介
+	CallableStatement继承PreparedStatement
+	提供了调用存储过程的能力
+2.调用简单的存储过程
+	在sql中创建一个存储过程（类似sql的函数宏），如
+	create procedure all_user() select * from user;		//创建存储过程
+	call all_user();																	//调用存储过程
+	drop procedure all_user;													//删除存储过程
+	在java中调用存储过程
+	CallableStatement cst = conn.prepareCall("{call all_user()}");
+	ResultSet rs = cst.executeQuery();
+3.调用有输入参数的存储过程
+	在sql中创建存储过程
+	 create procedure insert_user(in(表示输入） un varchar(20),in psw varchar(20)) insert into user(name,password) values(un,psw);
+	 call insert_user('rhett','123');
+	 在java中调用
+	 CallableStatement cst = conn.prepareCall("{call insert_user(?,?)}");
+	 cst.setString(1, "tom");
+	 cst.setString(2, "124");
+	 cst.executeUpdate();
+4.调用有输入、输出参数的存储过程
+	//创建
+	create procedure getPsw(in nm varchar(20),out psw varchar(20)) 
+	begin 
+	declare ppp varchar(20); 
+	select password into ppp from user where name=nm;
+	set psw=ppp;
+	end;
+	//使用
+	CallableStatement cst = conn.prepareCall("{call getPsw(?,?)}");
+	cst.setString(1,"tom");
+	cst.registerOutParameter(2,Types.String);
+	cst.execute();
+	String psw = cst.getString(2);
+	
