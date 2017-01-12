@@ -11,3 +11,24 @@ const:const修饰的全局常量据有跟static相同的特性，即它们只能作用于本编译模块中，
 
 2.获取数组长度
 	sizeof((x)) / sizeof(x[0])
+
+3.参数传递
+	（1）值传递
+		实际上是在函数内部创建了形参的副本，不改变形参的实际值。
+	（2）引用传递
+			操作的是形参地址上的值，只不过起了个别名，可以改变形参的实际值。
+	（3）指针传递
+			函数内部要对指针指向的对象进行操作才会改变形参，如
+			void test(int *argc,char **args){
+					*argc = 1;					//要对指向的对象赋值。
+					*args = "abc";
+				//char *tmp = *(args+1);  如果不行，不行加上这句试试
+					*tmp = "def";
+			}
+			int main(int *argc,char **args){
+				int a = 2;
+				char **str = (char**)malloc(10);	//需要分配内存空间
+				test(&a,str);
+				cout << a << endl;	//输出1
+				cout << *(str+1) <<endl;	//输出def
+			}
