@@ -48,6 +48,11 @@ int main()
 	exit(0);
 }
 
+！注意：如果写的个数不对，如
+char c[10] = "abc";
+write(fd,c,10);
+是会出问题的。可以利用str.length()解决这一问题。
+
 2.read
 -原型
 #include <unistd.h>
