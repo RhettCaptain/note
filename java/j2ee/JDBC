@@ -215,7 +215,7 @@
 	pstmt.setInt(1,1);		//将第一个参数赋值为（int）1
 	ResultSet rs = pstmt.executeQuer();
 	
-七、CallableStatement
+七、CallableStatement要点
 1.CallableStatement简介
 	CallableStatement继承PreparedStatement
 	提供了调用存储过程的能力
@@ -251,3 +251,10 @@
 	cst.execute();
 	String psw = cst.getString(2);
 	
+八、DAO设计模式
+1.简介
+	DAO层一般有接口和该接口的实现类！ 接口用于规范实现类！ 实现类一般用于用于操作数据库！ 
+	一般操作修改，添加，删除数据库操作的步骤很相似，就写了一个公共类DAO类 ，
+	修改，添加，删除数据库操作时 直接调用公共类DAO类！
+1.用户登录、注册
+2.订餐系统后台
