@@ -71,5 +71,6 @@
 	find_package( OpenCV REQUIRED )
 	add_executable( DisplayImage DisplayImage.cpp )
 	target_link_libraries( DisplayImage ${OpenCV_LIBS} )
-
-	
+11.修改设备权限
+	在/etc/udev/rules.d目录下写一个.rules文件，如KERNEL=="ttyS1"  MODE="0777" 即可
+	通过ls -l /dev/ttyS1可查看权限
