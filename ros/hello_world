@@ -37,7 +37,8 @@
 4.编写hello_world
 	（1)在pkg的src下编写cpp
 	（2)头文件放在include目录下面，并在CMakeListst.txt中的include_directories()中加入include目录即可
-	（3)生成可执行文件，在CMakeList.txt中添加add_executable(hello src/hello.cpp)即可，生成在devel的share对应的包下。
+	（3)生成可执行文件，在CMakeList.txt中添加add_executable(hello src/hello.cpp)即可，生成在devel的lib对应的包下。
+	（4)在工作空间运行rosrun 包名 节点名运行程序。（如果未找到，请参考2.（5）是否配置环境变量）
 
 5*.使用rosed编辑ROS中的文件
 	使用 rosed
