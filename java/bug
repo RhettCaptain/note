@@ -13,3 +13,11 @@
 通常系统的路径时pkg1\hello.class,
 但java编译的路径时pkg1.hello.class
 所以到pkg1目录下java pkg1.hello即可，而不是java pkg1\hello
+
+5.tomcat无法启动
+（1）端口被占用		//但这种错误一般会提示端口被占用
+（2）打开<workspace-directory>\.metadata\.plugins\org.eclipse.core.resources
+然后删除 .snap 文件
+（3）jdk和tomcat中的servlet版本不一致造成的
+解决办法将jdk和tomcat中的版本统一起来
+把tomcat8中的servlet-api.jar替换到jdk1.8中（jdk1.8\jre\lib\ext）或者换jdk1.8等

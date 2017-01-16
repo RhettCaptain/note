@@ -1,0 +1,120 @@
+零、基础
+	1.Http
+		hyper text transafer protocal	超文本传输协议
+	2.机制：请求/响应 机制 request/response
+		httpServletRequest/httpServletResponse
+一、Web工程结构
+1.简介
+	B/S结构程序和C/S结构程序，无论是在功能上还是在结构上都有着本质的区别。
+	B/S结构程序，即Brower（浏览器）/Server（服务器）结构程序
+	程序的结构以不同的目录来组织和管理，程序只需要部署（拷贝）到支持该Web程序的服务器中，即可运行，无需安装。
+	
+2.Web应用程序的思想
+	Servlets,JSP页面，HTML文件，工具类，JavaBean，标签库等，被放到一个不同层次结构的目录里。
+	在web应用程序中，使用有公共的前缀的URL来访问Web应用程序上下文（WebContext）
+	Web应用程序的很多行为，都是有部署描述符控制的（web.xml)
+	
+3.Web应用程序的目的
+	（1）组织
+			通过不同层次的目录结构来将文件组织在一起,HTML文件，JSP,servlets，beans，图片等
+	（2）可携带
+			所有的兼容服务器都支持Web应用程序
+			通过移动一个文件，重新部署到新的Web服务器中
+	（3）分离性
+			每一个Web应用程序都有自己的：
+			Servlet上下文（ServletContext）
+			类加载器（Class loader）
+			会话（Sessions)
+			URL前缀（URL prefix）
+			目录结构（Directory structure）
+			
+4.Web工程结构
+	（1）JSP和常规Web内容（HTML,样式表，图片，等）
+	（2) Servlets
+			放置在WEB-INF/classes目录下（匹配的包名称）
+	（3）没有打包的JavaBean和工具类
+			放置在WEB-INF/classes目录下（匹配的包名称）
+	（4）JAR文件
+			放置在WEB-INF/lib目录下
+	（5）web.xml
+			放置在WEB-INF下面
+	（6）标签库描述文件（TLD文件）
+			放置在WEB-INF下或子目录下
+	（7）WEB-INF下的文件不能由客户端直接访问
+			可以使用RequestDispatcher转发到WEB-INF下
+	（8）demo
+	webAppDirectory
+			|--SomeFile.html
+			|--SomeFile.jsp
+			|--images,Style..
+			|--WEB-INF--------web.xml
+			|			|---classes-----SomeFile.class
+			|			|---lib---------SomeFile.jar
+			|			|---tids--------SomeFile.tid
+			|--META-INF-------MANIFEST.MF
+5.web.xml文件
+	(1)作用
+		控制web应用程序的行为
+			web工程启动时，首先读取该文件的配置信息，如果配置信息有误，web工程将启动失败
+	（2）功能
+			-声明
+				Servlet，filter，listner
+			-自定义URLs
+				servlet，filter
+			-初始化参数
+				Servlets，JSP Pages等
+			-预加载/欢迎/错误页面	
+6.实例
+
+二、Servlet简介
+1.为什么需要动态创建Web页面
+	（1）Web页面基于用户提交的数据
+		例如搜索引擎的结果和在线商店的订单确认信息
+	（2）Web页面的数据频繁改变
+		例如天气预报和新闻头条
+	（3）页面信息来自数据库
+		例如电子商务网站的每日销售商品的价格清单
+2.Servlet的功能
+	（1）读取客户端发来的显示信息（表单数据）
+	（2）读取客户端发来的隐式信息（请求头信息）
+	（3）生成相应结果
+	（4）发送显示信息给客户端(HTML)
+	（5）发送隐式数据到客户端（状态码和响应头信息）
+3.Servlet相对“传统“CGI的优势
+	（1）效率高
+			线程取代操作系统的进程
+	（2）方便
+			大量高级工具类
+	（3）功能强大
+			共享数据，数据持久性
+	（4）轻便
+			可以运行在所有的操作系统上
+	（5）廉价
+			有大量的免费或价格较低的服务器
+	（6）安全
+			没有缓存溢出问题
+	（7）主流  
+4.Servlet的相关类和接口
+		Servlet-		-ServletConfig
+						|		|
+					GenericServlet
+							|
+					HttpServlet
+							|
+						MyServlet
+	（1）包结构
+			javax.servlet
+			javax.servlet.http
+	（2）Servlet接口
+	（3）ServletConfig
+	（4）ServletContext
+	（5）ServletRequest
+	（6）ServletResponse
+	（7）GenericServlet
+	（8）HttpServlet
+	（9）HttpServletRequest
+	（10）HttpServletResponse
+	（11）HttpSession
+5.Serlet实例
+	创建一个HelloWorldServlet类
+		编写一个雷HelloWorldServlet集成HttpServlet
