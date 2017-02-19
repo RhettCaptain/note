@@ -328,3 +328,39 @@
 		response.setHeader("refresh","1");		//1s刷新一次
 		Date date = new Date():
 		out println(date.toLocaleString());
+		
+七、Cookie要点
+1.Cookie简介
+	Cookie是保存在客户端的一个“键-值”对，用来标识用户的一些信息
+2.创建Cookie
+	（1）调用Cookie的构造函数，给出cookie的名称和cookie的值，两者都是字符串
+		Cookie c = new Cookie("UserID","A123");
+	（2）设置最大时效
+			如果要告诉浏览器将cookie存储到磁盘上，而非仅仅存在内存中，使用setMaxAge（参数为秒数）
+		c.setMaxAge(60*60*24*7);		//one week
+	（3）将Cookie放入到HTTP响应
+		response.addCookie(c);
+3.获得Cookie
+	调用request.getCookies,这会得到Cookie对象组成的数组.
+	调用getName得到Cookie的键名，调用getValue得到Cookie的值。
+		 
+八、Session要点
+1.Sessio简介
+	由于HTTP协议的无状态性，无法持久保持对象状态，为实现持久保存对象的的状态
+	Java提供了两种解决方案，一种是Cookie，一种是Session
+	Session是用来跟踪用户当前状态的一种机制，是针对浏览器和服务器的一对一关系
+	Session的一般用法是，在用户登录时将用户的登录信息保存到Session中，以便以后使用
+	
+2.Session API
+	（1）Session是接口HttpSession
+			通常我们只使用HTTPSession接口，接口的实现有web容器（如tomcat）来完成
+	（2）获得HttpSession
+			可以从HttpServletRequest中获得HTTPSession
+			request.getSession()
+	（3）将信息保存在HTTPSession中
+			session.setAttribute("userSession",obj);
+	（4）从HttpSession中获得信息
+			session.getAttribute("UserSession");
+	（5）使HTTPSession失效
+			session.invalidate();
+			
