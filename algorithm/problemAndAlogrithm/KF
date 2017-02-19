@@ -1,0 +1,71 @@
+1.卡尔曼滤波（KF)
+（1）原理
+		状态方程（理论）能推断一个值，观测方程（传感器）能测量一个值，通过协方差矩阵等计算
+一个增益矩阵，用于描述两个值的可靠程度，从而得到最优估计。
+（2）描述
+		对于状态空间描述的线性系统
+		Xk = phai * X(k-1) + B * w(k-1)
+		Zk = H * Xk + v
+		其中Xk为状态空间向量，Zk为观测向量，phai为转移矩阵，H为观测矩阵，
+		w为随机过程噪声序列，v为随机观测噪声序列。一般设为高斯白噪声，即
+		E[wk] = 0, E[wk*wjT] = Qk * deltakj
+		E[vk] = 0, E[vk*vjT] = Rk * deltakj
+		B*Qk 可以放在一起，刻画噪声对过程各维度不同的影响程度
+		Rk 刻画噪声对测量各维度不同的影响程度，通常与传感器方差有关
+（3）公式
+		X(k,k-1) = phai * X(k-1) 	//根据状态方程得到一步状态预估
+		P(k,k-1) = phai * P(k-1) * phaiT + B*Q*BT	//根据状态方程得到一部协方差预估
+		Kk = P(k,k-1) * HT [Hk * P(k,k-1) * HkT + Rk]^(-1)		//计算增益矩阵
+		Z(k,k-1) = Zk - Hk * X(k,k-1)	//计算新息，即测量和预估的差值
+		Xk = X(k,k-1) * Z(k,k-1)	//最优状态估计
+		Pk = [I - Kk * Hk] * P(k,k-1)	//最优协方差估计
+（4）初值
+		理想情况：
+			X0^ = E(X0)			P0 = E(X0 * X0T)
+	
+2.迭代卡尔曼（EKF)
+（1）核心
+		对非线性系统，对phai和H进行一阶泰勒展开得到雅各比矩阵，转化为线性KF求解
+（2）雅各比矩阵
+		设X = [x,y,z]T,f(X) = [xy,xz,yz]T
+		f(X)对X求导，第一行为xy分别对x,y,z求偏导，二三行类似，得到3*3矩阵
+（3）启示与缺陷
+		泰勒展开实现非线性系统线性化的方法可以借鉴
+		但对于高阶无法忽略或难以求导的非线性系统误差大，效果差
+（4）参考
+		http://wenku.baidu.com/link?url=bMqRFOCqKIGbzQsqxslrWDejMfe_t7L-G_BIc4fmbwWDNGxHF9a11aaVGiLULfbVmmrGZk6k8iwZIeiQBh2oRp4C8DQ2RxqVGP-kobkwbY7
+
+3.无迹卡尔曼（UKF）
+（1）核心
+		对非线性系统，利用无迹变换（UT)实现一步状态和协方差预估，后面再用KF求解
+（2）无迹变换（UT)
+		本质是对一个随机变量按分布进行采样（sigma点），对这些点进行非线性变换，得到的点去
+描述变量非线性变换后的变量的分布，用这个分布的期望和方差描述非线性变换。
+		对于n维随机变量X~N(miu,sigma),采用Cholesky分解计算出矩阵L(sigma=L*LT),
+矩阵L可类比一维情况下的标准差。
+		采样2*n+1个sigma点可以写成
+		X0 = miu; 
+		Xi = miu + sqrt(n+lamda)*L(:,i);		i = 1,2...,n
+		Xi = miu - sqrt(n+lamda)*L(:,i-n);		i = n+1,...,2*n
+		对于非线性变换Y=g(X),可以计算变换后的期望和方差
+		miuY = sum(Wi*g(Xi)
+		sigmaY = sum(Wi * (g(Xi) - miuY)*(g(Xi) - miuY)T)
+		其中Wi为权重
+		对于期望miu Wm0 = lamda/(n+lamda)
+		对于协方差sigma Wc0 = lamda/(n+lamda)+1-alpha^2+beta
+		其他2n个 Wmi = Wci = 1/2/(n+lamda)
+（3）参数
+		对于高斯分布情况beta一般取2
+		alpha一般取0~1
+		lamda = alpha^2 * (n+kapa) - n,其中kapa 一般取3~n
+（4）cholesky分解
+		定理：如果A对称正定，则存在位移对角元全部大于零的下三角阵G，满足A=G*GT
+		分解：对于n阶正定矩阵A，可导出按列的次序来计算其Cholesky分解因子G的元素的计算公式。
+对第k=1,2,…，n列，
+					gkk = sqrt(akk-sum(gkj^2)
+					gik = (aik - sum(gij*gkj))/2/a
+(5)参考
+		http://www.cnblogs.com/21207-iHome/p/5235768.html
+		http://wenku.baidu.com/link?url=G-SPz8xOCbCrDzQFJ_vg-WTSTuwUw84XMa8uujGGDaquvvs_u6kXw0vQyxVA88wZ0H9AC2ZUhq1KGSzbcveZbETJ7pciGE9vElY_uMnsJxe
+		http://blog.sina.com.cn/s/blog_65caa9780100wtub.html
+		
