@@ -52,7 +52,7 @@
 		sigmaY = sum(Wi * (g(Xi) - miuY)*(g(Xi) - miuY)T)
 		其中Wi为权重
 		对于期望miu Wm0 = lamda/(n+lamda)
-		对于协方差sigma Wc0 = lamda/(n+lamda)+1-alpha^2+beta
+		对于方差/协方差sigma Wc0 = lamda/(n+lamda)+1-alpha^2+beta
 		其他2n个 Wmi = Wci = 1/2/(n+lamda)
 （3）参数
 		对于高斯分布情况beta一般取2
@@ -64,8 +64,15 @@
 对第k=1,2,…，n列，
 					gkk = sqrt(akk-sum(gkj^2)
 					gik = (aik - sum(gij*gkj))/2/a
-(5)参考
+（5）公式
+		由状态非线性方程f，sigma采样点，求得X的一步预测X-和协方差矩阵一步预测Px-.Px-要加个Q
+		由观测非线性方程h，sigma采样点经f变换后的点gn，求得观测量Z的一步预测Z-和协方差矩阵Py，Py要加个R
+		总协方差矩阵Pxy = sum(Wi * (g(Xi) - miuY)*(h(g(Xi)) - miuZ)T)
+		增益矩阵K = Pxy * Py^(-1) 
+		状态量最优估计 X = X- + K * （Z - Z-）
+		协方差最优估计 Px = Px- - K * Py * KT
+（6）参考
 		http://www.cnblogs.com/21207-iHome/p/5235768.html
 		http://wenku.baidu.com/link?url=G-SPz8xOCbCrDzQFJ_vg-WTSTuwUw84XMa8uujGGDaquvvs_u6kXw0vQyxVA88wZ0H9AC2ZUhq1KGSzbcveZbETJ7pciGE9vElY_uMnsJxe
 		http://blog.sina.com.cn/s/blog_65caa9780100wtub.html
-		
+		http://wenku.baidu.com/link?url=k4WuXeVBd2wH1kFOqtBOu4bCgQ4t_gzMfLR_iQ1m-LlPur2XTKCcVBf8hZogNef7NrM5_bLWbwUQjyiPzgUd-_Ss_ICsi5JY9qxLfRv5msq
