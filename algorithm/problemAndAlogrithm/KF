@@ -17,7 +17,7 @@
 		P(k,k-1) = phai * P(k-1) * phaiT + B*Q*BT	//根据状态方程得到一部协方差预估
 		Kk = P(k,k-1) * HT [Hk * P(k,k-1) * HkT + Rk]^(-1)		//计算增益矩阵
 		Z(k,k-1) = Zk - Hk * X(k,k-1)	//计算新息，即测量和预估的差值
-		Xk = X(k,k-1) * Z(k,k-1)	//最优状态估计
+		Xk = X(k,k-1) + Z(k,k-1)	//最优状态估计
 		Pk = [I - Kk * Hk] * P(k,k-1)	//最优协方差估计
 （4）初值
 		理想情况：
@@ -57,7 +57,7 @@
 （3）参数
 		对于高斯分布情况beta一般取2
 		alpha一般取0~1
-		lamda = alpha^2 * (n+kapa) - n,其中kapa 一般取3~n
+		lamda = alpha^2 * (n+kapa) - n,其中kapa 一般取3-n
 （4）cholesky分解
 		定理：如果A对称正定，则存在位移对角元全部大于零的下三角阵G，满足A=G*GT
 		分解：对于n阶正定矩阵A，可导出按列的次序来计算其Cholesky分解因子G的元素的计算公式。
