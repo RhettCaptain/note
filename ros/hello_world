@@ -7,6 +7,7 @@
 		类似sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
 	（4)安装（更新）
 		sudo apt-get update
+		sudo apt-get install ros-indigo-desktop-full
 	（5)初始化
 		sudo rosdep init
 		rosdep update
