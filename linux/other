@@ -74,3 +74,11 @@
 11.修改设备权限
 	在/etc/udev/rules.d目录下写一个.rules文件，如KERNEL=="ttyS1"  MODE="0777" 即可
 	通过ls -l /dev/ttyS1可查看权限
+
+12.安装搜狗输入法
+（1）先去官网下载安装
+（2）（可能需要）在终端输入im-config,把ibus换成fcitx
+（3）（可能需要）输入商店说明的各个指令
+（4）重启
+（5）终端输入fcitx-config-gtk3或者直接选择输入法。取消选取only show current language
+然后搜索sogou选择即可。
