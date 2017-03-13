@@ -1,0 +1,73 @@
+1.介绍
+	tf(transform)是ros的一个软件库，用于坐标系间的转换。
+	常用的frame_id（坐标系）包括
+		base_link(机器人本体坐标系），
+		odom(理论推算坐标系，无误差时就是世界坐标系）
+		map(世界坐标系）
+
+2.broadcasting a transform(广播变换)
+	此类节点发布坐标系间的变换关系,示例：
+	#include <ros/ros.h>
+	#include <tf/transform_broadcaster.h>		//需要包含这个头文件
+	
+	int main(int argc, char** argv){
+	  ros::init(argc, argv, "robot_tf_publisher");
+	  ros::NodeHandle n;
+	  ros::Rate r(100);
+	  
+		//定义一个广播器。<？>前面是否必要加上static</?>
+	  tf::TransformBroadcaster broadcaster;
+	  
+		//广播器发布原型
+		//broadcaster.sendTransform(const StampedTransform &transform)  (其他重载请去ros搜索）
+		//StampedTransform (变换关系, 时间戳, 父坐标系, 子坐标系)		
+		//（参数类型去ros搜原型，变换关系是父坐标系变换到子坐标系的关系）
+		//Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.1, 0.0, 0.2))	（其他重载请去ros搜索）
+		//第一个参数四元数，第二个参数平移。
+	  while(n.ok()){			//<？>如果不变是否可以不用循环发布</?>
+	    broadcaster.sendTransform(
+	      tf::StampedTransform(
+	        tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.1, 0.0, 0.2)),
+	        ros::Time::now(),"base_link", "base_laser"));
+	    r.sleep();
+	  }
+	}
+	
+3.using a transform(调用变换）
+	调用变换需要监听和处理。如果只是在rviz里仿真，rviz自己会监听发布的变换并处理，无需编写。
+	示例：
+	#include <ros/ros.h>
+	#include <geometry_msgs/PointStamped.h>		//一般处理也需要加
+	#include <tf/transform_listener.h>			//需要加监听头文件
+	//处理函数，先看main函数
+	void transformPoint(const tf::TransformListener& listener){
+		//PointStamped是带时间戳和坐标系的点信息。
+	  geometry_msgs::PointStamped laser_point;
+	  laser_point.header.frame_id = "base_laser";
+	  laser_point.header.stamp = ros::Time();
+	  laser_point.point.x = 1.0;
+	  laser_point.point.y = 0.2;
+	  laser_point.point.z = 0.0;
+	  
+		//TransformListener的transformPoint(目标坐标系，当前坐标点，目标坐标点）
+		//将当前坐标点转换到目标坐标系中的目标坐标点。
+	  geometry_msgs::PointStamped base_point;
+	  listener.transformPoint("base_link", laser_point, base_point);
+	  ROS_INFO("base_laser: (%.2f, %.2f. %.2f) -----> base_link: (%.2f, %.2f, %.2f) at time %.2f",
+	        laser_point.point.x, laser_point.point.y, laser_point.point.z,
+	        base_point.point.x, base_point.point.y, base_point.point.z, base_point.header.stamp.toSec());
+	}
+	
+	int main(int argc, char** argv){
+	  ros::init(argc, argv, "robot_tf_listener");
+	  ros::NodeHandle n;
+	  
+	  //定义监听器，可以无参
+	  tf::TransformListener listener(ros::Duration(10));
+	  
+	  //构建定时器周期执行转换
+	  //boost::bind（函数指针，参数）将参数绑定给函数。
+	  ros::Timer timer = n.createTimer(ros::Duration(1.0), boost::bind(&transformPoint, boost::ref(listener)));
+	  ros::spin();
+	}
+	
