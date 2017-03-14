@@ -77,3 +77,6 @@
 	  ros::spin();
 	}
 	
+4.查看坐标转换
+	rosrun tf view_frames
+	evince framse.pdf
