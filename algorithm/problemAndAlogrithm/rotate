@@ -1,0 +1,44 @@
+一、问题描述
+	三维空间中一个点P(x,y,z)绕过原点的轴(i,j,k)旋转θ后的点P'(x',y',z')
+二、旋转矩阵
+1.算法
+ 拆解成绕轴旋转，或计算新坐标系在原坐标轴上的投影（点乘积）
+2.表示
+	Rz(γ) = [cosγ  sinγ  0; -sinγ  cosγ  0; 0  0  1]	//绕z轴旋转γ角
+	Rx(α) = [1  0  0; 0  cosα  sinα; 0  -sinα  cosα]	//绕x轴旋转α角
+	Ry(β) = [cosβ  0  -sinβ; 0  1  0; sinβ  0  cosβ]  //绕y轴旋转β角
+	R = Rz(γ)*Rx(α)*Ry(β)		//绕轴旋转
+	R = [Xb·Xa Yb·Xa Zb·Xa; Xb·Ya Yb·Ya Zb·Ya; Xb·Za Yb·Za Zb·Za]	//投影/点乘
+三、欧拉角
+1.算法
+（1）绕z轴旋转α，使x轴与N轴重合，N轴是旋转前后两个坐标系x-y平面的交线
+（2）绕x轴（也就是N轴）旋转β，使z轴与旋转后的z轴重合
+（3）绕z轴旋转γ，使坐标系与旋转后的完全重合
+2.表示
+	R = Rz(α)*Rx(β)*Rz(γ)
+四、四元数
+1.算法
+	在二维坐标系中，如果用复数平面描述
+	向量v = 0+2i（对应二维坐标中的(0,2)) 乘以旋转向量 r = 0.707 + 0.707i(必须是单位向量）
+得到旋转后的向量（或者看做反向旋转坐标系后刚体在新坐标系中的坐标）v'=-1.414 + 1.414i
+	 四元数p = ai + bj + ck + w;
+	 θ为0时表示纯虚数，可以用于刻画三维坐标中的向量(a,b,c)
+	 θ不为0，且p为单位向量时，可以用于刻画旋转，表示绕向量(a,b,c)旋转了θ角
+2.表示
+	绕单位向量n = (cosα，cosβ，cosγ）旋转θ角的四元数为
+	q = cos(θ/2) + sin(θ/2)*n;
+3.计算公式
+对于q1=w1+x1i+y1j+z1k; q2=w2+x2i+y2j+z2k
+	i2=j2=k2=ijk=-1
+	ij=-k; ik=j; ji=k; jk=-i; ki=-j; kj=i;
+	q1+q2=(w1+w2)+(x1+x2)i+(y1+y2)j+(z1+z2)k
+  q1*q2=(w1*w2 - x1*x2 - y1*y2 - z1?z2)+(w1*x2 + x1*w2 + y1*z2 - z1*y2)i
+    +(w1*y2 - x1*z2 + y1*w2 + z1*x2)j+(w1*z2 + x1*y2 - y1*x2 + z1*w2)k
+  q1共轭 = q=w1 - x1i - y1j - z1k
+
+五、参考文献
+http://blog.csdn.net/zhang11wu4/article/details/49761121
+http://blog.csdn.net/ningyaliuhebei/article/details/7481679
+http://blog.csdn.net/ice__snow/article/details/49048269
+http://blog.csdn.net/carmazhao/article/details/39990523
+http://blog.csdn.net/candycat1992/article/details/41254799
