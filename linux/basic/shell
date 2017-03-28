@@ -325,3 +325,9 @@ dialog --title "choose" --yesno "do you love me" 9 18
 dialog --title "question" --inputbox "enter your name" 9 30 2>_1.txt
 Q_NAME_$(cat _1.txt)
 把输入的名字重定向到临时文件_1.txt，再放到Q_NAME中
+
+（18）ps
+查看进程 
+ps -A/-e 显示所有进程
+其他参数man ps
+查得进程号后可通过kill杀死。

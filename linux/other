@@ -89,3 +89,23 @@
 返回值 如果system()在调用/bin/sh时失败则返回127，其他失败原因返回-1。
 若参数string为空指针(NULL)，则返回非零值。如果system()调用成功则最后会返回执行shell命令后的返回值，
 但是此返回值也有可能为system()调用/bin/sh失败所返回的127
+
+14.杀死某一进程的脚本
+#!/bin/sh
+
+NAME=$1
+echo $NAME
+ID=`ps -ef | grep "$NAME" | grep -v "$0" | grep -v "grep" | awk '{print $2}'`
+echo $ID
+echo "---------------"
+for id in $ID
+do
+kill -9 $id
+echo "killed $id"
+done
+echo "---------------"
+
+1),将之保存为killprocess.sh
+2),调用./killprocess.sh programmename。其中programme可以为程序名字，也可以是启动程序时的命令行，
+只要能在ps -ef | grep programmename 之后出现所有的该程序对应的进程即可
+来源：http://blog.csdn.net/telnetor/article/details/5555345
