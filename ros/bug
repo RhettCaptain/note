@@ -5,3 +5,7 @@
 
 2.cannot pass objects of non-trivially-copyable type 'std::string {aka struct std::basic_string<char>}' through '...' 
 	用ROS_INFO,printf,scanf等输出string型时，在加上c.str(),如msg.c_str();
+
+3.编译消息，服务失败
+Messages depends on unknown pkg: std_msgs (Missing  'find_package(std_msgs)'?)
+如果建包时没有依赖std_msgs,生成消息时又出现上述语句，则在find_package下加上std_msgs以解决。
