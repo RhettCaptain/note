@@ -1,0 +1,66 @@
+最大子序列和
+1.暴搜
+遍历所有子序列和
+T(n) = O(n^3);
+2.动态规划
+由于子序列一定是从某个位置开始的，理解成每个起始位置的最大子序列和比较。
+T(n) = O(n^2)
+3.动态规划 + 剪枝
+（1）负数不可能是起始位置。
+（2）对于某个起始位置，如果第一个子序列和小于零，则这个子序列里的数不可能是起始位置。
+（注意：1，-10，5，-3举例，1做开头，1-10<0,则-10不可能是最大子序列的起始位置。
+				[1，-10...]也不会是最大子序列，此时直接看5做起始位置的情况即可。
+				其他情况如1-10+5<0,并不会出现，所以才不影响得到最大子序列5的结论。）
+（3）正数的下一位不可能是起始位置。
+T(n) = O(n^2)
+---
+int maxSubSum3_3( const vector<int> &a )  
+{   
+    int maxSum = 0;  
+    for(int i=0; i<a.size(); i++ )  
+    { 
+        if( a[i]<=0 )  
+          continue;  
+        int thisSum =0;  
+        for(int j=i; j<a.size(); j++ )  
+        {   
+            thisSum +=a[j];  
+            if( thisSum>0 )  
+            { 
+                if(thisSum>maxSum)  
+                { maxSum = thisSum; }  
+                i = j; 
+            }  
+            else if( thisSum <= 0 )  
+            { 
+                thisSum = 0;   
+                i = j;  
+            }  
+        }  
+    }  
+    return maxSum;  
+}  
+---		
+4.结构优化
+（1）循环的分支可以改变一下，去除嵌套分支结构。
+（2）判断语句的分支中有共同部分，( i=j )，可以抽取出来。
+（3）内层循环的 if(thisSum < 0)的判断能够替代 if( a[i]<=0 ) 的工作。
+---
+int maxSubSum3_4( const vector<int> &a )   
+{   
+    int maxSum = 0;   
+    int thisSum = 0;   
+    for(int j=0; j<a.size(); j++ )   
+    {   
+        thisSum += a[j];   
+        if(thisSum>maxSum)   
+            { maxSum = thisSum; }   
+        else if( thisSum>0 )   
+            { //do nothing }   
+        else if( thisSum < 0 )   
+        { thisSum = 0; }   
+    }   
+    return maxSum;   
+}  
+---
+T(n) = O(n)
