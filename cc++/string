@@ -1,3 +1,48 @@
+零、c-风格字符串与基于string类库的字符串
+1.c-风格字符串
+形式：char数组，以\0结尾
+赋值：
+（1）一个元素一个元素赋值，并加上\0。不能直接将一个char数组赋值给另一个char数组
+（2）使用字符串常量赋值。
+拼接：
+	两个用引号括起来的字符串自动合并，如：char str[10] = "ab" "cd";
+操作：
+	头文件<cstring>,老式实现string.h
+	-strlen()求字符串长度
+	char str[10];  int len = strlen(str);	//返回字符串长度（不是数组长度，不包含\0）	
+	-strcpy()将字符串复制到字符数组中
+	strcpy(cstr1,cstr2);		//将cstr2复制到cstr1
+	-strcat()将字符串附加到字符数组末尾
+	strcat(cstr1,cstr2);		//将cstr2追加到cstr1
+输入：
+（1）cin >>
+	char str[100];  cin >> str;
+	cin使用空白（空格，制表符和换行符）来确定字符串的结束位置，故在输入时只读取一个单词
+（2）cin.getline()/cin.get()
+	读取一行输入，知道达到换行符。getline()将丢弃换行符，而get()将换行符保留在输入序列中。
+	cin.getline(name,20);	//读取最多19个字符到name中
+	cin.get(name,20);	//读取第一行
+	cin.get();			//跳过回车，读取新行，用cin >> name2则没问题
+	cin.get(name2,10);	//读取第二行
+	-----
+（3）混合输入字符串和数字
+	int year;	cin >> year;
+	cin.get();/cin.get(ch);	//要把输入的回车读掉，不然字符串会认为是空
+	char a[10];	cin >> a; 
+
+2.string类
+形式：对象
+赋值：
+（1）使用字符串常量赋值。
+（2）使用c-风格字符串赋值
+（3）使用string对象赋值
+拼接：
+	使用+，+=。如str3= str1+str2;	str1+=str2;
+输入：
+（1）cin >>
+（2）cin.getline()/cin.get()
+（3）getline()
+	getline(cin,str1);
 一、转换
 1.string与int,float,double转换
 # 方法一： 使用stringstream

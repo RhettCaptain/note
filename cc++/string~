@@ -1,0 +1,108 @@
+零、c-风格字符串与基于string类库的字符串
+1.c-风格字符串
+形式：char数组，以\0结尾
+赋值：
+（1）一个元素一个元素赋值，并加上\0。不能直接将一个char数组赋值给另一个char数组
+（2）使用字符串常量赋值。
+拼接：
+	两个用引号括起来的字符串自动合并，如：char str[10] = "ab" "cd";
+操作：
+	头文件<cstring>,老式实现string.h
+	-strlen()求字符串长度
+	char str[10];  int len = strlen(str);	//返回字符串长度（不是数组长度，不包含\0）	
+	-strcpy()将字符串复制到字符数组中
+	strcpy(cstr1,cstr2);		//将cstr2复制到cstr1
+	-strcat()将字符串附加到字符数组末尾
+	strcat(cstr1,cstr2);		//将cstr2追加到cstr1
+输入：
+（1）cin
+	char str[100];  cin >> str;
+	cin使用空白（空格，制表符和换行符）来确定字符串的结束位置，故在输入时只读取一个单词
+（2）getline()/get()
+	读取一行输入，知道达到换行符。getline()将丢弃换行符，而get()将换行符保留在输入序列中。
+	cin.getline(name,20);	//读取最多19个字符到name中
+	cin.get(name,20);	//读取第一行
+	cin.get();			//跳过回车，读取新行，用cin >> name2则没问题
+	cin.get(name2,10);	//读取第二行
+	-----
+（3）混合输入字符串和数字
+	int year;	cin >> year;
+	cin.get();/cin.get(ch);	//要把输入的回车读掉，不然字符串会认为是空
+	char a[10];	cin >> a; 
+
+2.string类
+形式：对象
+赋值：
+（1）使用字符串常量赋值。
+（2）使用c-风格字符串赋值
+（3）使用string对象赋值
+拼接：
+	使用+，+=。如str3= str1+str2;	str1+=str2;
+
+一、转换
+1.string与int,float,double转换
+# 方法一： 使用stringstream
+#include <sstream>    //使用stringstream需要引入这个头文件 
+stringstream stream;
+stream<<t;//向流中传值
+out_type result;//这里存储转换结果
+stream>>result;//向result中写入值
+
+#方法二：使用atoi()、 atol() 、atof()函数  -----------------实际上是char类型向数值类型的转换
+注意：使用 atoi 的话，如果 string s 为空，返回值为0.则无法判断s是0还是空
+char szInput [256];  
+fgets ( szInput, 256, stdin );  
+i = atoi (szInput);  
+反之使用itoa(),ltoa()等
+char *ltoa(long value,char *string,int radix)；
+
+2.string与char*转换
+string可以被看成是以字符为元素的一种容器。与char*不同的是，string不一定以NULL('\0')结束。
+方法1.data 
+如： string str="abc"; 
+		 char *p=str.data(); 
+方法2.c_str 
+如：string str="gdfd"; 
+    char *p=str.c_str(); 
+方法3 copy 
+比如： string str="hello"; 
+			 char p[40]; 
+			 str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置
+			 *(p+5)='/0'; //要手动加上结束符
+方法4.char *转换成string
+如：string s;
+	  char *p = "adghrtyh";
+		s = p;
+
+二、char*操作
+1.字符串分割
+头文件：#include <string.h>
+定义函数：char * strtok(char *s, const char *delim);
+函数说明：strtok()用来将字符串分割成一个个片段。参数s 指向欲分割的字符串，参数delim 则为分割字符串，当strtok()在参数s 的字符串中发现到参数delim 的分割字符时则会将该字符改为\0 字符。在第一次调用时，strtok()必需给予参数s 字符串，往后的调用则将参数s 设置成NULL。每次调用成功则返回下一个分割后的字符串指针。
+返回值：返回下一个分割后的字符串指针，如果已无从分割则返回NULL。
+
+2.查找字符串
+头文件：string.h
+原型：char *strstr(char *str1, char *str2)
+功能：找出str2字符串在str1字符串中第一次出现的位置。
+
+3.格式化写入
+int sprintf(char *char,char *format[,argument,...]);
+如：sprintf(s,"0x%8x",4567);		//0x+小写16禁止，宽8右对齐
+
+4.复制
+（1）strcpy
+头文件：string.h
+原型：char *strcpy(char* dest, const char*src);
+功能：把从src地址开始且含有NULL结束符的字符串复制到以dest开始的地址空间
+（2）memcpy
+头文件：string.h
+原型：void *memcpy(void*dest, const void *src, size_t n);
+功能:由src指向地址为起始地址的连续n个字节的数据复制到以destin指向地址为起始地址的空间内。
+区别：与strcpy相比，memcpy并不是遇到'\0'就结束，而是一定会拷贝完n个字节。
+memcpy用来做内存拷贝，你可以拿它拷贝任何数据类型的对象，可以指定拷贝的数据长度；
+
+
+三、string操作
+1.获取长度
+str.length()；

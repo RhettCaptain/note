@@ -1,0 +1,70 @@
+一、结构体
+1.定义：
+struct 结构体名{
+    结构体所包含的变量或数组
+};		//注意分号
+
+2.结构体变量
+（1）struct 结构体名 变量名;	//注意C中要加struct，c++可以不加
+（2）//定义时定义变量
+struct 结构体名{
+    结构体所包含的变量或数组
+}变量名;	
+
+3.定义类型
+typedef struct 结构体名{
+    结构体所包含的变量或数组
+}新类型名;
+以后声明变量直接 新类型名 变量名即可。
+
+4.初始化
+strcut 结构体名 变量名 = {xx,xx,x};	//c++11可省略等号。
+
+二、共用体
+1.定义：
+union one4all
+{
+	int int_val
+	double double_val
+} ;
+
+2.用途
+	用法和结构体类似，但含义为一次只能存储其中一种类型。如：
+	struct widget
+	{
+		int type;
+		union				//匿名共用体
+		{
+			long id_num;
+			char id_char[20];
+		}
+	};
+	widget prize;
+	if(prize.type == 1){cin >> prize.id_num;}
+	else{cin >> prize.id_char; }
+	---
+	使用共同体可以节省内存。
+
+三、枚举
+1.定义
+enum spectrum {red, yellow,blue};
+red,yellow, blue是符号常量，对应整数值0,1,2
+
+2.变量
+spectrum band;
+band = blue;
+---
+枚举量可以做数字，但数字不能作为枚举量
+int a = red;	//OK,a==0;
+band = 0;	//NO
+int a = red + 1;	//OK
+
+3.赋值
+enum bits{one=1,two=2};	//显示设置
+enum bits{fir,sec=100,thr};	//fir=0,sec=100,thr=101;
+enum {zero, null = 0; one,true=1};	//zero = null = 0; one = true =1;	
+
+4.取值范围
+上限为大于最大值的最小2的幂-1，如最大枚举值101，则上限127，枚举变量 = 枚举名（126）是合法的。
+下界小于零类似，否则为0.
+

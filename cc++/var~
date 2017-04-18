@@ -1,0 +1,64 @@
+变量类型
+1.整形 
+short	至少16位
+int	至少与short一样长
+long	至少32位，且至少与int一样长
+long long 至少64位，且至少与long一样长
+以上都是符号型
+char 见7
+
+
+2.sizeof()
+size_t sizeof(int);	//返回字节数
+
+3*.<climits>
+包含了类型的最大最小值，如CHAR_BIT,CHAR_MAX,CHAR_MIN
+
+4.无符号
+unsigned int a;
+
+5.进制
+0<1~7>开头：八进制
+0x开头：十六进制
+其他：十进制
+-------------------
+cout默认输出十进制，如0xa 输出10；
+可以修改控制符dec,hex,oct，如
+cout << hex;	//作用效果直到下一次修改
+cout << 10;  	//输出a
+
+6.常量类型
+默认存储为int，除非太大
+C中使用#define定义符号常量，C++中请用const
+
+7.char
+存储数值（ASCII码），只是cout输出char型是会把这个数值转换为相应字符，内存中仍是数字。
+除了cout<<还可以用cout.put(ch)函数
+
+8.转义序列
+换行符 \n;	水平制表符\t;	垂直制表符\v;	退格\b;	回车\r;
+振铃\a;		反斜杠\\;	问号\?;		单引号\';	双引号\".		
+
+9.bool
+c++支持，c不支持
+true是1，false是0，任何非零都当做真。
+
+10.浮点型
+float	有效位数不少于32位
+double	有效位数不少于48位，且不少于float，通常64位
+long double	有效位数不少于double
+可以从cfloat或float.h中找到限制。
+----------------------
+通常cout会删除结尾的零，调用cout.setf()将覆盖这种行为。
+cout的ostream类有一个成员函数可以控制输出格式。
+--------------------
+浮点常量
+默认double型
+1.234f	//float型
+2.34F	//float型
+2.32E23	//double型
+2.33e-2	//double型
+1.42l	//long double型
+4.2L	//long double型
+
+

@@ -1,0 +1,10 @@
+数组
+1.初始化
+int card[10];			//OK
+int card[10] = {3, 4, 5};	//OK
+int card[] = {3, 4, 5};		//OK，不建议.NO in c++11
+int card2[10] = card;		//NO
+int card2[num];			//NO
+int card3[3] {3, 4, 5}		//OK in c++11
+int card3[] {}			//OK in c++11
+
