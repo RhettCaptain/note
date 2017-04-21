@@ -1,0 +1,42 @@
+Linux任务计划crontab
+1.crontab 简介
+	crontab 命令常见于 Unix 和类 Unix 的操作系统之中（Linux 就属于类 Unix 操作系统），
+用于设置周期性被执行的指令。该命令从输入设备读取指令，并将其存放于 crontab 文件中，
+以供之后读取和执行。通常，crontab 储存的指令被守护进程激活，crond 为其守护进程，
+crond 常常在后台运行，每一分钟会检查一次是否有预定的作业需要执行。
+	通过 crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell　script 脚本。
+时间间隔的单位可以是分钟、小时、日、月、周的任意组合。
+
+2.启动
+一般自启动，没有的话通过下面步骤
+sudo service rsyslog start //启动日志
+sudo cron －f & //启动crontab
+使用
+crontab -e //添加任务 
+基本格式 : *　　*　　*　　*　　*　　command 分　时　日　月　周　命令 
+第1列表示分钟1～59 每分钟用*或者 */1表示 
+第2列表示小时1～23（0表示0点） 
+第3列表示日期1～31 
+第4列表示月份1～12 
+第5列标识号星期0～6（0表示星期天） 
+第6列要运行的命令 
+crontab文件的一些例子： 30 21 * * * /usr/local/etc/rc.d/lighttpd restart 
+上面的例子表示每晚的21:30重启apache。 
+*/1 * * * * touch /home/shiyanlou/$(date +\%Y\%m\%d\%H\%M\%S) //在文档的最后一排加上这样一排命令,
+//该任务是每分钟我们会在/home/shiyanlou目录下创建一个以当前的年月日时分秒为名字的空白文件
+添加成功后我们会得到最后一排 installing new crontab 的一个提示
+当然我们也可以通过这样的一个指令来查看我们添加了哪些任务
+crontab -l
+通过 ps aux | grep cron or pgrep cron
+观察是否启动了cron
+当我们并不需要这个任务的时候我们可以使用这么一个命令去删除任务 crontab -r
+
+3.crontab深入
+	每个用户使用 crontab -e 添加计划任务，都会在 /var/spool/cron/crontabs 中添加一个该用户自己的任务文档，这样目的是为了隔离
+如果是系统级别的定时任务，应该如何处理？只需要以 sudo 权限编辑 /etc/crontab 文件就可以。
+cron 服务监测时间最小单位是分钟，所以 cron 会每分钟去读取一次 /etc/crontab 与 /var/spool/cron/crontabs 里面的內容。
+每个目录的作用： /etc/cron.daily，目录下的脚本会每天执行一次，在每天的6点25分时运行； 
+/etc/cron.hourly，目录下的脚本会每个小时执行一次，在每小时的17分钟时运行； 
+/etc/cron.mouthly，目录下的脚本会每月执行一次，在每月1号的6点52分时运行； 
+/etc/cron.weekly，目录下的脚本会每周执行一次，在每周第七天的6点47分时运行； 
+系统默认执行时间可以根据需求进行修改。

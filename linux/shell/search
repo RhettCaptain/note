@@ -1,0 +1,38 @@
+搜索文件
+与搜索相关的命令常用的有如下几个whereis,which,find,locate。
+1.whereis简单快速
+$whereis who
+这个搜索很快，因为它并没有从硬盘中依次查找，而是直接从数据库中查询。
+whereis只能搜索二进制文件(-b)，man帮助文件(-m)和源代码文件(-s)。
+
+2.locate快而全
+通过"/var/lib/mlocate/mlocate.db"数据库查找，不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行updatedb命令更新一次，所以有时候你刚添加的文件，它可能会找不到，需要手动执行一次updatedb命令（在我们的环境中必须先执行一次该命令）。它可以用来查找指定目录下的不同文件类型，如查找 /etc 下所有以 sh 开头的文件：
+$ locate /etc/sh
+注意,它不只是在 etc 目录下查找并会自动递归子目录进行查找
+查找 /usr/share/ 下所有 jpg 文件：
+$ locate /usr/share/\*.jpg
+注意要添加*号前面的反斜杠转义，否则会无法找到
+注意没有空格，否则会认为找两个
+如果想只统计数目可以加上-c参数，-i参数可以忽略大小写进行查找，whereis 的-b,-m，-s同样可以是使用。
+
+3.which小而精
+which本身是 Shell 内建的一个命令，我们通常使用which来确定是否安装了某个指定的软件，
+因为它只从PATH环境变量指定的路径中去搜索命令：
+$ which man
+
+4.find精而细
+在指定目录下搜索指定文件名的文件：
+这条命令表示去/etc/目录下面 ，搜索名字叫做interfaces的文件或者目录
+这是find命令最常见的格式,千万记住find的第一个参数是要搜索的地方
+$ sudo find /etc/ -name interfaces
+find 命令的路径是作为第一个参数的， 基本命令格式为 find [path] [option] [action]
+与时间相关的命令参数：
+参数	说明
+-atime	最后访问时间
+-ctime	创建时间
+-mtime	最后修改时间
+下面以-mtime参数举例：
+-mtime n: n 为数字，表示为在n天之前的”一天之内“修改过的文件
+-mtime +n: 列出在n天之前（不包含n天本身）被修改过的文件
+-mtime -n: 列出在n天之内（包含n天本身）被修改过的文件
+newer file: file为一个已存在的文件，列出比file还要新的文件名

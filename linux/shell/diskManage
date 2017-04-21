@@ -1,0 +1,67 @@
+磁盘管理
+1 查看磁盘和目录的容量
+使用 df 命令查看磁盘的容量
+使用 du 命令查看目录的容量
+-d参数指定查看目录的深度
+du -h #同--human-readable 以K，M，G为单位，提高信息的可读性。
+du -a #同-all 显示目录中个别文件的大小。
+du -s #同--summarize 仅显示总计，只列出最后加总的值
+
+2.简单的磁盘管理
+创建虚拟磁盘
+dd 命令简介
+dd命令用于转换和复制文件
+dd的命令行语句与其他的 Linux 程序不同，因为它的命令行选项格式为选项=值，
+而不是更标准的--选项 值或-选项=值。dd默认从标准输入中读取，并写入到标准输出中，
+但可以用选项if（input file，输入文件）和of（output file，输出文件）改变。
+---
+输出到文件
+$ dd of=test bs=10 count=1 # 或者 dd if=/dev/stdin of=test bs=10 count=1
+---
+输出到标准输出
+$ dd if=/dev/stdin of=/dev/stdout bs=10 count=1
+注
+在打完了这个命令后，继续在终端打字，作为你的输入
+bs（block size）用于指定块大小（缺省单位为 Byte，也可为其指定如'K'，'M'，'G'等单位），
+count用于指定块数量。
+
+使用 dd 命令创建虚拟镜像文件
+从/dev/zero设备创建一个容量为 256M 的空文件：
+$ dd if=/dev/zero of=virtual.img bs=1M count=256
+$ du -h virtual.img
+---
+使用 mkfs 命令格式化磁盘
+$ sudo mkfs.ext4 virtual.img
+---
+使用 mount 命令挂载磁盘到目录树
+我们先来使用mount来查看下主机已经挂载的文件系统：
+---
+$ sudo mount
+mount命令的一般格式如下：
+mount [options] [source] [directory]
+---
+
+一些常用操作：
+mount [-o [操作选项]] [-t 文件系统类型] [-w|--rw|--ro] [文件系统源] [挂载点]
+我们现在直接来挂载我们创建的虚拟磁盘镜像到/mnt目录：
+$ mount -o loop -t ext4 virtual.img /mnt
+也可以省略挂载类型，很多时候 mount 会自动识别
+---
+以只读方式挂载
+$ mount -o loop --ro virtual.img /mnt
+或者mount -o loop,ro virtual.img /mnt
+---
+使用 umount 命令卸载已挂载磁盘
+命令格式 sudo umount 已挂载设备名或者挂载点，如：
+$ sudo umount /mnt
+---
+使用 fdisk 为磁盘分区
+查看硬盘分区表信息
+$ sudo fdisk -l
+---
+使用 losetup 命令建立镜像与回环设备的关联
+$ sudo losetup /dev/loop0 virtual.img
+如果提示设备忙你也可以使用其它的回环设备，"ls /dev/loop*"参看所有回环设备
+---
+解除设备关联
+$ sudo losetup -d /dev/loop0

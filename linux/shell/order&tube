@@ -1,0 +1,20 @@
+命令执行顺序控制与管道
+1.简单的顺序执行
+简单的顺序执行你可以使用;来完成，比如上述操作你可以：
+$ sudo apt-get update;sudo apt-get install some-tool;some-tool
+# 让它自己运行
+
+2.有选择的执行命令
+$ which cowsay>/dev/null && cowsay -f head-in ohch~
+上面的&&就是用来实现选择性执行的，它表示如果前面的命令执行结果
+（不是表示终端输出的内容，而是表示命令执行状态的结果）返回0则执行后面的，否则不执行，
+你可以从$?环境变量获取上一次命令的返回结果.
+||在这里就是与&&相反的控制效果，当上一条命令执行结果为≠0($?≠0)时则执行它后面的命令：
+$ which cowsay>/dev/null || echo "cowsay has not been install, please run 'sudo apt-get install cowsay' to install"
+
+3.管道
+管道是什么,管道是一种通信机制，通常用于进程间的通信（也可通过socket进行网络通信），
+它表现出来的形式就是将前面每一个进程的输出(stdout)直接作为下一个进程的输入(stdin)。
+我们在使用一些过滤程序时经常会用到的就是匿名管道，在命令行中由|分隔符表示
+$ ls -al /etc | less
+通过管道将前一个命令(ls)的输出作为下一个命令(less)的输入，然后就可以一行一行地看。
