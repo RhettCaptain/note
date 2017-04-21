@@ -8,12 +8,29 @@
 	两个用引号括起来的字符串自动合并，如：char str[10] = "ab" "cd";
 操作：
 	头文件<cstring>,老式实现string.h
+	---
 	-strlen()求字符串长度
 	char str[10];  int len = strlen(str);	//返回字符串长度（不是数组长度，不包含\0）	
+	---
 	-strcpy()将字符串复制到字符数组中
 	strcpy(cstr1,cstr2);		//将cstr2复制到cstr1
+	---
 	-strcat()将字符串附加到字符数组末尾
 	strcat(cstr1,cstr2);		//将cstr2追加到cstr1
+	---
+	-strcmp(str1,str2);——字符串比较函数
+	比较规则：将两个字符串自左向右逐个字符比较（按照ASCII码值大小比较），直到出现不同的字符或者遇到'\0'为止。 
+  如果全部字符相同，则认为两个字符串相同。 
+  若出现不同的字符，则以第1对不相同的字符的比较结果为准。
+  比较结果由函数值带回。等0大正小负
+  ---
+  puts函数-输出字符串的函数
+	char str[]="China\nChengdu";
+	puts(str);
+	---
+	gets函数-输入字符串的函数
+	char str[20];
+	gets(str);
 输入：
 （1）cin >>
 	char str[100];  cin >> str;
