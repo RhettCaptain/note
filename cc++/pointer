@@ -1,0 +1,61 @@
+指针
+1.声明和初始化
+int *p_ptr;		//强调*p_ptr是一个int类型的值
+int* p_ptr;		//强调int*是一种类型——指向int的指针
+可以说p_ptr是指向int型的指针,或int*型，而*p_ptr是int，不是指针。
+int higgens = 5;
+int *pt = &higgens;	//初始化
+初始化的重要性：
+	int *fellow;	//没有初始化
+	*fellow = 2233;	//将数据2233赋值给fellow，但fellow并没有给定的地址。会造成致命错误。
+	一定要在对指针应用解除应用运算符（*）前，将指针初始化为一个确定的，适当的地址。
+指针不是数字
+	int* pt;
+	pt = 0xB8000000;	//wrong
+	pt = (int *)0xB80000;	//right
+
+2.内存分配
+（1）C —— malloc()
+原型：extern void *malloc(unsigned int num_bytes);
+头文件：#include <malloc.h> 或 #include <alloc.h>
+功能：分配长度为num_bytes字节的内存块
+说明：如果分配成功则返回指向被分配内存的指针，否则返回空指针NULL。
+当内存不再使用时，应使用free()函数将内存块释放。
+举例：
+	char *p; 
+	p=(char *)malloc(sizeof(char) * 10);  
+	free(p);  
+（2）C++ —— new
+原型：typeName* pointer_name = new typeName;
+说明：声明的常规变量都存储在栈（stack）内存，new的内存一般在堆（heap）内存或自由存储区（free store）
+    在使用完内存后，使用delete能够将其归还给内存池。
+举例：
+	int* pn = new int;
+	delete pn;	//right
+	delete pn;	//wrong
+     	int s = 5;
+	int* ps = &s;
+	delete ps;	//wrong,只能删除new的指针。
+
+3.使用new创建动态数组
+	int* psome = new int[10];	//创建包含10个int的动态数组，但不能用sizeof判断数组字节。
+	psome = new int[12];		//重新分配内存，之前的数据丢失。且应该先delete。
+	psome[12] = 10;			//能赋值，但delete会出错，在地址后面紧跟着new同理。
+	delete[] psome;	//[]告诉程序释放整个数组，而不是一个元素。
+	
+4.数组地址
+	数组地址不等于数组名，虽然数值一样，但含义不同
+	short tell[10];
+	cout << tell << endl;	//&tell[0],一个2字节内存块地址。tell+1，地址+2
+	cout << &tell << endl;	//整个数组地址，一个20字节内存块地址。&tell+1，地址+20
+	short (*ptr)[10] = &tell;	//ptr类型为short(*)[10]，即10位short数组的指针。
+
+5.指针与字符串
+	char数组，char指针以及字符串常量都被解释成字符串第一个字符的地址。
+	char* ps;	//未初始化
+	const char* str="test";	//常量，不能修改，字符串常量本身也不该被修改。
+	char arr[10];	//字符串数组
+	cout<<ps;	//可能乱码或崩溃！
+	cin>>ps;	//糟糕的尝试，可能成功，但有隐患。
+	cin>>str;	//有些编译器会报错，建议不要使用
+	cin>>arr;	//小于9个没问题，可以用足够大的数组接受，或者使用string
