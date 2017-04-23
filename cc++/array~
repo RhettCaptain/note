@@ -4,7 +4,7 @@ int card[10];			//OK
 int card[10] = {3, 4, 5};	//OK
 int card[] = {3, 4, 5};		//OK，不建议.NO in c++11
 int card2[10] = card;		//NO
-int card2[num];			//NO
+int card2[num];			//在c++中，如果num是const或常量表达式OK，否则或在c中NO
 int card3[3] {3, 4, 5}		//OK in c++11
 int card3[] {}			//OK in c++11
 
