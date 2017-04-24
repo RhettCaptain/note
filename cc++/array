@@ -63,4 +63,16 @@ vector <int>::iterator iter=vecInt.begin();
     i = vecInt.size();          //i=0         
 
 三、模板类 array(c++ 11)
+头文件：<array>
+声明：
+	array<int ,5> ai;	//必须指明数组大小且不可变更
+初始化：
+	array<double, 4> ad={1.2, 2.1, 3.4,4.3};
+赋值：
+	可以用一个array赋值另一个array，如a1=a2;
 
+四、数组，vector，array比较
+1.都可以通过标准书表示法访问各个元素。
+2.数组和array对象存储在栈中，vector存储在堆或自由存储空间，故vector效率较低。
+3.三者都没有越界检查，vector和array可以通过.at()访问，通过.begin()和end()防止越界。
+4.只有array可以用一个对象赋值另一个对象。
