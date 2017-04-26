@@ -32,3 +32,4 @@ const:const修饰的全局常量据有跟static相同的特性，即它们只能作用于本编译模块中，
 				cout << a << endl;	//输出1
 				cout << *(str+1) <<endl;	//输出def
 			}
+			
