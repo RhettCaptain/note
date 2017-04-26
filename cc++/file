@@ -1,8 +1,19 @@
-
-1.´ò¿ª¹Ø±ÕÎÄ¼þ£¨CÓïÑÔ£©
-FILE *p;
-fp=fopen("a1","r");
+ÎÄ¼þ²Ù×÷
+Ò»¡¢CÓïÑÔ²Ù×÷
+1.Í·ÎÄ¼þ
+<stdio.h>
+2.´ò¿ª¹Ø±ÕÎÄ¼þ
+FILE *fp;
+fp=fopen("a1","r");	//º¯ÊýÔ­ÐÍ£ºFILE * fopen(const char * path,const char * mode);
 fclose(fp);
+
+³£ÓÃmode:
+¡°r¡± ÒÔÖ»¶Á·½Ê½´ò¿ªÎÄ¼þ£¬¸ÃÎÄ¼þ±ØÐë´æÔÚ¡£
+¡°r+¡± ÒÔ¿É¶ÁÐ´·½Ê½´ò¿ªÎÄ¼þ£¬¸ÃÎÄ¼þ±ØÐë´æÔÚ¡£
+¡°w¡± ´ò¿ªÖ»Ð´ÎÄ¼þ£¬ÈôÎÄ¼þ´æÔÚÔòÎÄ¼þ³¤¶ÈÇåÎª0£¬¼´¸ÃÎÄ¼þÄÚÈÝ»áÏûÊ§¡£ÈôÎÄ¼þ²»´æÔÚÔò½¨Á¢¸ÃÎÄ¼þ¡£
+¡°w+¡± ´ò¿ª¿É¶ÁÐ´ÎÄ¼þ£¬ÈôÎÄ¼þ´æÔÚÔòÎÄ¼þ³¤¶ÈÇåÎªÁã£¬¼´¸ÃÎÄ¼þÄÚÈÝ»áÏûÊ§¡£ÈôÎÄ¼þ²»´æÔÚÔò½¨Á¢¸ÃÎÄ¼þ¡£
+¡°a¡± ÒÔ¸½¼ÓµÄ·½Ê½´ò¿ªÖ»Ð´ÎÄ¼þ¡£ÈôÎÄ¼þ²»´æÔÚ£¬Ôò»á½¨Á¢¸ÃÎÄ¼þ£¬
+		Èç¹ûÎÄ¼þ´æÔÚ£¬Ð´ÈëµÄÊý¾Ý»á±»¼Óµ½ÎÄ¼þÎ²£¬¼´ÎÄ¼þÔ­ÏÈµÄÄÚÈÝ»á±»±£Áô¡££¨EOF·û±£Áô£©
 
 2.ÎÄ¼þÊäÈëÊä³ö£¨CÓïÑÔ£©
 ÎÄ¼þµÄÊäÈëÓëÊä³ö
@@ -27,3 +38,5 @@ fseek£¨ÎÄ¼þÖ¸Õë£¬Î»ÒÆÁ¿£¬ÆðÊ¼µã£©; ¡£ÆäÖÐ£º¡°ÎÄ¼þÖ¸Õë¡±Ö¸Ïò±»ÒÆ¶¯µÄÎÄ¼þ£»¡°Î»ÒÆÁ
 ÀýÈç£º
 fseek(fp,100L,0);
 ---
+
+¶þ¡¢c++²Ù×÷

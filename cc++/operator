@@ -19,3 +19,10 @@ cout << ++*pt;	//pt指向arr[2]，输出arr[2]=5
 作用：将两个语句合成一个语句
 如：for(j=0,i=10;j<i;--i,++j){}
 int i,j不是
+
+3.： foreach(c++ 11)
+double prices[5] = {1.1,2.2,3.3,4.4,5.5};
+for(double x:prices)
+	cout << x << std::endl;
+for(double &x:prices)
+	cout << x << " ";

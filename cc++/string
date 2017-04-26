@@ -147,13 +147,34 @@
 			 	 str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置
 			 	 *(p+5)='/0'; //要手动加上结束符
 			 		
-5.输入：
+5.输入输出：
 （1）cin >>
+		会忽略空格和换行符；
+		输入被缓冲，即按下回车才会发给程序。
 （2）cin.getline()/cin.get()
+		cin.get(char* str,int size);
+		cin.get();		//重载1
+		cin.get(char &ch);	//重载2，引用
 （3）getline()
 	getline(cin,str1);
 	
 	
+三、字符函数库
+头文件：cctype（老式ctype.h)
+函数：
+isalnum();//如果是字母或数字则返回true
+isalpha();//如果是字母则返回true
+iscntrl();//如果是控制字符则返回true
+isdigit();//如果是数字则返回true
+isgraph();//如果是除空格外的打印字符则返回true
+islower();//如果是小写字母则返回true
+isprint();//如果是打印字符（包括空格）则返回true
+ispunct();//如果是标点符号则返回true
+isspace();//如果是标准空白字符，如空格，缩进，换行，回车，制表等则返回true
+isupper();//如果是大写字母则返回true
+isxdigit();//如果是十六机制数字，即0~9或a~f或A~F，则返回true
+tolower();//如果是大写字符，则返回其小写，否则返回该参数
+toupper();//如果是小写字符，在返回其大写，否则返回该参数
 
 
 
