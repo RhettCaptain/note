@@ -5,6 +5,7 @@ int func(int para);
 可以看做形参是函数内定义的一个变量。使用函数时，将实参复制给了形参，相当于创建了形参的副本。
 而当函数运行完，形参内存被释放，所以在函数内操作形参不影响实参的值。
 当形参与全局变量同名时，认为是形参变量。
+
 2.数组参数
 void func(int arr[],int n);
 void func(int* arr,int n);
@@ -14,5 +15,61 @@ void func(int* arr,int n);
 void func(int (*ar2)[4],int size);
 void func(int ar2[][4],int size);
 以上是二维数组的声明。
-3.字符串
 
+3.字符串
+(1)c-风格字符串
+char* createStr(){
+	char* str = new char[10];
+	//char str[10];		好像也行，但会有warning,而且字符串输出不了。不用也不能delete。
+	//str = "hello";	不行，这样str指向hello的新地址，而不是new的内存，无法delete
+	str[0]='i';
+	str[1]='\0';
+	return str;	
+}
+int main(){
+	char* out = createStr();
+	cout << out << endl;
+	delete[] out;		//指针变量str在函数结束时就释放了，但其指向的内存需要手动delete
+}
+
+4.函数指针
+步骤：
+---获取函数的地址---
+  使用函数名（不跟参数和括号）即可
+  process(think);	//think是think()的地址
+---声明一个函数指针---
+  原型：double pam(int);//prototype
+  声明：double (*pf)(int);
+	//double *pf(int);//pf是一个返回double*的函数
+  赋值：pf = pam;
+---使用函数指针来调用函数---
+  double x =(*pf)(5);
+  double y = pf(5);	//两种都可以，建议上一种。
+demo:
+#include <iostream>
+double betsy(int);
+double pam(int);
+void estimate(int lines, double (*pf)(int));
+int main(){
+	using namespace std;
+	int code;
+	cout << "HOw many linesof code do you need?";
+	cin >> code;
+	cout << "here is betsy's estimate:\n";
+	estimate(code,betsy);
+	cout << "here is pam's estimate:\n";
+	estimate(code,pam);
+	return 0;
+}
+double betsy(int lns){
+	return 0.05 * lns;
+}
+
+double pam(int lns){
+	return 0.01 * lns * lns;
+}
+void estimate(int lines,double (*pf)(int)){
+	using namespace std;
+	cout << lines << "lines will take ";
+	cout <<(*pf)(lines) << "hours\n";
+}

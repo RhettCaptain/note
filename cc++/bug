@@ -8,3 +8,10 @@ C/C++ 中头文件开始习惯使用 #ifndef ... #define ... #endif 这样的一组预处理标识符
 但这样有时候有时仍会带来缺乏声明的问题，需要通过前置声明解决。
 如head1.h中定义了bool func(ClassA* CA);  func 函数声明之前并没有发现 ClassA 类型定义，该定义在函数声明的后面，这时候如果能在head1.h 的函数声明之前加上 ClassA CA; 的前置声明，就不会在编译的时候报找不到 ClassA 的定义的错误了。
 参考网址：http://blog.csdn.net/hazir/article/details/38600419
+
+2.delete[] char指针 段错误
+int main(){
+	char* str = new char[10];
+	str = "i love u";	//引号字符串的地址赋给了str，str不再指向new的10char内存，所以delete会出错 
+	delete[] str;
+}
