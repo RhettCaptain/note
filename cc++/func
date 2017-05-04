@@ -32,8 +32,89 @@ int main(){
 	delete[] out;		//指针变量str在函数结束时就释放了，但其指向的内存需要手动delete
 }
 
-4.函数指针
-步骤：
+4.引用变量
+（1）创建引用变量
+int rat =10;
+int& ref = rat;
+ref是rat的引用/别名，指向同一个内存地址，故操作ref，rat也会改变。
+引用变量类似const指针，必须在创建时初始化，相当于绑定地址。
+（2）按引用传递
+	将引用用作函数参数，称为按引用传递。它和按指针传递都能改变变量本身。而按值传递只能改变副本，不改变变量本身。
+	如果只想传递信息，而不想进行修改，则可以使用常量引用，如double refcube(const double &ra);
+（3）返回引用
+	按值返回实质是计算return后面的表达式，复制到一个临时位置，然后再复制给调用的变量。
+	按引用返回直接将变量复制给调用的变量，效率更高。
+demo：
+//正确
+//定义
+free_throws& acc(free_throws& target)
+{
+	target.made += source.made;
+	return target;
+}
+free_throws dup = acc(team);	//使用
+//错误
+//该函数返回一个指向临时变量newguy的引用，函数运行完毕后，它将不再存在。
+free_throws& clone(free_throws &ft)
+{
+	free_throws newguy;
+	newguy = ft;
+	return newguy;
+}
+（4）何时使用引用参数
+--使用引用参数的主要原因
+    程序员能够修改调用函数中的数据对象
+    通过传递引而不是整个数据对象，可以提高程序的运行速度。
+--对于使用传递的值而不做修改的函数
+    如果数据对象很小，如内置数据类型或小型结构，则按值传递
+    如果数据对象是数组，则使用指针，因为这是唯一的选择，并将指针声明位指向const的指针。
+    如果数据对象是较大的结构，则使用const指针或const引用，以提高程序的效率，节省复制所需时间和空间。
+    如果数据对象是类对象，则使用const引用。传递类对象的标准方式是按引用传递。
+--对于修改调用函数中数据的函数。
+    如果对象是内置数据类型，则使用指针。
+    如果数据对象是数组，则使用指针。
+    如果数据对象是结构，则使用引用或指针
+    如果数据对象是类对象，则使用引用。
+
+5.三种传递比较
+（1）按引用传递
+void swapr(int &a, int &b)
+{
+        int temp;
+        temp = a;
+        a = b;
+        b = temp;
+}
+（2）按指针传递
+//正确,能改变变量
+//因为是对地址进行操作
+void swapp1(int* p,int* q)
+{
+        int temp;
+        temp = *p;
+        *p = *q;
+        *q = temp;
+}
+//错误，不能改变变量
+//地址/指针进来也是拷贝的副本，没有影响原来的指针变量。
+void swapp1(int* p,int* q)
+{
+        int* temp;
+        temp = p;
+        p = q;
+        q = temp;
+}
+（3）按值传递
+void swapv(int a, int b)
+{
+        int temp;
+        temp = b;
+        b = a;
+        a = temp;
+}
+
+二、函数指针
+1.步骤：
 ---获取函数的地址---
   使用函数名（不跟参数和括号）即可
   process(think);	//think是think()的地址
@@ -45,7 +126,7 @@ int main(){
 ---使用函数指针来调用函数---
   double x =(*pf)(5);
   double y = pf(5);	//两种都可以，建议上一种。
-demo:
+2.demo:
 #include <iostream>
 double betsy(int);
 double pam(int);
@@ -73,3 +154,12 @@ void estimate(int lines,double (*pf)(int)){
 	cout << lines << "lines will take ";
 	cout <<(*pf)(lines) << "hours\n";
 }
+
+三、内联函数
+1.作用：
+	相当于为每处调用提供函数副本，而不是跳转。
+	牺牲内存提高速度。
+2.使用：
+	在函数声明或函数定义前加上关键字inline
+	如inline double square(double x);
+	使用正常。
