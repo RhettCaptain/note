@@ -80,3 +80,19 @@
 4.查看坐标转换
 	rosrun tf view_frames
 	evince framse.pdf
+
+5.父子坐标系关系
+	所有的tf都是指从父坐标系(parent_frame)到子坐标系(child_frame)的坐标变换。
+	如图：
+				___			|
+		____|_|_		|
+		|______|    |
+		上面是激光(laser)，下面小车(base_link)，激光里车中心长0.1，高0.2.
+		激光坐标系中右边杆子坐标（0.3,0,0），小车坐标系中右边杆子坐标（0.4,0.0,0.2）；
+		tf::Quaternion(0,0,0,1),tf::Vector3(0.1,0.0,0.2)表明base_link到laser的tf。
+		即子坐标系（laser）中的坐标在父坐标系(base_link)的坐标表示要加上这个变换（长+0.1，高+0.2）。
+		或者可以理解成，子坐标系中心在父坐标系中的坐标为(0.1,0.0,0.2)。
+
+6.关于旋转与四元数
+	  tf::Quaternion(pitch，roll，yaw);		//已经弃用，但能用，简单易懂
+	  tf::Quaternion(a，b，c，w);		//四元数，待研究	
