@@ -113,6 +113,11 @@ void swapv(int a, int b)
         a = temp;
 }
 
+6.默认参数
+（1）使用方法
+	在原型中声明，如void test(char ch,int n=1);函数定义中不需要，如void test(cahr ch,int n);
+	必须从右向左添加默认值，即要为某个参数设置默认值，则必须位它右边的所有参数提供默认值。
+
 二、函数指针
 1.步骤：
 ---获取函数的地址---
@@ -163,3 +168,18 @@ void estimate(int lines,double (*pf)(int)){
 	在函数声明或函数定义前加上关键字inline
 	如inline double square(double x);
 	使用正常。
+
+四、函数模板
+1.格式：
+　　template <typename 泛型名> 
+  返回类型 函数名(参数列表)
+　　{函数体}
+  如：template <typename T> 
+      void swap(T& a, T& b){}
+  有的时候typename可以用class代替（C++98之前使用class）。
+2.使用：
+  直接使用，如
+  int a=1,b=2;
+  swap(a,b);
+3.显示具体化
+
