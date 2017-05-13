@@ -65,7 +65,7 @@
 	---
 	格式化写入
 	int sprintf(char *char,char *format[,argument,...]);
-	如：sprintf(s,"0x%8x",4567);		//0x+小写16禁止，宽8右对齐
+	如：sprintf(s,"0x%8x",4567);		//0x+小写16进制，宽8右对齐
 	---
 	<2>char* 与 string（char* --> string)
 	---
