@@ -109,4 +109,46 @@ mutable;//即使结构/类变量为const，其某个成员的值也是被修改�
 const;//表明内存被初始化后，程序不能再对它进行修改。c++中const的链接性是内部的，可通过extern覆盖
 volatile;//表明即使程序代码没有对内存单元进行修改，其值也可能发生变化。告诉编译器不要进行（假设变量值在两次使用间不会变化）的优化。
 
+14.名字空间
+（1）创建
+    通过定义一种新的声明区域来创建命名的名称空间。
+    namespace Jack{
+	double pail;
+	void fetch();
+	int pal;
+	struct Well{...};
+    }
+    namespace Jill{
+    	double bucket(double n){...}
+	double fetch;
+	namespace fire{		//可以嵌套
+		int flame;
+	}
+    }	
+    名字空间可以是全局的，也可以位于另一个名称空间中，但不能位于代码块中。
+    因此默认情况下，在名称空间中声明的名称的链接性为外部的（除非它引用了常量）。
+    除了用户定义的名称空间，还有一个默认的全局名称空间，全局变量都在全局名称空间中
+（2）使用
+-using声明：特定的标识符可用
+	char fetch;
+	using Jack::pail;		//将Jack的pail添加到全局名称空间
+	int main()
+	{
+		using Jill::fetch;	//将Jill的fetch声明添加到main定义的声明区域中。 
+					//这里可以用fetch代替Jill::fetch
+					//并隐藏全局的fetch
+		//double fetch;		//错误，该声明区域已经有一个fetch了
+		cin >> fetch;		//读入Jill::fetch
+		cin >> ::fetch;		//读入全局的fetch
+	}
+-using编译：全部名称可用
+	using namespace Jack
+	一般不允许使用两个using声明同一个名称，这样会存在二义性
+（3）建议
+-使用在已命名的名称空间中声明的变量，而不是使用外部全局变量。
+-使用在已命名的名称空间中声明的变量，而不是使用静态全局变量。
+-不要在头文件中使用using编译指令。
+-导入名称时，首选使用作用域解析运算符或using声明的方法。
+-对于using声明，首选使用作用域设置为局部而不是全局。
+    
 
