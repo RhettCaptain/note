@@ -32,8 +32,43 @@ Point::setPoint(int x,int y){}
     如果提供了Stock(const char* str),也必须提供Stock()，否则无法声明Stock stock;
     可以通过（1）提供默认值的方法Stock(const char* str = "hello")或
     （2）重载的方法Stock()来提供默认构造函数，但不要同时使用。
+4.析构函数
+    当对象过期时，程序调用析构函数完成清理工作。
+    如果构造函数使用new来分配内存，则析构函数将使用delete来释放这些内存。
+    如果构造函数没有使用new，析构函数没有需要完成的任务，使用隐式析构函数即可。
+5.类内常量
+    const int Months = 12;	//错误，在创建对象钱没有用于存储值的空间
+可用方法
+（1）枚举
+    enum {Months = 12};
+    double costs[Moths];    
+（2）static
+    static const int Months = 12;
 
-三、拷贝与赋值
+三、运算符重载
+1.格式
+operatorop(argument-list)
+如Time operator+(const Time &t) const{...}
+Time t1,t2,t3;
+t3 = t1 + t2;	//相当于Time对象t1调用方法operator+()，参数是t2,并返回一个Time对象。(运算符表示法）
+也可以使用 t3 = t1.operator+(t2);（函数表示法）
+
+2.重载限制
+（1）重载后的运算符，至少有一个操作数是用户定义的类型。
+（2）使用运算符时不能违反运算符原来的句法规则和优先级。
+（3）不能创建新运算符。
+可重载的运算符：
++;-;*;/;%;^;&;|;~=;!;=;<;>;+=;-=;*=;/=;...
+（4）不能重载下面运算符
+-sizeof
+-.	//成员运算符
+-*	//成员指针运算符
+-::	//作用域解析
+-?:	//条件运算符
+-typeid;const_cast;dynamic_cast;reinterpret_cast;static_cast
+
+
+四、拷贝与赋值
 1.定义
     如果对象在声明的同时马上进行的初始化操作，则称之为拷贝运算。例如：
         class1 A("af"); class1 B=A;
