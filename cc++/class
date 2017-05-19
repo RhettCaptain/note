@@ -95,3 +95,18 @@ public class A
 }
 4.参考网站
 	http://www.cnblogs.com/alexusli/archive/2008/08/27/1277683.html
+
+五、友元（函数）
+1.定义
+    有一类特殊的非成员函数，可以访问类的私有成员，它们被称为友元函数。
+    除了友元函数，还有友元类和友元成员函数。
+2.用途
+    在为类重载二院运算符时，常常需要友元。
+    重载类运算符*，A=B*2.1，等价于 A = B.operator*(2.1);
+    但A = 2.1 * B通过不了。
+    通过定义友元函数，Time operator*(double m,const Time& t);可以将上式与A = operator*(2.1,B)匹配。
+3.创建
+（1）将原型放在类声明中，并加上关键字friend。如：
+	friend Time operator*(double m,const Time &t);
+（2）编写函数定义。不用使用类限定符，如Time::。不要在定义中使用关键字friend。如：
+	Time operator*(double m,const Time &t){ ... }
