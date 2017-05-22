@@ -37,14 +37,19 @@ Point::setPoint(int x,int y){}
     如果构造函数使用new来分配内存，则析构函数将使用delete来释放这些内存。
     如果构造函数没有使用new，析构函数没有需要完成的任务，使用隐式析构函数即可。
 5.类内常量
-    const int Months = 12;	//错误，在创建对象钱没有用于存储值的空间
+    const int Months = 12;	//错误，在创建对象前没有用于存储值的空间
 可用方法
 （1）枚举
     enum {Months = 12};
     double costs[Moths];    
 （2）static
     static const int Months = 12;
-
+6.静态类成员
+    不能在类声明中初始化静态成员变量，这是因为声明描述了如何分配内存，但并不分配内存。
+对于静态类成员，可以在类声明之外使用单独的语句进行初始化（使用作用于运算符，但不使用static）。
+这是因为静态类成员是单独存储的，而不是对象的组成部分。
+对于不能在类声明中初始化静态数据成员的一种例外是，静态数据成员位整形或枚举型const。
+如static int numStr; int StrBad::numStr=0;
 三、运算符重载
 1.格式
 operatorop(argument-list)
@@ -110,3 +115,5 @@ public class A
 	friend Time operator*(double m,const Time &t);
 （2）编写函数定义。不用使用类限定符，如Time::。不要在定义中使用关键字friend。如：
 	Time operator*(double m,const Time &t){ ... }
+
+
