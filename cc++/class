@@ -73,6 +73,14 @@ Point::setPoint(int x,int y){}
     如：Queue::QUeue(int qs):qsize(qs),front(NULL),item(0){}
 c++11允许在声明时直接初始化，
     如：class Classy{const int mem=20;...}
+---
+初始化顺序
+    当初始化列表包含多个项目时，这些项目被初始化的顺序为它们被声明的顺序，而不是它们在初始化列表中的顺序。
+即类定义中先声明的先初始化。
+9.隐式转换与explicit
+    可以用一个参数调用的构造函数用作从参数类型到类类型的隐式转换函数，但这通常不是个好主意。
+    使用explicit关键词可以关闭隐式转换。如：
+    explicit Student(int n):name("Nully"),scores(n){}
 
 
 三、运算符重载
