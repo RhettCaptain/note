@@ -152,7 +152,7 @@ public class A
 4.参考网站
 	http://www.cnblogs.com/alexusli/archive/2008/08/27/1277683.html
 
-五、友元（函数）
+五、友元
 1.定义
     有一类特殊的非成员函数，可以访问类的私有成员，它们被称为友元函数。
     除了友元函数，还有友元类和友元成员函数。
@@ -166,6 +166,28 @@ public class A
 	friend Time operator*(double m,const Time &t);
 （2）编写函数定义。不用使用类限定符，如Time::。不要在定义中使用关键字friend。如：
 	Time operator*(double m,const Time &t){ ... }
+4.友元类
+（1）定义
+    友元类的所有方法都可以访问原始类的私有成员和保护成员。
+    也可以做更严格的限制，只将特定的成员函数指定为另一个类的友元。
+（2）用途
+    如TV类和遥控器类这种，遥控器类能改变TV类的关系需要将遥控器类作为TV类的友元类。
+（3）创建
+    //局部友元需要前向声明
+    //class TV;
+    //class Remote {...}; 
+    class TV{
+    public:
+	friend class Remote;
+    //  friedn void Remote::set_chan(TV& t,int c);局部友元，即只有该方法是Tv类的友元方法。
+	bool volup();
+	...
+    }
+    
+    class Remote{
+        bool volup(TV &t){return t.volup();
+        ...
+    }
 
 六、（成员函数）返回值
 1.返回指向const对象的引用
