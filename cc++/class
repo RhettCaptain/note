@@ -352,10 +352,55 @@ hasDMA& hasDMA::operator=(const hasDMA& hs)
 //TO DO
 
 八、模板类
-1.格式
-template<class  形参名，class 形参名，…>   class 类名
-　　{ ... };
-如 template<class T> class A{public: T a; T b; T hy(T c, T &d);};
-2.参考
-http://www.cnblogs.com/gw811/archive/2012/10/25/2738929.html
+1.模板定义（相当于类声明）
+template<class  形参名，class 形参名，…>   //也可以用typename代替class
+class 类名
+{ ... };
+如 
+template<class T> 
+class A
+{public: T a; T b; T hy(T c, T &d);};
+
+2.实例化（相当于类定义）
+由于模板不是函数，它们不能单独编译。模板必须与特定的模板实例化请求一起使用。
+为此，最简单的方法是将所有模板信息的一个头文件中，并在要使用这些模板的文件中包含该头文件。
+如：
+template <class Type>
+class Stack
+{
+private:
+	int top;
+public:
+	Stack();
+	bool isempty();
+};
+//实例化
+template <calss Type>
+Stack<Type>::Stack()
+{
+	top = 0;
+}
+
+template <class Type>
+bool Stack<Type>::isempty()
+{
+	return top == 0;
+}
+
+3.使用
+必须实例化对象，如Stack<int> kernels;Stack<string> cononels;
+编译器将按模板生成两个独立的类声明和两组独立的类方法。
+
+4.指针栈
+Stack<char *> st;
+（1）错误示例：
+-将string po;换成char * po;
+   没有分配空间，崩溃；
+-将string po;换成char po[40];
+    数组名不是左值，不能赋值。
+-将string po;换成char *po = new char[40];
+    总指向相同的地址单元，指向读入的最后一个字符串，无法保存每个新字符串。
+（2）正确方法
+    使用指针栈的方法之一，让调用程序提供一个指针数组，其中每个指针都指向不同的字符串。
+
 
