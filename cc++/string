@@ -98,6 +98,9 @@
 	gets函数-输入字符串的函数
 	char str[20];
 	gets(str);
+（5）int getchar()读取一个字符
+  头文件stdio.h
+  demo:char a = getchar();
 	
 
 
