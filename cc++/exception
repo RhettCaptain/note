@@ -1,0 +1,69 @@
+异常
+一、abort，exit
+1.说明：自己判断可能的错误，然后使用abort()或exit()
+2.头文件：stdlib.h
+3.使用:abort(),exit(a)//a==0为正常退出，否则异常
+二、try-catch
+1.说明：
+    在函数中可以通过throw抛出异常，throw类似与return，将终止函数执行，
+但控制权不返回给调用程序，而是导致程序沿函数调用序列后退，知道找到包含try块的函数。
+    使用该函数时可以通过try{}尝试运行该函数，
+    可以通过catch(...){}捕获相应异常，并处理。
+2.示例：
+    double excep(double a, double b)
+    {
+        if(b==0)
+	{
+		throw "b is 0";	
+	}
+	return a/b;
+    }
+    int main()
+    {
+	try
+	{
+		excep(2,0);
+	}
+	catch(const char* str)	//只能捕获相应抛出
+	{
+		...
+	}
+    }
+3.抛出对象
+    通常引发异常的函数将传递一个对象。如
+    //异常类
+    class EXC
+    {
+    private:
+	string cont;
+    public:
+	EXC(string a="hello"){};
+    }
+    //抛出时
+    throw EXC("good");
+    //捕获时
+    catch(EXC &c){}
+4.栈解退
+    假设try块没有直接调用引发异常的函数，而是调用了对引发异常的函数进行调用的函数，
+则程序流程将从引发异常的函数调到包含try块和处理程序的函数。
+5.exception类
+头文件：<exception>/<exception.h>/<except.h>
+说明：
+    可以通过继承exception来统一捕获异常
+示例：
+#include <exception>
+class bad_hmean : public std::exception
+{
+public:
+    const cahr *what(){return "bad"}
+};
+
+catch(std::exception &e)
+{
+	cout << e.what() << endl;
+}
+6.未捕获异常
+    未捕获的异常不会导致程序立刻终止，而是会首先调用terminate(),默认情况下terminate()会调用abort()
+    可以通过set_terminate()改变终止函数。如：
+    void myQuit(){}
+    set_terminate(myQuit);
