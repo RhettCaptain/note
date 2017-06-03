@@ -425,4 +425,25 @@ Stack<char *> st;
 （2）正确方法
     使用指针栈的方法之一，让调用程序提供一个指针数组，其中每个指针都指向不同的字符串。
 
-
+九、RTTI（运行阶段类型识别）
+1.dynamic_cast 运算符
+    如果可能的话，dynamic_cast运算符将使用一个指向基类的指针来生成一个指向派生类的指针，
+否则，则返回0（空指针）。
+    回答了是否可以安全的见对象的地址赋给特定类型的指针的问题。
+    class Grand{};
+    class Superb : public Grand{};
+    Grand* pg = new Grand();
+    Grand* ps = new Superb();
+    if(ps = dynamic_cast<Superb* >(pg))    //如果非0,则说明成功转型
+    {
+	ps->Say();		//可以安全使用派生类方法。
+    }
+2.typeid运算符和type_info类
+（1）type_info
+    type_info是在头文件<typeinfo>/<typeinfo.h>中定义的一个类。
+    重载了==和！=用于对类型进行比较。
+（2）typeid
+    能够确定两个对象是否为同种类型。可以接受类名或者结果为对象的表达式作为参数。
+（3）示例
+    typeid(Magnificent) == typeid(*pg)
+    如果pg指向一个Magnicficent对象，则为true，否则false；
