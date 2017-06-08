@@ -80,10 +80,11 @@
 	char str[100];  cin >> str;
 	cin使用空白（空格，制表符和换行符）来确定字符串的结束位置，故在输入时只读取一个单词
 （2）cin.getline()/cin.get()
-	读取一行输入，知道达到换行符。getline()将丢弃换行符，而get()将换行符保留在输入序列中。
+	读取一行输入，直到达到换行符。getline()将丢弃换行符，而get()将换行符保留在输入序列中。
+	cin.getline()可以指定边界，如cin.getline(name,20,':');读到:并丢弃:
 	cin.getline(name,20);	//读取最多19个字符到name中
 	cin.get(name,20);	//读取第一行
-	cin.get();			//跳过回车，读取新行，用cin >> name2则没问题
+	cin.get();		//跳过回车，读取新行，用cin >> name2则没问题
 	cin.get(name2,10);	//读取第二行
 	-----
 （3）混合输入字符串和数字
@@ -148,15 +149,27 @@
 	---
 	获取字符串长度
 	str.length()；
+	str.size();	//同上，为了兼容stl设计
 	---
 	（2）复制
 	直接复制，如str2 = str1;	
 	（3）比较
 	直接比较，如str1 == "hello"；
 	（4）查找与分割
+	//从字符串的pos位置开始，查找子字符串str，如果找到，则返回该字符串首次出现时，其首字符的索引；否则，返回string::npos(-1)
+	size_type find(const string& str, size_type pos=0)const
+	size_type find(const char* str, size_type pos=0)const	如
+	string str1 = "hello";
+	string str2 = "lo";
+	int idx = str1.find(str2,1)	//idx = str1.find(str2) = 3;
+	//从字符串的pos位置开始，查找子字符串s的前n位，如果找到，则返回该字符串首次出现时，其首字符的索引；否则，返回string::npos(-1)
+	size_type find(const char *s, size_type pos=0, size_type n)const
+	//从字符串的pos位置开始，查找子字符ch，如果找到，则返回该字符串首次出现时，其首字符的索引；否则，返回string::npos(-1)
+	size_type find(char ch, size_type pos=0)const
+	//其他还有find_first_of(),find_last_of(),find_last_of(),find_first_not_of()
 	（5）转换与格式
 	<1>string 与 数值
-  ---
+  	---
 	使用stringstream
 	#include <sstream>    //使用stringstream需要引入这个头文件 
 	stringstream stream;
@@ -179,7 +192,19 @@
 				 char p[40]; 
 			 	 str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置
 			 	 *(p+5)='/0'; //要手动加上结束符
-			 		
+	（6）插入、清除和替换
+	<1>插入
+	basic_string& insert(size_type pos1,const basic_string& str);	//在pos1位后插入str
+	string str1 = "hello";
+	string str2 = "rhett";
+	str1.insert(1,str2);	//str1 = hrhettello
+	<2>清除
+	basic_string& erase(size_type pos=0,size_type n=npos);	//从pos位置开始，删除n个字符或删除到字符串尾。
+	<3>替换
+	basic_string& replace(size_type pos1,size_type n1, const basic_string& str);	//从pos1位起将n1位换为str
+	string str1="hello world";
+	str1.replace(6,5,"rhett");	//str1 = hello rhett
+	
 5.输入输出：
 （1）cin >>
 		会忽略空格和换行符；
