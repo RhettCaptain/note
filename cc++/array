@@ -14,16 +14,19 @@ int card3[] {}			//OK in c++11
 (2)创建vector对象，vector<int> vec;
 (3)尾部插入数字：vec.push_back(a);
 (4)使用下标访问元素，cout<<vec[0]<<endl;记住下标是从0开始的。
-(5)使用迭代器访问元素.
+(5)使用.at()访问元素，cout<<vec.at(0)<<endl;at()会检查越界，下标不会
+(6)使用迭代器访问元素.
 vector<int>::iterator it;
 for(it=vec.begin();it!=vec.end();it++)
     cout<<*it<<endl;
-(6)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
+(7)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
 vec.insert(vec1.begin(),vec2.begin()+1,vec2.end());在vec1前面插入vec2除去第一个元素的部分;
-(7)删除元素：    vec.erase(vec.begin()+2);删除第3个元素
+(8)删除元素：    vec.erase(vec.begin()+2);删除第3个元素
 vec.erase(vec.begin()+i,vec.end()+j);删除区间[i,j-1];区间从0开始
-(8)向量大小:vec.size();
-(9)清空:vec.clear();
+(9)向量大小:vec.size();
+(10)清空:vec.clear();
+(11)队首元素:vec.front();	//相当于*vec.begin()
+(12)队尾元素:vec.back();	//相当于*--a.end()
 
 2.初始化
 vector< int > ivec( 10 );  //类似数组定义int ia[ 10 ];
@@ -48,7 +51,7 @@ for(it = v2.begin();it!=v2.end();++it){//遍历v2,赋值给v1
     vecInt.clear();
     j= vecInt.capacity();      //j=512
     i = vecInt.size();         //i=0
-     v1.push_back(it);}
+    v1.push_back(it);}
 第二种办法使用 erase循环删除，结果同上
 vector <int>::iterator iter=vecInt.begin();
     for ( ;iter!=vecInt.end();)
@@ -62,6 +65,11 @@ vector <int>::iterator iter=vecInt.begin();
 //   vecInt.swap(vector<int>()) ;     另一种写法
     j= vecInt.capacity();       //j=0  
     i = vecInt.size();          //i=0         
+
+5.反转
+    rbegin()	返回一个指向反转序列的第一个元素的迭代器
+    rend()	返回反转序列的超尾迭代器
+    for_each(dice.rbegin(),dice.rend(),Show);	//反转输出
 
 三、模板类 array(c++ 11)
 1.头文件：<array>

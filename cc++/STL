@@ -9,14 +9,89 @@
 
 2.容器
 （1）基本
+    容器概念是具有名称（容器、序列容器、关联容器等）的通用类别。
+    容器类型是可用于创建具体容器对象的模板：包括
+    deque\list\queue\priority_queue\stack\vector\map\multimap\set\multiset\bitset
+    (c++11新增）forward_list\unordered_map\unordered_multimap\unordered_set\unordered_multiset
+    ---
     所有的STL容器都提供了一些基本方法，包括：
     size()  //返回容器中元素数目。
     swap()  //交换两个容器的内容
     begin() //返回一个指向容器中第一个元素的迭代器
     end()   //返回一个超过容器尾的迭代器,即指向容器最后一个元素后面的那个元素，与'\0'功能类似。
-(2)vector
+
+(2)序列（sequence）
+    通过添加要求来改进基本的容器概念
+    序列容器类型包括:
+    forward_list\list\queue\priority_queue\stack\vector
+    序列的要求：
+    表达式		返回类型		说明
+    X a(n,t)					声明一个名为a的由n个t值组成的序列
+    X(n,t)					创建一个由n个t值组成的匿名序列
+    X a(i,j)					?声明一个名为a的序列，并将其初始化为区间[i,j)的内容
+    X(i,j)					?创建一个匿名序列，并将其初始化为区间[i,j)的内容
+    a.insert(p,t)	迭代器			将t插入到p的前面
+    a.insert(p,n,t)	void			将n个t插入到p的前面
+    a.insert(p,i,j)	void 			?将区间[i,j)中的元素插入到p的前面
+    a.erase(p)		迭代器			删除p指向的元素
+    a.erase(p,q)	迭代器			删除[p,q)中的元素
+    a.clear()		void			等价于erase(begin(),end());
+    ---还有一些可选要求---
+    表达式		返回类型	含义			容器
+    a.front()		T&		*a.begin()		vector,list,deque
+    a.back()		T&		*--a.end()		vector,list,deque
+    a.push_front(t)	void 		a.insert(a.begin(),t)	list,deque
+    a.push_back(t)	void		a.insert(a.end(),t)	vector,list,deque
+    a.pop_front(t)	void 		a.erase(a.begin())	list,deque
+    a.pop_back(t)	void 		a.erase(--a.end())	vector,list,deque
+    a[n]		T&		*(a.begin()+n)		vector,deque
+    a.at(t)		T&		*(a.begin()+n)		vector,deque
+
+(3)vector
     参见array
 
+(4)deque
+    头文件：<deque>
+    含义：双端队列
+
+(5)list
+    头文件：<list>
+    含义：双向链表
+    成员函数：
+	void merge(list<T,Alloc>&x)	//将链表x与调用链表合并。两个链表必须已经排序。合并后保存在调用链表中，x为空。
+	void remove(const T& val)	//从链表中删除val的所有实例
+	void sort()			//使用<运算符排序，复杂度NlogN
+	void splice(iterator pos,list<T,Alloc>x)	//将链表x的内容插入到pos前面，x将位空。
+	void unique()			//将连续的相同元素压缩为单个元素。
+
+(6)forward_list
+    含义：单向链表
+
+(7)queue
+    头文件：<queue>
+    含义：一个适配器类，让底层类（deque）展示典型的队列接口
+    成员函数：
+    	bool empty()const		//如果队列为空，则返回true，否则false
+	size_type size()const		//返回队列中元素的数目
+	T& front()			//返回指向队首元素的引用
+	T& back()			//返回指向队尾元素的引用
+	void push(const T& x)		//在队尾插入x
+	void pop()			//删除队首元素
+
+(8)priority_queue
+    头文件：<queue>
+    含义：一个适配器类，最大元素被移到队首，默认的底层类是vector。
+
+(9)stack
+    头文件：<stack>
+    含义：一个适配器类，给底层类（vector)提供典型的栈接口。 
+    成员函数：
+	bool empty()const		//如果栈为空，则返回true，否则false
+	size_type size()const		//返回栈中元素的数目
+	T& top()			//返回指向栈顶元素的引用
+	void push(const T& x)		//在栈顶插入x
+	void pop()			//删除栈顶元素
+元素
 3.迭代器
 （1）基本
 声明
