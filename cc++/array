@@ -19,6 +19,7 @@ vector<int>::iterator it;
 for(it=vec.begin();it!=vec.end();it++)
     cout<<*it<<endl;
 (6)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
+vec.insert(vec1.begin(),vec2.begin()+1,vec2.end());在vec1前面插入vec2除去第一个元素的部分;
 (7)删除元素：    vec.erase(vec.begin()+2);删除第3个元素
 vec.erase(vec.begin()+i,vec.end()+j);删除区间[i,j-1];区间从0开始
 (8)向量大小:vec.size();

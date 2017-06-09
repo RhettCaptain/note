@@ -33,3 +33,29 @@ int main(){inc();inc();inc();}
 	-每个对象都将增大，增大量为存储地址的空间。
 	-对于每个类，编译器都创建一个虚函数地址表（数组）
 	-对于每个函数调用，都需要执行一项额外的操作，即到表中查找地址。
+
+三、智能指针
+1.含义
+    智能指针是行为类似于指针的类对象，但这种对象还有其他功能。
+    智能指针主要为了解决new的指针忘了delete的情况。它通过自身的析构函数，在指针过期时释放动态内存。
+2.三个智能指针模板
+    auto_ptr(C++98 被c++11摒弃）	unique_prt,shared_ptr(c++11)
+3.创建
+头文件:<memory>
+using namespace std;
+    auto_ptr<double> pd(new double);
+    unique_ptr<double> pdu(new double);
+    shared_ptr<string> pss(new string);
+4.转型
+    shared_ptr<double> pd;
+    double *p_reg = new double;
+    pd = p_reg;		//not allowed(implicit conversion)
+    pd = shared_ptr<double>(p_reg);	//allowed(explicit conversion)
+5.区别
+    一般指针会存在一个问题，即如果两个指针指向同一个对象，则会析构两次从而出错，解决方案有三：
+    （1）定义赋值运算符，使之执行深复制。即一个对象是另一个对象的副本，即不同对象。
+    （2）建立所有权概念，即对于特定对象，只能有一个智能指针拥有它。可以通过赋值操作转让所有权。(auto_ptr，unique_ptr，后者编译检查更严格)
+    （3）创建智能更高的指针，跟踪引用特定对象的智能指针数，即引用计数(shared_ptr)
+
+   
+
