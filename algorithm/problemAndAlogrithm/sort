@@ -28,6 +28,29 @@
 		}
 	}
 
+	//c++
+	void bubbleSort(int arr[],int len)
+	{
+		for (int i = len-2; i > 0; i--)
+		{
+			bool swaped = false;
+			for (int j = 0; j <= i; j++)
+			{
+				if (arr[j] > arr[j + 1])
+				{
+					int tmp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = tmp;
+					swaped = true;
+				}
+			}
+			if (!swaped)
+			{
+				return;
+			}
+		}
+	}
+
 2.插入排序
 算法：
 	从第二个数开始，依次插入，如果比前面小，则把前面的数后移，并继续往前比较，直到不比前面小，则放在此数后面。
@@ -46,6 +69,23 @@
 				{
 					array[j+1] = array[j];
 					array[j] = cur;
+				}
+			}
+		}
+	}
+
+	//c++
+	void insertSort(int arr[], int len)
+	{
+		for (int i = 1; i < len; i++)
+		{
+			int cur = arr[i];
+			for (int j = i-1; j >= 0; j--)
+			{
+				if (cur < arr[j])
+				{
+					arr[j + 1] = arr[j];
+					arr[j] = cur;
 				}
 			}
 		}
@@ -103,6 +143,47 @@
 		}
 	}
 
+	//c++
+	void mergeSort(int arr[], int len)
+	{
+		if (len <= 1)
+		{
+			return;
+		}
+		int left = len / 2;
+		int right = len - left;
+		mergeSort(arr, left);
+		mergeSort(arr + left, right);
+		int *leftTmp = new int[left+1];
+		int *rightTmp = new int[right+1];
+		for (int i = 0; i < left; i++)
+		{
+			leftTmp[i] = arr[i];
+		}
+		leftTmp[left] = 65535;
+		for (int i = 0; i < right; i++)
+		{
+			rightTmp[i] = arr[i + left];
+		}
+		rightTmp[right] = 65535;
+		int ptr1 = 0,ptr2 = 0;
+		for (int i = 0; i < len; i++)
+		{
+			if (leftTmp[ptr1] > rightTmp[ptr2])
+			{
+				arr[i] = rightTmp[ptr2];
+				ptr2++;
+			}
+			else
+			{
+				arr[i] = leftTmp[ptr1];
+				ptr1++;
+			}
+		}
+		delete[] leftTmp;
+		delete[] rightTmp;
+	}
+
 4.堆排序
 算法：
 	对于最大堆，第一个节点必然最大。将第一个节点与最后一个对调，并从堆中去除最大节点。
@@ -156,6 +237,23 @@
 5.快速排序
 算法：
 	对数组进行重排，使能在数组中找到一个数，使得左边的都比它小，右边的都比他大。然后对两边用同样的方法。依次迭代。
+说明：
+	挖坑填数+分治法：
+	以一个数组作为示例，取区间第一个数为基准数。
+	0  1  2  3  4  5  6  7  8  9
+        72 6  57 88 60 42 83 73 48 85
+        初始时，i = 0;  j = 9;   X = a[i] = 72
+        由于已经将a[0]中的数保存到X中，可以理解成在数组a[0]上挖了个坑，可以将其它数据填充到这来。
+        从j开始向前找一个比X小或等于X的数。当j=8，符合条件，将a[8]挖出再填到上一个坑a[0]中。a[0]=a[8]; i++;  这样一个坑a[0]就被搞定了，但又形成了一个新坑a[8]，这怎么办了？简单，再找数字来填a[8]这个坑。这次从i开始向后找一个大于X的数，当i=3，符合条件，将a[3]挖出再填到上一个坑中a[8]=a[3]; j--;
+	数组变为：
+	0  1  2  3  4  5  6  7  8  9
+        48 6  57 88 60 42 83 73 88 85
+	i = 3;   j = 7;   X=72
+	再重复上面的步骤，先从后向前找，再从前向后找。
+	从j开始向前找，当j=5，符合条件，将a[5]挖出填到上一个坑中，a[3] = a[5]; i++;
+	从i开始向后找，当i=5时，由于i==j退出。
+	此时，i = j = 5，而a[5]刚好又是上次挖的坑，因此将X填入a[5]。
+	参考：http://blog.csdn.net/morewindows/article/details/6684558
 复杂度：nlgn
 实现：
 	//java
@@ -187,6 +285,42 @@
 			}
 		}
 		return splitIdx;
+	}
+
+	//c++
+	void quickSort(int arr[], int len)
+	{
+		if (arr == NULL || len <= 1)
+		{
+			return;
+		}
+		int leftPtr = 0, rightPtr = len - 1;
+		int key = arr[0];
+		while (leftPtr < rightPtr)
+		{
+			while (arr[rightPtr] > key && leftPtr < rightPtr)
+			{
+				rightPtr--;
+			}
+			if (leftPtr < rightPtr)
+			{
+				arr[leftPtr] = arr[rightPtr];
+				leftPtr++;
+			}
+			while (arr[leftPtr] < key && leftPtr < rightPtr)
+			{
+				leftPtr++;
+			}
+			if (leftPtr < rightPtr)
+			{
+				arr[rightPtr] = arr[leftPtr];
+				rightPtr--;
+			}
+		
+		}
+		arr[leftPtr] = key;
+		quickSort(arr, leftPtr);
+		quickSort(arr + leftPtr + 1, len - leftPtr - 1);
 	}
 
 6.计数排序
