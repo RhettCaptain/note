@@ -91,6 +91,93 @@
 	T& top()			//返回指向栈顶元素的引用
 	void push(const T& x)		//在栈顶插入x
 	void pop()			//删除栈顶元素
+
+(10)关联容器
+	关联容器将值与建关联在一起,并使用键来查找值.
+	STL提供4种关联容器:set,multiset,map,multimap
+
+(11)set与multiset
+    set可反转,经排序(默认按升序排),键唯一,键-值类型相同,不能存储多个相同的值.
+    差别在与set中不允许有重复元素，multiset中允许有重复元素
+    sets和multiset内部以平衡二叉树(红黑树)实现
+--头文件
+    <set>
+
+--声明/初始化--
+    set<string> A;    //指明值的类型
+    string s1[4] = {"asm","fda","dfw","ew"};
+    set<string> B(s1,s1+4);	//用迭代器构造初始化
+    
+--方法--
+    --set_union(第一集合区间头,第一个集合区间尾,第二集合区间头,第二集合区间尾,输出迭代器);
+将两个区间并集输出到目标位置.如:
+        set_union(A.begin(),A.end(),B.begin(),B.end(),ostream_iterator<string,char> out(cout," "));//输出到 
+        set_union(A.begin(),A.end(),B.begin(),B.end(),insert_iterator<set<string> >(C,C.begin()));
+    --set_intersection()
+        查找交集,接口和set_union()相同
+    --set_difference()
+        查找两个交集的差,接口和set_union()相同
+    --lower_bound(key_value)
+	将键作为参数,并返回一个迭代器,该迭代器指向集合中第一个不小于键参数的成员
+    --upper_bound(key_value)
+	将键作为参数,并返回一个迭代器,该迭代器指向集合中第一个(没有不)大于键参数的成员.如:	
+	set<string> A;
+	ostream_iterator<string, char> out(cout," ");
+	copy(A.lower_bound("ghost"),A.upper_bound("spook"),out);
+    --insert(key_value); 
+	将key_value插入到set中 ，返回值是pair<set<int>::iterator,bool>，bool标志着插入是否成功，而iterator代表插入的位置，若key_value已经在set中，则iterator表示的key_value在set中的位置。
+    --inset(first,second);
+	将定位器first到second之间的元素插入到set中，返回值是void.如:
+	set<int> mySet;
+        int arr[4] = {5,2,3,4};
+        mySet.insert(1);
+        mySet.insert(arr,arr+4);
+        set<int>::iterator iter;
+        for(iter = mySet.begin();iter != mySet.end(); ++iter)
+        {       cout << *iter << " "; }	// 输出1 2 3 4 5
+    --find()  
+	返回给定值值得定位器，如果没找到则返回end()。如:
+	set<int>::iterator iter = mySet.find(2);
+    --erase(iterator)  ,删除定位器iterator指向的值
+      erase(first,second),删除定位器first和second之间的值
+      erase(key_value),删除键值key_value的值
+    --~set()
+	销毁所有元素，释放内存
+    --其他
+	begin()     　　 ,返回set容器的第一个元素
+	end() 　　　　 ,返回set容器的最后一个元素
+	clear()   　　     ,删除set容器中的所有的元素
+	empty() 　　　,判断set容器是否为空
+	max_size() 　 ,返回set容器可能包含的元素最大个数
+	size() 　　　　 ,返回当前set容器中的元素个数
+	rbegin　　　　 ,返回的值和end()相同
+	rend()　　　　 ,返回的值和rbegin()相同
+--参考文献:
+	http://blog.csdn.net/sunshinewave/article/details/8068326
+
+(12)map/multimap
+	multimap可反转,经排序,键-值类型不同,且同一个键可能与多个值相关联.
+	数据结构同样是采用红黑树进行管理
+--头文件
+    <map>
+
+--声明/初始化
+    map<int, string> mapStudent;
+
+--方法
+    --pair<iterator,bool>insert(const value_type& v)
+	将元素v（包括键值和映照数据）插入map容器，重复的v值不被插入。返回一个pair配对对象，提供所插入元素的迭代器位置和true/false插入成功标志。
+    --iteratorinsert(iterator position, const value type& v)
+	将元素v（包括键值和映照数据）插入map容器，参数position只是提示可在position位置之前插入v，所返回的插入位置视情况而定，不一定在position位置前插入。
+    --voidinsert(InputIterator first, InputIterator last)
+	将迭代器区间[first,last)所指的数据作为容器元素（包括键值和映照数据），插入到map容器中。
+    --void erase(iteratorposition); 删除 position所指的元素
+    --size_type erase(const key_type& k);  删除等于键值 k的那个元素，对于map容器来说，此函数总是返回值1，因为map容器不会出现重复的元素值（键值）
+    --void erase(iterator first, iterator last); 删除map迭代器区间 [first,last)上的所有元素
+    --void clear(); 删除map容器的所有元素
+    --其他成员函数用法与前篇set容器相似
+
+
 元素
 3.迭代器
 （1）基本
@@ -107,7 +194,23 @@ for(pd = scores.begin();pd!=scores.end();pd++)
 { cout <<*pd <<endl;}
 
 4.函数/函数对象
-（1）基础
+（1）函数对象
+    重载函数调用操作符的类，其对象常称为函数对象（function object），即它们是行为类似函数的对象。又称仿函数。
+    函数对象,也叫函数符,是可以以函数方式与()结合使用的任意对象.这包括函数吗,指向函数的指针,和重载了()运算符的类对象.如:
+    定义一个类
+    class Linear
+    {
+    private:
+	double slope;
+	double y0;
+    public:
+	Linear(double s1 = 1, double y_=0):slope(s1_),y0(y_){}
+        double operator()(double x){return y0+slope*x;}
+    }
+    这样,重载的()运算符将使得能够像函数那样使用Linear对象;
+    Linear line(2.5,10.0);
+    double y = line(0.4);
+    
 （2）for_each()
     接受三个参数，前两个是定义容器中区间的迭代器，最后一个是指向函数对象。
 for_each()函数将被指向的函数应用于容器区间中的各个元素。
@@ -134,6 +237,25 @@ for_each()函数将被指向的函数应用于容器区间中的各个元素。
     ---
     bool WorseThan(const Review& r1,const Review& r2){...}
     sort(book.begin(),books.end(),WorseThan);
-
-    
-    
+(5)copy()
+    std::copy(start, end, std::back_inserter(container)); 
+    std::copy(start, end, std::iterator); 	//在这里你在container的头部执行了copy－over（覆盖赋值）操作，但是，如果container的大小小于输入序列的长度N的话，这段代码会导致崩溃（crash）。
+    如果要把一个序列（sequence）拷贝到一个容器（Container）中去.copy只负责复制，不负责申请空间，所以复制前必须有足够的空间
+--例子:
+    int myints[] = {10, 20, 30, 40, 50, 60, 70};  
+    vector<int> myvector;  
+    vector<int>::iterator it;  
+    myvector.resize(7);   // 为容器myvector分配空间       
+    //copy用法一：  
+    //将数组myints中的七个元素复制到myvector容器中  
+    copy ( myints, myints+7, myvector.begin() );  
+    //copy用法二:  
+    //将数组myints中的元素向左移动一位  
+    copy(myints + 1, myints + 7, myints);  
+(6)find()
+    std::find(first, end, value);
+    返回区间[first，end）中第一个值等于value的元素位置；若未找到，返回end。函数返回的是迭代器或指针，即位置信息
+    std::find_if(first, end, bool pred)
+    返回区间[first，end)中使一元判断式pred为true的第一个元素位置；若未找到，返回end。
+    std::find_first_of(first1, end1, first2, end2)
+    返回第一个区间迭代器位置，满足第一个区间[first1，end1)中的元素第一次出现在第二个区间[first2，end2)中。
