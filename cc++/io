@@ -1,1 +1,61 @@
 输入输出
+一.概述
+1.流和缓冲区
+    c++把输入输出看做字节流.输入时,程序从输入流中抽取字节;输出时,程序将字节插入到输出流中,而不用管流源或流目标.
+    通常通过使用缓冲区作为中介的内存块,它是将信息从设备传输到程序或从程序传输给设备的临时存储工具.这将有助于匹配流两端不同的传输速率.
+2.I/O类
+    streambuf类:位缓冲区提供内存,并提供相关方法
+    ios_base类:表示流的一般特征
+    ios类:基于ios_base,包括了一个指向streambuf对象的指针成员.
+    ostream类:从ios类派生,提供输出方法
+    istream类:从ios类派生,提供输入方法.
+    iostream类:基于isteram类和ostream类
+
+二、标准IO
+1.输入
+
+2.输出
+(1)c
+(2)c++
+使用cout进行输出
+--基本方式
+    cout << "hello" << endl;		//使用<<运算符
+    cout.put('w'); cout.put('a').put('b');	//使用put方法输出字符
+    char str[4] = "abc";cout.write(str,3);	//使用write方法输出字符串.
+--刷新输出缓冲
+    ostream类对cout对象的输出进行缓冲,所以输出不会立即发送到目标地址,而是被存储在缓冲区,直到缓冲区填满.
+然后程序将刷新(flush)缓冲区,把内容发送出去,并清空缓冲区,以存储新的数据.
+    除了等缓冲区被填满,换行符和即将发生输入时都将刷新缓冲区.如：
+    cout << "enter a num"; float num; cin >> num; //会输出enter a num
+    cout << "enter a num"; while(1){};	//不会输出。
+    还可以通过cout << flush或flush(cout)手动刷新。
+--格式化输出
+进制
+cout << dec/hec/oct; 或hex(cout) 切换计数进制，保持状态直到被切换
+---
+宽度
+int a = cout.width();	//返回当前设置的字段宽度
+int b = cout.width(12);	//设置最小宽度12，并返回之前设置的字段宽度，右对齐。
+width方法只会影响接下来显示的一个项目。
+c++不会截断数据，即如果设置12，数字有13宽，则输出13位宽
+---
+填充字符
+默认填充空格，
+cout.fill('*');	//改用*填充。一直2有效，直到被改变。
+---
+浮点数的显示精度
+精度指小数点后面的位数，默认6位，但0不显示
+cout.precision(2);	//设置精度为2，一直有效，直到被重置。
+---
+setf()
+fmtflags setf(fmtflags);	//用来设置单个位控制的格式信息（0/1，类似寄存器位操作）
+部分格式常量为：
+ios_base::boolalpha	//输入和输出bool值，可以位true或false
+ios_base::showbase	//对于输出，使用c++基数前缀（0,0x）
+ios_base::showpoint	//显示末尾的小数点
+ios_base::uppercase	//对于16进制输出，使用大写字母，E表示法
+ios_base::showpos	//在正数前面加上+
+如：cout.setf(ios_base::showpoint);	//此时输出2将输出2.000000
+fmtflags setf(fmtflags,fmtflags);
+
+
