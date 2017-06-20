@@ -55,44 +55,4 @@
 	source ~/.bashrc	立即生效 
 	这将gedit设置成为默认编辑器。
 
-6.使用roslaunch同时打开多个节点
-	（1)在pkg下创建launch文件夹
-	（2)在launch文件夹下创建.launch文件，如key.launch
-		<launch>
-			//pkg为包名，type是节点名，name给节点重命名
-			<node pkg="pkg_key" name="key_pub" type="node_pub"/>
-			
-			//节点属性
-			//默认输出在日志~/.ros/log/run_id/node_name-number-stout.log，设置output为screen可输出在屏幕
-			//此外，respawn="true"为复位属性，即该节点停止时，系统会自动重启该节点。
-			//required = "true"为必要属性，即该节点停止时，系统会停止其他所有节点。
-			<node pkg="pkg_key" name="key_show" type="node_show" output="screen"/>
-			
-			//命名空间
-			//通过命名空间group可以使用并区分多个同一节点
-			<group ns="key1">
-				<node ...>
-			</group>
-			
-			//重映射
-			//remap可以实现重映射，如将海龟的姿态数据发布到话题/tim 而不是/turtle1/pose
-			//相当于rosrun turtlesim turtlesim_node turtle1/pose:=tim
-			<node pkg="turtlesim" name="turtlesim_node" type="turtlesim_node">
-				<remap from="turtle1/pose" to "tim"/>
-			</node>
-			
-			//启动参数
-			//parameter是运行中的ROS系统使用的数值，存储在参数服务器（parameter server）中，
-			//每个活跃的节点都可以通过 ros::param::get 函数来获取parameter的值，
-			//用户也可以通过rosparam来获得parameter的值
-			//而argument只在启动文件内才有意义他们的值是不能被节点直接获取的。
-			//命令行参数（roslaunch xx yy.launch dd:=t)可以覆盖默认值default，但是不能覆盖参数值 value。
-			//用$(arg arg-name)在每个该替换出现的地方，roslaunch 都将它替换成参数值。
-			<arg name="host" default="192.168.1.14" />
-			<node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
-			  <param name="host" value="$(arg host)" />
-			</node>
-		</launch>
-	（3)roslaunch [package] [filename.launch]
-	（4）参考文献：http://www.cnblogs.com/zjiaxing/p/5542614.html
 

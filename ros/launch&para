@@ -1,0 +1,111 @@
+一、launch文件
+1.使用roslaunch同时打开多个节点
+（1)在pkg下创建launch文件夹
+（2)在launch文件夹下创建.launch文件，如key.launch
+<launch>
+	//pkg为包名，type是节点名，name给节点重命名
+	<node pkg="pkg_key" name="key_pub" type="node_pub"/>
+	//节点属性
+	//默认输出在日志~/.ros/log/run_id/node_name-number-stout.log，设置output为screen可输出在屏幕，launch-prefix=“xterm -e”可以开小窗口输出。
+	//此外，respawn="true"为复位属性，即该节点停止时，系统会自动重启该节点。
+	//required = "true"为必要属性，即该节点停止时，系统会停止其他所有节点。
+	<node pkg="pkg_key" name="key_show" type="node_show" output="screen"/>
+			
+	//命名空间
+	//通过命名空间group可以使用并区分多个同一节点
+	<group ns="key1">
+		<node ...>
+	</group>
+	
+	//重映射
+	//remap可以实现重映射，如将海龟的姿态数据发布到话题/tim 而不是/turtle1/pose
+	//相当于rosrun turtlesim turtlesim_node turtle1/pose:=tim
+	<node pkg="turtlesim" name="turtlesim_node" type="turtlesim_node">
+		<remap from="turtle1/pose" to "tim"/>
+	</node>
+			
+	//启动参数
+	//parameter是运行中的ROS系统使用的数值，存储在参数服务器（parameter server）中，
+	//每个活跃的节点都可以通过 ros::param::get 函数来获取parameter的值，
+	//用户也可以通过rosparam来获得parameter的值
+	//而argument只在启动文件内才有意义他们的值是不能被节点直接获取的。
+	//命令行参数（roslaunch xx yy.launch dd:=t)可以覆盖默认值default，但是不能覆盖参数值 value。
+	//用$(arg arg-name)在每个该替换出现的地方，roslaunch 都将它替换成参数值。
+	<arg name="host" default="192.168.1.14" />
+	<node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
+	    <param name="host" value="$(arg host)" />
+	</node>
+</launch>
+（3)roslaunch [package] [filename.launch]
+（4）参考文献：http://www.cnblogs.com/zjiaxing/p/5542614.html
+2.标签与属性
+（1）arg
+    roslaunch支持启动参数arg，可以通过设置arg来改变程序的运行。name为启动参数的名称，default为该参数的默认值，value为该参数的参数值。 
+    default与 value两者的唯一区别在于命令行参数roslaunch pkg-name launch-file-name arg-name:=”set-value”可以覆盖默认值default，但是不能覆盖参数值 value。在launch文件中出现$(arg arg-name)的地方，运行时roslaunch 会将它替换成参数值。并且可以在include元素标签内使用arg来设置所包含的launch文件中的参数值。
+如：<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" 
+    args="-urdf -model robot1 -param robot_description -z 0.05"/> 
+    ---
+    <include file="$(find gazebo_ros)/launch/empty_world.launch"> 
+        <arg name="debug" value="$(arg debug)" />
+    </include>
+    启动时roslaunch pkg-name launch-file-name debug:=”set-value”即可传参给debug
+（2）param 
+    在ROS中prarmeter和argument 是不同的，虽然翻译一样。parameter是运行中的ROS系统使用的数值，存储在参数服务器（parameter server）中，每个活跃的节点都可以通过 ros::param::get 函数来获取parameter的值，用户也可以通过rosparam来获得parameter的值而argument只在启动文件内才有意义他们的值是不能被节点直接获取的。
+如：<param name="camera_topic_root" value="/camera/image_rect"> 
+   ---
+    <arg name="host" default="192.168.1.14" />
+    <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
+	<param name="host" value="$(arg host)" />
+    </node>
+（3）include 
+    在launch文件中复用其他launch文件可以减少代码编写的工作量，提高文件的简洁性。使用包含元素include在launch文件中可包含其他launch文件中所有的节点和参数。
+如：<include file="$(find pkg-name)/launch/launch-file-name"> 
+       <arg name="arg_name" value="set-value"/>
+    </include>
+3.参考文献
+	http://www.cnblogs.com/CZM-/p/5943821.html
+
+二、para参数与参数服务器
+1.命令行传参
+您可以为一个节点，直接使用一个下划线命令行_作为前缀分配专用参数。 例如：
+rosrun rospy_tutorials talker _param:=1.0 
+（这里的param就是在代码中定义的可以从通过launch file和命令行改变的参数，传递给代码中真正使用的参数，注意命令行话题的映射直接进行，不需要在话题前面加_符号）
+设置 ~param为1.0  ROS使用YAML语法来确定参数的输入。
+其他关键字：
+  _name
+是为节点名称的特殊专门保留的关键字。它可以让你重新映射节点名字，而不用知道节点的真实名字。只能当正在启动的程序只包含一个节点时使用。
+  _log是指定该节点的日志文件应写入的位置的保留关键字。此关键字的使用一般不鼓励
+ - 它主要是通过ROS工具，如roslaunch供其使用。
+   _ip and __hostname 代表了ROS_IP和ROS_HOSTNAME，这个关键字的一般不鼓励使用，因为它提供了一种用于在环境变量不能设置的特殊情况下的解决方法。
+   _master  代表了ROS_MASTER_URI。这个关键字一般不鼓励使用，因为它提供了一种用于在环境变量不能设置的特殊情况下的解决方法。
+   _ns 代表了ROS命名空间的。这个关键字一般不鼓励使用，因为它提供了一种用于在环境变量不能设置的特殊情况下的解决方法。
+2.launch file传参
+见上，如
+    <arg name="host" default="192.168.1.14" />
+    <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
+	<param name="host" value="$(arg host)" />
+	<param name="test" value="12" />
+    </node>
+3.参数服务器
+（1）概念
+    A parameter server is a shared, multi-variate dictionary that is accessible via network APIs. Nodes use this server to store and retrieve parameters at runtime. 
+（2)程序中设置参数
+--通过句柄的命名空间映射参数  
+ros::NodeHandle nh;
+nh.setParam("/global_param", 5);
+nh.setParam("relative_param", "my_string");
+--不通过句柄而通过节点的命名空间直接映射参数
+ros::param::set("relative_param", "my_string");  
+ros::param::set("bool_param", false);  
+（3）获取参数
+--通过句柄的命名空间映射参数
+ros::NodeHandle nh;
+std::string global_name, relative_name, default_param;
+nh.getParam("/global_name", global_name);
+--不通过句柄而通过节点的命名空间直接映射参数
+std::string global_name, relative_name, default_param;
+ros::param::get("/global_name", global_name);
+4.参考文献
+	http://blog.csdn.net/mmyaoduli/article/details/51044196
+	http://blog.csdn.net/mmyaoduli/article/details/51049670
+

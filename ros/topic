@@ -113,8 +113,20 @@
 	先运行roscore开启服务主机master
 	通过rosrun <pkg> <node> 运行节点
 	
-6.使用launch
-	见hello world
+6.多线程订阅消息
+    一个节点往往要接收和处理不同来源的数据，并且这些数据的产生频率也各不相同，当我们在一个回调函数里耗费太多时间时，会导致其他回调函数被阻塞，导致数据丢失。这种场合需要给一个节点开辟多个线程，保证数据流的畅通。
+    在ROS中，有两种方法可以在一个节点中开辟多个线程 
+（1）ros::MultiThreadedSpinner 
+MultiThreadedSpinner类似于ros::spin()，在构造过程中可以指定它所用线程数，但如果不指定线程数或者线程数设置为0，它将在每个cpu内核开辟一个线程。 
+用法如下：
+ros::MultiThreadedSpinner spinner(4); // Use 4 threads
+spinner.spin(); // spin() will not return until the node has been shutdown
+（2）ros::AsyncSpinner 
+AsyncSpinner比MultiThreadedSpinner更优，它有start() 和stop() 函数，并且在销毁的时候会自动停止。下面的用法等价于上面的MultiThreadedSpinner例子。
+ros::AsyncSpinner spinner(4); // Use 4 threads
+spinner.start();
+ros::waitForShutdown();
+
 
 7.其他
 	（1)同一个work space下完全可以用别的包（pkg）的消息和其节点通信
