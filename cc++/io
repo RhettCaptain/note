@@ -13,6 +13,18 @@
 
 二、标准IO
 1.输入
+(1)c
+(2)c++
+使用cin进行输入
+--基本方式
+    cin >> a;	//使用>>运算符
+    cin.get(ch1).get(ch2)>>ch3;	//使用get(char&)读取字符，即使该字符是空格、制表符或换行符。（>>读字符会忽略）
+    while(cin.get(ch)){}	//到达文件尾为false，否则true（指向istream对象的引用）
+    char ch = cin.get();	//使用int get()读取字符，即使该字符是空格、制表符或换行符。到达文尾时返回EOF
+    char line[50]; cin.get(line, 50, '!');	//读取字符串，按指定字符作为分界符，默认换行符分界。
+    char line[50]; cin.getline(line,50);	//和get类似，但前者将分界符留在输入队列，getline抛弃不保留。
+    cin.ignore(255,'\n');	//读取并丢弃接下来的255个字符或直到到达第一个换行符。
+    其他：read(),peek(),gcount(),putback()...
 
 2.输出
 (1)c
@@ -57,5 +69,31 @@ ios_base::uppercase	//对于16进制输出，使用大写字母，E表示法
 ios_base::showpos	//在正数前面加上+
 如：cout.setf(ios_base::showpoint);	//此时输出2将输出2.000000
 fmtflags setf(fmtflags,fmtflags);
-
-
+第二个参数		第一个参数		含义
+ios_base::basefield	ios_base::dec		使用基数10
+			ios_base::oct		使用基数8
+			ios_base::hex		使用基数16
+ios_base::floatfield	ios_base::fixed		使用定点计数法
+			ios_base::scientific	使用科学计数法
+ios_base::adjustfield	ios_base::left		使用左对齐
+			ios_base::right		使用右对齐
+			ios_base::internal	符号或基数前缀左对齐，值右对齐
+如：ios_base::fmtflags old = cout.setf(ios::left,ios::adjustfield);	// 左对齐
+    cout.setf(old,ios::adjustfield);	//恢复以前的设置
+---
+标准控制符
+boolalpha,noboolalpha
+showbase,noshowbase
+showpoint,noshowpoint
+showpos,noshowpos
+uppercase,nouppercase
+internal,left,right
+dec,hex,oct
+fixed,scientific
+如cout << hex;
+---
+头文件iomanip
+setprecision()	设置精度
+setfill()	设置填充字符
+setw()		设置字段宽度
+如：cout << setw(6) << setfill('.') << n << setfill(' ') << setprecision(3) << endl;
