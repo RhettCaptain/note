@@ -165,16 +165,39 @@
     map<int, string> mapStudent;
 
 --方法
-    --pair<iterator,bool>insert(const value_type& v)
+    --用insert函数插入pair数据
 	将元素v（包括键值和映照数据）插入map容器，重复的v值不被插入。返回一个pair配对对象，提供所插入元素的迭代器位置和true/false插入成功标志。
-    --iteratorinsert(iterator position, const value type& v)
-	将元素v（包括键值和映照数据）插入map容器，参数position只是提示可在position位置之前插入v，所返回的插入位置视情况而定，不一定在position位置前插入。
-    --voidinsert(InputIterator first, InputIterator last)
-	将迭代器区间[first,last)所指的数据作为容器元素（包括键值和映照数据），插入到map容器中。
-    --void erase(iteratorposition); 删除 position所指的元素
+	如：mapStudent.insert(pair<int, string>(1, “student_one”));
+	该方法可以通过Pair判断是否插入成功，
+	如：Pair<map<int, string>::iterator, bool> Insert_Pair;
+       	    Insert_Pair ＝ mapStudent.insert(pair<int, string>(1, “student_one”));
+       	    If(Insert_Pair.second == true){}
+    --用insert函数插入value_type数据
+	如：mapStudent.insert(map<int, string>::value_type(1, “student_one”));
+    --用数组方式插入数据
+	如：map<string, string> mapStudent; mapStudent["hello"] =  “student_one”;
+    --用size()得到大小
+	int nSize = mapStudent.size();
+    --迭代器遍历输出（反向rbegin,rend)
+	for(iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
+	{
+	       Cout<<iter->first<<”   ”<<iter->second<<end;
+	}
+    --数组遍历输出
+	for(int nIndex = 1; nIndex <= nSize; nIndex++) 
+	{
+	       cout<<mapStudent[nIndex]<<endl;
+	}
+    --用count函数来判定关键字出现次数
+	如：int a=mapStudent.count(1);
+    --用find函数来定位数据出现位置，它返回的一个迭代器，当数据出现时，它返回数据所在位置的迭代器，如果map中没有要查找的数据，它返回的迭代器等于end函数返回的迭代器
+	如：map<int, string>::iterator iter;
+            iter = mapStudent.find(1);
+    --void erase(iterator position); 删除 position所指的元素
     --size_type erase(const key_type& k);  删除等于键值 k的那个元素，对于map容器来说，此函数总是返回值1，因为map容器不会出现重复的元素值（键值）
     --void erase(iterator first, iterator last); 删除map迭代器区间 [first,last)上的所有元素
     --void clear(); 删除map容器的所有元素
+    --判定map中是否有数据可以用empty()函数
     --其他成员函数用法与前篇set容器相似
 
 

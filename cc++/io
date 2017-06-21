@@ -35,12 +35,15 @@ H	输入"短"数据
 M	指定输入数据所占宽度
 *	空读一个数据
 --空白字符/非空白字符
-  空白字符会使scanf()函数在读操作中略去输入中的一个或多个空白字符。
+  空白字符会使scanf()函数在读操作中略去输入中的一个或多个空白字符（空格，\t,\n)。
   一个非空白字符会使scanf()函数在读入时剔除掉与这个非空白字符相同的字符。
 如int a;scanf(" \n\n%*3d%d\n",&a); 
     输入：\n\n\n   432432432 输出：a = 432432 
     scanf格式化输入中有多个空格和’\n’，但是我们采用的是%d格式化输入，所以空格和’\n’等转义字符是没有读入的
     这里有一个”%*3d”，意思是跳过输入的前三个整型数字，从第四个数字开始读入
+---
+  char hex[100];scanf("0x%s", hex);
+  输入：0x3A  输出：3A   输入3A  输出：无值/烫。。。
 ---
   char a[10]; scanf("%c%c%c",&a[0],&a[1],&a[2]);
     输入：a b c  输出：a[1] 为空格  
@@ -53,13 +56,14 @@ M	指定输入数据所占宽度
 (2)c++
 使用cin进行输入
 --基本方式
-    cin >> a;	//使用>>运算符
+    cin >> a;	//使用>>运算符,输入i love u ,a为i
     cin.get(ch1).get(ch2)>>ch3;	//使用get(char&)读取字符，即使该字符是空格、制表符或换行符。（>>读字符会忽略）
     while(cin.get(ch)){}	//到达文件尾为false，否则true（指向istream对象的引用）
     char ch = cin.get();	//使用int get()读取字符，即使该字符是空格、制表符或换行符。到达文尾时返回EOF
     char line[50]; cin.get(line, 50, '!');	//读取字符串，按指定字符作为分界符，默认换行符分界。
     char line[50]; cin.getline(line,50);	//和get类似，但前者将分界符留在输入队列，getline抛弃不保留。
     cin.ignore(255,'\n');	//读取并丢弃接下来的255个字符或直到到达第一个换行符。
+    string str; getline(cin,str);	//istream& getline ( istream &is , string &str , char delim );
     其他：read(),peek(),gcount(),putback()...
 
 2.输出
