@@ -70,6 +70,7 @@ vector <int>::iterator iter=vecInt.begin();
     rbegin()	返回一个指向反转序列的第一个元素的迭代器
     rend()	返回反转序列的超尾迭代器
     for_each(dice.rbegin(),dice.rend(),Show);	//反转输出
+    vector<int>::reverse_iterator it = vecInt.rbegin();	//注意迭代器类型不同
 
 三、模板类 array(c++ 11)
 1.头文件：<array>
