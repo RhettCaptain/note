@@ -52,3 +52,24 @@
     以Unicode表示的str型可以通过encode()方法编码为指定的bytes。如：
     >>>'ABC'.encode('ascii') #b'ABC'
     >>>'中文'.encode('utf-8') #b'\xe4\xb8\xad\xe6\x96\x87'
+---
+    反过来，从网络或磁盘上读的字节流是bytes，用decode()方法变成str,如：
+    >>>b'ABC'.decode('ascii') #ABC
+    >>>b'\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8') #'中文'
+---
+    可以用len()函数计算str包含多少个字符，如
+    >>>len('ABC')  #3
+    >>>len('中文')  #2
+    也可以计算bytes包含多少字节，如
+    >>>len(b'ABC')   #3
+    >>>len('中文'.encode('utf-8')) #6
+---
+    在操作字符串时，为了避免乱码，应始终坚持utf-8编码转换。并将源码保存位utf-8编码。为了让解释器按utf-8读取，需要在头文件写上
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+（6）格式化
+    % 和c相同，如：
+    >>>'hello,%s'%'world'  #'hello,world'
+    >>>'hi,%s,you have $%d'%('rhett',1000)  #'hi,rhett,you have 1000'
+    >>> '%2d-%02d'%(3,1) #' 3-01'
+    %转义用%%
