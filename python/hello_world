@@ -1,0 +1,33 @@
+1.安装
+window，linux，mac都支持
+window去官网下，linux你懂的
+
+2.解释器
+（1）CPython
+官方
+（2）IPython
+交互式解释器，内核还是CPython
+（3）PyPy
+采用JIT技术，对Python代码进行动态编译（不是解释）。可以显著提高Python代码的执行速度。
+与CPython一般通用，但有一些不同，自行了解。
+（4）Jython
+运行在Java平台上的Python解释器，可以把Python代码编译成Java字节码
+（5）IronPython
+运行在.Net平台上的Python解释器，可以把Python代码编译成.Net字节码
+
+3.运行
+（1）Python交互环境
+    在命令行/终端输入python进入python交互环境
+    >>>
+    输入exit()退出
+（2）文本编辑器
+    在windows下，使用python pytxt.py运行（实际上设置默认用解释器运行.py文件，也可以直接运行.py文件）
+    在linux和mac下，
+    文首加#!/usr/bin/env python3
+    修改权限chmod a+x hello.py
+    可以直接运行文件
+
+4.hello world
+    str = input()	//键盘输入，没分号
+    print(str)		//屏幕输出
+
