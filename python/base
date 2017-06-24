@@ -17,6 +17,8 @@
     None
 6.其他
     列表，字典等
+7.类型转换
+   num = int(str)   将字符串转成数值
 
 二、变量
 1.命名
@@ -73,3 +75,70 @@
     >>>'hi,%s,you have $%d'%('rhett',1000)  #'hi,rhett,you have 1000'
     >>> '%2d-%02d'%(3,1) #' 3-01'
     %转义用%%
+
+
+四、列表(list)和元组(tuple)
+列表
+1.定义
+    aList = ['a','bc',3]
+2.求长度
+    len(aList)
+3.访问
+    aList[0],aList[1]..
+    aList[-1]表示最后一个，以此类推
+4.插入
+    aList.append('adam')    #追加到末尾
+    aList.insert(1,'Jack')  #插入索引1的位置
+5.删除
+    aList.pop()		#删除末尾
+    aList.pop(1)	#删除索引1的位置
+6.多维列表
+    p = ['asp','php']
+    s = ['python','java',p,['rhett','ice']]
+    s[0] # 'python'
+    s[1][0] #'j'
+    s[2][1]  #'php'
+    s[3]  #['rhett','ice']
+    len(s)  #4
+---
+元组
+7.定义
+    aTuple = ('mic','bob','tony')
+    元组必须在定义时完成初始化，并且不能修改，其他和列表一样
+8.陷阱
+    要定义一个只有1个元素的tuple，如果你这么定义：
+     >>> t = (1)	#1
+    定义的不是tuple，是1这个数！这是因为括号()既可以表示tuple，又可以表示数学公式中的小括号，这就产生了歧义，
+因此，Python规定，这种情况下，按小括号进行计算，计算结果自然是1。
+    所以，只有1个元素的tuple定义时必须加一个逗号,，来消除歧义：
+    >>> t = (1,)	#(1,)
+    Python在显示只有1个元素的tuple时，也会加一个逗号,，以免你误解成数学计算意义上的括号。
+
+五、条件判断与循环
+1.条件判断
+    if age >= 18:	#注意冒号
+        print('adult')  #满足时执行所有缩进行
+        print('hahah')  #缩进注意一致（虽然不一定是4，但建议是4）
+    elif age >= 6:      #elif是else if，没有else if。但可以写else: 然后程序块里在写if，else
+        print('teenager')
+    else:
+        print('kid')
+2.循环
+（1）for...in循环，依次把list或tuple中的每个元素迭代出来，执行缩进块的语句。
+	names = ['Michael', 'Bob', 'Tracy']
+	for name in names:	#注意冒号
+	    print(name)
+（2）while循环
+	while n > 0:		#注意冒号
+	    sum = sum + n
+	    n = n - 2
+	print(sum)
+
+六、字典（dict）和集合（set）
+1.字典
+（1）说明
+    dict是字典 dictionary的缩写，在其他语言中也称为map，使用键-值（key-value）存储，具有极快的查找速度。
+（2）定义
+    d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}
+（3）使用
+    d['Michael']	#95
