@@ -96,3 +96,11 @@
 6.关于旋转与四元数
 	  tf::Quaternion(pitch，roll，yaw);		//已经弃用，但能用，简单易懂
 	  tf::Quaternion(a，b，c，w);		//四元数，待研究	
+
+7.四元数和角度转换函数
+	static tf::Quaternion 	createQuaternionFromRPY (double roll, double pitch, double yaw)
+	static Quaternion 	createQuaternionFromYaw (double yaw)
+	static geometry_msgs::Quaternion 	createQuaternionMsgFromRollPitchYaw (double roll, double pitch, double yaw)
+	static geometry_msgs::Quaternion 	createQuaternionMsgFromYaw (double yaw)
+	static double 	getYaw (const Quaternion &bt_q)
+	static double 	getYaw (const geometry_msgs::Quaternion &msg_q)

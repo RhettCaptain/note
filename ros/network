@@ -1,0 +1,47 @@
+分布式网络连接
+一、步骤：
+0.假设
+两台电脑 
+主机名（hostname）	IP			用户名
+USER1			192.168.0.10		usr1
+USER2			192.168.0.11		usr2
+
+1.设置
+设置hosts以便通过主机名访问IP
+如在USER1下
+sudo gedit /ect/hosts
+加入192.168.0.11	USER2
+USER2下加入USER1
+
+2.检查
+（1）检查自己
+在USER1下
+ping USER1	测试能否ping通
+ssh  USER1	测试ssh
+    如果ssh没有，通过sudo apt-get install ssh安装
+    使用exit退出ssh
+USER2类似
+（2）检查互通
+在USER1下
+ping USER2	测试能否ping通
+ssh  usr2@USER2	测试ssh
+    需要注意的是，如果不输入用户名的时候默认的是root用户，但是安全期间ssh服务默认没有开root用户的ssh权限
+解决方法：
+    要修改root的ssh权限，即修改 /etc/ssh/sshd_config文件中
+PermitRootLogin no 改为 PermitRootLogin yes
+    或者用户登录（如上）
+USER2类似
+关于ssh其他问题参考：
+http://blog.chinaunix.net/uid-22556372-id-1773417.html
+
+3.正式联通
+（1）服务器
+    以USER1为服务器，运行roscore，实际端口是http://USER1:11311
+    实际上服务器的操作和本地操作没什么区别
+（2）客户端
+    其他机器作为客户端，如USER2，
+    在终端输入export ROS_MASTER_URI=http://USER1:11311
+    然后就和本地操作一样。
+（3）原理
+    通过ssh传递消息和服务等
+
