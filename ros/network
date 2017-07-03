@@ -24,6 +24,7 @@ USER2类似
 （2）检查互通
 在USER1下
 ping USER2	测试能否ping通
+    如果虚拟机下ping不通可能是连接方式的问题，将NAT改为桥接，选择网卡试试。
 ssh  usr2@USER2	测试ssh
     需要注意的是，如果不输入用户名的时候默认的是root用户，但是安全期间ssh服务默认没有开root用户的ssh权限
 解决方法：
