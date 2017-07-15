@@ -20,7 +20,27 @@ int main(){inc();inc();inc();}
     都可以用于申请动态内存和释放内存。
     但对于非内部数据类型的对象而言，只用malloc/free无法满足动态对象的要求。对象在创建的同时要自动执行构造函数，对象在消亡之前要自动执行析构函数。
 
-
+4.浅拷贝指针带来重复析构
+如：
+class CDemo{
+public:
+    CDemo():str(NULL){}
+    ~CDemo(){ if(str) delete[] str;}
+    char* str;
+}；
+int main(){
+    CDemo d1;
+    ...
+    vector<CDemo>* a1=new vector<CDemo>();
+    a1->push_back(d1);		//此处浅拷贝d1，会产生一个新CDemo对象，但str成员和d1的str相同
+    delete a1;		//释放vector对象，vector所包含的元素也被释放，故str指向的地址被释放一次
+}									//程序结束，d1对象被释放，又一次析构，str指向的地址又一次被释放，出错！
+修改：
+    编写深拷贝复制构造函数
+    CDemo(const CDemo &cd){
+        this->str = new char[strlen(cd.str)+1]
+        strcpy(str,cd.str);
+    }
 二、编译
 1.静态联编和动态联编
 （1）概念：
