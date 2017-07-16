@@ -287,6 +287,7 @@ trump.showperks(5);	//不合法
        class B:public A{public: void print() { cout << "B" << endl;} };
     // int main(){ A a; B b; a = b; a.print(); }//输出A，加virtual也输出A
     // int main(){ A* a; B b; a = &b; a.print(); }//输出A，加virtual输出B
+    // int main(){ A a; B* b = (B*) &a; b.print(); }//输出A，加virtual也输出A，且这种向下转型不好。
     ---
     经常在基类中将派生类会重新定义的方法声明为虚方法，
     方法在基类中被声明为虚的后，在派生类中将自动生成为虚方法。
@@ -370,11 +371,12 @@ hasDMA& hasDMA::operator=(const hasDMA& hs)
 	包含使用对象名来调用方法
 （2）私有继承
     使用私有继承，基类的公有成员和保护成员都将成为派生类的私有成员。
-    因此，在使用基类成员时需要使用类名和作用域运算符来调用。
 （3）保护继承
     使用保护继承时，基类的公有成员和保护成员都将成为派生类的保护成员。
     与私有继承的主要区别在于，当派生类派生出另一个类时，
 私有继承派生的不能使用基类接口，保护继承都可以。
+（4）案例分析
+//TO DO
 
 10.多重继承
 （1）虚基类
@@ -383,6 +385,41 @@ hasDMA& hasDMA::operator=(const hasDMA& hs)
 -虚基类使得从多个类（它们的基类相同）派生出的对象只继承一个基类对象。
 （2）新的构造函数规则
 //TO DO
+
+11.基类与派生类成员使用权限与关系
+假设
+class A{
+protected:
+    int m_data;
+public:
+    A(int data = 0){ m_data = data;}
+    int GetData(){ return doGetData();}
+    virtual int doGetData(){ return m_data;}
+}；
+
+class B:public A{
+protectd:
+    int m_data;
+public:
+    B(int data = 1){m_data = data;}
+    int doGetData(){return m_data;}
+};
+
+class C:public B{
+protected:
+    int m_data;
+public:
+    C(int data=2){m_data = data;}
+};
+（1）派生类的this指针范围覆盖了派生类和所有基类的范围。
+    C c(10); 可以通过 c.A::GetData() 调用基类A中的公有方法和公有数据。
+（2）构造函数从最初始的基类开始构造。析构函数逆序析构。构造函数是不同名的，没有覆盖，参数也不传递。
+（3）各个类的同名变量没有形成覆盖（作用域不同）。
+    C c(10);  //c.m_data==10; c.B::m_data=1; c.A::m_data=0;
+（4）虚函数的派生可以实现多态。使用继承方法内部使用指针实现。
+    C c(1);  c.getData();	//使用继承的c.A::getData(),调用虚函数doGetData();指向B::doGetData()
+（C中没有覆盖）。因此实际返回的是B::m_data,即1。
+
 
 八、模板类
 1.模板定义（相当于类声明）
