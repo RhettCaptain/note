@@ -3,16 +3,24 @@
 int *p_ptr;		//强调*p_ptr是一个int类型的值
 int* p_ptr;		//强调int*是一种类型——指向int的指针
 可以说p_ptr是指向int型的指针,或int*型，而*p_ptr是int，不是指针。
+！！！但标准的说法只有第一种，
+int *p1, *p2 定义两个指针;
+int* p1,p2  p1是指针，p2是整形
+---
 int higgens = 5;
 int *pt = &higgens;	//初始化
 初始化的重要性：
-	int *fellow;	//没有初始化
+	int *fellow;	//没有初始化（迷途指针）,应该new int。
 	*fellow = 2233;	//将数据2233赋值给fellow，但fellow并没有给定的地址。会造成致命错误。
 	一定要在对指针应用解除应用运算符（*）前，将指针初始化为一个确定的，适当的地址。
 指针不是数字
 	int* pt;
 	pt = 0xB8000000;	//wrong
 	pt = (int *)0xB80000;	//right
+---
+引用不是对象，不能定义指向引用的指针。但指针是对象，可以由对指针的引用
+int *p;
+int *&r = p;
 
 2.内存分配
 （1）C —— malloc()

@@ -139,8 +139,15 @@
 1.形式：对象
 2.赋值：
 （1）使用字符串常量赋值。
+    string s="hello";
 （2）使用c-风格字符串赋值
+    char* cs = "hello";
+    string s=cs;
 （3）使用string对象赋值
+    string s1("hello");
+    string s2(4,'a');    //aaaa
+    string s3 = s2;
+    string s4 = string(4,'a');
 3.拼接：
 	使用+，+=。如str3= str1+str2;	str1+=str2;
 4.操作
@@ -150,12 +157,16 @@
 	获取字符串长度
 	str.length()；
 	str.size();	//同上，为了兼容stl设计
+	str.empty(); 
 	---
 	（2）复制
 	直接复制，如str2 = str1;	
 	（3）比较
 	直接比较，如str1 == "hello"；
 	（4）查找与分割
+	//返回字符
+	string str="abc";
+	str[1]; //返回第二个字符的引用 
 	//从字符串的pos位置开始，查找子字符串str，如果找到，则返回该字符串首次出现时，其首字符的索引；否则，返回string::npos(-1)
 	size_type find(const string& str, size_type pos=0)const
 	size_type find(const char* str, size_type pos=0)const	如

@@ -10,14 +10,16 @@ int card3[] {}			//OK in c++11
 
 2.（二维/高维/字符）数组传参，数组指针，指针数组
 （1）可修改性
-数组类型（数组名）是不可修改的，可以认为是const 指针，即指针常量。普通指针是可以修改的，但要分配内存
+数组类型（数组名）是不可修改的（不允许拷贝和赋值），可以认为是const 指针，即指针常量。普通指针是可以修改的，但要分配内存
 char a[3];
 a="ab"	//不行
+char b[3] = a; //不行
 ---
 char* a;
 a="ab"  //可以，但要分配内存a = new char[3];
 （2）二维数组，数组指针和指针数组
-char a[2][12];	//二维数组
+严格意义上c++没有高维数组，只是数组的数组的数组...
+char a[2][12];	//二维数组，可以理解成a[2]这个数组有两个元素，每个元素是一个包含12个元素的数组
 a[1] = "adfa";  //不行，数组名虽然等价于指针，但是不可修改左值，指针可以修改
 strcpy(a[0],"adfa");	//可以
 ---
@@ -48,36 +50,22 @@ void func(char* s[20]);或void func(char** s);	//s类型 char** 显然，不能�
 也可以将数组指针强制转换位二维指针，然后按照内存中存储的方法计算二维数组对应成一维数组的下标，建议用上一种方法。
 
 二、模板类 vector
-1 基本操作
-(1)头文件#include<vector>.
-(2)创建vector对象，vector<int> vec;
-(3)尾部插入数字：vec.push_back(a);
-(4)使用下标访问元素，cout<<vec[0]<<endl;记住下标是从0开始的。
-(5)使用.at()访问元素，cout<<vec.at(0)<<endl;at()会检查越界，下标不会
-(6)使用迭代器访问元素.
-vector<int>::iterator it;
-for(it=vec.begin();it!=vec.end();it++)
-    cout<<*it<<endl;
-(7)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
-vec.insert(vec1.begin(),vec2.begin()+1,vec2.end());在vec1前面插入vec2除去第一个元素的部分;
-(8)删除元素：    vec.erase(vec.begin()+2);删除第3个元素
-vec.erase(vec.begin()+i,vec.end()+j);删除区间[i,j-1];区间从0开始
-(9)向量大小:vec.size();
-(10)清空:vec.clear();
-(11)队首元素:vec.front();	//相当于*vec.begin()
-(12)队尾元素:vec.back();	//相当于*--a.end()
+头文件#include<vector>.
 
-2.初始化
-vector< int > ivec( 10 );  //类似数组定义int ia[ 10 ];
-vector< int > ivec( 10, -1 ); //定义了 ivec 它包含十个int型的元素 每个元素都被初始化为-1 
+1.定义与初始化
+vector<int> ivec;	//定义
+vector<int> ivec(10);  //类似数组定义int ia[ 10 ];,此处有10个0
+vector<int> ivec(10,-1); //定义了 ivec 它包含十个int型的元素 每个元素都被初始化为-1 
+vecotr<int> ivec={1,2};	//包含1,2
+vecotr<int> ivec{3};		//包含1个3
 vector<vector<int> > ivec;		//定义二维vector，注意vector<int>后加个空格
 ivec[i].resize(Col);	//每行初始化列数
 
-3.将一个vector内容赋值给另一个vector
+2.将一个vector内容赋值给另一个vector
 方法1：
-vector<int > v1(v2);//声明
+vector<int > v1(v2);//初始化赋值
 方法2：使用swap进行赋值：
-vector<int > v1();v1.swap(v2);//将v2赋值给v1，此时v2变成了v1
+vector<int> v1;v1.swap(v2);//将v2赋值给v1，此时v2变成了v1
 方法3：使用函数assign进行赋值：
 vector<int > v1;//声明v1
 v1.assign(v2.begin(), v2.end());//将v2赋值给v1
@@ -85,7 +73,25 @@ v1.assign(v2.begin(), v2.end());//将v2赋值给v1
 vector<int >::iterator it;//声明迭代器
 for(it = v2.begin();it!=v2.end();++it){//遍历v2,赋值给v1
 
-4.清空
+3.添加元素
+(1)尾部插入数字：vec.push_back(a);
+(2)插入元素：    vec.insert(vec.begin()+i,a);在第i+1个元素前面插入a;
+vec.insert(vec1.begin(),vec2.begin()+1,vec2.end());在vec1前面插入vec2除去第一个元素的部分;
+
+4.访问
+(1)使用下标访问元素，cout<<vec[0]<<endl;记住下标是从0开始的。
+(2)使用.at()访问元素，cout<<vec.at(0)<<endl;at()会检查越界，下标不会
+(3)使用迭代器访问元素.
+vector<int>::iterator it;
+for(it=vec.begin();it!=vec.end();it++)
+    cout<<*it<<endl;
+(4)队首元素:vec.front();	//相当于*vec.begin()
+(5)队尾元素:vec.back();	//相当于*--a.end()
+    
+5.删除与清空
+删除元素：    vec.erase(vec.begin()+2);删除第3个元素
+vec.erase(vec.begin()+i,vec.end()+j);删除区间[i,j-1];区间从0开始
+清空元素：
 第一种办法使用 clear ，清空元素，但不回收空间
     vecInt.clear();
     j= vecInt.capacity();      //j=512
@@ -105,12 +111,24 @@ vector <int>::iterator iter=vecInt.begin();
     j= vecInt.capacity();       //j=0  
     i = vecInt.size();          //i=0         
 
-5.反转
+6.反转
     rbegin()	返回一个指向反转序列的第一个元素的迭代器
     rend()	返回反转序列的超尾迭代器
     for_each(dice.rbegin(),dice.rend(),Show);	//反转输出
     vector<int>::reverse_iterator it = vecInt.rbegin();	//注意迭代器类型不同
 
+7.其他
+  v.empty();
+  v.size();
+  v1==v2;v1!=v2;
+  
+8.迭代器注意
+（1）反转迭代器
+vector<int>::reverse_iterator
+（2）解除引用
+注意优先级
+*it.mem();	//错误
+(*it).mem();	//正确
 三、模板类 array(c++ 11)
 1.头文件：<array>
 2.声明：

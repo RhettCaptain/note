@@ -78,10 +78,14 @@ int   a;   int   a = 0;   extern int a = 0;
 如果要在多个文件中使用外部变量，只需在一个文件中包含该变量的定义，
 但在使用该变量的其他所有文件中，都必须使用关键字extern声明它：
 file1.cpp
-[extern] int cats = 20;	//extern 可以省略
+[extern] int cats = 20;	//extern 可以省略（定义）
+extern const int dogs = 2; //对于const必须在声明和定义中都加上extern
+[extern] void fun(){}
 
 file2.cpp
 extern int cats;	//使用file1.cpp的变量
+extern const int dogs;	//使用file1.cpp的变量
+extern void fun(); //声明外部函数
 cout << cats;
 
 
@@ -151,4 +155,20 @@ volatile;//表明即使程序代码没有对内存单元进行修改，其值也
 -导入名称时，首选使用作用域解析运算符或using声明的方法。
 -对于using声明，首选使用作用域设置为局部而不是全局。
     
+15.左值（表达式）和右值（表达式）
+当一个对象被用做右值的时候，用的是对象的值（内容）
+当一个对象被用作左值的时候，用的是对象的身份（在内存中的位置）
 
+16.强制转换
+cast-name:static_cast、dynamic_cast、const_cast、reinterpret_cast
+(1)static_cast
+任何具有明确定义的类型转换，只要不包含底层const，都可以使用static_cast
+如：double slope = static_cast<double>(j)/i;
+(2)dynamic_cast
+支持运行时类型识别
+(3)const_cast
+只能改变运算对象的底层const
+const char* pc;
+char *p = const_cast<char*>(pc);	//去掉const性质
+(4)reinterpret_cast
+通常为运算对象的位模式提供较低层次上的重新解释

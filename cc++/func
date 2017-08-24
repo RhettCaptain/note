@@ -128,7 +128,7 @@ void swapv(int a, int b)
   原型：double pam(int);//prototype
   声明：double (*pf)(int);
 	//double *pf(int);//pf是一个返回double*的函数
-  赋值：pf = pam;
+  赋值：pf = pam;或pf = &pam都可以
 ---使用函数指针来调用函数---
   double x =(*pf)(5);
   double y = pf(5);	//两种都可以，建议上一种。
@@ -169,6 +169,7 @@ void estimate(int lines,double (*pf)(int)){
 	在函数声明或函数定义前加上关键字inline
 	如inline double square(double x);
 	使用正常。
+	内联函数可以多次定义，通常会把声明和定义一起放在头文件中，以保证多次定义一致。
 
 四、函数模板
 1.格式：

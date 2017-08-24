@@ -56,15 +56,30 @@ M	指定输入数据所占宽度
 (2)c++
 使用cin进行输入
 --基本方式
+    --- string a ---
+    //>> 忽略开头的空白字符（空格，换行，制表），从第一个非空字符开始，直到下一个空白字符。
     cin >> a;	//使用>>运算符,输入i love u ,a为i
+    --- char ch ---
+    //cin.get() 或 cin.get(char& c)
     cin.get(ch1).get(ch2)>>ch3;	//使用get(char&)读取字符，即使该字符是空格、制表符或换行符。（>>读字符会忽略）
-    while(cin.get(ch)){}	//到达文件尾为false，否则true（指向istream对象的引用）
+    while(cin.get(ch)){}	//到达文件尾或非法字符（不是char)为false，否则true（指向istream对象的引用）
     char ch = cin.get();	//使用int get()读取字符，即使该字符是空格、制表符或换行符。到达文尾时返回EOF
+    --- char* line ---
+    //cin.get(); cin.getline();
     char line[50]; cin.get(line, 50, '!');	//读取字符串，按指定字符作为分界符，默认换行符分界。
     char line[50]; cin.getline(line,50);	//和get类似，但前者将分界符留在输入队列，getline抛弃不保留。
     cin.ignore(255,'\n');	//读取并丢弃接下来的255个字符或直到到达第一个换行符。
+    --- string str ---
+    // getlint(cin,str);
     string str; getline(cin,str);	//istream& getline ( istream &is , string &str , char delim );
     其他：read(),peek(),gcount(),putback()...
+--读取数量不定的输入数据
+    int value = 0;
+    while(cin >> value){}
+    cin >> value 的返回值是 cin 如果流有效，未遇到错误，则检测成功
+    当遇到文件结束符（EOF）或遇到一个无效输入（如本例读入的不是整数，则无效（false)
+--从键盘输入文件尾
+    在windows下输入ctrl+z再按车，在unix下输入ctrl+d
 
 2.输出
 (1)c
