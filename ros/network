@@ -12,6 +12,7 @@ USER2			192.168.0.11		usr2
 sudo gedit /ect/hosts
 加入192.168.0.11	USER2
 USER2下加入USER1
+！注意：不修改这个，有可能出现AF_INF连接的问题
 
 2.检查
 （1）检查自己
