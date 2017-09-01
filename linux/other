@@ -109,3 +109,10 @@ echo "---------------"
 2),调用./killprocess.sh programmename。其中programme可以为程序名字，也可以是启动程序时的命令行，
 只要能在ps -ef | grep programmename 之后出现所有的该程序对应的进程即可
 来源：http://blog.csdn.net/telnetor/article/details/5555345
+
+15.开机启动脚本与终端启动脚本
+（1）开机启动脚本
+在以下文件或目录下的脚本会在登录账户后自启动
+	/etc/rc.local; /etc/rc.sysinit; /etc/inittab; /etc/profile; /etc/prfile.d
+（2）终端启动脚本
+在~/.bashrc下的脚本会在打开终端时自动执行
