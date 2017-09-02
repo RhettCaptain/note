@@ -110,7 +110,14 @@ echo "---------------"
 只要能在ps -ef | grep programmename 之后出现所有的该程序对应的进程即可
 来源：http://blog.csdn.net/telnetor/article/details/5555345
 
-15.指定g++头文件路径
+15.开机启动脚本与终端启动脚本
+（1）开机启动脚本
+在以下文件或目录下的脚本会在登录账户后自启动
+	/etc/rc.local; /etc/rc.sysinit; /etc/inittab; /etc/profile; /etc/prfile.d
+（2）终端启动脚本
+在~/.bashrc下的脚本会在打开终端时自动执行
+
+16.指定g++头文件路径
 (1)在g++中指定路径
   g++ -o main main.cpp -I /includedir
 (2)通过环境变量设置
