@@ -123,3 +123,33 @@ echo "---------------"
 (2)通过环境变量设置
   export CPLUS_INCLUDE_PATH=/includedir
   g++ -o main main.cpp
+
+17.远程登录
+(1)远程桌面
+1）安装xrdp
+    sudo apt-get install xrdp
+2)安装vnc4server
+    sudo apt-get install vnc4server
+3)安装xfce4
+    sudo apt-get install xubuntu-desktop
+    echo "xfce4-session" >~/.xsession
+    sudo service xrdp restart
+4)*卸载xfce桌面
+    sudo apt-get remove xfce4  //卸载xfce桌面
+    sudo apt-get remove xfce4* //卸载相关软件
+    sudo apt-get autoremove    //卸载不必要的软件
+    sudo apt-get clean	       //清理
+    sudo apt-get remove xubuntu*  //卸载xubuntu
+    sudo apt-get autoremove
+(2)ssh
+1)安装ssh
+    sudo apt-get install ssh
+2)设置
+    修改/ect/hosts，添加ip - hostname映射
+    192.168.1.123  myUbuntu
+    则可以用hostname代替ip，当然用ip也行，但有可能出现AF_INF的问题
+3)连接
+    ssh rhett@myUbuntu  //以rhett用户登录myUbuntu,没有rhett@则是以root登录
+    如果要修改root的ssh权限，需要修改/etc/ssh/sshd_config文件中的PermitRootLogin为yes
+4)退出
+    exit
