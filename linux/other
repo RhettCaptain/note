@@ -109,3 +109,10 @@ echo "---------------"
 2),调用./killprocess.sh programmename。其中programme可以为程序名字，也可以是启动程序时的命令行，
 只要能在ps -ef | grep programmename 之后出现所有的该程序对应的进程即可
 来源：http://blog.csdn.net/telnetor/article/details/5555345
+
+15.指定g++头文件路径
+(1)在g++中指定路径
+  g++ -o main main.cpp -I /includedir
+(2)通过环境变量设置
+  export CPLUS_INCLUDE_PATH=/includedir
+  g++ -o main main.cpp
