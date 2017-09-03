@@ -16,7 +16,9 @@
 	其他封装消息
 	动态数组，静态数组
 	（*）如何定义使用封装消息，数组。。
-	/** TO DO **/
+	使用自带消息，在CMakeList-find_package里添加std_msgs或相关包?
+在package.xml中添加<run_dependency>和<build_dependency>的std_msgs?
+        数组在c++中的映射是vector
 	
 	（2)在pkg下修改packages.xml
 	添加<build_depend>message_generation</build_depend>		//编译需要
@@ -139,4 +141,9 @@ ros::waitForShutdown();
 	现在好像不能有其他参数列表，至少我不会
     (4)spin和spinOnce区别
 	spin一直循环，如果有别的任务要做，可以在循环里用spinOnce().
+    (5)使用类方法作为回调函数
+	Listener listener;
+        ros::Subscriber sub = n.subscribe("chatter", 1000, &Listener::callback, &listener);
+	//If the subscriber is inside the class Listener, you can replace the last argument with the keyword this, which means that the subscriber will refer to the class it is part of.
+
 	
