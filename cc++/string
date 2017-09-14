@@ -47,6 +47,14 @@
 		在第一次调用时，strtok()必需给予参数s 字符串，往后的调用则将参数s 设置成NULL。
 		每次调用成功则返回下一个分割后的字符串指针。
 	返回值：返回下一个分割后的字符串指针，如果已无从分割则返回NULL。
+	如：
+void split(char* str, char* ch) {
+	char* c = strtok(str, ch);
+	while (c!= NULL) {
+		cout << c << endl;
+		c = strtok(NULL, ch);
+	}
+}
 	---
 	strstr查找
 	原型：char *strstr(char *str1, char *str2)
