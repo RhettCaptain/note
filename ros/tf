@@ -104,3 +104,13 @@
 	static geometry_msgs::Quaternion 	createQuaternionMsgFromYaw (double yaw)
 	static double 	getYaw (const Quaternion &bt_q)
 	static double 	getYaw (const geometry_msgs::Quaternion &msg_q)
+
+8.静态tf发布器
+static_transform_publisher工具的功能是发布两个参考系之间的静态坐标变换，两个参考系一般不发生相对位置变化。
+命令的格式如下：
+static_transform_publisher x y z yaw pitch roll frame_id child_frame_id period_in_ms
+static_transform_publisher x y z qx qy qz qw frame_id child_frame_id  period_in_ms
+该命令不仅可以在终端中使用，还可以在launch文件中使用，使用方式如
+<launch>  
+<node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="1 0 0 0 0 0 1 link1_parent link1 100" />  
+</launch>  
