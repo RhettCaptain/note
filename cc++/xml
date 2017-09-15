@@ -1,0 +1,58 @@
+使用tinyXML2解析XML
+一、下载配置
+github: https://github.com/leethomason/tinyxml2
+使用方法：将tinyxml2.cpp和tinyxml2.h拷贝至项目目录，
+使用时包含#include “tinyxml2.h”和using namespace tinyxml2。
+
+二、使用
+1.创建
+int createXML(const char* xmlPath)
+{
+    const char* declaration ="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+    XMLDocument doc;
+    doc.Parse(declaration);//会覆盖xml所有内容
+
+    //添加申明可以使用如下两行
+    //XMLDeclaration* declaration=doc.NewDeclaration();
+    //doc.InsertFirstChild(declaration);
+
+		//插入根节点
+    XMLElement* root=doc.NewElement("DBUSER");
+    doc.InsertEndChild(root);
+
+    return doc.SaveFile(xmlPath);
+}
+
+2.插入节点
+int insertXMLNode(const char* xmlPath,const User& user)
+{
+    XMLDocument doc;
+    int res=doc.LoadFile(xmlPath);		//加载
+    if(res!=0){}	//加载失败
+    
+    XMLElement* root=doc.RootElement();		//获得根节点
+
+    XMLElement* userNode = doc.NewElement("User");
+    userNode->SetAttribute("Name","rhett");		//设置节点属性
+    userNode->SetAttribute("Password ","123");
+    root->InsertEndChild(userNode);	//在指定节点（root)间插入新节点(userNode)
+
+    XMLElement* anotherRoot = doc.NewElement("User");
+    doc.InsertEndChild(anotherRoot);	//在文档中插入根节点
+
+    return doc.SaveFile(xmlPath);
+}
+
+3.查询节点
+XMLElement* queryUserByName(XMLElement* root){
+	XMLElement* userNode = root->FirstChildElement("User");		//查找根节点下，第一个User子节点
+	while(userNode!=NULL){
+		if(strcmp( cosnt_cast<char*>(userNode->Attribute("Name")),const_cast<char*>("rhett") ) == 0){
+			//比较节点的Name属性
+			break;
+		}
+		userNode = userNode->NextSiblingElement();		//下一个兄弟节点
+	}
+	return userNode;
+}
+
