@@ -15,3 +15,6 @@ int main(){
 	str = "i love u";	//引号字符串的地址赋给了str，str不再指向new的10char内存，所以delete会出错 
 	delete[] str;
 }
+
+3.no matching function for call to
+就是说编译器没有找到签名为 xushu::set(xushu)的函数。要么是函数写错了，要么是调用的时候写错了。
