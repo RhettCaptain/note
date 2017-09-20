@@ -91,7 +91,8 @@ c++11允许在声明时直接初始化，
     explicit Student(int n):name("Nully"),scores(n){}
 10.调用基类构造函数
     如果基类构造函数非默认构造函数，在派生类中的构造函数需要调用基类构造函数，假设B继承A，则
-    A(int n):B(n){}
+    B(int n):A(n){}
+    不显示的调用基类的构造函数，则会调用默认的构造函数
     更多内容参考http://www.cnblogs.com/GODYCA/archive/2013/01/17/2865279.html
 
 
