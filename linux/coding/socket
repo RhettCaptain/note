@@ -51,7 +51,7 @@ int socket(int domain,int type,int protocol);
 		unsigned short int	sin_port;		//端口号
 		struct in_addr		sin_addr;		//网络地址
 	}
-	struct in_addr{
+	struct sin_addr{
 		unsigned long int s_addr;
 	}
 	如：addr.sin_family = AF_INET;
