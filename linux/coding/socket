@@ -1,0 +1,97 @@
+一、基本流程
+1.服务器
+(1)调用socket来创建一个套接字（int fd)
+	如server_sockfd = socket(AF_UNIX,SOCK_STREAM,0);	
+(2)调用bind给套接字起名字/将sockfd与地址结构体(sockaddr_un/in)绑定
+	本地套接字的名字是Linux文件系统中的文件名，一般存放在/tmp或/usr/tmp中
+	网络套接字的名字是与客户连接的特定网络有关的服务标志符（端口号或访问点）
+	如bind（server_sockfd, (struct sockaddr *)&server_address,server_len)
+(3)等待客户连接
+	调用listen创建队列，存放来自客户的进入连接。
+	如listen（server_sockfd，5)
+	调用accept来接受客户连接（阻塞）
+	如client_sockfd = accept(server_sockfd, (struct sockaddr *)&client_address, &client_len);
+2.客户端
+(1)调用socket来创建一个套接字
+(2)将服务器的命名套接字作为一个地址来调用connect与服务器建立连接
+	如result = connect(sockfd, (struct sockaddr *)&address, len);
+
+二、创建套接字
+1.套接字的特性由域(domain)，类型(type)，协议(protocol)确定
+#include <sys/types.h>
+#include <sys/socket.h>
+
+int socket(int domain,int type,int protocol);
+2.套接字的域
+	指定套接字通信中使用的网络介质
+	AF_UNIX:	UNIX域协议（文件系统套接字）
+	AF_INET:	ARPA因特网协议
+	AF_ISO,AF_NS,AF_IPX,AF_APPLETALK等
+3.套接字的类型
+	SOCK_STREAM:	有序，可靠，面向连接的双向字节流，多由TCP通信
+	SOCK_DGRAM:		数据报服务，可以发送最大长度固定且较小的消息，多有UDP通信
+4.套接字的协议
+	一般选0使用默认协议。
+
+三、命名套接字
+1.套接字的地址
+	每个套接字域都有其自己的地址格式。
+	AF_UNIX域套接字的地址由结构sockaddr_un描述
+	#include <sys/un.h>
+	struct sockaddr_un{
+		sa_family_t sun_family;		//AF_UNIX
+		char 		sun_path[];		//pathname
+	}
+	如：addr.sun_family = AF_UNIX;
+		strcpy(addr.sun_path,"server_socket");
+	AF_INET域套接字的地址由结构sockaddr_in描述
+	#include <netinet/in.h>
+	struct sockaddr_in{
+		short int			sin_family;		//AF_INET
+		unsigned short int	sin_port;		//端口号
+		struct in_addr		sin_addr;		//网络地址
+	}
+	struct in_addr{
+		unsigned long int s_addr;
+	}
+	如：addr.sin_family = AF_INET;
+		addr.sin_port = 8000;
+		addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+2.命名/绑定
+	bind系统调用吧参数address中的地址分配给与文件描述符socket关联的未命名套接字
+	#include <sys/socket.h>
+	int bind(int socket, const struct sockaddr *addresssize_t address_len);
+	如：len = sizeof(addr);
+		bind(sockfd,(struct sockaddr *)&addr,len);
+
+四、连接
+1.创建套接字队列
+	#include <sys/socket.h>
+	int listen(int socket, int backlog);
+	backlog为队列长度，一般取5
+2.接受/等待连接
+	#include <sys/socket.h>
+	int accept(int socket, struct sockaddr *address, size_t *address_len);
+	返回新的套接字描述符
+	默认阻塞，可以通过int flags = fcntl(socket, F_GETFL,0);
+					fcntl(socket,F_SETFL, O_NONBLOCK|flags);
+	设为非阻塞
+3.请求连接
+	#include <sys/socket.h>
+	int connect(int socket, const struct sockaddr *address, size_t address_len);
+
+五、主机字节序和网络字节序
+	为了使不同类型的计算机可以通过就网络传输的多字节整数的值达成一致，需要定义一个网络字节序。主机字节序在传输前表示方式要转换为网络字节序。
+	#include <netinet/in.h>
+	unsigned long int htonl(unsigned long int hostlong);
+	unsigned short int htons(unsigned short int hostshort);
+	unsigned long int ntohl(unsigned long int netlong);
+	unsigned short int ntohs(unsigned short int netshort);
+	如：addr.sin_port(9734);
+
+六、读写
+1.write/read
+2.recv/send
+int recv(int sockfd, void *buf,int len,int flag);
+int send(int sockfd, void *buf,int len,int flag);
+flag等于0则和wirte/read一样，可以是MSG_DONTROUTE/MSG_OOB/MSG_PEEK/MSG_WAITALL的一个或组合。
