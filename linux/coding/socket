@@ -12,9 +12,10 @@
 	调用accept来接受客户连接（阻塞）
 	如client_sockfd = accept(server_sockfd, (struct sockaddr *)&client_address, &client_len);
 2.客户端
-(1)调用socket来创建一个套接字
-(2)将服务器的命名套接字作为一个地址来调用connect与服务器建立连接
-	如result = connect(sockfd, (struct sockaddr *)&address, len);
+(1)调用socket来创建一个客户端套接字
+(2)设置服务器地址结构体
+(3)调用connect将客户端与服务器建立连接
+	如result = connect(client_sockfd, (struct sockaddr *)&server_address, server_len);
 
 二、创建套接字
 1.套接字的特性由域(domain)，类型(type)，协议(protocol)确定
@@ -46,6 +47,7 @@ int socket(int domain,int type,int protocol);
 		strcpy(addr.sun_path,"server_socket");
 	AF_INET域套接字的地址由结构sockaddr_in描述
 	#include <netinet/in.h>
+	#include <arpa/inet.h>
 	struct sockaddr_in{
 		short int			sin_family;		//AF_INET
 		unsigned short int	sin_port;		//端口号
@@ -87,7 +89,7 @@ int socket(int domain,int type,int protocol);
 	unsigned short int htons(unsigned short int hostshort);
 	unsigned long int ntohl(unsigned long int netlong);
 	unsigned short int ntohs(unsigned short int netshort);
-	如：addr.sin_port(9734);
+	如：addr.sin_port = htonl(8000);
 
 六、读写
 1.write/read
@@ -95,3 +97,14 @@ int socket(int domain,int type,int protocol);
 int recv(int sockfd, void *buf,int len,int flag);
 int send(int sockfd, void *buf,int len,int flag);
 flag等于0则和wirte/read一样，可以是MSG_DONTROUTE/MSG_OOB/MSG_PEEK/MSG_WAITALL的一个或组合。
+
+七、关闭
+1.close
+关闭本进程的socket id，但链接还是开着的，用这个socket id的其它进程还能用这个链接，能读或写这个socket id
+close(sockfd);
+2.shutdown
+破坏了socket 链接，读的时候可能侦探到EOF结束符，写的时候可能会收到一个SIGPIPE信号，这个信号可能直到
+socket buffer被填充了才收到，shutdown还有一个关闭方式的参数，0 不能再读，1不能再写，2 读写都不能。
+int shutdown(int sockfd,int how);
+3.参考文献
+http://blog.csdn.net/cwmbecoming/article/details/3265343
