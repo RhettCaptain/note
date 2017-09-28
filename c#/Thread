@@ -1,0 +1,31 @@
+一、基本知识
+1、进程与线程：进程作为操作系统执行程序的基本单位，拥有应用程序的资源，进程包含线程，进程的资源被线程共享，线程不拥有资源。
+2、前台线程和后台线程：通过Thread类新建线程默认为前台线程。当所有前台线程关闭时，所有的后台线程也会被直接终止，不会抛出异常。
+3、挂起（Suspend）和唤醒（Resume）：由于线程的执行顺序和程序的执行情况不可预知，所以使用挂起和唤醒容易发生死锁的情况，在实际应用中应该尽量少用。
+4、阻塞线程：Join，阻塞调用线程，直到该线程终止。
+5、终止线程：Abort：抛出 ThreadAbortException 异常让线程终止，终止后的线程不可唤醒。Interrupt：抛出 ThreadInterruptException 异常让线程终止，通过捕获异常可以继续执行。
+6、线程优先级：AboveNormal BelowNormal Highest Lowest Normal，默认为Normal。
+
+二、线程的使用
+线程函数通过委托传递，可以不带参数，也可以带参数（只能有一个参数），可以用一个类或结构体封装参数。
+static void Main(string[] args){
+		Thread t1 = new Thread(new ThreadStart(TestMethod));
+    Thread t2 = new Thread(new ParameterizedThreadStart(TestMethod));
+    t1.IsBackground = true;
+    t2.IsBackground = true;
+    t1.Start();
+    t2.Start("hello");
+    Console.ReadKey();
+}
+
+public static void TestMethod(){
+		Console.WriteLine("不带参数的线程函数");
+}
+
+public static void TestMethod(object data){
+		string datastr = data as string;
+		Console.WriteLine("带参数的线程函数，参数为：{0}", datastr);
+}
+
+三、参考
+http://www.cnblogs.com/luxiaoxun/p/3280146.html

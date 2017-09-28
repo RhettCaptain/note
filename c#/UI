@@ -1,0 +1,8 @@
+1.图标菜单
+使用Tool Strip实现
+通过调节属性中的imageScalingSize和自身Size实现大小调节
+
+2.最大最小化
+    this.FormBorderStyle = FormBorderStyle.None;
+    this.WindowState = FormWindowState.Maximized;
+    this.WindowState = FormWindowState.Minimized;

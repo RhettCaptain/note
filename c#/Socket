@@ -1,0 +1,29 @@
+1.服务器端
+IPAddress ia = IPAddress.Parse("192.168.1.152"); 
+IPEndPoint ie = new IPEndPoint(ia, 12345); 
+ 
+Socket sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
+ 
+sck.Bind(ie); 
+sck.Listen(10); 
+Socket client = sck.Accept(); 
+client.Close(); 
+ 
+sck.Close(); 
+
+2.客户端
+IPAddress ia = IPAddress.Parse("192.168.1.152"); 
+IPEndPoint ie = new IPEndPoint(ia, 12345); 
+Socket sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
+sck.Connect(ie); 
+
+3.发送接收
+sck.Send(Encoding.ASCII.GetBytes("hello,this is Client!")); 
+
+byte[] buffer = new byte[1000];
+sockClient.Receive(buffer);
+return buffer.ToString();
+
+4.参考
+http://xcf007.blog.51cto.com/471707/472649
+http://www.cnblogs.com/24la/p/csharp-server-client-socket-program.html#serversocket
