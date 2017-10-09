@@ -6,3 +6,11 @@
     this.FormBorderStyle = FormBorderStyle.None;
     this.WindowState = FormWindowState.Maximized;
     this.WindowState = FormWindowState.Minimized;
+    
+3.多窗口切换
+    添加用户控件，如Win1,Win2两个
+    在某一个容器如winBox中切换这两个控件，
+     win1.Show();
+     winBox.Controls.Clear();
+     winBox.Controls.Add(win1);
+     如果要让Win1，Win2随父窗口伸缩，可设置DOCK如win1.Dock = DockStyle.Fill;
