@@ -14,3 +14,121 @@
      winBox.Controls.Clear();
      winBox.Controls.Add(win1);
      如果要让Win1，Win2随父窗口伸缩，可设置DOCK如win1.Dock = DockStyle.Fill;
+     
+4.圆形/圆角按钮
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+namespace WinformLx.Class
+{
+    enum buttonStyle
+    { 
+        ButtonNormal,
+        ButtonFocuse,
+        ButtonMouseOver,
+        ButtonFocuseAndMouseOver
+    }
+    class Util_GDI
+    {
+        /// 绘制圆形按钮（用法同矩形按钮）
+        public static void DrawCircleButton(string text, Graphics g, Point Location, int r, buttonStyle btnStyle)
+        {
+            Graphics Gcircle = g;
+            Rectangle rect = new Rectangle(Location.X, Location.Y, r, r);
+            Pen p = new Pen(new SolidBrush(Color.Black));
+            Gcircle.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+      			//外圈
+            Gcircle.DrawEllipse(p, rect);
+            if (btnStyle == buttonStyle.ButtonFocuse)
+            {
+                Gcircle.FillEllipse(new SolidBrush(ColorTranslator.FromHtml("#338FCC")), rect);
+            }
+            else if (btnStyle == buttonStyle.ButtonMouseOver)
+            {
+                Gcircle.FillEllipse(new SolidBrush(ColorTranslator.FromHtml("#EAC100")), rect);
+            }
+            else if (btnStyle == buttonStyle.ButtonFocuseAndMouseOver)
+            {
+                Gcircle.FillEllipse(new SolidBrush(ColorTranslator.FromHtml("#EAC100")), rect);
+            }
+            //内圈
+            p.DashStyle = DashStyle.Dash;
+            if (btnStyle != buttonStyle.ButtonNormal)
+            {
+                
+                Gcircle.DrawEllipse(p, new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4));//虚线框
+            }
+            //此处填充，如果要考虑按下等状态变化，请判断buttonState状态修改颜色等。
+            Gcircle.FillEllipse(new SolidBrush(Color.WhiteSmoke), new Rectangle(rect.X + 3, rect.Y + 3, rect.Width - 6, rect.Height - 6));
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            Gcircle.DrawString(text, new Font(new FontFamily("宋体"), 10), new SolidBrush(Color.Black), rect, sf);
+            p.Dispose();
+        }
+    }
+}
+新建一个cs命名为MyButton，继承Button类，重写Button类的Paint方法：
+
+using System;
+using System.Windows;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+
+using WinformLx.Class; //引用之前工具类的命名空间
+
+namespace WinformLx.UserControls
+{
+    public class MyButton : System.Windows.Forms.Button
+    {
+        private bool mouseover = false;//鼠标经过
+        public MyButton()
+        {
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+
+            //在这里用自己的方法来绘制Button的外观(其实也就是几个框框)
+            Graphics g = e.Graphics; 
+            g.Clear(this.BackColor);
+            Rectangle rect = e.ClipRectangle;
+            rect = new Rectangle(rect.X,rect.Y,rect.Width-1,rect.Height-2);
+            Point center = new Point(rect.X,rect.Y);
+            int radius = rect.Width;
+            //g.ReleaseHdc();
+            if (mouseover)
+            {
+                if (Focused)
+                {
+                    Util_GDI.DrawCircleButton(this.Text, g, center, radius, buttonStyle.ButtonFocuseAndMouseOver);
+                    return;
+                }
+                Util_GDI.DrawCircleButton(this.Text, g, center, radius, buttonStyle.ButtonMouseOver);
+                return;
+            }
+            if (Focused)
+            {
+                Util_GDI.DrawCircleButton(this.Text, g, center, radius, buttonStyle.ButtonFocuse);
+                return;
+            }
+            Util_GDI.DrawCircleButton(this.Text, g, center, radius, buttonStyle.ButtonNormal);
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            mouseover = true;
+            base.OnMouseEnter(e);
+        }
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            mouseover = false;
+            base.OnMouseLeave(e);   
+        }
+    }
+}
