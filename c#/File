@@ -59,3 +59,41 @@
             sw.Close();
             fs.Close();
         }
+
+二、XML
+
+
+三、saveFileDialog和openFileDialog
+1.saveFileDialog
+//可能要获取的路径名
+string localFilePath = "", fileNameExt= "", newFileName= "", FilePath = "";
+SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+//设置文件类型
+//书写规则例如：txt files(*.txt)|*.txt
+saveFileDialog.Filter = "txt files(*.txt)|*.txt|xls files(*.xls)|*.xls|All files(*.*)|*.*";
+//设置默认文件名（可以不设置）
+saveFileDialog.FileName = "siling-Data";
+//主设置默认文件extension（可以不设置）
+saveFileDialog.DefaultExt = "xml";
+//获取或设置一个值，该值指示如果用户省略扩展名，文件对话框是否自动在文件名中添加扩展名。（可以不设置）
+saveFileDialog.AddExtension = true;
+//设置默认文件类型显示顺序（可以不设置）
+saveFileDialog.FilterIndex = 2;
+//保存对话框是否记忆上次打开的目录
+saveFileDialog.RestoreDirectory = true;
+
+//点了保存按钮进入
+if (saveFileDialog.ShowDialog() == DialogResult.OK)
+{
+  //获得文件路径
+  localFilePath = saveFileDialog.FileName.ToString();
+  //获取文件名，不带路径
+  //fileNameExt = localFilePath.Substring(localFilePath.LastIndexOf("\\") + 1);
+  //获取文件路径，不带文件名
+  //FilePath = localFilePath.Substring(0, localFilePath.LastIndexOf("\\"));
+  //给文件名前加上时间
+  //newFileName = DateTime.Now.ToString("yyyyMMdd") + fileNameExt;
+  //在文件名里加字符
+  //saveFileDialog.FileName.Insert(1,"dameng");
+}

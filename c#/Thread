@@ -7,11 +7,12 @@
 6、线程优先级：AboveNormal BelowNormal Highest Lowest Normal，默认为Normal。
 
 二、线程的使用
+1，线程
 线程函数通过委托传递，可以不带参数，也可以带参数（只能有一个参数），可以用一个类或结构体封装参数。
 static void Main(string[] args){
 		Thread t1 = new Thread(new ThreadStart(TestMethod));
     Thread t2 = new Thread(new ParameterizedThreadStart(TestMethod));
-    t1.IsBackground = true;
+    t1.IsBackground = true;	//这样子线程才会随主线程关闭而关闭！！
     t2.IsBackground = true;
     t1.Start();
     t2.Start("hello");
@@ -27,5 +28,38 @@ public static void TestMethod(object data){
 		Console.WriteLine("带参数的线程函数，参数为：{0}", datastr);
 }
 
+2.委托
+声明：public WinFreshEventHandler void deleBuy();
+被委托的方法：public void buy(){}		//与委托声明同型
+定义委托对象buyer并绑定委托方法buy：WinFreshEventHandler buyer = new WinFreshEventHandler(buy);
+请求委托对象：this.Invoke(buy);
+
+3.跨线程控制控件
+（1）加入 Control.CheckForIllegalCrossThreadCalls = false;禁止对跨线程访问的检查（不推荐）
+（2）委托（delegate）+请求（invoke)
+例：private void freshHandler(){
+       statePose.Text = "dff";
+    }
+    private void threadHandler(){
+         while (true){
+             Thread.Sleep(100);
+             if (this.InvokeRequired){
+                 WinFreshEventHandler freshDelegate = new WinFreshEventHandler(freshHandler);
+                 this.Invoke(freshDelegate);
+             }
+             else{
+                freshHandler();
+             }
+         }
+   }
+需要将sleep和无限循环放在等待异步的外面：
+	所以需要单独绑定方法freshHandler，而不是绑定threadHandler
+（3）delegate + BeginInvoke
+ 把（2）中Invoke改成BeginInvoke即可，区别是：Invoke方法是同步的，它会等待工作线程完成；BeginInvoke方法是异步的， 它会另起一个线程去完成工作线程
+（4）使用BackgroundWorker组件(推荐使用这个方法)
+
 三、参考
 http://www.cnblogs.com/luxiaoxun/p/3280146.html
+http://www.cnblogs.com/wudiwushen/archive/2010/04/20/1703368.html
+http://www.cnblogs.com/TankXiao/p/3348292.html
+http://www.cnblogs.com/runner/archive/2011/12/30/2307576.html
