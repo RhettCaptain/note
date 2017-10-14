@@ -132,3 +132,72 @@ namespace WinformLx.UserControls
         }
     }
 }
+
+5.DataGridView数据表格
+（1）列宽模式
+布局 - AutoSizeColumnsMode属性
+（2）数据源
+--DataTable
+	//创建一个空表
+	DataTable dt = new DataTable();
+	//创建空列
+	DataColumn dc = new DataColumn();
+	dt.Columns.Add(dc);
+	//创建空行
+	DataRow dr = dt.NewRow();
+	dt.Rows.Add(dr);
+	//新建行的赋值
+	DataRow dr = dt.NewRow();
+	dr[0] = "张三";//通过索引赋值
+	dr["column1"] = DateTime.Now; //通过名称赋值
+	//对表已有行进行赋值
+	dt.Rows[0][0] = "张三"; //通过索引赋值
+	dt.Rows[0]["column1"] = DateTime.Now;//通过名称赋值
+	//取值
+	string name=dt.Rows[0][0].ToString();
+	string time=dt.Rows[0]["column1"].ToString();
+	//选择column1列值为空的行的集合
+	DataRow[] drs = dt.Select("column1 is null");
+	//选择column0列值为"李四"的行的集合
+	DataRow[] drs = dt.Select("column0 = '李四'");
+	//筛选column0列值中有"张"的行的集合(模糊查询)
+	DataRow[] drs = dt.Select("column0 like '张%'");//如果的多条件筛选，可以加 and 或 or
+	//筛选column0列值中有"张"的行的集合并按column1降序排序
+	DataRow[] drs = dt.Select("column0 like '张%'", "column1 DESC");
+	//使用DataTable.Rows.Remove(DataRow)方法
+	dt.Rows.Remove(dt.Rows[0]);
+	//使用DataTable.Rows.RemoveAt(index)方法
+	dt.Rows.RemoveAt(0);
+	//使用DataRow.Delete()方法
+	dt.Row[0].Delete();
+	dt.AcceptChanges();
+	//绑定
+	dgv.DataSource = dt;
+（3）参考文献
+http://www.cnblogs.com/Sandon/p/5175829.html
+http://blog.csdn.net/ffwangxiuwei/article/details/5935116
+
+6.GDI+ 绘图
+（1）首先准备一个画板:
+创建一个画板主要有3种方式:
+A: 在窗体或控件的Paint事件中直接引用Graphics对象 
+		private void Form1_Paint(object sender, PaintEventArgs e)
+    {
+        Graphics g = e.Graphics; //创建画板,这里的画板是由Form提供的.
+    }
+B: 利用窗体或某个控件的CreateGraphics方法
+C: 从继承自图像的任何对象创建Graphics对象
+		Bitmap mapBmp = new Bitmap(10,10);
+		picBox.Image = mapBmp;	//	picture box 绑定图片，然后绘制显示。注意：重new后就不是绑定的那块内存了
+		Graphics g = Graphics.FromImage(mapBmp);
+（2）刷子（brush）和笔（pen）
+		SolidBrush robotBrush = new SolidBrush(Color.Gray);
+    Pen robotPen = new Pen(new SolidBrush(Color.Red), 5);
+（3）画（draw）与填充（fill）
+		g.DrawLine(coorPen, new Point(0, maxY - 0), new Point(width, maxY - 0));
+		g.FillPolygon(blockBrush, (PointF[])obsPoints.ToArray(typeof(PointF)));
+（4）其他
+--如何在一个背景图上每次绘制新的东西：
+		背景图backBmp，picBox绑定showBmp，
+		每次showBmp先重绘背景，如全白。
+		然后把backBmp画在showBmp上，然后画新的即可。
