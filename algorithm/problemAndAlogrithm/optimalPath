@@ -136,3 +136,8 @@ d. 停止，当你
      把终点加入到了 open list 中，此时路径已经找到了，或者
     查找终点失败，并且 open list 是空的，此时没有路径。
 (3)保存路径。从终点开始，每个方格沿着父节点移动直至起点，这就是你的路径。
+
+6.参考文献
+https://www.cnblogs.com/hxsyl/p/3270401.html
+http://blog.csdn.net/u013946585/article/details/24780277
+http://blog.csdn.net/lcw_2015/article/details/52892501
