@@ -1,0 +1,156 @@
+HTML5
+一、简介
+1.什么是 HTML5？
+HTML5 是最新的 HTML 标准。
+HTML5 是专门为承载丰富的 web 内容而设计的，并且无需额外插件。
+HTML5 拥有新的语义、图形以及多媒体元素。
+HTML5 提供的新元素和新的 API 简化了 web 应用程序的搭建。
+HTML5 是跨平台的，被设计为在不同类型的硬件（PC、平板、手机、电视机等等）之上运行
+
+2.HTML5 中的新内容？
+HTML5 的新的文档类型（DOCTYPE）声明非常简单：
+<!DOCTYPE html>
+编码声明也很简单。
+<meta charset="UTF-8">
+实例demo：
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Title of the document</title>
+</head>
+
+<body>
+Content of the document......
+</body>
+
+</html>
+
+3.新特性
+新的语义元素，比如 <header>, <footer>, <article>, and <section>。
+新的表单控件，比如数字、日期、时间、日历和滑块。
+强大的图像支持（借由 <canvas> 和 <svg>）
+强大的多媒体支持（借由 <video> 和 <audio>）
+强大的新 API，比如用本地存储取代 cookie。
+
+4.被删元素
+以下 HTML 4.01 元素已从 HTML5 中删除：
+<acronym>
+<applet>
+<basefont>
+<big>
+<center>
+<dir>
+<font>
+<frame>
+<frameset>
+<noframes>
+<strike>
+<tt>
+
+二、支持与新元素
+http://www.w3school.com.cn/
+标签	描述
+<article>	定义文章。
+<aside>	定义页面内容以外的内容。
+<details>	定义用户能够查看或隐藏的额外细节。
+<figcaption>	定义 <figure> 元素的标题。
+<figure>	规定自包含内容，比如图示、图表、照片、代码清单等。
+<footer>	定义文档或节的页脚。
+<header>	规定文档或节的页眉。
+<main>	规定文档的主内容。
+<mark>	定义重要的或强调的文本。
+<nav>	定义导航链接。
+<section>	定义文档中的节。
+<summary>	定义 <details> 元素的可见标题。
+<time>	定义日期/时间。
+
+三、迁移与约定
+<div id="header">	  	<header>
+<div id="menu">	   		<nav>
+<div id="content">		<section>
+<div id="post">				<article>
+<div id="footer">			<footer>
+------------------------------
+典型的 HTML5 页面
+最后您可以删除 <head> 标签。HTML5 中不再需要它们：
+
+实例
+<!DOCTYPE html>
+<html lang="en">
+<title>HTML5</title>
+<meta charset="utf-8">
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+</script>
+<![endif]-->
+
+<style>
+body {
+    font-family:Verdana,sans-serif;font-size:0.8em;
+}
+header,footer,section,article {
+    border:1px solid grey;
+    margin:5px;margin-bottom:15px;padding:8px;
+    background-color:white;
+}
+header,footer {
+    color:white;background-color:#444;margin-bottom:5px;
+}
+section {
+    background-color:#ddd;
+}
+nav ul {
+    margin:0;padding:0;
+}
+nav ul li {
+    display:inline; margin:5px;
+}
+</style>
+<body>
+
+<header>
+  <h1>Monday Times</h1>
+</header>
+
+<nav>
+  <ul>
+    <li>News</li>
+    <li>Sports</li>
+    <li>Weather</li>
+  </ul>
+</nav>
+
+<section>
+<h2>News Section</h2>
+
+<div id="post">
+  <h2>News Article</h2>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+</div>
+
+<div id="post">
+<h2>News Article</h2>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+  <p>Ipsum lurum hurum turum ipsum lurum hurum turum ipsum lurum hurum turum ipsum 
+  lurum hurum turum.</p>
+</div>
+
+</section>
+
+<footer>
+  <p>&copy; 2014 Monday Times. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

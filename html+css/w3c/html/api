@@ -1,0 +1,26 @@
+API
+一、地理定位
+HTML5 Geolocation API 用于获得用户的地理位置。
+下例是一个简单的地理定位实例，可返回用户位置的经度和纬度。
+实例
+<script>
+var x=document.getElementById("demo");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+function showPosition(position)
+  {
+  x.innerHTML="Latitude: " + position.coords.latitude +
+  "<br />Longitude: " + position.coords.longitude;
+  }
+</script>
+
+二、拖放
+把元素设置为可拖放
+首先：为了把一个元素设置为可拖放，请把 draggable 属性设置为 true：
+<img draggable="true">

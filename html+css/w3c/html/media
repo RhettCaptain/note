@@ -1,0 +1,103 @@
+媒体
+一、<object>元素
+1.作用
+<object> 的作用是支持 HTML 助手（插件）。
+辅助程序是使用 <object> 标签来加载的。
+使用辅助程序播放视频和音频的一个优势是，您能够允许用户来控制部分或全部播放设置。
+大多数辅助应用程序允许对音量设置和播放功能（比如后退、暂停、停止和播放）的手工（或程序的）控制。
+
+2.使用 QuickTime 来播放 Wave 音频
+实例
+<object width="420" height="360"
+classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+<param name="src" value="bird.wav" />
+<param name="controller" value="true" />
+</object>
+
+3.使用 QuickTime 来播放 MP4 视频
+实例
+<object width="420" height="360"
+classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+<param name="src" value="movie.mp4" />
+<param name="controller" value="true" />
+</object>
+
+4.使用 Flash 来播放 SWF 视频
+实例
+<object width="400" height="40"
+classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+codebase="http://fpdownload.macromedia.com/
+pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0">
+<param name="SRC" value="bookmark.swf">
+<embed src="bookmark.swf" width="400" height="40"></embed>
+</object>
+
+5.使用 Windows Media Player 来播放 WMV 影片
+下面的例子展示用于播放 Windows 媒体文件的推荐代码：
+实例
+<object width="100%" height="100%"
+type="video/x-ms-asf" url="3d.wmv" data="3d.wmv"
+classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6">
+<param name="url" value="3d.wmv">
+<param name="filename" value="3d.wmv">
+<param name="autostart" value="1">
+<param name="uiMode" value="full" />
+<param name="autosize" value="1">
+<param name="playcount" value="1">
+<embed type="application/x-mplayer2" src="3d.wmv" width="100%"
+ height="100%" autostart="true" showcontrols="true" 
+pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
+</object>
+
+6.使用 <embed> 元素
+<embed> 标签定义外部（非 HTML）内容的容器。（这是一个 HTML5 标签，在 HTML4 中是非法的，但是所有浏览器中都有效）。
+下面的代码片段能够显示嵌入网页中的 MP3 文件：
+实例
+<embed height="100" width="100" src="song.mp3" />
+<embed src="movie.swf" height="200" width="200"/>
+
+7.用 <object> 元素
+<object tag> 标签也可以定义外部（非 HTML）内容的容器。
+下面的代码片段能够显示嵌入网页中的 MP3 文件：
+实例
+<object height="100" width="100" data="song.mp3"></object>
+<object data="movie.swf" height="200" width="200"/>
+
+8.使用 <video> 标签
+<video> 是 HTML 5 中的新标签。
+<video> 标签的作用是在 HTML 页面中嵌入视频元素。
+以下 HTML 片段会显示一段嵌入网页的 ogg、mp4 或 webm 格式的视频：
+实例
+<video width="320" height="240" controls="controls">
+  <source src="movie.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  <source src="movie.webm" type="video/webm" />
+Your browser does not support the video tag.
+</video>
+
+9.最好的 HTML 解决方法
+HTML 5 + <object> + <embed>
+<video width="320" height="240" controls="controls">
+  <source src="movie.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  <source src="movie.webm" type="video/webm" />
+  <object data="movie.mp4" width="320" height="240">
+    <embed src="movie.swf" width="320" height="240" />
+  </object>
+</video>
+
+10.优酷解决方案
+在 HTML 中显示视频的最简单的方法是使用优酷等视频网站。
+如果您希望在网页中播放视频，那么您可以把视频上传到优酷等视频网站，然后在您的网页中插入 HTML 代码即可播放视频：
+<embed src="http://player.youku.com/player.php/sid/XMzI2NTc4NTMy/v.swf" 
+width="480" height="400" 
+type="application/x-shockwave-flash">
+</embed>
+
+11.使用超链接
+如果网页包含指向媒体文件的超链接，大多数浏览器会使用“辅助应用程序”来播放文件。
+以下代码片段显示指向 AVI 文件的链接。如果用户点击该链接，浏览器会启动“辅助应用程序”，比如 Windows Media Player 来播放这个 AVI 文件：
+实例
+<a href="movie.swf">Play a video file</a>
