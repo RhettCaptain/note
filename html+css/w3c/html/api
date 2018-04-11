@@ -21,6 +21,154 @@ function showPosition(position)
 </script>
 
 二、拖放
-把元素设置为可拖放
+1.把元素设置为可拖放
 首先：为了把一个元素设置为可拖放，请把 draggable 属性设置为 true：
 <img draggable="true">
+
+2.拖放的内容 - ondragstart 和 setData()
+然后，规定当元素被拖动时发生的事情。
+在上面的例子中，ondragstart 属性调用了一个 drag(event) 函数，规定拖动什么数据。
+dataTransfer.setData() 方法设置被拖动数据的数据类型和值：
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+在本例中，数据类型是 "text"，而值是这个可拖动元素的 id ("drag1")。
+
+3.拖到何处 - ondragover
+ondragover 事件规定被拖动的数据能够被放置到何处。
+默认地，数据/元素无法被放置到其他元素中。为了实现拖放，我们必须阻止元素的这种默认的处理方式。
+这个任务由 ondragover 事件的 event.preventDefault() 方法完成：
+event.preventDefault()
+
+4.进行放置 - ondrop
+当放开被拖数据时，会发生 drop 事件。
+在上面的例子中，ondrop 属性调用了一个函数，drop(event)：
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+代码解释：
+调用 preventDefault() 来阻止数据的浏览器默认处理方式（drop 事件的默认行为是以链接形式打开）
+通过 dataTransfer.getData() 方法获得被拖的数据。该方法将返回在 setData() 方法中设置为相同类型的任何数据
+被拖数据是被拖元素的 id ("drag1")
+把被拖元素追加到放置元素中
+
+5.实例
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+</head>
+<body>
+
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+<img id="drag1" src="img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69">
+
+</body>
+</html>
+
+三、HTML5 本地存储
+1.HTML 本地存储？
+HTML 本地存储：优于 cookies。
+通过本地存储（Local Storage），web 应用程序能够在用户浏览器中对数据进行本地的存储。
+
+2.HTML 本地存储对象
+HTML 本地存储提供了两个在客户端存储数据的对象：
+window.localStorage - 存储没有截止日期的数据
+window.sessionStorage - 针对一个 session 来存储数据（当关闭浏览器标签页时数据会丢失）
+在使用本地存储时，请检测 localStorage 和 sessionStorage 的浏览器支持：
+if (typeof(Storage) !== "undefined") {
+    // 针对 localStorage/sessionStorage 的代码
+} else {
+    // 抱歉！不支持 Web Storage ..
+}
+
+3.localStorage 对象
+// 存储    创建 localStorage 名称/值对，其中：name="lastname"，value="Gates"
+localStorage.setItem("lastname", "Gates");
+// 取回   取回 "lastname" 的值，并把它插到 id="result" 的元素中
+document.getElementById("result").innerHTML = localStorage.getItem("lastname")
+-----------
+上例也可这样写：
+// 存储
+localStorage.lastname = "Gates";
+// 取回
+document.getElementById("result").innerHTML = localStorage.lastname;
+-------------
+删除 "lastname" localStorage 项目的语法如下：
+localStorage.removeItem("lastname");
+
+4.sessionStorage 对象
+sessionStorage 对象等同 localStorage 对象，不同之处在于只对一个 session 存储数据。
+如果用户关闭具体的浏览器标签页，数据也会被删除。
+
+
+四、HTML5 应用程序缓存
+1.什么是应用程序缓存？
+HTML5 引入了应用程序缓存（Application Cache），这意味着可对 web 应用进行缓存，并可在没有因特网连接时进行访问。
+应用程序缓存为应用带来三个优势：
+离线浏览 - 用户可在应用离线时使用它们
+速度 - 已缓存资源加载得更快
+减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源
+
+2.实例
+<!DOCTYPE HTML>
+<html manifest="demo.appcache">
+<body>
+文档内容 ......
+</body>
+</html>
+每个指定了 manifest 的页面在用户对其访问时都会被缓存。如果未指定 manifest 属性，则页面不会被缓存（除非在 manifest 文件中直接指定了该页面）。
+manifest 文件的建议文件扩展名是：".appcache"。
+注意：manifest 文件需要设置正确的 MIME-type，即 "text/cache-manifest"。必须在 web 服务器上进行配置。
+
+3.Manifest 文件
+manifest 文件是简单的文本文件，它告知浏览器被缓存的内容（以及不缓存的内容）。
+manifest 文件有三个部分：
+CACHE MANIFEST - 在此标题下列出的文件将在首次下载后进行缓存
+		CACHE MANIFEST
+		/theme.css
+		/logo.gif
+		/main.js
+		当 manifest 文件被加载后，浏览器会从网站的根目录下载这三个文件。然后，无论用户何时与因特网断开连接，这些资源依然可用。
+NETWORK - 在此标题下列出的文件需要与服务器的连接，且不会被缓存
+		NETWORK:
+		login.asp
+		下面的 NETWORK 部分规定文件 "login.php" 永远不会被缓存，且离线时是不可用的：
+FALLBACK - 在此标题下列出的文件规定当页面无法访问时的回退页面（比如 404 页面）
+		FALLBACK:
+		/html/ /offline.html
+		下面的 FALLBACK 部分规定如果无法建立因特网连接，则用 "offline.html" 替代 /html/ 目录中的所有文件：
+		
+4.更新缓存
+一旦应用被缓存，它就会保持缓存直到发生下列情况：
+用户清空浏览器缓存
+manifest 文件被修改（参阅下面的提示）
+由程序来更新应用缓存
+
+五、HTML5 Web Workers
+1.什么是 Web Worker？
+当在 HTML 页面中执行脚本时，页面是不可响应的，直到脚本已完成。
+Web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能。您可以继续做任何愿意做的事情：点击、选取内容等等，而此时 web worker 运行在后台。
+
+六、HTML5 SSE
+1.Server-Sent 事件
+Server-Sent 事件指的是网页自动从服务器获得更新。
+以前也可能做到这一点，前提是网页不得不询问是否有可用的更新。通过 Server-Sent 事件，更新能够自动到达。
+例如：Facebook/Twitter 更新、股价更新、新的博文、赛事结果，等等。
