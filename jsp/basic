@@ -1,0 +1,47 @@
+JSP基础
+一、简介
+1.什么是JSP？
+JSP（全称Java Server Pages）与 PHP、ASP、ASP.NET 等语言类似，运行在服务端的语言，是一种动态网页开发技术。
+JSP使用JSP标签在HTML网页中插入Java代码。标签通常以<%开头以%>结束。
+JSP是一种Java servlet，主要用于实现Java web应用程序的用户界面部分。网页开发者们通过结合HTML代码、XHTML代码、XML元素以及嵌入JSP操作和命令来编写JSP。
+JSP通过网页表单获取用户输入数据、访问数据库及其他数据源，然后动态地创建网页。
+JSP文件后缀名为 *.jsp 。
+
+2.环境搭建
+（1）配置Java开发工具（JDK）
+（2）设置Web服务器：Tomcat
+需要配置CATALINA_HOME（tomcat路径）和JRE_HOME(jre路径）
+bin：二进制执行文件。里面最常用的文件是startup.bat，如果是 Linux 或 Mac 系统启动文件为 startup.sh。
+conf:配置目录。里面最核心的文件是server.xml。可以在里面改端口号等。默认端口号是8080，也就是说，此端口号不能被其他应用程序占用。
+lib：库文件。tomcat运行时需要的jar包所在的目录
+logs：日志
+temp：临时产生的文件，即缓存
+webapps：web的应用程序。web应用放置到此目录下浏览器可以直接访问
+work：编译以后的class文件。
+（3）启动bin\startup.bat
+这个时候，本地的服务器就已经搭建起来了。如果想关闭服务器，可以直接关闭上面的窗口，或者在里面输入Ctrl+C禁止服务。
+接着我们在浏览器中输入 http://localhost:8080/，如果弹出如下界面，表示tomcat安装成功并且启动起来了：
+（4）hello world
+首先在D:\apache-tomcat-8.0.14\webapps\ROOT目录中新建一个test.jsp文件：
+test.jsp 文件代码如下：
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%
+out.print("菜鸟教程 : http://www.runoob.com");
+%> 
+接着在浏览器中访问地址 http://localhost:8080/test.jsp
+（5）将 Tomcat 和 Eclipse 相关联
+选择菜单栏Windows-->preferences-->server-->Runtime Environments-->Add-->Apache Tomcat v8.0
+File-->New-->Dynamic Web Project"，创建 TomcatTest 项目：
+deployment descriptor：部署的描述。
+Web App Libraries：自己加的包可以放在里面。
+build：放入编译之后的文件。
+WebContent:放进写入的页面。
+(6)在WebContent文件夹下新建一个test.jsp文件,run as server
+(7)Servlet 实例创建
+我们也可以使用以上环境创建 Servlet 文件，选择 "File-->New-->Servlet":
+位于 TomcatTest项目的 /TomcatTest/src 目录下创建 "HelloServlet" 类，包为 "com.runoob.test":
+创建 /TomcatTest/WebContent/WEB-INF/web.xml 文件（如果没有）
+接着重启 Tomcat，浏览器访问 http://localhost:8080/TomcatTest/HelloServlet：
+
+3.JSP结构
+
