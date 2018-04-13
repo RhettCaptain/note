@@ -368,7 +368,7 @@
 1.Sessio简介
 	由于HTTP协议的无状态性，无法持久保持对象状态，为实现持久保存对象的的状态
 	Java提供了两种解决方案，一种是Cookie，一种是Session
-	Session是用来跟踪用户当前状态的一种机制，是针对浏览器和服务器的一对一关系
+	Session是用来跟踪用户当前状态的一种机制，是针对浏览器和服务器的一对一关系（更换一方都是另一个会话Session）
 	Session的一般用法是，在用户登录时将用户的登录信息保存到Session中，以便以后使用
 	
 2.Session API
@@ -384,3 +384,63 @@
 	（5）使HTTPSession失效
 			session.invalidate();
 			
+九、Scope要点-共享变量
+1.setAttribute
+		// request 请求，请求结束则作用域结束
+		request.setAttribute("request_name","request_value");
+		
+		// session 会话，会话结束作用域结束
+		HttpSession session = request.getSession();
+		session.setAttribute("session_name",session_value");
+		
+		//  ServletContext 全局，所有用户共享的
+		ServletContext cxt = this.getServletContext();
+		cxt.setAttribute("servletcontext_name","servletcontext_value");
+		
+		//跳转
+		request.getRequestDispatcher("url").forward(request,response)
+		
+2.getAttribute
+		//从request获得
+		String request_value = (String)request.getAttribute("request_name");
+		
+		//从session获得
+		HttpSession session = request.getSession();
+		String session_value = (String)session.getAttribute("session_name");
+		
+		//从ServletContext获得
+		ServletContext cxt = this.getServletCOntext();
+		String servletcontext_value = (String)cxt.getAttribute("serveletcontext_name");
+		
+十、Filter
+1.简介
+    Filter位于客户端和请求资源之间，在此起到过滤作用。
+    请求资源可以是，Servlet、JSP页面、HTML页面等
+    他们在请求资源的前后来执行
+    请求和响应通过Filter可以被修改
+    常用于：Session管理，权限验证，日志记录，字符编码转换。。。
+2.创建Filter的步骤
+（1）Filter接口
+		init方法
+		doFilter方法
+		Destroy方法
+（2）创建Filter步骤
+		创建一个类实现Filter接口
+				方法：doFilter，init，destroy
+		在doFilter方法中处理逻辑
+				参数：ServletRequest，ServletResponse，FilterChain
+		FilterChain调用doFilter方法
+				public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+					// TODO Auto-generated method stub
+					// place your code here
+					System.out.println("testFilter");
+					// pass the request along the filter chain
+					chain.doFilter(request, response);			//没有这一句则表示被拦截了，不再继续执行
+				}
+		注册filter来过滤Servlet和JSP
+				在web.xml中使用filter和filter-mapping
+				<filter-mapping>
+			    <filter-name>myFilter</filter-name>
+			    <url-pattern>/*</url-pattern>		//任何资源都会起作用
+			  </filter-mapping>
+		
