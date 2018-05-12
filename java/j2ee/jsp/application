@@ -1,0 +1,545 @@
+应用
+一、请求与响应
+1.客户端请求
+（1）客户端请求
+当浏览器请求一个网页时，它会向网络服务器发送一系列不能被直接读取的信息，
+因为这些信息是作为HTTP信息头的一部分来传送的。您可以查阅HTTP协议来获得更多的信息。
+（2）HttpServletRequest类
+request对象是javax.servlet.http.HttpServletRequest类的实例，
+提供了一系列方法来获取HTTP信息头，包括表单数据，cookies，HTTP方法等等。
+接下来将会介绍一些在JSP编程中常用的获取HTTP信息头的方法。详细内容请见下表：
+序号	方法& 描述
+1	Cookie[] getCookies()
+返回客户端所有的Cookie的数组
+2	Enumeration getAttributeNames()
+返回request对象的所有属性名称的集合
+3	Enumeration getHeaderNames()
+返回所有HTTP头的名称集合
+4	Enumeration getParameterNames()
+返回请求中所有参数的集合
+5	HttpSession getSession()
+返回request对应的session对象，如果没有，则创建一个
+6	HttpSession getSession(boolean create)
+返回request对应的session对象，如果没有并且参数create为true，则返回一个新的session对象
+7	Locale getLocale()
+返回当前页的Locale对象，可以在response中设置
+8	Object getAttribute(String name)
+返回名称为name的属性值，如果不存在则返回null。
+9	ServletInputStream getInputStream()
+返回请求的输入流
+10	String getAuthType()
+返回认证方案的名称，用来保护servlet，比如 "BASIC" 或者 "SSL" 或 null 如果 JSP没设置保护措施
+11	String getCharacterEncoding()
+返回request的字符编码集名称
+12	String getContentType()
+返回request主体的MIME类型，若未知则返回null
+13	String getContextPath()
+返回request URI中指明的上下文路径
+14	String getHeader(String name)
+返回name指定的信息头
+15	String getMethod()
+返回此request中的HTTP方法，比如 GET,，POST，或PUT
+16	String getParameter(String name)
+返回此request中name指定的参数，若不存在则返回null
+17	String getPathInfo()
+返回任何额外的与此request URL相关的路径
+18	String getProtocol()
+返回此request所使用的协议名和版本
+19	String getQueryString()
+返回此 request URL包含的查询字符串
+20	String getRemoteAddr()
+返回客户端的IP地址
+21	String getRemoteHost()
+返回客户端的完整名称
+22	String getRemoteUser()
+返回客户端通过登录认证的用户，若用户未认证则返回null
+23	String getRequestURI()
+返回request的URI
+24	String getRequestedSessionId()
+返回request指定的session ID
+25	String getServletPath()
+返回所请求的servlet路径
+26	String[] getParameterValues(String name)
+返回指定名称的参数的所有值，若不存在则返回null
+27	boolean isSecure()
+返回request是否使用了加密通道，比如HTTPS
+28	int getContentLength()
+返回request主体所包含的字节数，若未知的返回-1
+29	int getIntHeader(String name)
+返回指定名称的request信息头的值
+30	int getServerPort()
+返回服务器端口号
+
+2.服务器响应
+（1）服务器响应
+Response响应对象主要将JSP容器处理后的结果传回到客户端。
+可以通过response变量设置HTTP的状态和向客户端发送数据，如Cookie、HTTP文件头信息等。
+（2）HttpServletResponse类
+response 对象是 javax.servlet.http.HttpServletResponse 类的一个实例。
+response对象定义了处理创建HTTP信息头的接口。
+通过使用这个对象，开发者们可以添加新的cookie或时间戳，还有HTTP状态码等等。
+S.N.	方法 & 描述
+1	String encodeRedirectURL(String url)
+对sendRedirect()方法使用的URL进行编码
+2	String encodeURL(String url)
+将URL编码，回传包含Session ID的URL
+3	boolean containsHeader(String name)
+返回指定的响应头是否存在
+4	boolean isCommitted()
+返回响应是否已经提交到客户端
+5	void addCookie(Cookie cookie)
+添加指定的cookie至响应中
+6	void addDateHeader(String name, long date)
+添加指定名称的响应头和日期值
+7	void addHeader(String name, String value)
+添加指定名称的响应头和值
+8	void addIntHeader(String name, int value)
+添加指定名称的响应头和int值
+9	void flushBuffer()
+将任何缓存中的内容写入客户端
+10	void reset()
+清除任何缓存中的任何数据，包括状态码和各种响应头
+11	void resetBuffer()
+清除基本的缓存数据，不包括响应头和状态码
+12	void sendError(int sc)
+使用指定的状态码向客户端发送一个出错响应，然后清除缓存
+13	void sendError(int sc, String msg)
+使用指定的状态码和消息向客户端发送一个出错响应
+14	void sendRedirect(String location)
+使用指定的URL向客户端发送一个临时的间接响应
+15	void setBufferSize(int size)
+设置响应体的缓存区大小
+16	void setCharacterEncoding(String charset)
+指定响应的编码集（MIME字符集），例如UTF-8
+17	void setContentLength(int len)
+指定HTTP servlets中响应的内容的长度，此方法用来设置 HTTP Content-Length 信息头
+18	void setContentType(String type)
+设置响应的内容的类型，如果响应还未被提交的话
+19	void setDateHeader(String name, long date)
+使用指定名称和值设置响应头的名称和内容
+20	void setHeader(String name, String value)
+使用指定名称和值设置响应头的名称和内容
+21	void setIntHeader(String name, int value)
+指定 int 类型的值到 name 标头
+22	void setLocale(Locale loc)
+设置响应的语言环境，如果响应尚未被提交的话
+23	void setStatus(int sc)
+设置响应的状态码
+
+二、表单处理
+1.JSP 读取表单数据
+getParameter(): 使用 request.getParameter() 方法来获取表单参数的值。
+getParameterValues(): 获得如checkbox类（名字相同，但值有多个）的数据。 接收数组变量 ，如checkbox类型
+getParameterNames():该方法可以取得所有变量的名称，该方法返回一个Emumeration。
+getInputStream():调用此方法来读取来自客户端的二进制数据流。
+
+2.获取表单数据
+  <%= request.getParameter("name")%>
+  
+3.解决中文乱码
+	<%
+	// 解决中文乱码的问题
+	String name = new String((request.getParameter("name")).getBytes("ISO-8859-1"),"UTF-8");
+	%>
+
+4.读取所有表单参数
+<%@ page import="java.io.*,java.util.*" %>
+<%
+   Enumeration paramNames = request.getParameterNames();
+
+   while(paramNames.hasMoreElements()) {
+      String paramName = (String)paramNames.nextElement();
+      out.print("<tr><td>" + paramName + "</td>\n");
+      String paramValue = request.getParameter(paramName);
+      out.println("<td> " + paramValue + "</td></tr>\n");
+   }
+%>
+
+三、过滤器
+1.作用
+JSP 和 Servlet 中的过滤器都是 Java 类。
+过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
+2.Servlet 过滤器方法
+过滤器是一个实现了 javax.servlet.Filter 接口的 Java 类。javax.servlet.Filter 接口定义了三个方法：
+序号	方法 & 描述
+-	public void doFilter (ServletRequest, ServletResponse, FilterChain)
+该方法完成实际的过滤操作，当客户端请求方法与过滤器设置匹配的URL时，Servlet容器将先调用过滤器的doFilter方法。FilterChain用户访问后续过滤器。
+-	public void init(FilterConfig filterConfig)
+web 应用程序启动时，web 服务器将创建Filter 的实例对象，并调用其init方法，读取web.xml配置，完成对象的初始化功能，
+从而为后续的用户请求作好拦截的准备工作（filter对象只会创建一次，init方法也只会执行一次）。
+开发人员通过init方法的参数，可获得代表当前filter配置信息的FilterConfig对象。
+-	public void destroy()
+Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。
+3.实例
+在 init 方法使用 FilterConfig 对象获取参数：
+public void  init(FilterConfig config) throws ServletException {
+    // 获取初始化参数
+    String site = config.getInitParameter("Site"); 
+    // 输出初始化参数
+    System.out.println("网站名称: " + site); 
+}
+web.xml 中为 filter 标签创建下面的条目：
+<web-app>  
+<filter>
+  <filter-name>LogFilter</filter-name>
+  <filter-class>com.runoob.test.LogFilter</filter-class>
+  <init-param>
+    <param-name>Site</param-name>
+    <param-value>菜鸟教程</param-value>
+  </init-param>
+</filter>
+<filter-mapping>
+  <filter-name>LogFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+</web-app>  
+
+四、cookie
+1.编码解码
+SP Cookie 处理需要对中文进行编码与解码，方法如下：
+String   str   =   java.net.URLEncoder.encode("中文"，"UTF-8");            //编码
+String   str   =   java.net.URLDecoder.decode("编码后的字符串","UTF-8");   // 解码
+
+2.Servlet Cookie 方法
+下表列出了Cookie对象中常用的方法：
+序号	方法 & 描述
+1	public void setDomain(String pattern)
+设置cookie的域名，比如 runoob.com
+2	public String getDomain()
+获取cookie的域名，比如 runoob.com
+3	public void setMaxAge(int expiry)
+设置cookie有效期，以秒为单位，默认有效期为当前session的存活时间
+4	public int getMaxAge()
+获取cookie有效期，以秒为单位，默认为-1 ，表明cookie会活到浏览器关闭为止
+5	public String getName()
+返回 cookie的名称，名称创建后将不能被修改
+6	public void setValue(String newValue)
+设置 cookie的值
+7	public String getValue()
+获取cookie的值
+8	public void setPath(String uri)
+设置cookie 的路径，默认为当前页面目录下的所有URL，还有此目录下的所有子目录
+9	public String getPath()
+获取cookie 的路径
+10	public void setSecure(boolean flag)
+指明cookie是否要加密传输
+11	public void setComment(String purpose)
+设置注释描述 cookie的目的。当浏览器将cookie展现给用户时，注释将会变得非常有用
+12	public String getComment()
+返回描述cookie目的的注释，若没有则返回null
+
+3.使用JSP设置Cookie
+使用JSP设置cookie包含三个步骤：
+(1)创建一个Cookie对象： 调用Cookie的构造函数，使用一个cookie名称和值做参数，它们都是字符串。
+Cookie cookie = new Cookie("key","value");
+	请务必牢记，名称和值中都不能包含空格或者如下的字符：
+	[ ] ( ) = , " / ? @ : ;
+(2) 设置有效期：调用setMaxAge()函数表明cookie在多长时间（以秒为单位）内有效。下面的操作将有效期设为了24小时。
+cookie.setMaxAge(60*60*24); 
+(3) 将cookie发送至HTTP响应头中：调用response.addCookie()函数来向HTTP响应头中添加cookie。
+response.addCookie(cookie);
+
+<%
+   // 编码，解决中文乱码   
+   String str = URLEncoder.encode(request.getParameter("name"),"utf-8");  
+   // 设置 name 和 url cookie 
+   Cookie name = new Cookie("name",
+           str);
+   Cookie url = new Cookie("url",
+              request.getParameter("url"));
+
+   // 设置cookie过期时间为24小时。
+   name.setMaxAge(60*60*24); 
+   url.setMaxAge(60*60*24); 
+
+   // 在响应头部添加cookie
+   response.addCookie( name );
+   response.addCookie( url );
+%>
+
+4.使用 JSP 读取 Cookie
+想要读取cookie，您就需要调用request.getCookies()方法来获得一个javax.servlet.http.Cookie对象的数组，
+然后遍历这个数组，使用getName()方法和getValue()方法来获取每一个cookie的名称和值。
+<%
+   Cookie cookie = null;
+   Cookie[] cookies = null;
+   // 获取cookies的数据,是一个数组
+   cookies = request.getCookies();
+   if( cookies != null ){
+      out.println("<h2> 查找 Cookie 名与值</h2>");
+      for (int i = 0; i < cookies.length; i++){
+         cookie = cookies[i];
+         out.print("参数名 : " + cookie.getName());
+         out.print("参数值: " + URLDecoder.decode(cookie.getValue(), "utf-8") +" <br>");
+      }
+  }
+%>
+
+5.使用JSP删除Cookie
+删除cookie非常简单。如果您想要删除一个cookie，按照下面给的步骤来做就行了：
+获取一个已经存在的cookie然后存储在Cookie对象中。
+将cookie的有效期设置为0。
+将这个cookie重新添加进响应头中。
+
+五、Session
+1.session对象
+JSP利用servlet提供的HttpSession接口来识别一个用户，存储这个用户的所有访问信息。
+默认情况下，JSP允许会话跟踪，一个新的HttpSession对象将会自动地为新的客户端实例化。
+禁止会话跟踪需要显式地关掉它，通过将page指令中session属性值设为false来实现，就像下面这样：
+<%@ page session="false" %>
+session对象的一些重要方法：
+S.N.	方法 & 描述
+1	public Object getAttribute(String name)
+返回session对象中与指定名称绑定的对象，如果不存在则返回null
+2	public Enumeration getAttributeNames()
+返回session对象中所有的对象名称
+3	public long getCreationTime()
+返回session对象被创建的时间， 以毫秒为单位，从1970年1月1号凌晨开始算起
+4	public String getId()
+返回session对象的ID
+5	public long getLastAccessedTime()
+返回客户端最后访问的时间，以毫秒为单位，从1970年1月1号凌晨开始算起
+6	public int getMaxInactiveInterval()
+返回最大时间间隔，以秒为单位，servlet 容器将会在这段时间内保持会话打开
+7	public void invalidate()
+将session无效化，解绑任何与该session绑定的对象
+8	public boolean isNew()
+返回是否为一个新的客户端，或者客户端是否拒绝加入session
+9	public void removeAttribute(String name)
+移除session中指定名称的对象
+10	public void setAttribute(String name, Object value) 
+使用指定的名称和值来产生一个对象并绑定到session中
+11	public void setMaxInactiveInterval(int interval)
+用来指定时间，以秒为单位，servlet容器将会在这段时间内保持会话有效
+
+2.实例
+<%
+   // 获取session创建时间
+   Date createTime = new Date(session.getCreationTime());
+   // 获取最后访问页面的时间
+   Date lastAccessTime = new Date(session.getLastAccessedTime());
+
+   String title = "再次访问菜鸟教程实例";
+   Integer visitCount = new Integer(0);
+   String visitCountKey = new String("visitCount");
+   String userIDKey = new String("userID");
+   String userID = new String("ABCD");
+
+   // 检测网页是否由新的访问用户
+   if (session.isNew()){
+      title = "访问菜鸟教程实例";
+      session.setAttribute(userIDKey, userID);
+      session.setAttribute(visitCountKey,  visitCount);
+   } else {
+       visitCount = (Integer)session.getAttribute(visitCountKey);
+       visitCount += 1;
+       userID = (String)session.getAttribute(userIDKey);
+       session.setAttribute(visitCountKey,  visitCount);
+   }
+%>
+
+3.删除Session数据
+当处理完一个用户的会话数据后，您可以有如下选择：
+-移除一个特定的属性：
+调用public void removeAttribute(String name)  方法来移除指定的属性。
+-删除整个会话：
+调用public void invalidate() 方法来使整个session无效。
+-设置会话有效期：
+调用 public void setMaxInactiveInterval(int interval)  方法来设置session超时。
+-登出用户：
+支持servlet2.4版本的服务器，可以调用 logout()方法来登出用户，并且使所有相关的session无效。
+-配置web.xml文件：
+如果使用的是Tomcat，可以向下面这样配置web.xml文件：
+  <session-config>
+    <session-timeout>15</session-timeout>
+  </session-config>
+超时以分钟为单位，Tomcat中的默认的超时时间是30分钟。
+Servlet中的getMaxInactiveInterval( ) 方法以秒为单位返回超时时间。
+如果在web.xml中配置的是15分钟，则getMaxInactiveInterval( ) 方法将会返回900。
+
+六、文件上传
+1.创建一个文件上传表单
+下面的 HTML 代码创建了一个文件上传表单。以下几点需要注意：
+表单 method 属性应该设置为 POST 方法，不能使用 GET 方法。
+表单 enctype 属性应该设置为 multipart/form-data.
+表单 action 属性应该设置为在后端服务器上处理文件上传的 Servlet 文件。
+上传单个文件，您应该使用单个带有属性 type="file" 的 <input .../> 标签。
+为了允许多个文件上传，请包含多个 name 属性值不同的 input 标签。
+输入标签具有不同的名称属性的值。浏览器会为每个 input 标签关联一个浏览按钮。
+<form method="post" action="/TomcatTest/UploadServlet" enctype="multipart/form-data">
+    选择一个文件:
+    <input type="file" name="uploadFile" />
+    <br/><br/>
+    <input type="submit" value="上传" />
+</form>
+
+2.编写后台 Servlet
+// 上传文件存储目录
+private static final String UPLOAD_DIRECTORY = "upload";
+// 上传配置
+private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
+private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
+private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
+ 
+/**
+ * 上传数据及保存文件
+*/
+protected void doPost(HttpServletRequest request,
+    HttpServletResponse response) throws ServletException, IOException {
+    // 检测是否为多媒体上传
+    if (!ServletFileUpload.isMultipartContent(request)) {
+        // 如果不是则停止
+        PrintWriter writer = response.getWriter();
+        writer.println("Error: 表单必须包含 enctype=multipart/form-data");
+        writer.flush();
+        return;
+    }
+ 
+    // 配置上传参数
+    DiskFileItemFactory factory = new DiskFileItemFactory();
+    // 设置内存临界值 - 超过后将产生临时文件并存储于临时目录中
+    factory.setSizeThreshold(MEMORY_THRESHOLD);
+    // 设置临时存储目录
+    factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+ 
+    ServletFileUpload upload = new ServletFileUpload(factory);
+         
+    // 设置最大文件上传值
+    upload.setFileSizeMax(MAX_FILE_SIZE);
+         
+    // 设置最大请求值 (包含文件和表单数据)
+    upload.setSizeMax(MAX_REQUEST_SIZE);
+        
+    // 中文处理
+    upload.setHeaderEncoding("UTF-8"); 
+
+    // 构造临时路径来存储上传的文件
+    // 这个路径相对当前应用的目录
+    String uploadPath = getServletContext().getRealPath("/") + File.separator + UPLOAD_DIRECTORY;
+       
+         
+    // 如果目录不存在则创建
+    File uploadDir = new File(uploadPath);
+    if (!uploadDir.exists()) {
+        uploadDir.mkdir();
+    }
+ 
+    try {
+       // 解析请求的内容提取文件数据
+        @SuppressWarnings("unchecked")
+        List<FileItem> formItems = upload.parseRequest(request);
+ 
+        if (formItems != null && formItems.size() > 0) {
+            // 迭代表单数据
+            for (FileItem item : formItems) {
+                // 处理不在表单中的字段
+                if (!item.isFormField()) {
+                    String fileName = new File(item.getName()).getName();
+                    String filePath = uploadPath + File.separator + fileName;
+                    File storeFile = new File(filePath);
+                    // 在控制台输出文件的上传路径
+                        System.out.println(filePath);
+                    // 保存文件到硬盘
+                    item.write(storeFile);
+                    request.setAttribute("message",
+                        "文件上传成功!");
+                }
+            }
+        }
+    } catch (Exception ex) {
+        request.setAttribute("message",
+                "错误信息: " + ex.getMessage());
+    }
+    // 跳转到 message.jsp
+    getServletContext().getRequestDispatcher("/message.jsp").forward(
+            request, response); 
+}
+
+七、日期处理
+1.Date类
+Date类有两个构造函数。第一个构造函数使用当前日期和时间来初始化对象。
+Date( )
+第二个构造函数接受一个参数，这个参数表示从1970年1月1日凌晨至所要表示时间的毫秒数。
+Date(long millisec)
+获取Date对象后，您就能够使用下表列出的所有方法：
+方法 & 描述
+boolean after(Date date)
+如果比给定的日期晚，则返回true，否则返回false
+boolean before(Date date)
+如果比给定的日期早，则返回true，否则返回false
+Object clone( )
+获取当前对象的一个副本
+int compareTo(Date date)
+如果与给定日期相等，则返回0，如果比给定日期早，则返回一个负数，如果比给定日期晚，则返回一个正数
+int compareTo(Object obj)
+与 compareTo(Date) 方法相同，如果 obj 不是Date类或其子类的对象，抛出ClassCastException异常
+boolean equals(Object date)
+如果与给定日期相同，则返回true，否则返回false
+long getTime( )
+返回从1970年1月1日凌晨至此对象所表示时间的毫秒数
+int hashCode( )
+返回此对象的哈希码
+void setTime(long time)
+使用给定参数设置时间和日期，参数time表示从1970年1月1日凌晨至time所经过的毫秒数
+String toString( )
+将此对象转换为字符串并返回这个字符串
+
+2.使用SimpleDateFormat格式化日期
+<%
+   Date dNow = new Date( );
+   SimpleDateFormat ft = 
+   new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+   out.print( "<h2 align=\"center\">" + ft.format(dNow) + "</h2>");
+%>
+SimpleDateFormat格式码
+要指定模式字符串，需要使用下表列出的格式码：
+
+字符	描述	示例
+G	时代标识符	AD
+y	4位数年份	2001
+M	月	July or 07
+d	日	10
+h	12小时制， A.M./P.M. (1~12)	12
+H	24小时制	22
+m	分钟	30
+s	秒	55
+S	毫秒	234
+E	星期	Tuesday
+D	一年中的某天	360
+F	一个月中某星期的某天	2 (second Wed. in July)
+w	一年中的某星期	40
+W	一个月中的某星期	1
+a	A.M./P.M. 标记	PM
+k	一天中的某个小时 (1~24)	24
+K	一天中的某个小时，A.M./P.M. (0~11)	10
+z	时区	Eastern Standard Time
+'	文本分隔	Delimiter
+"	单引号	`
+
+八、页面重定向
+1.public void response.sendRedirect(String location)
+2.setStatus()和setHeader()方法
+String site = "http://www.runoob.com" ;
+response.setStatus(response.SC_MOVED_TEMPORARILY);
+response.setHeader("Location", site); 
+
+九、点击量统计
+要实现一个计数器，您可以利用应用程序隐式对象和相关方法getAttribute()和setAttribute()来实现。
+以下是在应用中创建变量的语法：
+application.setAttribute(String Key, Object Value);
+您可以使用上述方法来设置一个计数器变量及更新该变量的值。读取该变量的方法如下：
+application.getAttribute(String Key);
+<%
+    Integer hitsCount = 
+      (Integer)application.getAttribute("hitCounter");
+    if( hitsCount ==null || hitsCount == 0 ){
+       /* 第一次访问 */
+       out.println("欢迎访问菜鸟教程!");
+       hitsCount = 1;
+    }else{
+       /* 返回访问值 */
+       out.println("欢迎再次访问菜鸟教程!");
+       hitsCount += 1;
+    }
+    application.setAttribute("hitCounter", hitsCount);
+%>

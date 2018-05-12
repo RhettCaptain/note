@@ -141,7 +141,7 @@
 	£¨3£©demo_query
 	String sql = "select id,name from stuTbl";
 	Statement stmt = conn.createStatement();
-	ResultSet rs = stmt.xecuteQuery(sql);
+	ResultSet rs = stmt.executeQuery(sql);
 	while(rs.next()){
 		int id = rs.getInd(1);
 		String name = rs.getString("name");

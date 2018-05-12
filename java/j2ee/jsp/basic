@@ -43,5 +43,35 @@ WebContent:放进写入的页面。
 创建 /TomcatTest/WebContent/WEB-INF/web.xml 文件（如果没有）
 接着重启 Tomcat，浏览器访问 http://localhost:8080/TomcatTest/HelloServlet：
 
-3.JSP结构
+3.JSP处理
+（1）就像其他普通的网页一样，您的浏览器发送一个 HTTP 请求给服务器。
+（2）Web 服务器识别出这是一个对 JSP 网页的请求，并且将该请求传递给 JSP 引擎。通过使用 URL或者 .jsp 文件来完成。
+（3）JSP 引擎从磁盘中载入 JSP 文件，然后将它们转化为 Servlet。这种转化只是简单地将所有模板文本改用 println() 语句，并且将所有的 JSP 元素转化成 Java 代码。
+（4）JSP 引擎将 Servlet 编译成可执行类，并且将原始请求传递给 Servlet 引擎。
+（5）Web 服务器的某组件将会调用 Servlet 引擎，然后载入并执行 Servlet 类。在执行过程中，Servlet 产生 HTML 格式的输出并将其内嵌于 HTTP response 中上交给 Web 服务器。
+（6）Web 服务器以静态 HTML 网页的形式将 HTTP response 返回到您的浏览器中。
+（7）最终，Web 浏览器处理 HTTP response 中动态产生的HTML网页，就好像在处理静态网页一样。
 
+4.JSP生命周期
+JSP生命周期就是从创建到销毁的整个过程，类似于servlet生命周期，区别在于JSP生命周期还包括将JSP文件编译成servlet。
+以下是JSP生命周期中所走过的几个阶段：
+（1）编译阶段：
+servlet容器编译servlet源文件，生成servlet类
+（2）初始化阶段：
+加载与JSP对应的servlet类，创建其实例，并调用它的初始化方法
+public void jspInit(){
+  // 初始化代码
+}
+（3）执行阶段：
+调用与JSP对应的servlet实例的服务方法
+void _jspService(HttpServletRequest request,
+                 HttpServletResponse response)
+{
+   // 服务端处理代码
+}
+（4）销毁阶段：
+调用与JSP对应的servlet实例的销毁方法，然后销毁servlet实例
+public void jspDestroy()
+{
+   // 清理代码
+}

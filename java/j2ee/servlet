@@ -444,3 +444,50 @@
 			    <url-pattern>/*</url-pattern>		//任何资源都会起作用
 			  </filter-mapping>
 		
+十一、Listener
+1.简介
+    Listener是用来监听web工程状态改变的一种实现机制，例如：
+    （1）监听整个web工程状态改变
+    		ServletContextListener
+    		ServletContextAttributeListener
+    （2）监听Session范围状态变化
+    		HttpSessionListener
+    		HttpSessionAttributeListener
+    （3）监听request范围状态变化
+    		ServletRequestListener
+    		ServletRequestAttributeListener
+2.使用
+		（1）创建一个listener类实现对应的接口（如1）
+				如实现ServletContextListener，则
+				public void contextDestroyed(ServletContextEvent arg0){}	//销毁时监听
+				public void contextInitialized(ServletContextEvent arg0){}	//初始化时监听
+				--
+				实现ServletContextAttributeListener，则
+				public void attributeAdded(ServletContextEvent arg0){}	//添加时监听
+				public void attributeRemoved(ServletContextEvent arg0){}	//删除时监听
+				public void attributeReplaced(ServletContextEvent arg0){}	//替换时监听
+		（2）在xml中注册：
+				<listener>
+						<listener-class>....</listener-class>
+				</listener>
+				
+十二、资源访问（访问数据库）
+1.MVC架构
+    表现    ——    JSP     —— View
+    控制    ——  Servlet   —— Controller
+    业务逻辑——接口、JDBC..—— Model
+    和数据逻辑
+2.Servlet作用
+（1）响应用户请求
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+（2）调用后台逻辑
+		CustomerDao dao = new CustomerDaoImpl();
+		Customer c = new Customer();
+		c.setName(name);
+		c.setEmail(email);
+		dao.save(c);
+（3）页面的跳转
+		response.setContextType("text/html");
+		PrintWriter out = response.getWriter();
+		out.println("");

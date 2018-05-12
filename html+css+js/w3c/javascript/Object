@@ -1,0 +1,166 @@
+JS对象
+一、对象
+1.创建对象
+（1）创建直接的实例
+person=new Object();
+person.firstname="Bill";
+person.lastname="Gates";
+（2）使用对象构造器
+function person(firstname,lastname,age,eyecolor)
+{
+this.firstname=firstname;
+this.lastname=lastname;
+}
+var myFather=new person("Bill","Gates",56,"blue");
+var myMother=new person("Steve","Jobs",48,"green");
+
+2.把方法添加到 JavaScript 对象
+方法只不过是附加在对象上的函数。
+在构造器函数内部定义对象的方法：
+function person(firstname,lastname,age,eyecolor)
+{
+this.firstname=firstname;
+this.lastname=lastname;
+this.changeName=changeName;
+	function changeName(name)
+	{
+	this.lastname=name;
+	}
+}
+
+3.访问 
+访问对象属性的语法是：objectName.propertyName
+访问对象方法的语法是：objectName.methodName()
+
+二、数字
+JavaScript 只有一种数字类型。
+可以使用也可以不使用小数点来书写数字。
+所有 JavaScript 数字均为 64 位
+整数（不使用小数点或指数计数法）最多为 15 位。
+小数的最大位数是 17，但是浮点运算并不总是 100% 准确：
+八进制和十六进制
+如果前缀为 0，则 JavaScript 会把数值常量解释为八进制数，如果前缀为 0 和 "x"，则解释为十六进制数。
+
+三、字符串
+1.计算字符串的长度——.length
+var txt="Hello World!"
+document.write(txt.length)
+
+2.字符串样式
+var txt="Hello World!"
+document.write("<p>Big: " + txt.big() + "</p>")
+document.write("<p>Small: " + txt.small() + "</p>")
+document.write("<p>Bold: " + txt.bold() + "</p>")
+document.write("<p>Italic: " + txt.italics() + "</p>")
+txt.blink()，txt.fixed()，。。。。
+
+3.indexOf()
+var str="Hello world!"
+document.write(str.indexOf("Hello") + "<br />")		//0
+document.write(str.indexOf("World") + "<br />")		//-1
+document.write(str.indexOf("world"))							//6
+
+4.match()
+var str="Hello world!"
+document.write(str.match("world") + "<br />")				//world
+document.write(str.match("World") + "<br />")				//null
+document.write(str.match("worlld") + "<br />")			//null
+document.write(str.match("world!"))									//world!
+
+5.replace()
+var str="Visit Microsoft!"
+document.write(str.replace(/Microsoft/,"W3School"))		//Visit W3School!
+
+四、日期
+1.返回当日的日期和时间
+document.write(Date())	//Thu May 03 2018 16:44:33 GMT+0800 (中国标准时间)
+
+2.getTime()
+getTime() 返回从 1970 年 1 月 1 日至今的毫秒数。
+
+3.setFullYear()
+var d = new Date()
+d.setFullYear(1992,10,3)
+document.write(d)
+
+4.toUTCString()
+如何使用 toUTCString() 将当日的日期（根据 UTC）转换为字符串。
+
+5.getDay()
+var d=new Date()
+var weekday=new Array(7)
+weekday[0]="星期日"
+weekday[1]="星期一"
+weekday[2]="星期二"
+weekday[3]="星期三"
+weekday[4]="星期四"
+weekday[5]="星期五"
+weekday[6]="星期六"
+document.write("今天是" + weekday[d.getDay()])
+
+五、数组
+1.创建数组
+var mycars = new Array()
+mycars[0] = "Saab"
+mycars[1] = "Volvo"
+mycars[2] = "BMW"
+----
+var mycars=new Array("Saab","Volvo","BMW")
+
+2.for  in
+var x
+for (x in mycars)
+{
+document.write(mycars[x] + "<br />")
+}
+
+3.使用 concat() 方法来合并两个数组
+arr.concat(arr2)
+
+4.用数组的元素组成字符串 - join()
+var arr = new Array(3);
+arr[0] = "George"
+arr[1] = "John"
+arr[2] = "Thomas"
+document.write(arr.join());		//George,John,Thomas
+
+5.排序sort
+arr.sort()；
+----
+function sortNumber(a, b)
+{
+return a - b
+}
+arr.sort(sortNumber)
+
+六、算数
+1.取整round（）
+Math.round(0.60)
+2.0-1随机数random（）
+Math.random()
+3.最大，最小
+Math.max(5,7)
+Math.min(5,7)
+
+七、正则表达式
+1.定义 RegExp
+var patt1=new RegExp("e");
+
+2.RegExp 对象的方法
+（1）test()
+test() 方法检索字符串中的指定值。返回值是 true 或 false。
+例子：
+var patt1=new RegExp("e");
+document.write(patt1.test("The best things in life are free")); 
+由于该字符串中存在字母 "e"，以上代码的输出将是：
+true
+（2）exec()
+exec() 方法检索字符串中的指定值。返回值是被找到的值。如果没有发现匹配，则返回 null。
+var patt1=new RegExp("e");
+document.write(patt1.exec("The best things in life are free")); 
+由于该字符串中存在字母 "e"，以上代码的输出将是：
+e
+可以向 RegExp 对象添加第二个参数，以设定检索。
+（3）compile()
+compile() 方法用于改变 RegExp。
+compile() 既可以改变检索模式，也可以添加或删除第二个参数。

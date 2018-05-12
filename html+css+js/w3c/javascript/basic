@@ -1,0 +1,124 @@
+一、简介
+1.简介
+JavaScript 是脚本语言
+JavaScript 是一种轻量级的编程语言。
+JavaScript 是可插入 HTML 页面的编程代码。
+JavaScript 插入 HTML 页面后，可由所有的现代浏览器执行。
+
+2.实现
+HTML 中的脚本必须位于 <script> 与 </script> 标签之间。
+脚本可被放置在 HTML 页面的 <body> 和 <head>（一般定义函数） 部分中。
+<script>
+alert("My First JavaScript");
+</script>
+外部js
+<script src="myScript.js"></script>
+
+二、语法
+1.输出
+（1）操作 HTML 元素——document.getElementById(id) 
+如需从 JavaScript 访问某个 HTML 元素，您可以使用 document.getElementById(id) 方法。
+请使用 "id" 属性来标识 HTML 元素：
+<p id="demo">我的第一个段落</p>
+<script>
+document.getElementById("demo").innerHTML="我的第一段 JavaScript";
+</script>
+（2）写到文档输出—— document.write() 
+<script>
+document.write("<p>我的第一段 JavaScript</p>");
+</script>
+请使用 document.write() 仅仅向文档输出写内容。
+如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖：
+
+2.语句
+（1）分号用于分隔 JavaScript 语句。在 JavaScript 中，用分号来结束语句是可选的。
+（2）JavaScript 对大小写是敏感的。
+（3）您可以在文本字符串中使用反斜杠对代码行进行换行。下面的例子会正确地显示：
+document.write("Hello \
+World!");
+不过，您不能像这样折行：
+document.write \
+("Hello World!");
+
+3.变量
+var carname;
+变量必须以字母开头
+变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
+变量名称对大小写敏感（y 和 Y 是不同的变量）
+在计算机程序中，经常会声明无值的变量。未使用值来声明的变量，其值实际上是 undefined。
+
+4.数据类型
+（1）字符串
+var carname="Bill Gates";
+var carname='Bill Gates';
+（2）数字
+var x1=34.00; 
+var z=123e-5;
+（3）bool
+var x=true
+var y=false
+（4）数组
+var cars=new Array();
+cars[0]="Audi";
+cars[1]="BMW";
+-----
+var cars=new Array("Audi","BMW","Volvo");
+----
+var cars=["Audi","BMW","Volvo"];
+（5）对象
+var person={firstname:"Bill", lastname:"Gates", id:5566};
+空格和折行无关紧要。声明可横跨多行：
+对象属性有两种寻址方式：
+name=person.lastname;
+name=person["lastname"];
+当您声明新变量时，可以使用关键词 "new" 来声明其类型：
+
+5.函数
+（1）语法
+function functionname(var1,var2)
+{
+这里是要执行的代码
+}
+（2）调用
+<button onclick="myFunction('Bill Gates','CEO')">点击这里</button>
+（3）返回值
+function myFunction()
+{
+var x=5;
+return x;
+}
+
+三、表单验证
+<html>
+<head>
+<script type="text/javascript">
+
+function validate_required(field,alerttxt)
+{
+with (field)
+  {
+  if (value==null||value=="")
+    {alert(alerttxt);return false}
+  else {return true}
+  }
+}
+
+function validate_form(thisform)
+{
+with (thisform)
+  {
+  if (validate_required(email,"Email must be filled out!")==false)
+    {email.focus();return false}
+  }
+}
+</script>
+</head>
+
+<body>
+<form action="submitpage.htm" onsubmit="return validate_form(this)" method="post">
+Email: <input type="text" name="email" size="30">
+<input type="submit" value="Submit"> 
+</form>
+</body>
+
+</html>
