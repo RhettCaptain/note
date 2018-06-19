@@ -1,0 +1,85 @@
+效果
+一、隐藏/显示
+1.jQuery hide() 和 show()
+通过 jQuery，您可以使用 hide() 和 show() 方法来隐藏和显示 HTML 元素：
+语法：
+$(selector).hide(speed,callback);
+$(selector).show(speed,callback);
+示例：
+$("button").click(function(){
+  $("p").hide(1000);
+});
+$("#show").click(function(){
+  $("p").show();
+});
+2.jQuery toggle()
+通过 jQuery，您可以使用 toggle() 方法来切换 hide() 和 show() 方法
+$("button").click(function(){
+  $("p").toggle();
+});
+
+二、淡入淡出
+1.jQuery fadeIn() 方法
+jQuery fadeIn() 用于淡入已隐藏的元素。
+语法：
+$(selector).fadeIn(speed,callback);
+可选的 speed 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。
+可选的 callback 参数是 fading 完成后所执行的函数名称。
+2.jQuery fadeOut() 方法
+jQuery fadeOut() 方法用于淡出可见元素。
+3.jQuery fadeToggle() 方法
+jQuery fadeToggle() 方法可以在 fadeIn() 与 fadeOut() 方法之间进行切换
+4.jQuery fadeTo() 方法
+jQuery fadeTo() 方法允许渐变为给定的不透明度（值介于 0 与 1 之间）。
+语法：
+$(selector).fadeTo(speed,opacity,callback);
+
+三、滑动
+1.jQuery slideDown() 方法
+jQuery slideDown() 方法用于向下滑动元素。
+语法：
+$(selector).slideDown(speed,callback);
+2.jQuery slideUp() 方法
+jQuery slideUp() 方法用于向上滑动元素。
+$(selector).slideUp(speed,callback);
+3.jQuery slideToggle() 方法
+jQuery slideToggle() 方法可以在 slideDown() 与 slideUp() 方法之间进行切换。
+
+四、动画animate() 
+语法：
+$(selector).animate({params},speed,callback);
+必需的 params 参数定义形成动画的 CSS 属性。
+可选的 speed 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。
+可选的 callback 参数是动画完成后所执行的函数名称。
+-------
+示例：
+$("button").click(function(){
+  $("div").animate({left:'250px'});
+}); 
+生成动画的过程中可同时使用多个属性：
+当使用 animate() 时，必须使用 Camel 标记法书写所有的属性名
+-------
+使用相对值
+也可以定义相对值（该值相对于元素的当前值）。需要在值的前面加上 += 或 -=：
+
+五、jQuery stop() 方法
+jQuery stop() 方法用于停止动画或效果，在它们完成之前。
+stop() 方法适用于所有 jQuery 效果函数，包括滑动、淡入淡出和自定义动画。
+语法
+$(selector).stop(stopAll,goToEnd);
+$("#stop").click(function(){
+  $("#panel").stop();
+});
+
+六、jQuery Callback 函数
+Callback 函数在当前动画 100% 完成之后执行
+由于 JavaScript 语句（指令）是逐一执行的 - 按照次序，动画之后的语句可能会产生错误或页面冲突，因为动画还没有完成。
+
+为了避免这个情况，您可以以参数的形式添加 Callback 函数。
+
+七、Chaining
+通过 jQuery，您可以把动作/方法链接起来。
+Chaining 允许我们在一条语句中允许多个 jQuery 方法（在相同的元素上）
+$("#p1").css("color","red")
+		.slideUp(2000)
+		.slideDown(2000);

@@ -226,3 +226,25 @@ SELECT * FROM passwd INTO OUTFILE '/tmp/tutorials.txt'
 mysql> LOAD DATA LOCAL INFILE 'dump.txt' 
     -> INTO TABLE mytbl (b, c, a);
 （2）使用 mysqlimport 导入数据
+
+17.约束
+（1）主键
+主键约束自带非空和唯一属性，即不能插入空，也不能重复
+alter table category add constraint pk_category_id primary key (id);
+（2）设置id为自增长
+alter table category change id id int auto_increment;
+（3）外键
+外键约束的作用是保持数据的一致性
+增加外键约束之前首先确定record表的外键是cid，指向了category表的id主键。
+所以增加外键之前，必须把category的id字段设置为主键。从而保证cid=5的数据在category中只能找到一条，而不是找到多条。
+alter table record add constraint fk_record_category foreign key (cid) references category(id);
+（4）放在一起
+CREATE TABLE record (
+  id int AUTO_INCREMENT,
+  spend int,
+  cid int,
+  comment varchar(255) ,
+  date Date,
+  PRIMARY KEY (id),
+  CONSTRAINT `fk_record_category` FOREIGN KEY (`cid`) REFERENCES `category` (`id`)
+)  DEFAULT CHARSET=utf8;

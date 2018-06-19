@@ -1,0 +1,128 @@
+一、顶部窗口
+在app.json中添加"window属性
+"window": {
+    "enablePullDownRefresh": true,
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "雷铭购物",
+    "navigationBarTextStyle": "white"
+  },
+
+二、底部导航栏
+在app.json中添加"tabBar": 属性
+ "tabBar": {
+    "color": "#858585",
+    "selectedColor": "#f0145a",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "#000",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "images/bottomNav/home.png",
+        "selectedIconPath": "images/bottomNav/home_select.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/classify/classify",
+        "iconPath": "images/bottomNav/classify.png",
+        "selectedIconPath": "images/bottomNav/classify_select.png",
+        "text": "分类"
+      }
+     }
+   
+三、顶部导航栏
+1. wx:for
+在组件上使用 wx:for 控制属性绑定一个数组，即可使用数组中各项的数据重复渲染该组件。
+默认数组的当前项的下标变量名默认为 index，数组当前项的变量名默认为 item
+<view wx:for="{{array}}">
+  {{index}}: {{item.message}}
+</view>
+Page({
+  data: {
+    array: [{
+      message: 'foo',
+    }, {
+      message: 'bar'
+    }]
+  }
+})
+使用 wx:for-item 可以指定数组当前元素的变量名，
+使用 wx:for-index 可以指定数组当前下标的变量名：
+<view wx:for="{{array}}" wx:for-index="idx" wx:for-item="itemName">
+  {{idx}}: {{itemName.message}}
+</view>
+
+2.指示条
+.navbar .item.active:after{  
+  content: "";  
+  display: block;  
+  position: absolute;  
+  bottom: 0;  
+  left: 0;  
+  right: 0;  
+  height: 6rpx;  
+  background: #f0145a;  
+}
+在每个 <p> 元素的内容之后插入新内容：
+p:after
+{ 
+content:"台词：";
+}
+
+3.动态类名
+ <text wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" 
+ wx:key="unique" bindtap="navbarTap">{{item}}</text> 
+ 如果currentTab==index则交item否则为item.active
+ 
+四、轮播图swiper
+	<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item}}" />
+      </swiper-item>
+    </block>
+  </swiper>
+  indicator-dots 是否显示面板指示点
+	autoplay 是否自动切换
+	interval 自动切换时间间隔
+	duration 滑动动画时长
+
+五、data-xxx，
+xxx就是你给home.js里提供的数据关键词，home.js通过获取xxx关键词来获取xxx里面的数据，回调数据的时候会用的到
+
+六、scroll-view滚动的视图
+就是scroll-view里面包含了很多view 当超过屏幕的时候，你可以滚动查看被遮盖的view ，看一下scroll-view的属性
+scroll-x 允许横向滚动
+scroll-y 允许纵向滚动
+scroll-top 设置竖向滚动条位置
+scroll-left 设置横向滚动条位置
+bindscrolltoupper 滚动到顶部/左边，会触发 scrolltoupper 事件
+bindscrolltolower 滚动到底部/右边，会触发 scrolltolower 事件
+enable-back-to-top iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向
+scroll-with-animation 在设置滚动条位置时使用动画过渡
+我实现的是横向滚动，所以把scroll-x设置为true就好，大家可以试一下其他属性，多试试，看效果才能理解每个属性的效果
+
+七、下拉刷新
+1.调用系统的API，系统有提供下拉刷新的API接口
+在page中定义onPullDownRefresh，监听下拉刷新时间
+-需要在config的window选项中enablePullDownRefresh，即在xx.json中写上 "enablePullDownRefresh": true
+-当处理完数据刷新后，wx.stopPullDownRefresh可以停止当前页面的下拉刷新
+
+2.监听scroll-view,自定义下拉刷新
+还记得scroll-view里面有一个bindscrolltoupper属性吗
+当滚动到顶部/左边，会触发 scrolltoupper 事件，所以我们可以利用这个属性，来实现下拉刷新功能
+
+3.wx.showNavigationBarLoading() 与wx.hideNavigationBarLoading() 
+这两句话是用来控制小菊花的显示和隐藏
+
+4.setTimeout方法
+	setTimeout(function () {
+      // complete
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    }, 1500);
+    
+八、加载更多
+1.调用系统的API
+onReachBottom
+2.监听scroll-view，bindscrolltolower滑动到底部的监听

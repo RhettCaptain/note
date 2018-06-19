@@ -9,3 +9,7 @@
 3.编译消息，服务失败
 Messages depends on unknown pkg: std_msgs (Missing  'find_package(std_msgs)'?)
 如果建包时没有依赖std_msgs,生成消息时又出现上述语句，则在find_package下加上std_msgs以解决。
+
+4.只编译特定包
+编译指定的包：catkin_make -DCATKIN_WHITELIST_PACKAGES="pkg1;pkg2"
+恢复编译所有的包：catkin_make -DCATKIN_WHITELIST_PACKAGES=""

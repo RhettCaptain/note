@@ -1,0 +1,64 @@
+JQUERY AJAX
+一、简介
+1.ajax
+AJAX = 异步 JavaScript 和 XML（Asynchronous JavaScript and XML）。
+简短地说，在不重载整个网页的情况下，AJAX 通过后台加载数据，并在网页上进行显示。
+
+2.jquery ajax
+jQuery 提供多个与 AJAX 有关的方法。
+通过 jQuery AJAX 方法，您能够使用 HTTP Get 和 HTTP Post 
+从远程服务器上请求文本、HTML、XML 或 JSON - 同时您能够把这些外部数据直接载入网页的被选元素中。
+
+二、加载
+1.语法
+$(selector).load(URL,data,callback);
+load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
+必需的 URL 参数规定您希望加载的 URL。
+可选的 data 参数规定与请求一同发送的查询字符串键/值对集合。
+可选的 callback 参数是 load() 方法完成后所执行的函数名称。
+2.实例
+这是示例文件（"demo_test.txt"）的内容：
+<h2>jQuery and AJAX is FUN!!!</h2>
+<p id="p1">This is some text in a paragraph.</p>
+下面的例子会把文件 "demo_test.txt" 的内容加载到指定的 <div> 元素中：
+$("#div1").load("demo_test.txt");
+下面的例子把 "demo_test.txt" 文件中 id="p1" 的元素的内容，加载到指定的 <div> 元素中，
+$("#div1").load("demo_test.txt #p1");
+以上都会覆盖原来内容
+
+三、get() 和 post() 方法
+1.$.get() 方法
+$.get() 方法通过 HTTP GET 请求从服务器上请求数据。
+$.get(URL,callback);
+必需的 URL 参数规定您希望请求的 URL。
+可选的 callback 参数是请求成功后所执行的函数名。
+$.get("demo_test.asp",function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+  提示：这个 ASP 文件 ("demo_test.asp") 类似这样：
+<%
+response.write("This is some text from an external ASP file.")
+%>
+
+2.$.post() 方法
+$.post() 方法通过 HTTP POST 请求从服务器上请求数据。
+$.post(URL,data,callback);
+必需的 URL 参数规定您希望请求的 URL。
+可选的 data 参数规定连同请求发送的数据。
+可选的 callback 参数是请求成功后所执行的函数名。
+ $.post("demo_test_post.asp",
+  {
+    name:"Donald Duck",
+    city:"Duckburg"
+  },function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+ 提示：这个 ASP 文件 ("demo_test_post.asp") 类似这样：
+
+<%
+dim fname,city
+fname=Request.Form("name")
+city=Request.Form("city")
+Response.Write("Dear " & fname & ". ")
+Response.Write("Hope you live well in " & city & ".")
+%>

@@ -1,0 +1,29 @@
+简介
+一、EasyUI
+jQuery EasyUI 是一个基于 jQuery 的框架，集成了各种用户界面插件。
+
+二、声明
+在使用EasyUI之前必须先声明UI控件，有两个方法声明它。
+1.直接在 HTML 声明组件
+<div class="easyui-dialog" style="width:400px;height:200px"
+    data-options="title:'My Dialog',collapsible:true,iconCls:'icon-ok',onOpen:function(){}">
+        dialog content.
+</div>
+
+2.编写 JavaScript 代码来创建组件。
+<input id="cc" style="width:200px" />
+$('#cc').combobox({
+	url: ...,
+	required: true,
+	valueField: 'id',
+	textField: 'text'
+});
+
+三、引用
+下载easyUi包，放在目录下
+demo
+<link rel="stylesheet" type="text/css" href="jquery-easyui-1.5.5.2/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="jquery-easyui-1.5.5.2/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="jquery-easyui-1.5.5.2/demo.css">
+<script type="text/javascript" src="jquery-easyui-1.5.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery-easyui-1.5.5.2/jquery.easyui.min.js"></script>

@@ -1,0 +1,47 @@
+注解
+一、注解语法
+1.注解接口（定义）
+modifiers @interface AnnotationName{
+	type elementName();
+	type elementName(0 default value;
+}
+
+2.注解格式（使用）
+@AnnotationName(elementName1=value1,elementName2=value2..)
+顺序不重要，如果未指定则使用默认值。
+----
+标记注解
+如果没有指定元素，可以省略，如
+@BugReport
+----
+单值注解
+如果只有一个元素，且名字为value，则可以直接赋值，如
+@Ann("button");
+
+二、整体流程
+1.创建注解
+创建一个annotation，如
+@Target(ElementType.METHOD)						//给谁加注解，可以使域（FIELD),方法（METHOD）等
+@Retention(RetentionPolicy.RUNTIME)		//什么时候起作用
+public @interface MethodNote {
+	String description() default "描述";		
+	String createTime();
+}
+
+2.编写注解
+对方法formatDate添加注解
+@MethodNote(createTime = "2016-9-21")
+public static String formatDate(Date date, String formatPattern){
+	return new SimpleDateFormat(formatPattern).format(date);
+}
+
+3.通过Java反射获取方法的注解信息
+Class c = DateUtil.class;
+Method m = c.getMethod("formatDate", Date.class,String.class);
+MethodNote methodNote = m.getAnnotation(MethodNote.class);
+		
+System.out.println("方法描述:" + methodNote.description());
+System.out.println("创建日期:" + methodNote.createTime());
+
+三、实际作用
+注解是给程序看的注释，用于传递一些信息。

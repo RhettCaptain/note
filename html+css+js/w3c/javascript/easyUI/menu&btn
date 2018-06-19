@@ -1,0 +1,59 @@
+菜单与按钮
+一、简单菜单
+1.引用
+	<div id="mm" class="easyui-menu" style="width:120px;">
+		<div onclick="javascript:alert('new')">New</div>
+		<div>
+			<span>Open</span>
+			<div style="width:150px;">
+				<div><b>Word</b></div>
+				<div>Excel</div>
+				<div>PowerPoint</div>
+			</div>
+		</div>
+	</div>
+2.显示
+当菜单创建之后是不显示的，调用 'show' 方法显示它或者调用 'hide' 方法隐藏它：
+	$(function(){
+			$('#mm').menu('show',{
+			left: 200,
+			top: 100
+		});
+	});
+
+二、链接按钮
+1.定义
+链接按钮（Link Button）则是使用 <a> 元素来创建的。所以实际上一个链接按钮（Link Button）就是一个显示为按钮样式的<a> 元素。
+2.使用
+<a href="#" class="easyui-linkbutton" iconCls="icon-cancel">Cancel</a>
+<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel">Cancel</a>
+3.依赖
+link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/icon.css">
+4.禁用/启动
+$(selector).linkbutton('disable');	// call the 'disable' method
+
+三、菜单按钮
+1.菜单按钮
+	<div style="background:#fafafa;padding:5px;width:200px;border:1px solid #ccc">
+		<a href="#" class="easyui-menubutton" menu="#mm1" iconCls="icon-edit">Edit</a>
+		<a href="#" class="easyui-menubutton" menu="#mm2" iconCls="icon-help">Help</a>
+	</div>
+2.菜单内容
+	<div id="mm1" style="width:150px;">
+		<div iconCls="icon-undo">Undo</div>
+		<div iconCls="icon-redo">Redo</div>
+		<div class="menu-sep"></div>		//菜单横线
+		<div>Cut</div>
+		<div>Copy</div>
+		<div>Paste</div>
+		<div class="menu-sep"></div>
+		<div iconCls="icon-remove">Delete</div>
+		<div>Select All</div>
+	</div>
+
+四、分割按钮
+1.定义
+分割按钮（Split Button）包含一个链接按钮（Link Button）和一个菜单（Menu）。当用户点击或者鼠标悬停在向下箭头区域，将会显示一个对应的菜单。
+
+2.定义
+<a href="#" class="easyui-splitbutton" menu="#mm" iconCls="icon-edit">Edit</a>

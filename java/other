@@ -68,3 +68,49 @@ ra.nextInt();产生随机整形数
         }  
         // 关闭线程池  
         exec.shutdown(); 
+        
+10.Jsp遍历后台传过来的List
+(1)使用jstl标签 （可以和自定义标签配合使用）
+	首先引用jstl标签
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+	然后使用foreach标签
+	<c:forEach items="${list}" var="user" varStatus="vs">  
+		<td align = "center">${user.PId}</td>  
+	</c:forEach>  
+(2)使用jsp内嵌java代码遍历List (如果是大数据量，不应使用此方法)
+	request.setAttribute()
+	<% List<User> s = (List)(request.getAttribute("userAll")); %>
+(3)使用Struts标签
+
+11.单例模式
+public class SpendPanel {
+    public static SpendPanel instance = new SpendPanel();
+}
+
+SpendPanel p=SpendPanel.instance;
+
+12.节流
+如果有用户闲得无聊，在那拼命的点击下一张的按钮，那么每一次点击都会触发movePicture函数，这个时候，你就会看到图片在那乱跳。
+所以，为了避免这种用户的操作，我们需要用js来做一个节流，
+思路为：
+每当我触发按钮的点击事件，就把当前的定时器timer清零，然后又马上给他设置定时内容，比如500毫秒后才进行移动操作。
+var timer = null;
+rightBtn.on('click',function(){
+    clearTimeout(timer); //定时器清零
+    timer = setTimeout(function(){
+        index ++;
+        movePicture();
+    },500);
+    
+});
+
+13.属性文件
+InputStream inputStream =  TestProperties.class.getClassLoader().getResourceAsStream("jdbc.properties");
+Properties p = new Properties();
+try {
+    p.load(inputStream);
+    System.out.println(p);
+    System.out.println(p.getProperty("db.username"));
+} catch (IOException e) {
+    e.printStackTrace();
+}

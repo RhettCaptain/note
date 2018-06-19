@@ -1,0 +1,12 @@
+1.绑定事件且传参
+wxml:
+<button bindtap='goto' data-xxx='../together/together'>在一起</button>
+js:
+Page({
+  goto:function(e){
+    var page = e.target.dataset.xxx
+    wx.navigateTo({
+      url: page,
+    })
+  }
+})

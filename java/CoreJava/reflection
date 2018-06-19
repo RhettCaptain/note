@@ -1,0 +1,95 @@
+反射
+1.能够分析类能力的程序称为反射。
+
+2.Class类
+Java运行时，系统始终为所有的对象维护一个被称为运行时（runtime）的类型标识。
+这个信息跟踪着每个对象所属的类。保存这些信息的类被称为Class。
+一个Class对象表示一个特定类的属性。
+----------------------
+获取一个类（如User）的三种方法：
+（1）user.getClass();
+User user = new User()
+Class c1 = user.getClass();
+（2）Class.forName(className)；
+String className = "com.entity.User";
+Class c2 = Class.forName(className);
+（3）User.class
+Class c3 = User.class;
+--------------------
+getName（）；
+Class类的getName()方法可以获得类的名称（包含包名）
+c1.getName()
+-----------------------
+newInstance（）
+Class类的newInstance（）方法可以用来创建该类的一个实例。
+Object a = c1.newInstance();
+
+3.反射分析(类）
+Class c1 = Class.forName(...);
+（1）域/属性/成员
+Field[] getFields(c1)		//返回c1成员及其超类的公有成员
+Field[] getDeclaredFields(c1)	//返回c1的成员
+如果类中没有域，或者描述的是基本类型或数组类型，则这些方法会返回一个长度为0的数组
+Class type=f.getType();			//获得类型
+String name = f.getName();	//获得名称
+String modifiers = Modifier.toString(f.getModifiers());	//获得修饰符
+（2）方法
+Method[] getMethods(c1)		//返回c1方法及其从超类继承的公有方法。
+Method[] getDeclareMethods(c1)	//返回这个类所有的方法
+Class retType = m.getReturnType();	//返回返回类型
+String retName = retType.getName()		//返回类型的名字
+String name = m.getName();		//方法名
+Class[] paramTypes = m.getParameterTypes();	//参数类型
+paramTypes[j].getName()；		//参数名称
+（3）构造器
+Constructor[] getConstructors()
+Constructor[] getDeclaredConstructors()
+	
+4.反射操作（对象）
+（1）获取/改变对象的域
+User user = new User("rhett",25);
+Class c1 = user.getClass();
+Field f = c1.getDeclaredField("name");
+----------
+Object get(Object obj)	//返回obj对象中用Field对象表示的域值
+如Object v = f.get(user)
+对于非类类型，如double，可以用getDouble
+get方法会自动打包成Double类型
+---------
+void set(Object obj,Object new Value);	//用一个新值设置Obj对象中的Field对象表示的值
+
+---------
+但私有域会跑出一个IllegalAccessException。
+反射机制的默认行为受限于java的访问控制。
+通过
+void setAccessible(true)
+可以关闭安全管理器的控制。
+（2）编写泛型数组
+public static Object GoodCopyOf(Object a,int newLength){
+	Class c1 = a.getClass();
+	if(!c1.isArray()){
+		return null;
+	}
+	Class componentType = c1.getCompponentType();
+	int length = Array.getLength(a);
+	Object newArray = Array.newInstance(componentType, newLength);		//Array的newInstance方法可以创建数组
+	System.arraycopy(a,0,newArray,0,Math.min(length,newLength);
+	return newArray;
+}
+使用
+int[] a = {1,2,3};
+a = (int[])goodCopyOf(a,10);
+注意参数什么是Object而不是Object[]。int[]可以被转换成Object，而不能转化成Object[]
+一个User[]临时转换成的Object[]可以转换回来，但一开始就是Object[]数组永远不能转换成User[]
+（3）获取/使用方法
+获取：
+getDeclareMethods（见上）
+Method getMethod（String name,Class... parameterTypes),如：
+Method m1 = User.class.getMethod("getName");
+Method m2 = User.class.getMethod("raiseSalary",double.class);
+使用：
+Object invoke(Object obj, Object... args)
+第一个参数是对象，是隐式参数，对于静态方法可以忽略设为null
+其余的对象是函数的参数，是显式参数。如：
+double s=(Double)m1.invoke(harry);
+double y=(double)f.invoke(null,2,4);

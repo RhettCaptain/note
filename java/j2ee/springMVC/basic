@@ -1,0 +1,169 @@
+Spring MVC简介
+一、安装使用
+1.登录http://repo.springsource.org/libs-release-local/org/springframework/spring/
+2.下载spring-framework-4.2.0.RELEASE-dist.zip,文件结构如下
+doc：相关文档
+libs：(1)spring框架class文件的jar包；（2）spring框架源文件的压缩包，以-source结尾；（3）Spring框架API文档的压缩包，-javadoc结尾
+schemas：各种配置文件的xml schema文档
+其他
+3.将libs文件夹下所需模块的class文件的jar包复制到项目的类加载路径中，可以通过添加环境变量的方法，也可以使用IDE工具。
+  发布应用时，需要将这些jar包一同发布
+4.spring的核心容器必须依赖于common-logging的JAR包，因此需登录http://commons.apache.org，releases-logging下载commons-logging-1.2到家在加载路径。
+
+二、Hello world
+1.增加Spring支持
+（1）将spring-framework-4.2.0 libs文件下所有class文件jar包和commons-logging-1.2.jar 复制到web应用的lib下
+
+（2）配置前端控制器DispatcherServlet
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+<servlet>
+	<servlet-name>springmvc</servlet-name>		//默认会去/WEB-INF/springmvc-servlet.xml寻找
+	<servlet-class>
+		org.springframework.web.servlet.DispatcherServlet	
+	</servlet-class>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/springmvc-config.xml</param-value>		//此处人工配置路径
+	</init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>springmvc</servlet-name>
+	<url-pattern>/</url-pattern>
+</servlet-mapping>
+</web-app>
+
+(3)配置Spring MVC的Controller
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+	<!-- 配置Handle,映射"/hello"请求 -->
+	<bean name="/hello" class="org.fkit.controller.HelloController"/>
+	
+	<!-- 处理映射器将bean的name作为url进行查找，需要在配置Handle时指定name（即url） -->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	
+	<!-- SimpleControllerHandlerAdapter是一个处理器适配器，所有处理适配器都要实现HandlerAdapter接口 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+</beans>
+springmvc-config.xml文件声明了HelloController业务控制器类，并将其映射到/hello请求。
+这里还配置了一个处理映射器BeanNameUrlHandlerMapping，这样可以以Bean的名称为url进行查找
+同时配置了处理器适配器SimpleControllerHandlerAdapter来完成对HelloController类的handleRequest方法的调用
+最后配置了视图解析器InternalResourceViewResolver来解析视图，将view呈献给用户。
+Spring4.0后，如果不配置处理映射器、处理器适配器和视图解析器，也会使用默认值完成。
+
+（4）Controller类实现
+package org.fkit.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+public class HelloController implements Controller{
+	private static final Log logger = LogFactory.getLog(HelloController.class);
+	@Override
+	public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		logger.info("handlerRequest 被调用");
+		//创建准备返回的ModelAndView对象，通常包含了返回视图名，模型的名称以及模型对象。
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message","Hello World");
+		mv.setViewName("/WEB-INF/content/welcome.jsp");
+		return mv;
+	}
+}
+//HelloController类实现Controller接口，用于处理/hello请求。
+
+（5）View页面
+<body>
+${requestScope.message }
+</body>
+-----基于注解的控制器---
+（3）修改Spring MVC的配置文件
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+											http://www.springframework.org/schema/beans/spring-beans-4.2.xsd"
+											http://www.springframework.org/schema/mvc
+											http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd"
+											http://www.springframework.org/schema/context 
+											http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+											
+	<!-- spring 可以自动去扫描base-pack下面的包或者子包下面的java文件
+			如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
+	<context:component-scan base-package="org.fkit.controller"/>
+	
+	<!-- 配置annotation类型的处理映射器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+	
+	<!-- 配置annotation类型的处理器适配器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+</beans>
+
+(4)Controller类实现
+package org.fkit.controller;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
+
+//基于注解的控制器可以同时处理多个请求，并且无需实现任何接口。
+@Controller
+public class HelloController implements Controller{
+	private static final Log logger = LogFactory.getLog(HelloController.class);
+	
+	//org.springframework.web.bind.annotation.RequestMapping注解用来映射请求的url和请求的方法等。本例用于映射/hello
+	@RequestMapping(value="/hello")		//表示由hello方法进行处理
+	public ModelAndView hello() {
+		logger.info("hello方法 被调用");
+		//创建准备返回的ModelAndView对象，通常包含了返回视图名，模型的名称以及模型对象。
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message","Hello World");
+		mv.setViewName("/WEB-INF/content/welcome.jsp");
+		return mv;
+	}
+}
+
+三、详解DispatcherServlet
+
+四、Spring MVC执行流程
+1.应用开发步骤
+（1）在web.xml文件中定义前端控制器DispatcherServlet来拦截用户请求。
+		由于Web应用是基于请求/响应架构的应用，所以不管哪个MVC Web框架，都需要在web.xml中配置该框架的核心servlet或filter
+这样才能让该框架接入WEB应用中。
+（2）如果需要以POST方式提交请求，则定义包含表单数据的JSP页面。否则无需此步。
+（3）定义处理用户请求的Handle类，可以实现Controller接口，或使用@Controller注解
+		这一步也是所有MVC框架必不可少的，DispatcherServlet充当MVC中的C,即前端控制器，负责接收请求
+		并将请求分发给对应的Handle，即实现Controller接口的java类，负责调用该后台业务逻辑代码来处理请求。
+（4）配置Handle
+		使用xml，如<bean name="/hello" class="org.fkit.controller.HelloController"/>
+		或使用注解（推荐）如：
+		@Controller
+		public classHelloController{
+		@RequestMapping(value="/hello")
+			public ModelAndView hello(){}
+		}
+(5)编写视图资源
+2.执行流程
+（1）用户向服务器发送请求，请求被Spring的前端控制DispatcherServlet截获
+（2）DispatcherServlet对请求URL进行解析，得到URI。并根据URI调用HandlerMapping获得该Handler配置的所有相关的对象，
+包括Handler对象以及Handler对象对应的拦截器，这些对象会被封装到一个HandlerExecutionChain对象当中返回。
+（3）DispatcherServlet根据获得的Handler，选择一个合适的HandlerAdapter。它会被用于处理多种Handler，调用Handler实际处理请求的方法。
+（4）提取请求中的模型数据，开始执行Handler（Controller）。
+（5）Handler执行完成后，向DispatcherServlet返回一个ModelAndView对象，应该保护视图名或视图名和模型。
+（6）根据返回的ModelAndView对象，选择一个合适的ViewResolver返回给DispatcherServlet。
+（7）ViewResolver结合Model和View来渲染视图
+（8）将视图渲染结果返回给客户端。

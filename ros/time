@@ -1,0 +1,17 @@
+时间
+一、时刻与间隔
+ROS 中有 time 和 duration 两种类型，相应的有 ros::Time 和 ros::Duration 类。
+time 表示的是时刻
+duration 表示的是时间间隔
+其统一表示形式为：
+int32 sec
+int32 nsec
+---------
+ros::Time begin = ros::Time::now();		//获得当前时间
+ros::Time a_little_after_the_beginning(0.001);
+ros::Duration five_seconds(5.0);
+-------
+double secs =ros::Time::now().toSec();
+
+ros::Duration d(0.5);
+secs = d.toSec();

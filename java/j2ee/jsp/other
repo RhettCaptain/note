@@ -1,0 +1,10 @@
+1.引入公共jsp
+header.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<div class="header">">注册</a></span>
+    </div>
+</div>
+后新增的jsp页面，只需要把这个header.jsp引入就可以了
+<%@include file="common/header.jsp" %>
+注意，这种引入就相当于把里面的代码原封不动地拷贝进去，所以如果用相对路径引用资源文件，就还是以原本的页面为准。

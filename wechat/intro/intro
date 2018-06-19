@@ -1,0 +1,103 @@
+入门
+一、app.json解析：
+首先既然是.json所以一定是json格式，这里面包含两部分pages和window，固定字段，pages就是整个小程序包含的页面，可以根据路径查找到对应的页面，
+window就是设置一些窗口样式，依次是配置小程序的窗口 背景字体样式，配置导航条背景样式，配置默认标题，及颜色
+1.我要设置导航栏的标题为商城，字体为白色，背景为黑色要怎么做呐？
+找到app.json把下面的代码替换到window里面就可以啦，要解释一下navigationBarBackgroundColor和navigationBarTextStyle都是支持rgb的，
+也就是说设置字体颜色navigationBarTextStyle为白色填入white其实也可以填入#fff，都是一样的效果
+2.我要增加一个界面怎么办呐？ 
+同理只需在app.json里的pages属性加入你要的路径pages/addPage/addPage，你写好路径后系统会自动给你建好文件的
+
+二、app.js解析:
+首先看一下App里面包含的几个方法onLaunch、getUserInfo
+1.onLaunch
+onLaunch方法是小程序启动的时候执行的方法
+--------------------
+onLaunch:function(){
+ var logs = wx.getStorageSync('logs') || [] 	//wx.getStorageSync是获取本地缓存的logs字段
+    logs.unshift(Date.now())				//unshift是js的知识，unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。
+    wx.setStorageSync('logs', logs)
+ }
+-------------------
+  取本地缓存数据logs字段，插入最新时间，然后存储再次存入到缓存中的logs字段里，那Storage存储的数据在哪里呐
+  找到菜单栏里的调试->Storage下就可以看到本地缓存的logs字段及数据，你也可以自行添加数据，然后调用wx.getStorageSync('key值') ，
+  就可以获取数据啦
+2.getUserInfo
+-----------------
+getUserInfo:function(cb){
+    var that = this
+    if(this.globalData.userInfo){
+      typeof cb == "function" && cb(this.globalData.userInfo)
+    }else{
+      //调用登录接口
+      wx.login({
+        success: function () {
+          wx.getUserInfo({
+            success: function (res) {
+              that.globalData.userInfo = res.userInfo
+              typeof cb == "function" && cb(that.globalData.userInfo)
+            }
+          })
+        }
+      })
+    }
+  },
+  globalData:{
+    userInfo:null
+  }
+----------
+globalData全局变量数据，
+getUserInfo自定义的方法用于获取用户信息，整体的代码意思就是如果用户信息为空就去调用微信的登录接口，登录成功后存储在全局变量globalData里，
+分析两处代码第一处var that = this，that=this,这个是js语法属性，
+this应该是引用本实例的一个值，它将它赋值给that的原因从下面的代码中可以判断出来js的一些特性。
+每一个方法是一个封闭函数，它的上一层实例即为this，所以如果一个方法A包含另一个方法B，在A中使用this指的是A的实例，在B中使用this应该是B的实例，
+即拥有B的A，所以在这里我们为了拿到A中的实例this，必须要赋一个值给that，让B能使用A的实例。
+在此demo中，上面的this指的是app这个实例，为了在下面的方法中可以使用app的实例，所以赋了that给this。
+-------
+第二处是typeof cb == "function" && cb(this.globalData.userInfo)，代码中两次调用此代码所以要剖析一下，cb是callback的缩写，
+翻译代码意思就是cb==function，要求cb为方法，并且回调cb方法，剩下的wx.login猜都能猜出来是微信封装好的登录方法啦
+
+三、bindtap绑定
+<view  bindtap="bindViewTap" class="userinfo">
+
+四、视图赋值
+<text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<text class="user-motto">{{motto}}</text>
+userInfo.nickName"字段是在index.js中的data里面，这里要强调的是我们在调用index.js里data数据时，赋值的时候要记得加入{{data}}两个中括号，这样系统才能识别数据。
+
+五、wxss样式积累
+1.display属性
+none:此元素不会被显示
+block：两个元素自动换行
+inline：两个元素靠在一起
+inherit：继承父类
+flex：多栏多列
+
+2.flex-direction:
+column 垂直分布
+row 水平分布
+
+3.flex-wrap：
+nowrap item溢出不换行
+wrap 超出的item跳到下一行
+
+4.justify-content属性
+flex-start：左对齐
+flex-end：右对齐
+center：居中
+space-between ：item中间留出等间距
+space-around：环绕item流程等间距
+
+5.align-items item 边界线对齐方式
+flex-start | flex-end | center | baseline | stretch
+
+6.border-bottom 边界线
+举个栗子 1px solid #ccc;
+
+7.align-items item 边界线对齐方式
+flex-start | flex-end | center | baseline | stretch
+
+8.overflow-x 内容超过边框处理方式
+visible 显示超出的内容
+hidden 隐藏超出的内容
+auto 自动加入滚动条
