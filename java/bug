@@ -21,6 +21,15 @@
 （3）jdk和tomcat中的servlet版本不一致造成的
 解决办法将jdk和tomcat中的版本统一起来
 把tomcat8中的servlet-api.jar替换到jdk1.8中（jdk1.8\jre\lib\ext）或者换jdk1.8等
+（4）Could not publish to the server.  
+java.lang.NullPointerException  
+----
+-关闭eclipse  
+-在自己设置的workspace目录下面，打开目录：.metadata\.plugins\org.eclipse.wst.server.core\  
+-删除“temp0”文件夹  
+-启动eclipse  
+（5）The main resource set specified
+eclipse问题，复制ws，删除，导入即可。
 
 6.找不到 javax.servlet 包
 右键点击你的工程，弹出属性设置列表：Build Path->Add Libraries...，弹出添加类库对话框，
@@ -39,11 +48,38 @@ servlet哪里是不是有@WebServlet，估计是有了注解你又声明了一�
 The server time zone value '???ú±ê×??±??' is unrecognized or represents more than one time zone
 时区不对，在数据库地址后面添加?serverTimezone=UTC/=GMT
 
-10.tomcat启动失败
-Could not publish to the server.  
-java.lang.NullPointerException  
-----
-1、关闭eclipse  
-2、在自己设置的workspace目录下面，打开目录：.metadata\.plugins\org.eclipse.wst.server.core\  
-3、删除“temp0”文件夹  
-4、启动eclipse  
+10.The requested resource is not available.
+（1）未部署Web应用
+（2）URL输入错误
+      a.查看URL的IP地址和端口号是否书写正确。 
+      b.查看上下文路径是否正确 Project--------Properties------MyElipse-----Web----- Web Context-root检查这个路径名称是否书写正确。
+      c.检查一下文件名称是否书写正确。
+（3）目录不能被引用
+      在 Eclipse的“包资源管理器(Package Explorer)”检查文件存放的位置。由于META-INF WEB-INF文件夹下的内容无法对外发布，所以，如果你引用了带这两个目录的文件，肯定是不允许。
+      例如： http://localhost:8080/guestbook/WEB-INF/index.html就是错误的,文件位置存放错误 
+（4）Tomcat服务器中web.xml中的问题 
+      如果你的web应用程序有多个jsp页面的话，当你点击你web应用程序的虚拟根目录时可能会出现404错 误，只是你只需要修改Tomcat服务器中web.xml       
+      <init-param>
+            <param-name>listings</param-name>
+            <param-value>false(将其该为true)</param-value>
+      </init-param> 
+（5）WEB-INF下面必须要有几个固定的文件夹和文件          
+      web.xml 该web app的配置文件
+      lib 该web app用到的库文件
+      classes存放编译好的servlet
+      请注意他们的名字，我曾经就由于把classes写成class，查错查了半宿还没解决，所以写这些的时候千万要仔细，否则浪费更多的精力去查错。 
+（6）如果要运行的不是.jsp文件，而是servlet（.class）文件，要配置web.xml(当然是WEB-INF下面的)，加上以下字段：   
+      <servlet>
+        <servlet-name>HelloWorldServlet</servlet-name>
+        <servlet-class>HelloWorldServlet</servlet-class>
+       </servlet>
+      <servlet-mapping>
+        <servlet-name>HelloWorldServlet</servlet-name>
+      <url-pattern>/HelloWorldServlet</url-pattern>
+      </servlet-mapping>
+ 其中的“HelloWorldServlet”改为你要运行的文件名
+（7）其他解决思路
+     以上方法无果,介于"HTTP Status 404(The requested resource is not available"异常发生情况的多样性,采用替换大法:
+    步骤:
+    a.找一份正常的相同环境(找同学同事相同开发环境机子或者网上下载的正常demo等)
+    b.依次替换问题项目文件,进行排除,定位.直到解决.

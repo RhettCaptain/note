@@ -1,0 +1,378 @@
+注解注入
+一、基于注解的配置
+从 Spring 2.5 开始就可以使用注解来配置依赖注入。而不是采用 XML 来描述一个 bean 连线。
+你可以使用相关类，方法或字段声明的注解，将 bean 配置移动到组件类本身。
+在 XML 注入之前进行注解注入，因此后者的配置将通过两种方式的属性连线被前者重写。
+注解连线在默认情况下在 Spring 容器中不打开。因此，在可以使用基于注解的连线之前，我们将需要在我们的 Spring 配置文件中启用它。
+所以如果你想在 Spring 应用程序中使用的任何注解，可以考虑到下面的配置文件。
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:annotation-config/>
+   <!-- bean definitions go here -->
+</beans>
+
+二、@Required 注解
+@Required 注释应用于 bean 属性的 setter 方法，
+它表明受影响的 bean 属性在配置时必须放在 XML 配置文件中，否则容器就会抛出一个 BeanInitializationException 异常。
+demo：
+----Student
+public class Student {
+   private Integer age;
+   private String name;
+   @Required
+   public void setAge(Integer age) {
+      this.age = age;
+   }
+   public Integer getAge() {
+      return age;
+   }
+   @Required
+   public void setName(String name) {
+      this.name = name;
+   }
+   public String getName() {
+      return name;
+   }
+}
+----Beans.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:annotation-config/>
+
+   <!-- Definition for student bean -->
+   <bean id="student" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>		//没有初始化会报错
+   </bean>
+
+</beans>
+
+三、@Autowired 注解
+1.Setter 方法中的 @Autowired
+你可以在 XML 文件中的 setter 方法中使用 @Autowired 注释来除去 元素。
+当 Spring遇到一个在 setter 方法中使用的 @Autowired 注释，它会在方法中视图执行 byType 自动连接。
+-----TextEditor
+public class TextEditor {
+   private SpellChecker spellChecker;
+   @Autowired					//xml就不用装配了
+   public void setSpellChecker( SpellChecker spellChecker ){
+      this.spellChecker = spellChecker;
+   }
+   public SpellChecker getSpellChecker( ) {
+      return spellChecker;
+   }
+   public void spellCheck() {
+      spellChecker.checkSpelling();
+   }
+}
+-----Beans.xml
+   <!-- Definition for textEditor bean without constructor-arg  -->
+   <bean id="textEditor" class="com.tutorialspoint.TextEditor">
+   </bean>
+
+   <!-- Definition for spellChecker bean -->
+   <bean id="spellChecker" class="com.tutorialspoint.SpellChecker">
+   </bean>
+   
+2.属性中的 @Autowired
+你可以在属性中使用 @Autowired 注释来除去 setter 方法。(好像也是byType）
+当时使用 为自动连接属性传递的时候，Spring 会将这些传递过来的值或者引用自动分配给那些属性。
+-----TextEditor
+public class TextEditor {
+   @Autowired
+   private SpellChecker spellChecker;
+   public TextEditor() {
+      System.out.println("Inside TextEditor constructor." );
+   }  
+   public SpellChecker getSpellChecker( ){
+      return spellChecker;
+   }  
+   public void spellCheck(){
+      spellChecker.checkSpelling();
+   }
+}
+-----Beans.xml
+<!-- Definition for textEditor bean -->
+   <bean id="textEditor" class="com.tutorialspoint.TextEditor">
+   </bean>
+
+   <!-- Definition for spellChecker bean -->
+   <bean id="spellChecker" class="com.tutorialspoint.SpellChecker">
+   </bean>
+   
+3.构造函数中的 @Autowired
+ @Autowired
+   public TextEditor(SpellChecker spellChecker){
+      System.out.println("Inside TextEditor constructor." );
+      this.spellChecker = spellChecker;
+   }
+   public void spellCheck(){
+      spellChecker.checkSpelling();
+   }
+
+4.@Autowired 的（required=false）选项
+默认情况下，@Autowired 注释意味着依赖是必须的，它类似于 @Required 注释，
+然而，你可以使用 @Autowired 的 （required=false） 选项关闭默认行为。
+
+四、@Qualifier 注释
+当你创建多个具有相同类型的 bean 时，并且想要用一个属性只为它们其中的一个进行装配，
+在这种情况下，你可以使用 @Qualifier 注释和 @Autowired 注释通过指定哪一个真正的 bean 将会被装配来消除混乱。
+----Profile
+public class Profile {
+   @Autowired
+   @Qualifier("student1")		(感觉是byName）
+   private Student student;
+   public Profile(){
+      System.out.println("Inside Profile constructor." );
+   }
+   public void printAge() {
+      System.out.println("Age : " + student.getAge() );
+   }
+   public void printName() {
+      System.out.println("Name : " + student.getName() );
+   }
+}
+----Beans.xml
+  <!-- Definition for profile bean -->
+   <bean id="profile" class="com.tutorialspoint.Profile">
+   </bean>
+
+   <!-- Definition for student1 bean -->
+   <bean id="student1" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>
+   </bean>
+
+   <!-- Definition for student2 bean -->
+   <bean id="student2" class="com.tutorialspoint.Student">
+      <property name="name"  value="Nuha" />
+      <property name="age"  value="2"/>
+   </bean>
+   
+五、JSR-250 注释
+Spring还使用基于 JSR-250 注释，它包括 @PostConstruct， @PreDestroy 和 @Resource 注释。
+因为你已经有了其他的选择，尽管这些注释并不是真正所需要的
+https://www.w3cschool.cn/wkspring/lmsq1mm4.html
+
+六、基于 Java 的配置
+1.@Configuration 和 @Bean 注解
+带有 @Configuration 的注解类表示这个类可以使用 Spring IoC 容器作为 bean 定义的来源。
+@Bean 注解告诉 Spring，一个带有 @Bean 的注解方法将返回一个对象，该对象应该被注册为在 Spring 应用程序上下文中的 bean。
+最简单可行的 @Configuration 类如下所示：
+import org.springframework.context.annotation.*;
+@Configuration
+public class HelloWorldConfig {
+   @Bean 
+   public HelloWorld helloWorld(){
+      return new HelloWorld();
+   }
+}
+等同于
+<beans>
+   <bean id="helloWorld" class="com.tutorialspoint.HelloWorld" />
+</beans>
+在这里，带有 @Bean 注解的方法名称作为 bean 的 ID，它创建并返回实际的 bean。你的配置类可以声明多个 @Bean。
+一旦定义了配置类，你就可以使用 AnnotationConfigApplicationContext 来加载并把他们提供给 Spring 容器，如下所示：
+public static void main(String[] args) {
+   ApplicationContext ctx = 
+   new AnnotationConfigApplicationContext(HelloWorldConfig.class); 
+   HelloWorld helloWorld = ctx.getBean(HelloWorld.class);
+   helloWorld.setMessage("Hello World!");
+   helloWorld.getMessage();
+}
+可以加载各种配置类
+public static void main(String[] args) {
+   AnnotationConfigApplicationContext ctx = 
+   new AnnotationConfigApplicationContext();
+   ctx.register(AppConfig.class, OtherConfig.class);
+   ctx.register(AdditionalConfig.class);
+   ctx.refresh();
+   MyService myService = ctx.getBean(MyService.class);
+   myService.doStuff();
+}
+
+2.@Import 注解:
+@import 注解允许从另一个配置类中加载 @Bean 定义。
+考虑 ConfigA 类，如下所示：
+
+@Configuration
+public class ConfigA {
+   @Bean
+   public A a() {
+      return new A(); 
+   }
+}
+你可以在另一个 Bean 声明中导入上述 Bean 声明，如下所示：
+@Configuration
+@Import(ConfigA.class)
+public class ConfigB {
+   @Bean
+   public B a() {
+      return new A(); 
+   }
+}
+现在，当实例化上下文时，不需要同时指定 ConfigA.class 和 ConfigB.class，只有 ConfigB 类需要提供，如下所示：
+public static void main(String[] args) {
+   ApplicationContext ctx = 
+   new AnnotationConfigApplicationContext(ConfigB.class);
+   // now both beans A and B will be available...
+   A a = ctx.getBean(A.class);
+   B b = ctx.getBean(B.class);
+}
+
+3.生命周期回调
+@Bean 注解支持指定任意的初始化和销毁的回调方法，就像在 bean 元素中 Spring 的 XML 的初始化方法和销毁方法的属性：
+public class Foo {
+   public void init() {
+      // initialization logic
+   }
+   public void cleanup() {
+      // destruction logic
+   }
+}
+
+@Configuration
+public class AppConfig {
+   @Bean(initMethod = "init", destroyMethod = "cleanup" )
+   public Foo foo() {
+      return new Foo();
+   }
+}
+默认范围是单实例，但是你可以重写带有 @Scope 注解的该方法
+@Configuration
+public class AppConfig {
+   @Bean
+   @Scope("prototype")
+   public Foo foo() {
+      return new Foo();
+   }
+}
+
+七、Spring 中的事件处理
+1.Spring 中的事件处理
+你已经看到了在所有章节中 Spring 的核心是 ApplicationContext，它负责管理 beans 的完整生命周期。
+当加载 beans 时，ApplicationContext 发布某些类型的事件。
+例如，当上下文启动时，ContextStartedEvent 发布，当上下文停止时，ContextStoppedEvent 发布。
+通过 ApplicationEvent 类和 ApplicationListener 接口来提供在 ApplicationContext 中处理事件。
+如果一个 bean 实现 ApplicationListener，那么每次 ApplicationEvent 被发布到 ApplicationContext 上，那个 bean 会被通知。
+Spring 提供了以下的标准事件：
+（1）ContextRefreshedEvent
+ApplicationContext 被初始化或刷新时，该事件被发布。这也可以在 ConfigurableApplicationContext 接口中使用 refresh() 方法来发生。
+（2）ContextStartedEvent
+当使用 ConfigurableApplicationContext 接口中的 start() 方法启动 ApplicationContext 时，该事件被发布。
+你可以调查你的数据库，或者你可以在接受到这个事件后重启任何停止的应用程序。
+（3）ContextStoppedEvent
+当使用 ConfigurableApplicationContext 接口中的 stop() 方法停止 ApplicationContext 时，发布这个事件。
+你可以在接受到这个事件后做必要的清理的工作。
+（4）ContextClosedEvent
+当使用 ConfigurableApplicationContext 接口中的 close() 方法关闭 ApplicationContext 时，该事件被发布。
+一个已关闭的上下文到达生命周期末端；它不能被刷新或重启。
+（5）RequestHandledEvent
+这是一个 web-specific 事件，告诉所有 bean HTTP 请求已经被服务。
+由于 Spring 的事件处理是单线程的，所以如果一个事件被发布，直至并且除非所有的接收者得到的该消息，该进程被阻塞并且流程将不会继续。
+因此，如果事件处理被使用，在设计应用程序时应注意。
+
+2.监听上下文事件
+为了监听上下文事件，一个 bean 应该实现只有一个方法 onApplicationEvent() 的 ApplicationListener 接口。
+---- CStartEventHandler.java 
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextStartedEvent;
+public class CStartEventHandler 
+   implements ApplicationListener<ContextStartedEvent>{
+   public void onApplicationEvent(ContextStartedEvent event) {
+      System.out.println("ContextStartedEvent Received");
+   }
+}
+---- CStopEventHandler.java 
+public void onApplicationEvent(ContextStoppedEvent event) {
+---- Beans.xml
+ <bean id="helloWorld" class="com.tutorialspoint.HelloWorld">
+      <property name="message" value="Hello World!"/>
+   </bean>
+
+   <bean id="cStartEventHandler" 							//不写不绑定
+         class="com.tutorialspoint.CStartEventHandler"/>
+
+   <bean id="cStopEventHandler" 
+         class="com.tutorialspoint.CStopEventHandler"/>
+---- MainApp.java
+public class MainApp {
+   public static void main(String[] args) {
+      ConfigurableApplicationContext context = 
+      new ClassPathXmlApplicationContext("Beans.xml");
+      // Let us raise a start event.
+      context.start();			//不写不运行
+      HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
+      obj.getMessage();
+      // Let us raise a stop event.
+      context.stop();
+   }
+}
+
+八、自定义事件
+1.编写事件本身，实现ApplicationEvent
+public class CustomEvent extends ApplicationEvent{ 
+   public CustomEvent(Object source) {
+      super(source);
+   }
+   public String toString(){
+      return "My Custom Event";
+   }
+}
+2.编写事件发布器，实现ApplicationEventPublisherAware 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+public class CustomEventPublisher 
+   implements ApplicationEventPublisherAware {
+   private ApplicationEventPublisher publisher;
+   public void setApplicationEventPublisher
+              (ApplicationEventPublisher publisher){
+      this.publisher = publisher;
+   }
+   public void publish() {
+      CustomEvent ce = new CustomEvent(this);
+      publisher.publishEvent(ce);
+   }
+}
+3.编写事件监听器，实现ApplicationListener<CustomEvent>
+import org.springframework.context.ApplicationListener;
+public class CustomEventHandler 
+   implements ApplicationListener<CustomEvent>{
+   public void onApplicationEvent(CustomEvent event) {
+      System.out.println(event.toString());
+   }
+}
+4.实例化发布器并发布,实例化监听器
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class MainApp {
+   public static void main(String[] args) {
+      ConfigurableApplicationContext context = 
+      new ClassPathXmlApplicationContext("Beans.xml");    
+      CustomEventPublisher cvp = 
+      (CustomEventPublisher) context.getBean("customEventPublisher");
+      cvp.publish();  
+      cvp.publish();
+   }
+}
+--Beans
+<bean id="customEventHandler" 
+      class="com.tutorialspoint.CustomEventHandler"/>
+
+   <bean id="customEventPublisher" 
+      class="com.tutorialspoint.CustomEventPublisher"/>

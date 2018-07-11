@@ -1,0 +1,72 @@
+﻿简介
+一、概述
+Spring 是最受欢迎的企业级 Java 应用程序开发框架
+1.依赖注入（DI）
+Spring 最认同的技术是控制反转的依赖注入（DI）模式。
+控制反转（IoC）是一个通用的概念，它可以用许多不同的方式去表达，依赖注入仅仅是控制反转的一个具体的例子。
+2.面向方面的程序设计（AOP）：
+Spring 框架的一个关键组件是面向方面的程序设计（AOP）框架。一个程序中跨越多个点的功能被称为横切关注点，
+这些横切关注点在概念上独立于应用程序的业务逻辑。有各种各样常见的很好的关于方面的例子，
+比如日志记录、声明性事务、安全性，和缓存等等。
+3.具体
+https://www.w3cschool.cn/wkspring/pesy1icl.html
+
+二、体系结构
+1.核心容器
+核心容器由spring-core，spring-beans，spring-context，spring-context-support和spring-expression（SpEL，Spring表达式语言，Spring Expression Language）等模块组成，它们的细节如下：
+2.数据访问/集成
+数据访问/集成层包括 JDBC，ORM，OXM，JMS 和事务处理模块
+3.Web
+Web 层由 Web，Web-MVC，Web-Socket 和 Web-Portlet 组成
+4.其他
+还有其他一些重要的模块，像 AOP，Aspects，Instrumentation，Web 和测试模块
+
+三、环境配置
+1.安装 Java 开发工具包（JDK）
+2.安装 Apache Commons Logging API
+你可以从 http://commons.apache.org/logging/ 下载 Apache Commons Logging API 的最新版本。
+3.安装 Eclipse IDE
+4.安装 Spring 框架库
+从 http://repo.spring.io/release/org/springframework/spring 下载最新版本的 Spring 框架的二进制文件。
+
+四、hello world
+0.导入spring和common库
+1.编写java bean
+public class HelloWorld {
+   private String message;
+   public void setMessage(String message){
+      this.message  = message;
+   }
+   public void getMessage(){
+      System.out.println("Your Message : " + message);
+   }
+}
+
+2.编写主程序
+package com.tutorialspoint;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class MainApp {
+   public static void main(String[] args) {
+   //框架 API ClassPathXmlApplicationContext() 来创建应用程序的上下文。
+   这个 API 加载 beans 的配置文件并最终基于所提供的 API，它处理创建并初始化所有的对象，即在配置文件中提到的 beans。
+      ApplicationContext context = 
+             new ClassPathXmlApplicationContext("Beans.xml");
+   //使用已创建的上下文的 getBean() 方法来获得所需的 bean。这个方法使用 bean 的 ID 返回一个最终可以转换为实际对象的通用对象。
+   一旦有了对象，你就可以使用这个对象调用任何类的方法。
+      HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
+      obj.getMessage();
+   }
+}
+
+3.bean配置文件
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="helloWorld" class="com.tutorialspoint.HelloWorld">
+       <property name="message" value="Hello World!"/>
+   </bean>
+</beans>

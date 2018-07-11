@@ -8,3 +8,25 @@ header.jsp
 后新增的jsp页面，只需要把这个header.jsp引入就可以了
 <%@include file="common/header.jsp" %>
 注意，这种引入就相当于把里面的代码原封不动地拷贝进去，所以如果用相对路径引用资源文件，就还是以原本的页面为准。
+
+2.jsp:usebean & jsp:setProperty
+(1)jsp:usebean创建一个javabean的实例
+<jsp:useBean id="ins_member" scope="page" class="com.dao.MemberDaoImpl" />
+<jsp:useBean id="member" scope="request" class="com.model.Member" >
+	<jsp:setProperty name="member" property="*" />
+</jsp:useBean>
+
+(2)<jsp:setProperty>用来设置已经实例化的Bean对象的属性
+<jps:setProperty name = "JavaBean实例名"  property = "*"/>
+该形式是设置Bean 属性的快捷方式.在Bean 中属性的名字，类型必须和request对象中的参数名称相匹配。由于表单中传过来的数据类型都是String 类型的，Jsp内在机制会把这些参数转化成Bean属性对应的类型。
+property = "*"表示所有名字和Bean属性名字匹配的请求参数都将被传递给相应的属性set方法
+-----------
+<jsp:setProperty name = "JavaBean实例名" property = "JavaBean属性名" />
+-----------
+<jsp:setProperty name = "JavaBean实例名" property = "JavaBean属性名" value = "BeanValue"/>
+-----------
+<jsp:setProperty name = "JavaBean实例名" property = "propertyName" param = "request对象中的参数名"/>
+
+(3)jsp:getProperty
+<jsp:getProperty name=”JavaBean实例名” property=”属性名” />
+其中name就是在定义JavaBean实例时使用的id，property就是需要获取值的属性名。

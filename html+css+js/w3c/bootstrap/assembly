@@ -1,0 +1,154 @@
+组件
+一、下拉菜单
+1.默认基础
+<div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">主题
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">Java</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">数据挖掘</a>
+        </li>
+    </ul>
+</div>
+
+2.选项
+（1）对齐
+通过向 .dropdown-menu 添加 class .pull-right 来向右对齐下拉菜单
+ <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+ （2）标题
+您可以使用 class dropdown-header 向下拉菜单的标签区域添加标题。
+   <li role="presentation" class="dropdown-header">下拉菜单标题</li>
+ （3）分割线
+ <li role="presentation" class="divider"></li>
+ 
+二、导航栏
+1.默认的导航栏
+（1）步骤：
+向 <nav> 标签添加 class .navbar、.navbar-default。
+向上面的元素添加 role="navigation"，有助于增加可访问性。
+向 <div> 元素添加一个标题 class .navbar-header，内部包含了带有 class navbar-brand 的 <a> 元素。这会让文本看起来更大一号。
+为了向导航栏添加链接，只需要简单地添加带有 class .nav、.navbar-nav 的无序列表即可。
+--------------------------------------
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">菜鸟教程</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">iOS</a></li>		//active表示选中
+            <li><a href="#">SVN</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Java
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">jmeter</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">另一个分离的链接</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    </div>
+</nav>
+
+三、面板
+1.基本面板
+<div class="panel panel-default">
+    <div class="panel-body">
+        这是一个基本的面板
+    </div>
+</div>
+
+2.面板标题
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            带有 title 的面板标题
+        </h3>
+    </div>
+    <div class="panel-body">
+        面板内容
+    </div>
+</div>
+
+3.面板脚注
+<div class="panel panel-default">
+    <div class="panel-body">
+        这是一个基本的面板
+    </div>
+    <div class="panel-footer">面板脚注</div>
+</div>
+
+4.带语境色彩的面板
+使用语境状态类 panel-primary、panel-success、panel-info、panel-warning、panel-danger，来设置带语境色彩的面板
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">面板标题</h3>
+    </div>
+    <div class="panel-body">
+        这是一个基本的面板
+    </div>
+</div>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">面板标题</h3>
+    </div>
+    <div class="panel-body">
+        这是一个基本的面板
+    </div>
+</div>
+
+三、缩略图
+1. 默认
+使用 Bootstrap 创建缩略图的步骤如下：
+在图像周围添加带有 class .thumbnail 的 <a> 标签。
+这会添加四个像素的内边距（padding）和一个灰色的边框。
+当鼠标悬停在图像上时，会动画显示出图像的轮廓。
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="/wp-content/uploads/2014/06/kittens.jpg"
+                 alt="通用的占位符缩略图">
+        </a>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="/wp-content/uploads/2014/06/kittens.jpg"
+                 alt="通用的占位符缩略图">
+        </a>
+    </div>
+</div>
+
+2.添加自定义的内容
+现在我们有了一个基本的缩略图，我们可以向缩略图添加各种 HTML 内容，比如标题、段落或按钮。具体步骤如下：
+把带有 class .thumbnail 的 <a> 标签改为 <div>。
+在该 <div> 内，您可以添加任何您想要添加的东西。由于这是一个 <div>，我们可以使用默认的基于 span 的命名规则来调整大小。
+如果您想要给多个图像进行分组，请把它们放置在一个无序列表中，且每个列表项向左浮动。
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+         <div class="thumbnail">
+            <img src="/wp-content/uploads/2014/06/kittens.jpg" 
+             alt="通用的占位符缩略图">
+            <div class="caption">
+                <h3>缩略图标签</h3>
+                <p>一些示例文本。一些示例文本。</p>
+                <p>
+                    <a href="#" class="btn btn-primary" role="button">
+                        按钮
+                    </a> 
+                    <a href="#" class="btn btn-default" role="button">
+                        按钮
+                    </a>
+                </p>
+            </div>
+         </div>
+    </div>
+    
+</div>

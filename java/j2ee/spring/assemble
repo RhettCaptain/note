@@ -1,0 +1,62 @@
+Beans自动装配
+一、Beans 自动装配
+Spring 容器可以在不使用<constructor-arg>和<property> 元素的情况下自动装配相互协作的 bean 之间的关系，
+这有助于减少编写一个大的基于 Spring 的应用程序的 XML 配置的数量。
+1.自动装配模式
+下列自动装配模式，它们可用于指示 Spring 容器为来使用自动装配进行依赖注入。
+你可以使用<bean>元素的 autowire 属性为一个 bean 定义指定自动装配模式。
+模式	描述
+no	这是默认的设置，它意味着没有自动装配，你应该使用显式的bean引用来连线。你不用为了连线做特殊的事。在依赖注入章节你已经看到这个了。
+byName	由属性名自动装配。Spring 容器看到在 XML 配置文件中 bean 的自动装配的属性设置为 byName。然后尝试匹配，并且将它的属性与在配置文件中被定义为相同名称的 beans 的属性进行连接。
+byType	由属性数据类型自动装配。Spring 容器看到在 XML 配置文件中 bean 的自动装配的属性设置为 byType。然后如果它的类型匹配配置文件中的一个确切的 bean 名称，
+			它将尝试匹配和连接属性的类型。如果存在不止一个这样的 bean，则一个致命的异常将会被抛出。
+constructor	类似于 byType，但该类型适用于构造函数参数类型。如果在容器中没有一个构造函数参数类型的 bean，则一个致命错误将会发生。
+autodetect	Spring首先尝试通过 constructor 使用自动装配来连接，如果它不执行，Spring 尝试通过 byType 来自动装配。
+可以使用 byType 或者 constructor 自动装配模式来连接数组和其他类型的集合。
+2.自动装配的局限性
+限制	描述
+重写的可能性	你可以使用总是重写自动装配的 <constructor-arg>和 <property> 设置来指定依赖关系。
+原始数据类型	你不能自动装配所谓的简单类型包括基本类型，字符串和类。
+混乱的本质	自动装配不如显式装配精确，所以如果可能的话尽可能使用显式装配。
+
+二、自动装配 byName
+它尝试将它的属性与配置文件中定义为相同名称的 beans 进行匹配和连接。如果找到匹配项，它将注入这些 beans，否则，它将抛出异常。
+例如，在配置文件中，如果一个 bean 定义设置为自动装配 byName，并且它包含 spellChecker 属性（即，它有一个 setSpellChecker(...) 方法），
+那么 Spring 就会查找定义名为 spellChecker 的 bean，并且用它来设置这个属性。
+ <bean id="textEditor" class="com.tutorialspoint.TextEditor">
+       <property name="spellChecker" ref="spellChecker" />
+       <property name="name" value="Generic Text Editor" />
+   </bean>
+	<bean id="spellChecker" class="com.name.SpellChecker"></bean>
+等同于
+<bean id="textEditor" class="com.tutorialspoint.TextEditor" 
+      autowire="byName">
+      <property name="name" value="Generic Text Editor" />
+   </bean>
+	<bean id="spellChecker" class="com.name.SpellChecker"></bean>
+   
+三、自动装配 byType
+如果它的 type 恰好与配置文件中 beans 名称中的一个相匹配，它将尝试匹配和连接它的属性。如果找到匹配项，它将注入这些 beans，否则，它将抛出异常。
+例如，在配置文件中，如果一个 bean 定义设置为自动装配 byType，并且它包含 SpellChecker 类型的 spellChecker 属性，
+那么 Spring 就会查找定义名为 SpellChecker 的 bean，并且用它来设置这个属性。
+等同于
+<bean id="textEditor" class="com.tutorialspoint.TextEditor" 
+      autowire="byType">
+      <property name="name" value="Generic Text Editor" />
+   </bean>
+	<bean id="spellChecker" class="com.name.SpellChecker"></bean>
+注意：此时id改为其他路spellChecker2也没问题，但byName就会出问题。
+
+四、由构造函数自动装配
+尝试把它的构造函数的参数与配置文件中 beans 名称中的一个进行匹配和连线。如果找到匹配项，它会注入这些 bean，否则，它会抛出异常。
+例如，在配置文件中，如果一个 bean 定义设置为通过构造函数自动装配，而且它有一个带有 SpellChecker 类型的参数之一的构造函数，
+那么 Spring 就会查找定义名为 SpellChecker 的 bean，并用它来设置构造函数的参数。
+ <bean id="textEditor" class="com.tutorialspoint.TextEditor">
+      <constructor-arg  ref="spellChecker" />
+      <constructor-arg  value="Generic Text Editor"/>
+   </bean>
+ 等同于
+ <bean id="textEditor" class="com.tutorialspoint.TextEditor" 
+      autowire="constructor">
+      <constructor-arg value="Generic Text Editor"/>
+   </bean>

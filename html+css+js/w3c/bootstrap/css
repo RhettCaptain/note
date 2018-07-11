@@ -1,0 +1,183 @@
+css
+一、概览
+1.HTML 5 文档类型（Doctype）
+Bootstrap 使用了一些 HTML5 元素和 CSS 属性。为了让这些正常工作，您需要使用 HTML5 文档类型（Doctype）。 
+因此，请在使用 Bootstrap 项目的开头包含下面的代码段。
+<!DOCTYPE html>
+<html>
+....
+</html>
+
+2.移动设备优先
+移动设备优先是 Bootstrap 3 的最显著的变化。
+为了让 Bootstrap 开发的网站对移动设备友好，确保适当的绘制和触屏缩放，需要在网页的 head 之中添加 viewport meta 标签，如下所示：
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+width 属性控制设备的宽度。假设您的网站将被带有不同屏幕分辨率的设备浏览，那么将它设置为 device-width 可以确保它能正确呈现在不同设备上。
+initial-scale=1.0 确保网页加载时，以 1:1 的比例呈现，不会有任何的缩放。
+在移动设备浏览器上，通过为 viewport meta 标签添加 user-scalable=no 可以禁用其缩放（zooming）功能。
+通常情况下，maximum-scale=1.0 与 user-scalable=no 一起使用。这样禁用缩放功能后，用户只能滚动屏幕，就能让您的网站看上去更像原生应用的感觉。
+
+3.响应式图像
+<img src="..." class="img-responsive" alt="响应式图像">
+通过添加 img-responsive class 可以让 Bootstrap 3 中的图像对响应式布局的支持更友好。
+如果需要让使用了 .img-responsive 类的图片水平居中，请使用 .center-block 类，不要用 .text-center。
+
+4.全局显示、排版和链接
+（1）基本的全局显示
+Bootstrap 3 使用 body {margin: 0;} 来移除 body 的边距。
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333333;
+  background-color: #ffffff;
+}
+第一条规则设置 body 的默认字体样式为 "Helvetica Neue", Helvetica, Arial, sans-serif。
+第二条规则设置文本的默认字体大小为 14 像素。
+第三条规则设置默认的行高度为 1.428571429。
+第四条规则设置默认的文本颜色为 #333333。
+最后一条规则设置默认的背景颜色为白色。
+
+（2）排版
+使用 @font-family-base、 @font-size-base 和 @line-height-base 属性作为排版样式。
+
+（3）链接样式
+通过属性 @link-color 设置全局链接的颜色。
+对于链接的默认样式，如下设置：
+a:hover,
+a:focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+所以，当鼠标悬停在链接上，或者点击过的链接，颜色会被设置为 #2a6496。同时，会呈现一条下划线。
+除此之外，点击过的链接，会呈现一个颜色码为 #333 的细的虚线轮廓。另一条规则是设置轮廓为 5 像素宽，
+且对于基于 webkit 浏览器有一个 -webkit-focus-ring-color 的浏览器扩展。轮廓偏移设置为 -2 像素。
+以上所有这些样式都可以在 scaffolding.less 中找到。
+
+5.避免跨浏览器的不一致
+Bootstrap 使用 Normalize 来建立跨浏览器的一致性。
+Normalize.css 是一个很小的 CSS 文件，在 HTML 元素的默认样式中提供了更好的跨浏览器一致性。
+
+6.容器（Container）
+<div class="container">
+  ...
+</div>
+
+二、网格系统
+1.Bootstrap 网格系统（Grid System）的工作原理
+网格系统通过一系列包含内容的行和列来创建页面布局。下面列出了 Bootstrap 网格系统是如何工作的：
+行必须放置在 .container class 内，以便获得适当的对齐（alignment）和内边距（padding）。
+使用行来创建列的水平组。
+内容应该放置在列内，且唯有列可以是行的直接子元素。
+预定义的网格类，比如 .row 和 .col-xs-4，可用于快速创建网格布局。LESS 混合类可用于更多语义布局。
+列通过内边距（padding）来创建列内容之间的间隙。该内边距是通过 .rows 上的外边距（margin）取负，表示第一列和最后一列的行偏移。
+网格系统是通过指定您想要横跨的十二个可用的列来创建的。例如，要创建三个相等的列，则使用三个 .col-xs-4。
+
+2.基本的网格结构
+下面是 Bootstrap 网格的基本结构：
+<div class="container">
+   <div class="row">
+      <div class="col-xs-12 col-sm-3"></div>		//一列占超小设备12等分，小设备3等分
+      <div class="col-*-*"></div>      
+   </div>
+   <div class="row">...</div>
+</div>
+<div class="container">....
+超小设备手机（<768px）	小型设备平板电脑（≥768px）	中型设备台式电脑（≥992px）	大型设备台式电脑（≥1200px）
+网格行为	一直是水平的	以折叠开始，断点以上是水平的	以折叠开始，断点以上是水平的	以折叠开始，断点以上是水平的
+最大容器宽度	None (auto)	750px	970px	1170px
+Class 前缀	.col-xs-	.col-sm-	.col-md-	.col-lg-
+列数量和	12	12	12	12
+----------------------
+为了在大屏幕显示器上使用偏移，请使用 .col-md-offset-* 类。这些类会把一个列的左外边距（margin）增加 * 列，其中 * 范围是从 1 到 11。
+ <div class="col-md-6 col-md-offset-3" >
+ -----------------------
+ 嵌套列
+为了在内容中嵌套默认的网格，请添加一个新的 .row，并在一个已有的 .col-md-* 列内添加一组 .col-md-* 列。
+被嵌套的行应包含一组列，这组列个数不能超过12（其实，没有要求你必须占满12列）。
+
+三、排版
+1.缩写
+<abbr title="World Wide Web">WWW</abbr><br>
+<abbr title="Real Simple Syndication" class="initialism">RSS</abbr>
+
+四、代码
+<code>作为内容元素
+<pre>代码快
+<p><code>&lt;header&gt;</code> 作为内联元素被包围。</p>
+<p>如果需要把代码显示为一个独立的块元素，请使用 &lt;pre&gt; 标签：</p>
+<pre>
+&lt;article&gt;
+	&lt;h1&gt;Article Heading&lt;/h1&gt;
+&lt;/article&gt;
+</pre>
+
+五、表格
+
+六、表单
+1.垂直或基本表单
+基本的表单结构是 Bootstrap 自带的，个别的表单控件自动接收一些全局样式。下面列出了创建基本表单的步骤：
+向父 <form> 元素添加 role="form"。
+把标签和控件放在一个带有 class .form-group 的 <div> 中。这是获取最佳间距所必需的。
+向所有的文本元素 <input>、<textarea> 和 <select> 添加 class ="form-control" 
+---
+<form role="form">
+  <div class="form-group">
+    <label for="name">名称</label>
+    <input type="text" class="form-control" id="name" placeholder="请输入名称">
+  </div>
+  <div class="form-group">
+    <label for="inputfile">文件输入</label>
+    <input type="file" id="inputfile">
+    <p class="help-block">这里是块级帮助文本的实例。</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox">请打勾
+    </label>
+  </div>
+  <button type="submit" class="btn btn-default">提交</button>
+</form>
+----
+
+
+七、按钮
+<!-- 标准的按钮 -->
+<button type="button" class="btn btn-default">默认按钮</button>
+<!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
+<button type="button" class="btn btn-primary">原始按钮</button>
+<!-- 表示一个成功的或积极的动作 -->
+<button type="button" class="btn btn-success">成功按钮</button>
+<!-- 信息警告消息的上下文按钮 -->
+<button type="button" class="btn btn-info">信息按钮</button>
+<!-- 表示应谨慎采取的动作 -->
+<button type="button" class="btn btn-warning">警告按钮</button>
+<!-- 表示一个危险的或潜在的负面动作 -->
+<button type="button" class="btn btn-danger">危险按钮</button>
+<!-- 并不强调是一个按钮，看起来像一个链接，但同时保持按钮的行为 -->
+<button type="button" class="btn btn-link">链接按钮</button>
+
+.btn-lg	这会让按钮看起来比较大。
+.btn-sm	这会让按钮看起来比较小。
+.btn-xs	这会让按钮看起来特别小。
+.btn-block	这会创建块级的按钮，会横跨父元素的全部宽度。
+
+按钮元素	添加 .active class 来显示它是激活的。
+锚元素	添加 .active class 到 <a> 按钮来显示它是激活的。
+
+按钮元素	添加 disabled 属性 到 <button> 按钮。
+锚元素	添加 disabled class 到 <a> 按钮。
+八、图片
+<img src="/wp-content/uploads/2014/06/download.png" class="img-rounded">	为图片添加圆角 
+<img src="/wp-content/uploads/2014/06/download.png" class="img-circle">		将图片变为圆形
+<img src="/wp-content/uploads/2014/06/download.png" class="img-thumbnail">	缩略图功能
+<img src="cinqueterre.jpg" class="img-responsive" alt="Cinque Terre">		图片响应式 (将很好地扩展到父元素)
+九、辅助类
+
+十、响应式实用工具
+

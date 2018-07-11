@@ -1,0 +1,35 @@
+属性文件
+1. 文件格式
+#数据库类型：1为mysql，默认为1
+DBType=1
+MySQLDriver=org.gjt.mm.mysql.Driver
+
+2.主要方法
+(1)load(InputStream inStream)
+(2)store(OutputStream out, String comments)
+(3)getProperty/setProperty
+
+3.示例
+Properties prop= new Properties();
+try
+{
+		//读
+		InputStream is=ClassFileName.class.getResourceAsStream(FileName);
+//	BufferedReader is = new BufferedReader(new FileReader("E:/config.properties"));
+		prop.load(is);			
+		if(is!=null) is.close();
+		}
+		
+		//写
+		FileOutputStream oFile = new FileOutputStream(file, "a.properties");
+		pro.store(oFile, "Comment");	//如果comments不为空，保存后的属性文件第一行会是#comments,表示注释信息；如果为空则没有注释信息。
+		oFile.close();
+catch(Exception e) {
+		return "Error!";
+}
+return prop.getProperty(ParaName);
+
+3.基于 InputStream 读取配置文件
+Properties prop= new Properties();
+
+prop.load(br);

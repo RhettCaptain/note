@@ -368,7 +368,7 @@ Servlet中的getMaxInactiveInterval( ) 方法以秒为单位返回超时时间。
 输入标签具有不同的名称属性的值。浏览器会为每个 input 标签关联一个浏览按钮。
 <form method="post" action="/TomcatTest/UploadServlet" enctype="multipart/form-data">
     选择一个文件:
-    <input type="file" name="uploadFile" />
+    <input type="file" c />
     <br/><br/>
     <input type="submit" value="上传" />
 </form>

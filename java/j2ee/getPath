@@ -1,0 +1,30 @@
+各类路径
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
+out.println("basePath:"+basePath);
+out.println("<br/>");
+out.println("getContextPath:"+request.getContextPath());
+out.println("<br/>");
+out.println("getServletPath:"+request.getServletPath());
+out.println("<br/>");
+out.println("getRequestURI:"+request.getRequestURI());
+out.println("<br/>");
+out.println("getRequestURL:"+request.getRequestURL());
+out.println("<br/>");
+out.println("getRealPath:"+request.getRealPath("/"));
+out.println("<br/>");
+out.println("getServletContext().getRealPath:"+getServletContext().getRealPath("/"));
+out.println("<br/>");
+out.println("getQueryString:"+request.getQueryString());
+%>
+显示结果：
+basePath:http://localhost:8080/test/
+getContextPath:/test 
+getServletPath:/test.jsp 
+getRequestURI:/test/test.jsp 
+getRequestURL:http://localhost:8080/test/test.jsp 
+getRealPath:D:\Tomcat 6.0\webapps\test\ 
+getServletContext().getRealPath:D:\Tomcat 6.0\webapps\test\ 
+getQueryString:p=fuck

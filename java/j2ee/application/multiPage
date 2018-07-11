@@ -1,0 +1,38 @@
+分页
+1.使用？传参
+----------jsp代码------------
+<%
+	request.setCharacterEncoding("UTF-8"); 
+	News news = new News();
+	String pageIdx = request.getParameter("intPage");
+	String pagePath = request.getContextPath() + request.getServletPath()+ "?";
+	String sOK = news.ListNewsFront(pagePath, pageIdx);
+	if (sOK.equals("no")) {
+		out.println("数据服务器出现错误！");
+	} else {
+		out.println(sOK);
+	}
+%>
+----------ListNewsFront方法-----------
+intPage = fun.StrToInt(pageIdx);
+sPage = fun.CheckReplace(pagePath);
+if(intPage==0){
+		intPage = 1;
+}
+rs.absolute((intPage-1)*intPageSize+1);		//定位到该页头条
+i = 0;
+while(i<intPageSize && !rs.isAfterLast()){
+int newsId = rs.getInt("newsid");
+...
+sb.append("<tr>");
+...
+rs.next();
+i++;
+}
+sb.append(fun.PageFront(pagePath, rs, intPage, intPageSize));		//制作分页连接
+}
+rs.close();
+stmt.close();
+conn.close();
+return sb.toString();
+---------
