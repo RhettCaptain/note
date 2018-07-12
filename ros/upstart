@@ -1,0 +1,17 @@
+开启自启动
+1.首先安装robot_upstart工具（以indigo版本为例） 
+  sudo apt-get install ros-indigo-robot-upstart
+  如有问题更换源，使用sudo apt-get -f install后再试
+2.安装
+ rosrun robot_upstart install pkg_xx(包名)/launch/start.launch
+ 会在/etc/ros/indigo下创建pkg.d，吧start.launch拷贝进去。以后修改需要在这里改。
+3.启动服务 
+   sudo service pkg(会自动生成服务名，_前面的） start
+4.电脑重启即可
+5.其他
+--若出现问题，可以查看日志 
+   sudo gedit /var/log/upstart/robot.log 
+---服务停止 
+  sudo service robot stop 
+---卸载自启动 
+ rosrun robot_upstart uninstall robot
