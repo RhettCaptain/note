@@ -71,10 +71,25 @@
 	find_package( OpenCV REQUIRED )
 	add_executable( DisplayImage DisplayImage.cpp )
 	target_link_libraries( DisplayImage ${OpenCV_LIBS} )
-11.修改设备权限
+11.修改设备权限/绑定usb端口号
+（1）修改设备权限
 	在/etc/udev/rules.d目录下写一个.rules文件，如KERNEL=="ttyS1"  MODE="0777" 即可
 	通过ls -l /dev/ttyS1可查看权限
+（2）绑定usb端口号
+--lsusb
+	查看对应的ｕｓｂ端口信息，如Bus 001 Device 003: ID 05e3:0608 Genesys Logic, Inc. Hub
+	ID  10c4:ea60     表示usb设备的ID(这个ID由芯片制造商设置，可以唯一表示该设备)
+    10c4    usb_device_descriptor.idVendor
+    ea60    usb_device_descriptor.idProduct
+--写入rules.d
+    Bus 001 Device 005: ID 10c4:ea60 Cygnal Integrated Products, Inc. CP210x UART Bridge / myAVR mySmartUSB light
+		sudo vi /etc/udev/rules.d/rplidar.rules
+		KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0777", SYMLINK+="rplidar" 
+		这样就给该设备起了一个rplidar的别名。可以通过该名称连接
+--重插生效
+		ls -l /dev |grep ttyUSB
 
+依据上面信息写ｕｄｅｖ文件：我用的是rplidar的激光雷达ｕｓｂ串口
 12.安装搜狗输入法
 （1）先去官网下载安装
 （2）（可能需要）在终端输入im-config,把ibus换成fcitx
