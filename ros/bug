@@ -13,3 +13,14 @@ Messages depends on unknown pkg: std_msgs (Missing  'find_package(std_msgs)'?)
 4.只编译特定包
 编译指定的包：catkin_make -DCATKIN_WHITELIST_PACKAGES="pkg1;pkg2"
 恢复编译所有的包：catkin_make -DCATKIN_WHITELIST_PACKAGES=""
+
+5.关于下载ROS软件包失败的问题
+一般在使用sudo apt-get install ros-<dist>-<packages>的时候会出现下载失败的问题，但是点击上面提示可以看到有所需要的包，再次install还是无法下载，这个时候可以通过手动下载方式进行安装，方式如下：
+（1）打开网页，输入网址packages.ros.org/ros/ubuntu/pool/main/r，这个是所有ROS包的存储库
+（2）随后在该网页上找到所需要的包，如ros-indigo-roch-base，找到这个目录，进入后可以看到有如下内容：
+点击.deb后缀的包名，就可以下载。
+（3）下载完成后，包会保存在~/Downloads或~/下载目录下，进入到该目录进行安装：
+cd ~/Downloads/ #或 cd ~/下载
+sudo dpkg -i <下载的包名>
+（4）手动安装完成后，需要修复软件，有可能下载的包有依赖库，可以使用如下命令进行修复：
+sudo apt-get -f install
