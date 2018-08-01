@@ -1,0 +1,232 @@
+﻿Spring JDBC 框架
+一、JDBC 框架概述
+在使用普通的 JDBC 数据库时，就会很麻烦的写不必要的代码来处理异常，打开和关闭数据库连接等。
+但 Spring JDBC 框架负责所有的低层细节，从开始打开连接，准备和执行 SQL 语句，处理异常，处理事务，到最后关闭连接。
+
+1.JdbcTemplate 类
+JdbcTemplate 类执行 SQL 查询、更新语句和存储过程调用，执行迭代结果集和提取返回参数值。
+它也捕获 JDBC 异常并转换它们到 org.springframework.dao 包中定义的通用类、更多的信息、异常层次结构。
+
+2.配置数据源
+我们需要提供一个数据源到 JdbcTemplate 中，所以它可以配置本身来获得数据库访问。你可以在 XML 文件中配置数据源，其中一段代码如下所示：
+<bean id="dataSource"
+class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+   <property name="url" value="jdbc:mysql://localhost:3306/TEST"/>
+   <property name="username" value="root"/>
+   <property name="password" value="password"/>
+</bean>
+
+3.数据访问对象（DAO）
+（1）执行 SQL 语句
+我们看看如何使用 SQL 和 jdbcTemplate 对象在数据库表中执行 CRUD(创建、读取、更新和删除)操作。
+查询一个整数类型：
+String SQL = "select count(*) from Student";
+int rowCount = jdbcTemplateObject.queryForInt( SQL );
+查询一个 long 类型：
+String SQL = "select count(*) from Student";
+long rowCount = jdbcTemplateObject.queryForLong( SQL );
+一个使用绑定变量的简单查询：
+String SQL = "select age from Student where id = ?";
+int age = jdbcTemplateObject.queryForInt(SQL, new Object[]{10});
+查询字符串：
+String SQL = "select name from Student where id = ?";
+String name = jdbcTemplateObject.queryForObject(SQL, new Object[]{10}, String.class);
+查询并返回一个对象：
+String SQL = "select * from Student where id = ?";
+Student student = jdbcTemplateObject.queryForObject(SQL, 
+                  new Object[]{10}, new StudentMapper());
+public class StudentMapper implements RowMapper<Student> {
+   public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+      Student student = new Student();
+      student.setID(rs.getInt("id"));
+      student.setName(rs.getString("name"));
+      student.setAge(rs.getInt("age"));
+      return student;
+   }
+}
+查询并返回多个对象：
+String SQL = "select * from Student";
+List<Student> students = jdbcTemplateObject.query(SQL,
+                         new StudentMapper());
+public class StudentMapper implements RowMapper<Student> {
+   public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+      Student student = new Student();
+      student.setID(rs.getInt("id"));
+      student.setName(rs.getString("name"));
+      student.setAge(rs.getInt("age"));
+      return student;
+   }
+}
+在表中插入一行：
+String SQL = "insert into Student (name, age) values (?, ?)";
+jdbcTemplateObject.update( SQL, new Object[]{"Zara", 11} );
+更新表中的一行：
+String SQL = "update Student set name = ? where id = ?";
+jdbcTemplateObject.update( SQL, new Object[]{"Zara", 10} );
+从表中删除一行：
+String SQL = "delete Student where id = ?";
+jdbcTemplateObject.update( SQL, new Object[]{20} );
+（2）执行 DDL 语句
+你可以使用 jdbcTemplate 中的 execute(..) 方法来执行任何 SQL 语句或 DDL 语句。下面是一个使用 CREATE 语句创建一个表的示例：
+String SQL = "CREATE TABLE Student( " +
+   "ID   INT NOT NULL AUTO_INCREMENT, " +
+   "NAME VARCHAR(20) NOT NULL, " +
+   "AGE  INT NOT NULL, " +
+   "PRIMARY KEY (ID));"
+jdbcTemplateObject.execute( SQL );
+
+二、示例
+---StudentDAO.java---
+package com.tutorialspoint;
+import java.util.List;
+import javax.sql.DataSource;
+public interface StudentDAO {
+   public void setDataSource(DataSource ds);
+   public void create(String name, Integer age);
+   public Student getStudent(Integer id);
+   public List<Student> listStudents();
+   public void delete(Integer id);
+   public void update(Integer id, Integer age);
+}
+---Student.java---
+package com.tutorialspoint;
+public class Student {
+   private Integer age;
+   private String name;
+   private Integer id;
+   public void setAge(Integer age) {
+      this.age = age;
+   }
+   public Integer getAge() {
+      return age;
+   }
+   public void setName(String name) {
+      this.name = name;
+   }
+   public String getName() {
+      return name;
+   }
+   public void setId(Integer id) {
+      this.id = id;
+   }
+   public Integer getId() {
+      return id;
+   }
+}
+---StudentMapper.java---
+package com.tutorialspoint;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+public class StudentMapper implements RowMapper<Student> {
+   public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+      Student student = new Student();
+      student.setId(rs.getInt("id"));
+      student.setName(rs.getString("name"));
+      student.setAge(rs.getInt("age"));
+      return student;
+   }
+}
+----StudentJDBCTemplate.java----
+package com.tutorialspoint;
+import java.util.List;
+import javax.sql.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+public class StudentJDBCTemplate implements StudentDAO {
+   private DataSource dataSource;
+   private JdbcTemplate jdbcTemplateObject; 
+   public void setDataSource(DataSource dataSource) {
+      this.dataSource = dataSource;
+      this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+   }
+   public void create(String name, Integer age) {
+      String SQL = "insert into Student (name, age) values (?, ?)";     
+      jdbcTemplateObject.update( SQL, name, age);
+      System.out.println("Created Record Name = " + name + " Age = " + age);
+      return;
+   }
+   public Student getStudent(Integer id) {
+      String SQL = "select * from Student where id = ?";
+      Student student = jdbcTemplateObject.queryForObject(SQL, 
+                        new Object[]{id}, new StudentMapper());
+      return student;
+   }
+   public List<Student> listStudents() {
+      String SQL = "select * from Student";
+      List <Student> students = jdbcTemplateObject.query(SQL, 
+                                new StudentMapper());
+      return students;
+   }
+   public void delete(Integer id){
+      String SQL = "delete from Student where id = ?";
+      jdbcTemplateObject.update(SQL, id);
+      System.out.println("Deleted Record with ID = " + id );
+      return;
+   }
+   public void update(Integer id, Integer age){
+      String SQL = "update Student set age = ? where id = ?";
+      jdbcTemplateObject.update(SQL, age, id);
+      System.out.println("Updated Record with ID = " + id );
+      return;
+   }
+}
+---MainApp.java---
+package com.tutorialspoint;
+import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.tutorialspoint.StudentJDBCTemplate;
+public class MainApp {
+   public static void main(String[] args) {
+      ApplicationContext context = 
+             new ClassPathXmlApplicationContext("Beans.xml");
+      StudentJDBCTemplate studentJDBCTemplate = 
+      (StudentJDBCTemplate)context.getBean("studentJDBCTemplate");    
+      System.out.println("------Records Creation--------" );
+      studentJDBCTemplate.create("Zara", 11);
+      studentJDBCTemplate.create("Nuha", 2);
+      studentJDBCTemplate.create("Ayan", 15);
+      System.out.println("------Listing Multiple Records--------" );
+      List<Student> students = studentJDBCTemplate.listStudents();
+      for (Student record : students) {
+         System.out.print("ID : " + record.getId() );
+         System.out.print(", Name : " + record.getName() );
+         System.out.println(", Age : " + record.getAge());
+      }
+      System.out.println("----Updating Record with ID = 2 -----" );
+      studentJDBCTemplate.update(2, 20);
+      System.out.println("----Listing Record with ID = 2 -----" );
+      Student student = studentJDBCTemplate.getStudent(2);
+      System.out.print("ID : " + student.getId() );
+      System.out.print(", Name : " + student.getName() );
+      System.out.println(", Age : " + student.getAge());      
+   }
+}
+---Beans.xml---
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+   <!-- Initialization for data source -->
+   <bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+      <property name="url" value="jdbc:mysql://localhost:3306/TEST"/>
+      <property name="username" value="root"/>
+      <property name="password" value="password"/>
+   </bean>
+
+   <!-- Definition for studentJDBCTemplate bean -->
+   <bean id="studentJDBCTemplate" 
+      class="com.tutorialspoint.StudentJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+
+</beans>
+
+三、SQL 的存储过程
+SimpleJdbcCall 类可以被用于调用一个包含 IN 和 OUT 参数的存储过程。
+？？？

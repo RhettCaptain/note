@@ -1,0 +1,40 @@
+一、Maven概述
+1.Maven 是什么？
+Maven 是一个项目管理和整合工具。
+Maven 的主要目的是为开发者提供一个可复用、可维护、更易理解的工程综合模型，与这个模型交互的插件或者工具
+Maven 工程结构和内容被定义在一个 xml 文件中 － pom.xml，是 Project Object Model (POM) 的简称，此文件是整个 Maven 系统的基础组件。
+1.1、项目构建
+　　项目构建过程包括【清理项目】→【编译项目】→【测试项目】→【生成测试报告】→【打包项目】→【部署项目】这几个步骤，这六个步骤就是一个项目的完整构建过程。
+　　理想的项目构建是高度自动化，跨平台，可重用的组件，标准化的，使用maven就可以帮我们完成上述所说的项目构建过程。
+1.2、依赖管理
+　　依赖指的是jar包之间的相互依赖，比如我们搭建一个Struts2的开发框架时，光光有struts2-core-2.3.16.3.jar这个jar包是不行的，
+struts2-core-2.3.16.3.jar还依赖其它的jar包，依赖管理指的就是使用Maven来管理项目中使用到的jar包，
+Maven管理的方式就是“自动下载项目所需要的jar包，统一管理jar包之间的依赖关系”。
+1.3、使用Maven的好处
+　　Maven中使用约定，约定java源代码代码必须放在哪个目录下，编译好的java代码又必须放到哪个目录下，这些目录都有明确的约定。
+　　Maven的每一个动作都拥有一个生命周期，例如执行 mvn install 就可以自动执行编译，测试，打包等构建过程
+　　只需要定义一个pom.xml,然后把源码放到默认的目录，Maven帮我们处理其他事情
+　　使用Maven可以进行项目高度自动化构建，依赖管理(这是使用Maven最大的好处)，仓库管理。
+
+二、环境配置与安装
+Maven 是一个基于 Java 的工具，所以要做的第一件事情就是安装 JDK。
+步骤 1：检查 Java 安装
+现在打开控制台，执行下面的 java 命令。
+步骤 2：设置 Java 环境
+设置 JAVA_HOME 环境变量，并指向你机器上的 Java 安装目录。
+ JAVA_HOME to C:\Program Files\Java\jdk1.6.0_21
+ 将字符串“;C:\Program Files\Java\jdk1.6.0_21\bin”添加到系统变量“Path”的末尾
+步骤 3：下载 Maven 文件
+从以下网址下载 Maven 3.2.5：http://maven.apache.org/download.html
+步骤 4：解压 Maven 文件
+解压文件到你想要的位置来安装 Maven 3.2.5，你会得到 apache-maven-3.2.5 子目录。
+步骤 5：设置 Maven 环境变量
+添加 M2_HOME、M2、MAVEN_OPTS 到环境变量中。
+M2_HOME=C:\Program Files\Apache Software Foundation\apache-maven-3.2.5
+M2=%M2_HOME%\bin
+MAVEN_OPTS=-Xms256m -Xmx512m
+步骤 6：添加 Maven bin 目录到系统路径中
+现在添加 M2 变量到系统“Path”变量中
+步骤 7：验证 Maven 安装
+现在打开控制台，执行以下 mvn 命令。
+mvn --version

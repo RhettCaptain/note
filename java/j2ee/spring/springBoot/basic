@@ -1,0 +1,105 @@
+基础
+一、简介
+1.什么是spring boot
+spring boot其实不是什么新的框架，它默认配置了很多框架的使用方式，就像maven整合了所有的jar包，spring boot整合了所有的框架
+
+2.使用spring boot有什么好处
+其实就是简单、快速、方便！平时如果我们需要搭建一个spring web项目的时候需要怎么做呢？
+1）配置web.xml，加载spring和spring mvc
+2）配置数据库连接、配置spring事务
+3）配置加载配置文件的读取，开启注解
+4）配置日志文件
+...
+配置完成之后部署tomcat 调试
+但是如果使用spring boot，仅仅只需要非常少的几个配置就可以迅速方便的搭建起来一套web项目或者是构建一个微服务！
+
+二、Helloworld
+1.maven构建项目
+（1）访问http://start.spring.io/
+（2）选择构建工具Maven Project、Spring Boot版本1.3.6以及一些工程基本信息，点击“Switch to the full version.”java版本选择1.7，
+（3）点击Generate Project下载项目压缩包
+（4）解压后，使用eclipse，Import -> Existing Maven Projects -> Next ->选择解压后的文件夹-> Finsh，OK done!
+2.项目结构介绍
+如上图所示，Spring Boot的基础结构共三个文件:
+  src/main/java  程序开发以及主程序入口
+  src/main/resources 配置文件
+  src/test/java  测试程序
+另外，spingboot建议的目录结果如下：
+root package结构：com.example.myproject
+com
+  +- example
+    +- myproject
+      +- Application.java			//Application.java 建议放到跟目录下面,主要用于做一些框架配置
+      |
+      +- domain								//domain目录主要用于实体（Entity）与数据访问层（Repository）
+      |  +- Customer.java
+      |  +- CustomerRepository.java
+      |
+      +- service							//service 层主要是业务类代码
+      |  +- CustomerService.java
+      |
+      +- controller					 //controller 负责页面访问控制
+      |  +- CustomerController.java
+      |
+  采用默认配置可以省去很多配置，当然也可以根据自己的喜欢来进行更改
+  pom中引入spring boot 启动父依赖
+  <!-- Spring Boot 启动父依赖 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.3.3.RELEASE</version>
+    </parent>
+最后，启动Application main方法，至此一个java项目搭建好了！
+3、引入web模块
+（1）pom.xml中添加支持web的模块：
+<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+ </dependency>
+pom.xml文件中默认有两个模块：
+spring-boot-starter：核心模块，包括自动配置支持、日志和YAML；
+spring-boot-starter-test：测试模块，包括JUnit、Hamcrest、Mockito。
+（2）编写controller内容
+@RestController
+public class HelloWorldController {
+    @RequestMapping("/hello")
+    public String index() {
+        return "Hello World";
+    }
+}
+@RestController和@RequestMapping注解是来自SpringMVC的注解，它们不是SpringBoot的特定部分。
+@RestController：提供实现了REST API，可以服务JSON,XML或者其他。这里是以String的形式渲染出结果。
+@RequestMapping：提供路由信息，”/“路径的HTTP Request都会被映射到sayHello方法进行处理。
+（3）启动主程序，打开浏览器访问http://localhost:8080/hello，就可以看到效果了
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class,args);
+    }
+}
+ @SpringBootApplication：Spring Boot 应用的标识
+ Application很简单，一个main函数作为主入口。SpringApplication引导应用，并将Application本身作为参数传递给run方法。
+具体run方法会启动嵌入式的Tomcat并初始化Spring环境及其各Spring组件。
+4.Tomcat
+内嵌tomcat，不过要看一下8080是否被占用
+nestat -ano
+tasklist | findstr "1756"
+taskkill /f /t /im javaw.exe
+
+三、配置文件
+1.自动配置
+Spring Boot 提供了对应用进行自动化配置。相比以前 XML 配置方式，很多显式方式申明是不需要的。二者，大多数默认的配置足够实现开发功能，从而更快速开发。
+什么是自动配置？
+Spring Boot 提供了默认的配置，如默认的 Bean ，去运行 Spring 应用。它是非侵入式的，只提供一个默认实现。
+大多数情况下，自动配置的 Bean 满足了现有的业务场景，不需要去覆盖。但如果自动配置做的不够好，需要覆盖配置。
+比如通过命令行动态指定某个 jar ，按不同环境启动（这个例子在第 4 小节介绍）。那怎么办？这里先要考虑到配置的优先级。
+Spring Boot 不单单从 application.properties 获取配置，所以我们可以在程序中多种设置配置属性。按照以下列表的优先级排列：
+-命令行参数
+-java:comp/env 里的 JNDI 属性
+-JVM 系统属性
+-操作系统环境变量
+-RandomValuePropertySource 属性类生成的 random.* 属性
+-应用以外的 application.properties（或 yml）文件
+-打包在应用内的 application.properties（或 yml）文件
+-在应用 @Configuration 配置类中，用 @PropertySource 注解声明的属性文件
+-SpringApplication.setDefaultProperties 声明的默认属性

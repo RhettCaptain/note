@@ -1,0 +1,426 @@
+﻿Spring MVC简介
+一、安装使用
+1.登录http://repo.springsource.org/libs-release-local/org/springframework/spring/
+2.下载spring-framework-4.2.0.RELEASE-dist.zip,文件结构如下
+doc：相关文档
+libs：(1)spring框架class文件的jar包；（2）spring框架源文件的压缩包，以-source结尾；（3）Spring框架API文档的压缩包，-javadoc结尾
+schemas：各种配置文件的xml schema文档
+其他
+3.将libs文件夹下所需模块的class文件的jar包复制到项目的类加载路径中，可以通过添加环境变量的方法，也可以使用IDE工具。
+  发布应用时，需要将这些jar包一同发布
+4.spring的核心容器必须依赖于common-logging的JAR包，因此需登录http://commons.apache.org，releases-logging下载commons-logging-1.2到家在加载路径。
+
+二、Hello world
+1.增加Spring支持
+（1）将spring-framework-4.2.0 libs文件下所有class文件jar包和commons-logging-1.2.jar 复制到web应用的lib下
+
+（2）配置前端控制器DispatcherServlet
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+<servlet>
+	<servlet-name>springmvc</servlet-name>		//默认会去/WEB-INF/springmvc-servlet.xml寻找
+	<servlet-class>
+		org.springframework.web.servlet.DispatcherServlet	
+	</servlet-class>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/springmvc-config.xml</param-value>		//此处人工配置路径
+	</init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>springmvc</servlet-name>
+	<url-pattern>/</url-pattern>
+</servlet-mapping>
+</web-app>
+
+(3)配置Spring MVC的Controller
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+	<!-- 配置Handle,映射"/hello"请求 -->
+	<bean name="/hello" class="org.fkit.controller.HelloController"/>
+	
+	<!-- 处理映射器将bean的name作为url进行查找，需要在配置Handle时指定name（即url） -->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	
+	<!-- SimpleControllerHandlerAdapter是一个处理器适配器，所有处理适配器都要实现HandlerAdapter接口 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+</beans>
+springmvc-config.xml文件声明了HelloController业务控制器类，并将其映射到/hello请求。
+这里还配置了一个处理映射器BeanNameUrlHandlerMapping，这样可以以Bean的名称为url进行查找
+同时配置了处理器适配器SimpleControllerHandlerAdapter来完成对HelloController类的handleRequest方法的调用
+最后配置了视图解析器InternalResourceViewResolver来解析视图，将view呈献给用户。
+Spring4.0后，如果不配置处理映射器、处理器适配器和视图解析器，也会使用默认值完成。
+
+（4）Controller类实现
+package org.fkit.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+public class HelloController implements Controller{
+	private static final Log logger = LogFactory.getLog(HelloController.class);
+	@Override
+	public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		logger.info("handlerRequest 被调用");
+		//创建准备返回的ModelAndView对象，通常包含了返回视图名，模型的名称以及模型对象。
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message","Hello World");
+		mv.setViewName("/WEB-INF/content/welcome.jsp");
+		return mv;
+	}
+}
+//HelloController类实现Controller接口，用于处理/hello请求。
+
+（5）View页面
+<body>
+${requestScope.message }
+</body>
+-----基于注解的控制器---
+（3）修改Spring MVC的配置文件
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+											http://www.springframework.org/schema/beans/spring-beans-4.2.xsd"
+											http://www.springframework.org/schema/mvc
+											http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd"
+											http://www.springframework.org/schema/context 
+											http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+											
+	<!-- spring 可以自动去扫描base-pack下面的包或者子包下面的java文件
+			如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
+	<context:component-scan base-package="org.fkit.controller"/>
+	
+	<!-- 配置annotation类型的处理映射器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+	
+	<!-- 配置annotation类型的处理器适配器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+</beans>
+
+(4)Controller类实现
+package org.fkit.controller;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
+
+//基于注解的控制器可以同时处理多个请求，并且无需实现任何接口。
+@Controller
+public class HelloController implements Controller{
+	private static final Log logger = LogFactory.getLog(HelloController.class);
+	
+	//org.springframework.web.bind.annotation.RequestMapping注解用来映射请求的url和请求的方法等。本例用于映射/hello
+	@RequestMapping(value="/hello")		//表示由hello方法进行处理
+	public ModelAndView hello() {
+		logger.info("hello方法 被调用");
+		//创建准备返回的ModelAndView对象，通常包含了返回视图名，模型的名称以及模型对象。
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message","Hello World");
+		mv.setViewName("/WEB-INF/content/welcome.jsp");
+		return mv;
+	}
+}
+
+三、、Spring MVC执行流程
+1.应用开发步骤
+（1）在web.xml文件中定义前端控制器DispatcherServlet来拦截用户请求。
+		由于Web应用是基于请求/响应架构的应用，所以不管哪个MVC Web框架，都需要在web.xml中配置该框架的核心servlet或filter
+这样才能让该框架接入WEB应用中。
+（2）如果需要以POST方式提交请求，则定义包含表单数据的JSP页面。否则无需此步。
+（3）定义处理用户请求的Handle类，可以实现Controller接口，或使用@Controller注解
+		这一步也是所有MVC框架必不可少的，DispatcherServlet充当MVC中的C,即前端控制器，负责接收请求
+		并将请求分发给对应的Handle，即实现Controller接口的java类，负责调用该后台业务逻辑代码来处理请求。
+（4）配置Handle
+		使用xml，如<bean name="/hello" class="org.fkit.controller.HelloController"/>
+		或使用注解（推荐）如：
+		@Controller
+		public classHelloController{
+		@RequestMapping(value="/hello")
+			public ModelAndView hello(){}
+		}
+(5)编写视图资源
+2.执行流程
+（1）用户向服务器发送请求，请求被Spring的前端控制DispatcherServlet截获
+（2）DispatcherServlet对请求URL进行解析，得到URI。并根据URI调用HandlerMapping获得该Handler配置的所有相关的对象，
+包括Handler对象以及Handler对象对应的拦截器，这些对象会被封装到一个HandlerExecutionChain对象当中返回。
+（3）DispatcherServlet根据获得的Handler，选择一个合适的HandlerAdapter。它会被用于处理多种Handler，调用Handler实际处理请求的方法。
+（4）提取请求中的模型数据，开始执行Handler（Controller）。
+（5）Handler执行完成后，向DispatcherServlet返回一个ModelAndView对象，应该保护视图名或视图名和模型。
+（6）根据返回的ModelAndView对象，选择一个合适的ViewResolver返回给DispatcherServlet。
+（7）ViewResolver结合Model和View来渲染视图
+（8）将视图渲染结果返回给客户端。
+
+四、DispatcherServlet
+1.作用
+DispatcherServlet其实就是个Servlet（它继承自HttpServlet基类），同样也需要在你web应用的web.xml配置文件下声明。你需要在web.xml
+中央Servlet来展开，它负责把所有请求分发到控制器
+DispatcherServlet应用的其实就是一个“前端控制器”的设计模式
+
+2.基本配置
+---web.xml---
+<web-app>
+    <servlet>
+        <servlet-name>example</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>example</servlet-name>
+        <url-pattern>/example/*</url-pattern>
+    </servlet-mapping>
+</web-app>
+所有路径以/example开头的请求都会被名字为example的DispatcherServlet处理。
+----编程配置，等同web.xml----
+public class MyWebApplicationInitializer implements WebApplicationInitializer {
+    @Override
+    public void onStartup(ServletContext container) {
+        ServletRegistration.Dynamic registration = container.addServlet("dispatcher", new DispatcherServlet());
+        registration.setLoadOnStartup(1);
+        registration.addMapping("/example/*");
+    }
+}
+WebApplicationInitializer是Spring MVC提供的一个接口，它会查找你所有基于代码的配置，并应用它们来初始化Servlet 3版本以上的web容器。
+
+3.WebApplicationContext
+WebApplicationContext继承自ApplicationContext，它提供了一些web应用经常需要用到的特性。
+它与普通的ApplicationContext不同的地方在于，它支持主题的解析（详见Spring MVC提供的主题一小节），并且知道它关联到的是哪个servlet（它持有一个该ServletContext的引用）。
+WebApplicationContext被绑定在ServletContext中。如果需要获取它，你可以通过RequestContextUtils工具类中的静态方法来拿到这个web应用的上下文WebApplicationContext。
+Spring的DispatcherServlet使用了特殊的bean来处理请求、渲染视图等，这些特定的bean是Spring MVC框架的一部分。
+如果你想指定使用哪个特定的bean，你可以在web应用上下文WebApplicationContext中简单地配置它们。
+当然这只是可选的，Spring MVC维护了一个默认的bean列表，如果你没有进行特别的配置，框架将会使用默认的bean。
+bean的类型	作用
+HandlerMapping	处理器映射。它会根据某些规则将进入容器的请求映射到具体的处理器以及一系列前处理器和后处理器（即处理器拦截器）上。
+								具体的规则视HandlerMapping类的实现不同而有所不同。其最常用的一个实现支持你在控制器上添加注解，配置请求路径。
+HandlerAdapter	处理器适配器。拿到请求所对应的处理器后，适配器将负责去调用该处理器，这使得DispatcherServlet无需关心具体的调用细节。
+								比方说，要调用的是一个基于注解配置的控制器，那么调用前还需要从许多注解中解析出一些相应的信息。
+								因此，HandlerAdapter的主要任务就是对DispatcherServlet屏蔽这些具体的细节。
+HandlerExceptionResolver	处理器异常解析器。它负责将捕获的异常映射到不同的视图上去，此外还支持更复杂的异常处理代码。
+ViewResolver	视图解析器。它负责将一个代表逻辑视图名的字符串（String）映射到实际的视图类型View上。
+LocaleResolver & LocaleContextResolver	地区解析器 和 地区上下文解析器。它们负责解析客户端所在的地区信息甚至时区信息，为国际化的视图定制提供了支持。
+ThemeResolver	主题解析器。它负责解析你web应用中可用的主题，比如，提供一些个性化定制的布局等。
+MultipartResolver	解析multi-part的传输请求，比如支持通过HTML表单进行的文件上传等。
+FlashMapManager	FlashMap管理器。它能够存储并取回两次请求之间的FlashMap对象。后者可用于在请求之间传递数据，通常是在请求重定向的情境下使用。
+
+五、控制器实现
+1.作用
+控制器作为应用程序逻辑的处理入口，它会负责去调用你已经实现的一些服务。
+通常，一个控制器会接收并解析用户的请求，然后把它转换成一个模型交给视图，由视图渲染出页面最终呈现给用户。
+Spring 2.5以后引入了基于注解的编程模型，你可以在你的控制器实现上添加@RequestMapping、@RequestParam、@ModelAttribute等注解。
+
+2.@Controller注解
+@Controller注解表明了一个类是作为控制器的角色而存在的。Spring不要求你去继承任何控制器基类，也不要求你去实现Servlet的那套API。
+当然，如果你需要的话也可以去使用任何与Servlet相关的特性和设施。
+@Controller注解可以认为是被标注类的原型（stereotype），表明了这个类所承担的角色。分派器（DispatcherServlet）会扫描所有注解了@Controller的类，检测其中通过@RequestMapping注解配置的方法
+配置
+@Controller
+public class HelloWorldController {
+
+    @RequestMapping("/helloWorld")
+    public String helloWorld(Model model) {
+        model.addAttribute("message", "Hello World!");
+        return "helloWorld";
+    }
+}
+你需要在配置中加入组件扫描的配置代码来开启框架对注解控制器的自动检测。请使用下面XML代码所示的spring-context schema：
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="要扫描的包名"/>
+    <!-- ... -->
+</beans>
+
+3.@RequestMapping注解
+你可以使用@RequestMapping注解来将请求URL，如/appointments等，映射到整个类上或某个特定的处理器方法上。
+一般来说，类级别的注解负责将一个特定（或符合某种模式）的请求路径映射到一个控制器上，
+同时通过方法级别的注解来细化映射，即根据特定的HTTP请求方法（“GET”“POST”方法等）、HTTP请求中是否携带特定参数等条件，将请求映射到匹配的方法上。
+@Controller
+@RequestMapping("/appointments")			//作用于类级别的，它指示了所有/appointments开头的路径都会被映射到控制器下。
+//类级别的@RequestMapping注解并不是必须的。不配置的话则所有的路径都是绝对路径
+public class AppointmentsController {
+    private final AppointmentBook appointmentBook;
+    @Autowired
+    public AppointmentsController(AppointmentBook appointmentBook) {
+        this.appointmentBook = appointmentBook;
+    }
+		//get()方法上的@RequestMapping注解对请求路径进行了进一步细化：它仅接受GET方法的请求。
+		//这样，一个请求路径为/appointments、HTTP方法为GET的请求，将会最终进入到这个方法被处理。
+    @RequestMapping(method = RequestMethod.GET)
+    public Map<String, Appointment> get() {
+        return appointmentBook.getAppointmentsForToday();
+    }
+		//getForDay()方法则展示了使用@RequestMapping注解的另一个技巧：URI模板。
+    @RequestMapping(path = "/{day}", method = RequestMethod.GET)
+    public Map<String, Appointment> getForDay(@PathVariable @DateTimeFormat(iso=ISO.DATE) Date day, Model model) {
+        return appointmentBook.getAppointmentsForDay(day);
+    }
+		//这种情况下，一个路径为appointments/new、HTTP方法为GET的请求将会被这个方法所处理。
+    @RequestMapping(path = "/new", method = RequestMethod.GET)
+    public AppointmentForm getNewForm() {
+        return new AppointmentForm();
+    }
+		
+    @RequestMapping(method = RequestMethod.POST)
+    public String add(@Valid AppointmentForm appointment, BindingResult result) {
+        if (result.hasErrors()) {
+            return "appointments/new";
+        }
+        appointmentBook.addAppointment(appointment);
+        return "redirect:/appointments";
+    }
+}
+--支持的属性
+(1)value 默认属性，可忽略，表明使用哪种方法来处理请求
+@RequestMapping（value="/hello")
+public ModelAndView Hello(){}
+(2)method 指示处理那些请求方式
+@RequestMapping（method={RequestMethod.POST,RequestMethod.GET})
+(3)consumes  指定处理请求的提交内容类型
+@RequestMapping(consumes="application/json")
+(4)produces 指定返回的内容类型，返回类型必须是request请求头(Accept)中所包含的
+@RequestMapping(produces="application/json")
+(5)params 指定request中必须包含某些参数值时，才让该方法处理
+@RequestMapping(params="myParam=myValue")
+只处理名为myParam的值为myValue的请求
+(6)headers 指定request中必须包含某些特定的header值才处理
+@RequestMapping(headers="Referer=http://www.fkit.org")
+
+4.Model和ModelAndView
+在请求处理方法可出现和返回的参数类型中，最重要的就是Model和ModelAndView
+对于MVC框架，控制器（Controller）执行业务逻辑，用于产生模型数据（Model），而视图（View）则用于渲染模型数据。
+SpringMVC通过以下途径将模型数据传递给视图：
+（1）Model和ModelMap
+通过addObject（String attributeName,Object attribute Value);
+---
+@Controller
+public class User1Controller{
+	private static final Log logger = LogFactory.getLog(User1Controller.class);
+	//@ModelAttribute修饰的方法会先于login调用，该方法用于接收前台jsp页面传入的参数
+	public void userMode1(String loginname,String password,Model model){
+		logger.info("userModel");
+		User user = new User();
+		model.addAttribute("user",user);
+	}
+	@RequestMapping(value="/login1")
+	public String login(Model model){
+		logger.info("login");
+		//从Model当中取出之前存入的名为user的对象
+		User user = （User）model.asMap().get("user");
+	}
+}
+----
+@Controller
+public class User2Controller{
+	private static final Log logger = LogFactory.getLog(User2Controller.class);
+	@ModelAttribute
+	public void userMode2(String loginname,String password,ModelMap modelMap){
+		logger.info("userMode2");
+		User user = new User();
+		modelMap.addAttribute("user",user);
+	}
+	@RequestMapping(value="/login2")
+	public String login2(ModelMap modelMap){
+		logger.info("login2");
+		User user = (User)modelMap.get("user");
+	}
+}
+（2）ModelAndView
+使用addObject(String attributeName,Object attributeValue);添加模型数据
+使用setViewName（String viewName）设置视图
+@Controller
+public class User3Controller{
+	private static final Log logger = LogFactory.getLog(User3Controller.class);
+	@ModelAttribute
+	public void userMode3(String loginname,String password,ModelAndView mv){
+		logger.info("userMode3");
+		User user = new User();
+		mv.addObject("user",user);
+	}
+	@RequestMapping(value="/login3")
+	public ModeAndView login3(ModelAndView mv){
+		logger.info("login3");
+		User user = (User) mv.getModel().get("user");
+		mv.setViewName("result3");
+		return mv;
+	}
+}
+（3）@ModelAttribute
+（4）@SessionAttributes
+
+......补充
+to be continue
+
+六、Spring MVC 处理器映射
+在Spring的上个版本中，用户需要在web应用的上下文中定义一个或多个的HandlerMappingbean，用以将进入容器的web请求映射到合适的处理器方法上。
+允许在控制器上添加注解后，通常你就不必这么做了，因为RequestMappingHandlerMapping类会自动查找所有注解了@RequestMapping的@Controller控制器bean。
+同时也请知道，所有继承自AbstractHandlerMapping的处理器方法映射HandlerMapping类都拥有下列的属性，你可以对它们进行定制。
+处理器映射处理过程配置的拦截器，必须实现 org.springframework.web.servlet包下的 HandlerInterceptor接口。
+这个接口定义了三个方法： preHandle(..)，它在处理器实际执行 之前 会被执行； postHandle(..)，它在处理器执行 完毕 以后被执行； afterCompletion(..)，它在 整个请求处理完成 之后被执行。
+这三个方法为各种类型的前处理和后处理需求提供了足够的灵活性。
+拦截器可以通过interceptors属性来配置，该选项在所有继承了AbstractHandlerMapping的处理器映射类HandlerMapping都提供了配置的接口。如下面代码样例所示：
+<beans>
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="officeHoursInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="officeHoursInterceptor" class="samples.TimeBasedAccessInterceptor">
+        <property name="openingTime" value="9"/>
+        <property name="closingTime" value="18"/>
+    </bean>
+<beans>
+----
+package samples；
+public class TimeBasedAccessInterceptor extends HandlerInterceptorAdapter {
+
+    private int openingTime;
+    private int closingTime;
+
+    public void setOpeningTime(int openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public void setClosingTime(int closingTime) {
+        this.closingTime = closingTime;
+    }
+
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+            Object handler) throws Exception {
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(HOUR_OF_DAY);
+        if (openingTime <= hour && hour < closingTime) {
+            return true;
+        }
+        response.sendRedirect("http://host.com/outsideOfficeHours.html");
+        return false;
+    }
+}
+在上面的例子中，所有被此处理器处理的请求都会被TimeBasedAccessInterceptor拦截器拦截。
+如果当前时间在工作时间以外，那么用户就会被重定向到一个HTML文件提示用户，比如显示“你只有在工作时间才可以访问本网站”之类的信息。

@@ -1,0 +1,54 @@
+概念
+一、Maven是什么
+Maven 是一个项目管理工具。它负责管理项目开发过程中的几乎所有的东西。
+版本
+maven有自己的版本定义和规则
+构建
+maven支持许多种的应用程序类型，对于每一种支持的应用程序类型都定义好了一组构建规则和工具集。
+输出物管理
+maven可以管理项目构建的产物，并将其加入到用户库中。这个功能可以用于项目组和其他部门之间的交付行为
+依赖关系
+maven对依赖关系的特性进行细致的分析和划分，避免开发过程中的依赖混乱和相互污染行为
+文档和构建结果
+maven的site命令支持各种文档信息的发布，包括构建过程的各种输出，javadoc，产品文档等。
+项目关系
+一个大型的项目通常有几个小项目或者模块组成，用maven可以很方便地管理
+移植性管理
+maven可以针对不同的开发场景，输出不同种类的输出结果
+
+二、Maven的标准工程结构
+Maven的标准工程结构如下：
+|-- pom.xml(maven的核心配置文件)
+|-- src
+|-- main
+|   `-- java(java源代码目录)
+|   `-- resources(资源文件目录)
+|-- test
+        `-- java(单元测试代码目录)
+|-- target(输出目录，所有的输出物都存放在这个目录下)
+    |--classes(编译后的class文件存放处)
+    
+三、Maven的"约定优于配置"
+所谓的"约定优于配置"，在maven中并不是完全不可以修改的，他们只是一些配置的默认值而已。但是除非必要，并不需要去修改那些约定内容。maven默认的文件存放结构如下：
+每一个阶段的任务都知道怎么正确完成自己的工作，比如compile任务就知道从src/main/java下编译所有的java文件，并把它的输出class文件存放到target/classes中。
+对maven来说，采用"约定优于配置"的策略可以减少修改配置的工作量，也可以降低学习成本，更重要的是，给项目引入了统一的规范。
+
+四、Maven的版本规范
+maven使用如下几个要素来唯一定位某一个输出物：
+groudId
+团体、组织的标识符。团体标识的约定是，它以创建这个项目的组织名称的逆向域名(reverse domain name)开头。一般对应着JAVA的包的结构。例如org.apache
+artifactId 
+单独项目的唯一标识符。比如我们的tomcat, commons等。不要在artifactId中包含点号(.)。
+version 
+一个项目的特定版本。
+packaging 
+项目的类型，默认是jar，描述了项目打包后的输出。类型为jar的项目产生一个JAR文件，类型为war的项目产生一个web应用。
+----
+maven有自己的版本规范，一般是如下定义 <major version>.<minor version>.<incremental version>-<qualifier> ，比如1.2.3-beta-01。要说明的是，maven自己判断版本的算法是major,minor,incremental部分用数字比较，qualifier部分用字符串比较，所以要小心 alpha-2和alpha-15的比较关系，最好用 alpha-02的格式。
+maven在版本管理时候可以使用几个特殊的字符串 SNAPSHOT，LATEST，RELEASE。比如"1.0-SNAPSHOT"。各个部分的含义和处理逻辑如下说明：
+SNAPSHOT
+这个版本一般用于开发过程中，表示不稳定的版本。
+LATEST
+指某个特定构件的最新发布，这个发布可能是一个发布版，也可能是一个snapshot版，具体看哪个时间最后。
+RELEASE
+指最后一个发布版。

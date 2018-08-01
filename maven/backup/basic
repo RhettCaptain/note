@@ -1,0 +1,54 @@
+基础
+一、在Eclipse中创建Maven工程
+1.Maven插件
+在Eclipse中创建Maven工程，需要安装Maven插件。
+一般较新版本的Eclipse都会带有Maven插件，如果你的Eclipse中已经有Maven插件，可以跳过这一步骤。
+点击Help -> Eclipse Marketplace，搜索maven关键字，选择安装红框对应的Maven插件。
+
+2.Maven环境配置
+点击Window -> Preferences
+如下图所示，配置settings.xml文件的位置
+
+3.创建Maven工程
+File -> New -> Maven Project -> Next，在接下来的窗口中会看到一大堆的项目模板，选择合适的模板
+groupId是项目组织唯一的标识符，实际对应JAVA的包的结构，是main目录里java的目录结构。
+
+artifactId就是项目的唯一的标识符，实际对应项目的名称，就是项目根目录的名称。
+
+4.使用Maven进行构建
+（1）Eclipse中构建方式
+在Elipse项目上右击 -> Run As 就能看到很多Maven操作。这些操作和maven命令是等效的。例如Maven clean，等同于mvn clean命令。
+你也可以点击Maven build，输入组合命令，并保存下来。
+（2）Maven命令构建方式
+当然，你也可以直接使用maven命令进行构建。
+进入工程所在目录，输入maven命令就可以了。
+
+二、使用指导
+1.如何添加外部依赖jar包
+在Maven工程中添加依赖jar包，很简单，只要在POM文件中引入对应的<dependency>标签即可。
+<dependency>标签最常用的四个属性标签：
+groupId：项目组织唯一的标识符，实际对应JAVA的包的结构。
+artifactId：项目唯一的标识符，实际对应项目的名称，就是项目根目录的名称。
+version：jar包的版本号。可以直接填版本数字，也可以在properties标签中设置属性值。
+scope：jar包的作用范围。可以填写compile、runtime、test、system和provided。用来在编译、测试等场景下选择对应的classpath。
+	<dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.12</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
+2.如何寻找jar包
+可以在http://mvnrepository.com/站点搜寻你想要的jar包版本
+例如，想要使用log4j，可以找到需要的版本号，然后拷贝对应的maven标签信息，将其添加到pom .xml文件中。
+
+3.如何使用Maven插件(Plugin)
+要添加Maven插件，可以在pom.xml文件中添加<plugin>标签。

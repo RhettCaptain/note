@@ -1,0 +1,117 @@
+﻿基础
+一、简单使用
+1.Maven项目的目录约定
+MavenProjectRoot(项目根目录)
+   |----src
+   |     |----main
+   |     |         |----java ——存放项目的.java文件
+   |     |         |----resources ——存放项目资源文件，如spring, hibernate配置文件
+   |     |----test
+   |     |         |----java ——存放所有测试.java文件，如JUnit测试类
+   |     |         |----resources ——存放项目资源文件，如spring, hibernate配置文件
+   |----target ——项目输出位置
+   |----pom.xml ----用于标识该项目是一个Maven项目
+2.创建ws，编写pom文件
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--所有的Maven项目都必须配置这四个配置项-->
+    <modelVersion>4.0.0</modelVersion>
+    <!--groupId指的是项目名的项目组，默认就是包名-->
+    <groupId>cn.gacl.maven.hello</groupId>
+    <!--artifactId指的是项目中的某一个模块，默认命名方式是"项目名-模块名"-->
+    <artifactId>hello-first</artifactId>
+    <!--version指的是版本，这里使用的是Maven的快照版本-->
+    <version>SNAPSHOT-0.0.1</version>
+</project>
+3.编写Java类文件
+Maven项目规定，所有的*.java文件必须放在src目录下的main目录下的java目录中
+4.使用Maven编译Hello.java，首先进入到项目根目录，然后使用命令”mvn compile”进行编译
+5.使用"mvn clean"命令清除编译结果，也就是把编译生成的target文件夹删掉，
+6.使用Maven测试项目，测试项目的命令是："mvn test"
+7.使用Maven打包项目，打包项目的命令是："mvn package"
+8.使用Maven部署项目，部署项目的命令是："mvn install"
+使用"mvn install"命令，就把maven构建项目的【清理】→【编译】→【测试】→【打包】的这几个过程都做了，同时将打包好的jar包发布到本地的Maven仓库中。
+
+组合使用Maven的命令
+　　maven的编译，清理，测试，打包，部署命令是可以几个命令同时组合起来使用的，常用的命令组合如下：
+　　1、先清理再编译："mvn clean compile"，如下所示：
+
+二、修改从Maven中心仓库下载到本地的jar包的默认存储位置
+　　从Maven中心仓库下载到本地的jar包的默认存放在”${user.home}/.m2/repository”中，${user.home}表示当前登录系统的用户目录(如"C:\Users\gacl")
+　	Jar包存放在这个位置不太好，我们希望能够自己定义下载下来的jar包的存放位置，因此我们可以自己设置下载到本地时的jar包的存放目录。
+		编辑setting.xml文件，加上下面的代码
+		<localRepository>E:/repository</localRepository>
+		这样就可以把jar包下载到我们指定的E:/repository目录中了
+		把jar包下载到本地的好处就是，当编译时，会优先从本地的jar包去找，如果本地存在，就直接拿来用，如果不存在，就从Maven的中心仓库去下载。
+		
+三、在别的项目中使用通过Maven安装生成的项目的jar包
+1.新建HelloFriend项目，同时建立Maven约定的目录结构和pom.xml文件
+　　HelloFriend
+ 　　　 | --src
+　　　　　　| -----main
+　　　　　　| ----------java
+　　　　　　| ----------resources
+　　　　　　| -----test
+　　　　　　| ---------java
+　　　　　　| ---------resources
+　　　　　　| --pom.xml
+2.编辑项目HelloFriend根目录下的pom.xml，添加如下的代码：
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>me.gacl.maven</groupId>
+  <artifactId>HelloFriend</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>HelloFriend</name>
+  
+    <!--添加依赖的jar包-->
+    <dependencies>
+        <!--项目要使用到junit的jar包，所以在这里添加junit的jar包的依赖-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>test</scope>
+        </dependency>
+        <!--项目要使用到Hello的jar包，所以在这里添加Hello的jar包的依赖-->
+        <dependency>
+            <groupId>me.gacl.maven</groupId>
+            <artifactId>Hello</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>    
+    </dependencies>
+</project>
+3.在src/main/java/me/gacl/maven目录下新建文件HelloFriend.java
+package me.gacl.maven;
+import me.gacl.maven.Hello;
+public class HelloFriend {
+    public String sayHelloToFriend(String name){
+        Hello hello = new Hello();
+        String str = hello.sayHello(name)+" I am "+this.getMyName();
+        System.out.println(str);
+        return str;
+    }
+    public String getMyName(){
+        return "John";
+    }
+}
+4.在/src/test/java/me/gacl/maven目录下新建测试文件HelloFriendTest.java
+package me.gacl.maven;
+
+import static junit.framework.Assert.assertEquals;
+import org.junit.Test;
+import me.gacl.maven.Hello;
+public class HelloFriendTest {
+    @Test
+    public void tesHelloFriend(){
+        
+        HelloFriend helloFriend = new HelloFriend();
+        String results = helloFriend.sayHelloToFriend("gacl");
+        assertEquals("Hello gacl! I am John",results);
+    }
+}
+5.在HelloFriend目录下执行命令"mvn package"测试Hello-0.0.1-SNAPSHOT.jar里面的类是否引用成功

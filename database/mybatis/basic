@@ -1,0 +1,168 @@
+入门
+一、安装
+要使用 MyBatis， 只需将 mybatis-x.x.x.jar 文件置于 classpath 中即可。
+如果使用 Maven 来构建项目，则需将下面的 dependency 代码置于 pom.xml 文件中：
+<dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis</artifactId>
+  <version>x.x.x</version>
+</dependency>
+
+二、HelloWorld
+1.创建数据库和数据表
+数据表tb_user:id,name,sex,age
+
+2.编写POJO
+package com.rhett.model;
+public class User {
+	private Integer id;
+	private String name;
+	private String sex;
+	private Integer age;
+
+	public User(){
+		super();
+	}
+	public User(String name,String sex,Integer age){
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+	}
+	
+	//setter and getter
+	.....
+
+}
+
+3.映射持久化类和数据库表
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rhett.mapper.UserMapper">				//指定唯一namespace，习惯是包名+sql映射文件名
+	//insert标签编写插入sql语句，id唯一不重复
+	//使用parameterType指明插入时使用的参数类型
+	//useGeneratedKeys="true"表示使用自动增长策略，需要底层数据库支持。
+	<insert id="save" parameterType="com.rhett.model.User" useGeneratedKeys="true">
+		INSERT INTO TB_USER(name,sex,age) VALUES(#{name},#{sex},#{age})
+	</insert>
+</mapper>
+
+4.编写配置文件mybatis-config.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <environments default="mysql">
+    <environment id="mysql">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="com/rhett/mapper/UserMapper.xml"/>
+  </mappers>
+</configuration>
+
+5.完成数据插入代码
+public class MyBatisTest {
+	public static void main(String[] args) throws Exception{
+		InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		SqlSession session = sqlSessionFactory.openSession();
+		User user = new User("admin","男",26);
+		session.insert("com.rhett.mapper.UserMapper.save",user);
+		session.commit();
+		session.close();
+	}
+}
+
+二、构建 SqlSessionFactory
+1.从 XML 
+每个基于 MyBatis 的应用都是以一个 SqlSessionFactory 的实例为中心的。
+SqlSessionFactory 的实例可以通过 SqlSessionFactoryBuilder 获得。
+而 SqlSessionFactoryBuilder 则可以从 XML 配置文件或一个预先定制的 Configuration 的实例构建出 SqlSessionFactory 的实例。
+-------------
+String resource = "org/mybatis/example/mybatis-config.xml";
+InputStream inputStream = Resources.getResourceAsStream(resource);
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+---------------
+XML 配置文件（configuration XML）中包含了对 MyBatis 系统的核心设置，
+包含获取数据库连接实例的数据源（DataSource）和决定事务作用域和控制方式的事务管理器（TransactionManager）。
+XML 配置文件的详细内容后面再探讨，这里先给出一个简单的示例：
+------------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="org/mybatis/example/BlogMapper.xml"/>
+  </mappers>
+</configuration>
+-----------------------
+
+2.不使用 XML
+如果你更愿意直接从 Java 程序而不是 XML 文件中创建 configuration，或者创建你自己的 configuration 构建器，MyBatis 也提供了完整的配置类，提供所有和 XML 文件相同功能的配置项。
+------------------
+DataSource dataSource = BlogDataSourceFactory.getBlogDataSource();
+TransactionFactory transactionFactory = new JdbcTransactionFactory();
+Environment environment = new Environment("development", transactionFactory, dataSource);
+Configuration configuration = new Configuration(environment);
+configuration.addMapper(BlogMapper.class);
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+-------------
+
+三、从 SqlSessionFactory 中获取 SqlSession
+既然有了 SqlSessionFactory ，顾名思义，我们就可以从中获得 SqlSession 的实例了。
+SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法。你可以通过 SqlSession 实例来直接执行已映射的 SQL 语句。例如：
+1.旧
+-----
+SqlSession session = sqlSessionFactory.openSession();
+try {
+  Blog blog = (Blog) session.selectOne("org.mybatis.example.BlogMapper.selectBlog", 101);
+} finally {
+  session.close();
+}
+-----
+2.新
+------
+SqlSession session = sqlSessionFactory.openSession();
+try {
+  BlogMapper mapper = session.getMapper(BlogMapper.class);
+  Blog blog = mapper.selectBlog(101);
+} finally {
+  session.close();
+}
+这种方法有很多优势，首先它不是基于字符串常量的，就会更安全；
+其次，如果你的 IDE 有代码补全功能，那么你可以在有了已映射 SQL 语句的基础之上利用这个功能。
+-------
+3.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+  <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select>
+</mapper>
+在命名空间“org.mybatis.example.BlogMapper”中定义了一个名为“selectBlog”的映射语句，
+这样它就允许你使用指定的完全限定名“org.mybatis.example.BlogMapper.selectBlog”来调用映射语句

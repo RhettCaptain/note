@@ -1,0 +1,61 @@
+使用Maven构建项目
+一、构建java项目
+1.创建java project
+（1）使用mvn archetype:generate命令，如下所示：
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+（2）使用mvn archetype:create命令，如下所示：
+mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+使用"mvn archetype:generate"命令和"mvn archetype:create"都可以创建项目，目前没有发现这两者的区别，
+唯一区别的地方就是发现使用"mvn archetype:generate"命令创建项目时要特别长的时间才能够将项目创建好，而使用"mvn archetype:create"命令则可以很快将项目创建出来。
+
+2.JavaProject的pom.xml文件说明
+　　通过Maven构建的JavaProject，在项目的根目录下都会存在一个pom.xml文件，进入myapp目录，可以看到有一个pom.xml文件，这个文件是Maven的核心。
+（1）pom意思就是project object model。
+（2）pom.xml包含了项目构建的信息，包括项目的信息、项目的依赖等。
+（3）pom.xml文件是可以继承的，大型项目中，子模块的pom.xml一般都会继承于父模块的pom.xml
+pom.xml文件的节点元素说明：
+　<project>　　　　　　　pom文件的顶级节点
+　<modelVersion>　　　　 object model版本，对Maven2和Maven3来说，只能是4.0.0　
+　<groupId>　　　　　　　项目创建组织的标识符，一般是域名的倒写
+　<artifactId>　　　　　 定义了项目在所属组织的标识符下的唯一标识，一个组织下可以有多个项目
+　<version>　　　　　  　当前项目的版本，SNAPSHOT，表示是快照版本，在开发中
+　<packaging>　　　　  打包的方式，有jar、war、ear等
+　<name>　　　　　　　 项目的名称
+　<url>　　　　　　　　  项目的地址
+  <properties>　　　　属性配置，比如：<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+　<dependencies>　　   构建项目依赖的jar
+其中由groupId、artifactId和version唯一的确定了一个项目坐标
+3.使用Maven编译-测试-打包-安装项目
+运行jar包
+进入命令行，切换到myapp目录，执行命令：java -cp target\myapp-1.0-SNAPSHOT.jar com.mycompany.app.App
+
+二、构建JavaWeb项目
+1.创建JavaWeb项目
+（1）使用mvn archetype:generate命令，如下所示：
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-WebApp -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+（2）使用mvn archetype:create命令，如下所示：
+mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=myWebApp -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+2.创建好的JavaWeb项目中目前只有src/main/resources目录，因此还需要手动添加src/main/java、src/test/java、src/test/resources
+接着我们就可以将创建好的JavaWeb导入Eclipse中进行开发了
+3.使用Maven打包发布Web项目
+执行：mvn package，构建成功后，myWebApp目录目录下多了一个target目录，在这个目录下会打包成myWebApp目录.war，把这个war包拷贝到Tomcat的发布目录下就可以运行了。
+
+三、Maven创建项目的命令说明
+　　mvn archetype:create或者mvn archetype:generate　　固定写法
+　　-DgroupId　　　　　　　组织标识（包名）
+　　-DartifactId　　　　　项目名称
+　　-DarchetypeArtifactId　　　指定ArchetypeId，maven-archetype-quickstart，创建一个Java Project；maven-archetype-webapp，创建一个Web Project
+　　-DinteractiveMode　　　　　是否使用交互模式
+　　archetype是mvn内置的一个插件，create任务可以创建一个java项目骨架，DgroupId是软件包的名称，DartifactId是项目名，DarchetypeArtifactId是可用的mvn项目骨架，目前可以使用的骨架有：
+
+maven-archetype-archetype
+maven-archetype-j2ee-simple
+maven-archetype-mojo
+maven-archetype-portlet
+maven-archetype-profiles (currently under development)
+maven-archetype-quickstart
+maven-archetype-simple (currently under development)
+maven-archetype-site
+maven-archetype-site-simple
+maven-archetype-webapp
+每一个骨架都会建相应的目录结构和一些通用文件，最常用的是maven-archetype-quickstart和maven-archetype-webapp骨架。maven-archetype-quickstart骨架是用来创建一个Java Project，而maven-archetype-webapp骨架则是用来创建一个JavaWeb Project。

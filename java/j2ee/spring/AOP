@@ -1,36 +1,36 @@
-AOP
-Ò»¡¢¸ÅÊö
-1.¸ÅÄî
-Spring ¿ò¼ÜµÄÒ»¸ö¹Ø¼ü×é¼şÊÇÃæÏò·½ÃæµÄ±à³Ì(AOP)¿ò¼Ü¡£
-ÃæÏò·½ÃæµÄ±à³ÌĞèÒª°Ñ³ÌĞòÂß¼­·Ö½â³É²»Í¬µÄ²¿·Ö³ÆÎªËùÎ½µÄ¹Ø×¢µã¡£
-¿çÒ»¸öÓ¦ÓÃ³ÌĞòµÄ¶à¸öµãµÄ¹¦ÄÜ±»³ÆÎªºáÇĞ¹Ø×¢µã£¬ÕâĞ©ºáÇĞ¹Ø×¢µãÔÚ¸ÅÄîÉÏ¶ÀÁ¢ÓÚÓ¦ÓÃ³ÌĞòµÄÒµÎñÂß¼­¡£
-ÓĞ¸÷ÖÖ¸÷ÑùµÄ³£¼ûµÄºÜºÃµÄ·½ÃæµÄÀı×Ó£¬ÈçÈÕÖ¾¼ÇÂ¼¡¢Éó¼Æ¡¢ÉùÃ÷Ê½ÊÂÎñ¡¢°²È«ĞÔºÍ»º´æµÈ¡£
-Spring AOP Ä£¿éÌá¹©À¹½ØÆ÷À´À¹½ØÒ»¸öÓ¦ÓÃ³ÌĞò£¬ÀıÈç£¬µ±Ö´ĞĞÒ»¸ö·½·¨Ê±£¬Äã¿ÉÒÔÔÚ·½·¨Ö´ĞĞÖ®Ç°»òÖ®ºóÌí¼Ó¶îÍâµÄ¹¦ÄÜ¡£
-2.ÊõÓï
-Ïî	ÃèÊö
-Aspect	Ò»¸öÄ£¿é¾ßÓĞÒ»×éÌá¹©ºáÇĞĞèÇóµÄ APIs¡£ÀıÈç£¬Ò»¸öÈÕÖ¾Ä£¿éÎªÁË¼ÇÂ¼ÈÕÖ¾½«±» AOP ·½Ãæµ÷ÓÃ¡£Ó¦ÓÃ³ÌĞò¿ÉÒÔÓµÓĞÈÎÒâÊıÁ¿µÄ·½Ãæ£¬ÕâÈ¡¾öÓÚĞèÇó¡£
-Join point	ÔÚÄãµÄÓ¦ÓÃ³ÌĞòÖĞËü´ú±íÒ»¸öµã£¬Äã¿ÉÒÔÔÚ²å¼ş AOP ·½Ãæ¡£ÄãÒ²ÄÜËµ£¬ËüÊÇÔÚÊµ¼ÊµÄÓ¦ÓÃ³ÌĞòÖĞ£¬ÆäÖĞÒ»¸ö²Ù×÷½«Ê¹ÓÃ Spring AOP ¿ò¼Ü¡£
-Advice	ÕâÊÇÊµ¼ÊĞĞ¶¯Ö®Ç°»òÖ®ºóÖ´ĞĞµÄ·½·¨¡£ÕâÊÇÔÚ³ÌĞòÖ´ĞĞÆÚ¼äÍ¨¹ı Spring AOP ¿ò¼ÜÊµ¼Ê±»µ÷ÓÃµÄ´úÂë¡£
-Pointcut	ÕâÊÇÒ»×éÒ»¸ö»ò¶à¸öÁ¬½Óµã£¬Í¨ÖªÓ¦¸Ã±»Ö´ĞĞ¡£Äã¿ÉÒÔÊ¹ÓÃ±í´ïÊ½»òÄ£Ê½Ö¸¶¨ÇĞÈëµãÕıÈçÎÒÃÇ½«ÔÚ AOP µÄÀı×ÓÖĞ¿´µ½µÄ¡£
-Introduction	ÒıÓÃÔÊĞíÄãÌí¼ÓĞÂ·½·¨»òÊôĞÔµ½ÏÖÓĞµÄÀàÖĞ¡£
-Target object	±»Ò»¸ö»òÕß¶à¸ö·½ÃæËùÍ¨ÖªµÄ¶ÔÏó£¬Õâ¸ö¶ÔÏóÓÀÔ¶ÊÇÒ»¸ö±»´úÀí¶ÔÏó¡£Ò²³ÆÎª±»Í¨Öª¶ÔÏó¡£
-Weaving	Weaving °Ñ·½ÃæÁ¬½Óµ½ÆäËüµÄÓ¦ÓÃ³ÌĞòÀàĞÍ»òÕß¶ÔÏóÉÏ£¬²¢´´½¨Ò»¸ö±»Í¨ÖªµÄ¶ÔÏó¡£ÕâĞ©¿ÉÒÔÔÚ±àÒëÊ±£¬Àà¼ÓÔØÊ±ºÍÔËĞĞÊ±Íê³É¡£
-3.Í¨ÖªµÄÀàĞÍ
-Spring ·½Ãæ¿ÉÒÔÊ¹ÓÃÏÂÃæÌáµ½µÄÎåÖÖÍ¨Öª¹¤×÷£º
-Í¨Öª	ÃèÊö
-Ç°ÖÃÍ¨Öª	ÔÚÒ»¸ö·½·¨Ö´ĞĞÖ®Ç°£¬Ö´ĞĞÍ¨Öª¡£
-ºóÖÃÍ¨Öª	ÔÚÒ»¸ö·½·¨Ö´ĞĞÖ®ºó£¬²»¿¼ÂÇÆä½á¹û£¬Ö´ĞĞÍ¨Öª¡£
-·µ»ØºóÍ¨Öª	ÔÚÒ»¸ö·½·¨Ö´ĞĞÖ®ºó£¬Ö»ÓĞÔÚ·½·¨³É¹¦Íê³ÉÊ±£¬²ÅÄÜÖ´ĞĞÍ¨Öª¡£
-Å×³öÒì³£ºóÍ¨Öª	ÔÚÒ»¸ö·½·¨Ö´ĞĞÖ®ºó£¬Ö»ÓĞÔÚ·½·¨ÍË³öÅ×³öÒì³£Ê±£¬²ÅÄÜÖ´ĞĞÍ¨Öª¡£
-»·ÈÆÍ¨Öª	ÔÚ½¨Òé·½·¨µ÷ÓÃÖ®Ç°ºÍÖ®ºó£¬Ö´ĞĞÍ¨Öª¡£
-4.ÊµÏÖ×Ô¶¨Òå·½Ãæ
-Spring Ö§³Ö @AspectJ annotation style µÄ·½·¨ºÍ»ùÓÚÄ£Ê½µÄ·½·¨À´ÊµÏÖ×Ô¶¨Òå·½Ãæ¡£ÕâÁ½ÖÖ·½·¨ÒÑ¾­ÔÚÏÂÃæÁ½¸ö×Ó½Ú½øĞĞÁËÏêÏ¸½âÊÍ¡£
-·½·¨	ÃèÊö
-XML Schema based	·½ÃæÊÇÊ¹ÓÃ³£¹æÀàÒÔ¼°»ùÓÚÅäÖÃµÄ XML À´ÊµÏÖµÄ¡£
-@AspectJ based	@AspectJ ÒıÓÃÒ»ÖÖÉùÃ÷·½ÃæµÄ·ç¸ñ×÷Îª´øÓĞ Java 5 ×¢ÊÍµÄ³£¹æ Java Àà×¢ÊÍ¡£
+ï»¿AOP
+ä¸€ã€æ¦‚è¿°
+1.æ¦‚å¿µ
+Spring æ¡†æ¶çš„ä¸€ä¸ªå…³é”®ç»„ä»¶æ˜¯é¢å‘æ–¹é¢çš„ç¼–ç¨‹(AOP)æ¡†æ¶ã€‚
+é¢å‘æ–¹é¢çš„ç¼–ç¨‹éœ€è¦æŠŠç¨‹åºé€»è¾‘åˆ†è§£æˆä¸åŒçš„éƒ¨åˆ†ç§°ä¸ºæ‰€è°“çš„å…³æ³¨ç‚¹ã€‚
+è·¨ä¸€ä¸ªåº”ç”¨ç¨‹åºçš„å¤šä¸ªç‚¹çš„åŠŸèƒ½è¢«ç§°ä¸ºæ¨ªåˆ‡å…³æ³¨ç‚¹ï¼Œè¿™äº›æ¨ªåˆ‡å…³æ³¨ç‚¹åœ¨æ¦‚å¿µä¸Šç‹¬ç«‹äºåº”ç”¨ç¨‹åºçš„ä¸šåŠ¡é€»è¾‘ã€‚
+æœ‰å„ç§å„æ ·çš„å¸¸è§çš„å¾ˆå¥½çš„æ–¹é¢çš„ä¾‹å­ï¼Œå¦‚æ—¥å¿—è®°å½•ã€å®¡è®¡ã€å£°æ˜å¼äº‹åŠ¡ã€å®‰å…¨æ€§å’Œç¼“å­˜ç­‰ã€‚
+Spring AOP æ¨¡å—æä¾›æ‹¦æˆªå™¨æ¥æ‹¦æˆªä¸€ä¸ªåº”ç”¨ç¨‹åºï¼Œä¾‹å¦‚ï¼Œå½“æ‰§è¡Œä¸€ä¸ªæ–¹æ³•æ—¶ï¼Œä½ å¯ä»¥åœ¨æ–¹æ³•æ‰§è¡Œä¹‹å‰æˆ–ä¹‹åæ·»åŠ é¢å¤–çš„åŠŸèƒ½ã€‚
+2.æœ¯è¯­
+é¡¹	æè¿°
+Aspect	ä¸€ä¸ªæ¨¡å—å…·æœ‰ä¸€ç»„æä¾›æ¨ªåˆ‡éœ€æ±‚çš„ APIsã€‚ä¾‹å¦‚ï¼Œä¸€ä¸ªæ—¥å¿—æ¨¡å—ä¸ºäº†è®°å½•æ—¥å¿—å°†è¢« AOP æ–¹é¢è°ƒç”¨ã€‚åº”ç”¨ç¨‹åºå¯ä»¥æ‹¥æœ‰ä»»æ„æ•°é‡çš„æ–¹é¢ï¼Œè¿™å–å†³äºéœ€æ±‚ã€‚
+Join point	åœ¨ä½ çš„åº”ç”¨ç¨‹åºä¸­å®ƒä»£è¡¨ä¸€ä¸ªç‚¹ï¼Œä½ å¯ä»¥åœ¨æ’ä»¶ AOP æ–¹é¢ã€‚ä½ ä¹Ÿèƒ½è¯´ï¼Œå®ƒæ˜¯åœ¨å®é™…çš„åº”ç”¨ç¨‹åºä¸­ï¼Œå…¶ä¸­ä¸€ä¸ªæ“ä½œå°†ä½¿ç”¨ Spring AOP æ¡†æ¶ã€‚
+Advice	è¿™æ˜¯å®é™…è¡ŒåŠ¨ä¹‹å‰æˆ–ä¹‹åæ‰§è¡Œçš„æ–¹æ³•ã€‚è¿™æ˜¯åœ¨ç¨‹åºæ‰§è¡ŒæœŸé—´é€šè¿‡ Spring AOP æ¡†æ¶å®é™…è¢«è°ƒç”¨çš„ä»£ç ã€‚
+Pointcut	è¿™æ˜¯ä¸€ç»„ä¸€ä¸ªæˆ–å¤šä¸ªè¿æ¥ç‚¹ï¼Œé€šçŸ¥åº”è¯¥è¢«æ‰§è¡Œã€‚ä½ å¯ä»¥ä½¿ç”¨è¡¨è¾¾å¼æˆ–æ¨¡å¼æŒ‡å®šåˆ‡å…¥ç‚¹æ­£å¦‚æˆ‘ä»¬å°†åœ¨ AOP çš„ä¾‹å­ä¸­çœ‹åˆ°çš„ã€‚
+Introduction	å¼•ç”¨å…è®¸ä½ æ·»åŠ æ–°æ–¹æ³•æˆ–å±æ€§åˆ°ç°æœ‰çš„ç±»ä¸­ã€‚
+Target object	è¢«ä¸€ä¸ªæˆ–è€…å¤šä¸ªæ–¹é¢æ‰€é€šçŸ¥çš„å¯¹è±¡ï¼Œè¿™ä¸ªå¯¹è±¡æ°¸è¿œæ˜¯ä¸€ä¸ªè¢«ä»£ç†å¯¹è±¡ã€‚ä¹Ÿç§°ä¸ºè¢«é€šçŸ¥å¯¹è±¡ã€‚
+Weaving	Weaving æŠŠæ–¹é¢è¿æ¥åˆ°å…¶å®ƒçš„åº”ç”¨ç¨‹åºç±»å‹æˆ–è€…å¯¹è±¡ä¸Šï¼Œå¹¶åˆ›å»ºä¸€ä¸ªè¢«é€šçŸ¥çš„å¯¹è±¡ã€‚è¿™äº›å¯ä»¥åœ¨ç¼–è¯‘æ—¶ï¼Œç±»åŠ è½½æ—¶å’Œè¿è¡Œæ—¶å®Œæˆã€‚
+3.é€šçŸ¥çš„ç±»å‹
+Spring æ–¹é¢å¯ä»¥ä½¿ç”¨ä¸‹é¢æåˆ°çš„äº”ç§é€šçŸ¥å·¥ä½œï¼š
+é€šçŸ¥	æè¿°
+å‰ç½®é€šçŸ¥	åœ¨ä¸€ä¸ªæ–¹æ³•æ‰§è¡Œä¹‹å‰ï¼Œæ‰§è¡Œé€šçŸ¥ã€‚
+åç½®é€šçŸ¥	åœ¨ä¸€ä¸ªæ–¹æ³•æ‰§è¡Œä¹‹åï¼Œä¸è€ƒè™‘å…¶ç»“æœï¼Œæ‰§è¡Œé€šçŸ¥ã€‚
+è¿”å›åé€šçŸ¥	åœ¨ä¸€ä¸ªæ–¹æ³•æ‰§è¡Œä¹‹åï¼Œåªæœ‰åœ¨æ–¹æ³•æˆåŠŸå®Œæˆæ—¶ï¼Œæ‰èƒ½æ‰§è¡Œé€šçŸ¥ã€‚
+æŠ›å‡ºå¼‚å¸¸åé€šçŸ¥	åœ¨ä¸€ä¸ªæ–¹æ³•æ‰§è¡Œä¹‹åï¼Œåªæœ‰åœ¨æ–¹æ³•é€€å‡ºæŠ›å‡ºå¼‚å¸¸æ—¶ï¼Œæ‰èƒ½æ‰§è¡Œé€šçŸ¥ã€‚
+ç¯ç»•é€šçŸ¥	åœ¨å»ºè®®æ–¹æ³•è°ƒç”¨ä¹‹å‰å’Œä¹‹åï¼Œæ‰§è¡Œé€šçŸ¥ã€‚
+4.å®ç°è‡ªå®šä¹‰æ–¹é¢
+Spring æ”¯æŒ @AspectJ annotation style çš„æ–¹æ³•å’ŒåŸºäºæ¨¡å¼çš„æ–¹æ³•æ¥å®ç°è‡ªå®šä¹‰æ–¹é¢ã€‚è¿™ä¸¤ç§æ–¹æ³•å·²ç»åœ¨ä¸‹é¢ä¸¤ä¸ªå­èŠ‚è¿›è¡Œäº†è¯¦ç»†è§£é‡Šã€‚
+æ–¹æ³•	æè¿°
+XML Schema based	æ–¹é¢æ˜¯ä½¿ç”¨å¸¸è§„ç±»ä»¥åŠåŸºäºé…ç½®çš„ XML æ¥å®ç°çš„ã€‚
+@AspectJ based	@AspectJ å¼•ç”¨ä¸€ç§å£°æ˜æ–¹é¢çš„é£æ ¼ä½œä¸ºå¸¦æœ‰ Java 5 æ³¨é‡Šçš„å¸¸è§„ Java ç±»æ³¨é‡Šã€‚
 
-¶ş¡¢»ùÓÚ AOP µÄ XML¼Ü¹¹
-1.Ê¹ÓÃ aop ÃüÃû¿Õ¼ä±êÇ©£¬ÄãĞèÒªµ¼Èë spring-aop j¼Ü¹¹
+äºŒã€åŸºäº AOP çš„ XMLæ¶æ„
+1.ä½¿ç”¨ aop å‘½åç©ºé—´æ ‡ç­¾ï¼Œä½ éœ€è¦å¯¼å…¥ spring-aop jæ¶æ„
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -43,14 +43,14 @@ XML Schema based	·½ÃæÊÇÊ¹ÓÃ³£¹æÀàÒÔ¼°»ùÓÚÅäÖÃµÄ XML À´ÊµÏÖµÄ¡£
    <!-- bean definition & AOP specific configuration -->
 
 </beans>
-ĞèÒªÏÂÔØ£º
+éœ€è¦ä¸‹è½½ï¼š
 aspectjrt.jar
 aspectjweaver.jar
 aspectj.jar
 aopalliance.jar
 
-2.ÉùÃ÷Ò»¸ö aspect
-Ò»¸ö aspect ÊÇÊ¹ÓÃ ÔªËØÉùÃ÷µÄ£¬Ö§³ÖµÄ bean ÊÇÊ¹ÓÃ ref ÊôĞÔÒıÓÃµÄ
+2.å£°æ˜ä¸€ä¸ª aspect
+ä¸€ä¸ª aspect æ˜¯ä½¿ç”¨ å…ƒç´ å£°æ˜çš„ï¼Œæ”¯æŒçš„ bean æ˜¯ä½¿ç”¨ ref å±æ€§å¼•ç”¨çš„
 <aop:config>
    <aop:aspect id="myAspect" ref="aBean">
    ...
@@ -60,9 +60,9 @@ aopalliance.jar
 ...
 </bean>
 
-3.ÉùÃ÷Ò»¸öÇĞÈëµã
-Ò»¸öÇĞÈëµãÓĞÖúÓÚÈ·¶¨Ê¹ÓÃ²»Í¬½¨ÒéÖ´ĞĞµÄ¸ĞĞËÈ¤µÄÁ¬½Óµã£¨¼´·½·¨£©
-¶¨ÒåÁËÒ»¸öÃûÎª ¡°businessService¡± µÄÇĞÈëµã£¬¸ÃÇĞÈëµã½«Óë com.tutorialspoint °üÏÂµÄ Student ÀàÖĞµÄ getName() ·½·¨ÏàÆ¥Åä£º
+3.å£°æ˜ä¸€ä¸ªåˆ‡å…¥ç‚¹
+ä¸€ä¸ªåˆ‡å…¥ç‚¹æœ‰åŠ©äºç¡®å®šä½¿ç”¨ä¸åŒå»ºè®®æ‰§è¡Œçš„æ„Ÿå…´è¶£çš„è¿æ¥ç‚¹ï¼ˆå³æ–¹æ³•ï¼‰
+å®šä¹‰äº†ä¸€ä¸ªåä¸º â€œbusinessServiceâ€ çš„åˆ‡å…¥ç‚¹ï¼Œè¯¥åˆ‡å…¥ç‚¹å°†ä¸ com.tutorialspoint åŒ…ä¸‹çš„ Student ç±»ä¸­çš„ getName() æ–¹æ³•ç›¸åŒ¹é…ï¼š
 <aop:config>
    <aop:aspect id="myAspect" ref="aBean">
    <aop:pointcut id="businessService"
@@ -74,9 +74,9 @@ aopalliance.jar
 ...
 </bean>
 
-4.ÉùÃ÷½¨Òé
-Äã¿ÉÒÔÊ¹ÓÃ <aop:{ADVICE NAME}> ÔªËØÔÚÒ»¸ö ÖĞÉùÃ÷Îå¸ö½¨ÒéÖĞµÄÈÎºÎÒ»¸ö
-aop:before £¬aop:after £¬aop:after-returning £¬aop:after-throwing£¬aop:around
+4.å£°æ˜å»ºè®®
+ä½ å¯ä»¥ä½¿ç”¨ <aop:{ADVICE NAME}> å…ƒç´ åœ¨ä¸€ä¸ª ä¸­å£°æ˜äº”ä¸ªå»ºè®®ä¸­çš„ä»»ä½•ä¸€ä¸ª
+aop:before ï¼Œaop:after ï¼Œaop:after-returning ï¼Œaop:after-throwingï¼Œaop:around
 <aop:config>
    <aop:aspect id="myAspect" ref="aBean">
       <aop:pointcut id="businessService"
@@ -105,3 +105,272 @@ aop:before £¬aop:after £¬aop:after-returning £¬aop:after-throwing£¬aop:around
 </aop:config>
 
 5.demo
+---Logging.java---
+package com.tutorialspoint;
+public class Logging {
+   public void beforeAdvice(){
+      System.out.println("Going to setup student profile.");
+   }
+   public void afterAdvice(){
+      System.out.println("Student profile has been setup.");
+   }
+   public void afterReturningAdvice(Object retVal){
+      System.out.println("Returning:" + retVal.toString() );
+   }
+   public void AfterThrowingAdvice(IllegalArgumentException ex){
+      System.out.println("There has been an exception: " + ex.toString());   
+   }  
+}
+---Student.java---
+package com.tutorialspoint;
+public class Student {
+   private Integer age;
+   private String name;
+   public void setAge(Integer age) {
+      this.age = age;
+   }
+   public Integer getAge() {
+      System.out.println("Age : " + age );
+      return age;
+   }
+   public void setName(String name) {
+      this.name = name;
+   }
+   public String getName() {
+      System.out.println("Name : " + name );
+      return name;
+   }  
+   public void printThrowException(){
+       System.out.println("Exception raised");
+       throw new IllegalArgumentException();
+   }
+}
+---MainApp.java---
+package com.tutorialspoint;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class MainApp {
+   public static void main(String[] args) {
+      ApplicationContext context = 
+             new ClassPathXmlApplicationContext("Beans.xml");
+      Student student = (Student) context.getBean("student");
+      student.getName();
+      student.getAge();      
+      student.printThrowException();
+   }
+}
+---Beans.xml---
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+   <aop:config>
+      <aop:aspect id="log" ref="logging">
+         <aop:pointcut id="selectAll" 
+         expression="execution(* com.tutorialspoint.*.*(..))"/>
+         <aop:before pointcut-ref="selectAll" method="beforeAdvice"/>
+         <aop:after pointcut-ref="selectAll" method="afterAdvice"/>
+         <aop:after-returning pointcut-ref="selectAll" 
+                              returning="retVal"
+                              method="afterReturningAdvice"/>
+         <aop:after-throwing pointcut-ref="selectAll" 
+                             throwing="ex"
+                             method="AfterThrowingAdvice"/>
+      </aop:aspect>
+   </aop:config>
+   <!-- Definition for student bean -->
+   <bean id="student" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>      
+   </bean>
+   <!-- Definition for logging aspect -->
+   <bean id="logging" class="com.tutorialspoint.Logging"/> 
+</beans>
+ä¸€æ—¦ä½ å·²ç»å®Œæˆçš„åˆ›å»ºäº†æºæ–‡ä»¶å’Œ bean é…ç½®æ–‡ä»¶ï¼Œè®©æˆ‘ä»¬è¿è¡Œä¸€ä¸‹åº”ç”¨ç¨‹åºã€‚å¦‚æœä½ çš„åº”ç”¨ç¨‹åºä¸€åˆ‡éƒ½æ­£å¸¸çš„è¯ï¼Œè¿™å°†ä¼šè¾“å‡ºä»¥ä¸‹æ¶ˆæ¯ï¼š
+Going to setup student profile.
+Name : Zara
+Student profile has been setup.
+Returning:Zara
+Going to setup student profile.
+Age : 11
+Student profile has been setup.
+Returning:11
+Going to setup student profile.
+Exception raised
+Student profile has been setup.
+There has been an exception: java.lang.IllegalArgumentException
+.....
+other exception content
+
+ä¸‰ã€åŸºäº AOP çš„ @AspectJ
+@AspectJ ä½œä¸ºé€šè¿‡ Java 5 æ³¨é‡Šæ³¨é‡Šçš„æ™®é€šçš„ Java ç±»ï¼Œå®ƒæŒ‡çš„æ˜¯å£°æ˜ aspects çš„ä¸€ç§é£æ ¼ã€‚
+é€šè¿‡åœ¨ä½ çš„åŸºäºæ¶æ„çš„ XML é…ç½®æ–‡ä»¶ä¸­åŒ…å«ä»¥ä¸‹å…ƒç´ ï¼Œ@AspectJ æ”¯æŒæ˜¯å¯ç”¨çš„ã€‚
+<aop:aspectj-autoproxy/>
+1.å£°æ˜ä¸€ä¸ª aspect
+Aspects ç±»å’Œå…¶ä»–ä»»ä½•æ­£å¸¸çš„ bean ä¸€æ ·ï¼Œé™¤äº†å®ƒä»¬å°†ä¼šç”¨ @AspectJ æ³¨é‡Šä¹‹å¤–ï¼Œå®ƒå’Œå…¶ä»–ç±»ä¸€æ ·å¯èƒ½æœ‰æ–¹æ³•å’Œå­—æ®µï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
+package org.xyz;
+import org.aspectj.lang.annotation.Aspect;
+@Aspect
+public class AspectModule {
+}
+å®ƒä»¬å°†åœ¨ XML ä¸­æŒ‰ç…§å¦‚ä¸‹è¿›è¡Œé…ç½®ï¼Œå°±å’Œå…¶ä»–ä»»ä½• bean ä¸€æ ·ï¼š
+<bean id="myAspect" class="org.xyz.AspectModule">
+   <!-- configure properties of aspect here as normal -->
+</bean>
+
+2.å£°æ˜ä¸€ä¸ªåˆ‡å…¥ç‚¹
+ä¸€ä¸ªåˆ‡å…¥ç‚¹æœ‰åŠ©äºç¡®å®šä½¿ç”¨ä¸åŒå»ºè®®æ‰§è¡Œçš„æ„Ÿå…´è¶£çš„è¿æ¥ç‚¹ï¼ˆå³æ–¹æ³•ï¼‰ã€‚åœ¨å¤„ç†åŸºäºé…ç½®çš„ XML æ¶æ„æ—¶ï¼Œåˆ‡å…¥ç‚¹çš„å£°æ˜æœ‰ä¸¤ä¸ªéƒ¨åˆ†ï¼š
+ä¸€ä¸ªåˆ‡å…¥ç‚¹è¡¨è¾¾å¼å†³å®šäº†æˆ‘ä»¬æ„Ÿå…´è¶£çš„å“ªä¸ªæ–¹æ³•ä¼šçœŸæ­£è¢«æ‰§è¡Œã€‚
+ä¸€ä¸ªåˆ‡å…¥ç‚¹æ ‡ç­¾åŒ…å«ä¸€ä¸ªåç§°å’Œä»»æ„æ•°é‡çš„å‚æ•°ã€‚æ–¹æ³•çš„çœŸæ­£å†…å®¹æ˜¯ä¸ç›¸å¹²çš„ï¼Œå¹¶ä¸”å®é™…ä¸Šå®ƒåº”è¯¥æ˜¯ç©ºçš„ã€‚
+ä¸‹é¢çš„ç¤ºä¾‹ä¸­å®šä¹‰äº†ä¸€ä¸ªåä¸º â€˜businessServiceâ€™ çš„åˆ‡å…¥ç‚¹ï¼Œè¯¥åˆ‡å…¥ç‚¹å°†ä¸ com.tutorialspoint åŒ…ä¸‹çš„ç±»ä¸­å¯ç”¨çš„æ¯ä¸€ä¸ªæ–¹æ³•ç›¸åŒ¹é…ï¼š
+ä¸‹é¢çš„ç¤ºä¾‹ä¸­å®šä¹‰äº†ä¸€ä¸ªåä¸º â€˜getnameâ€™ çš„åˆ‡å…¥ç‚¹ï¼Œè¯¥åˆ‡å…¥ç‚¹å°†ä¸ com.tutorialspoint åŒ…ä¸‹çš„ Student ç±»ä¸­çš„ getName() æ–¹æ³•ç›¸åŒ¹é…ï¼š
+import org.aspectj.lang.annotation.Pointcut;
+@Pointcut("execution(* com.tutorialspoint.Student.getName(..))") 
+private void getname() {}
+
+3.å£°æ˜å»ºè®®
+ä½ å¯ä»¥ä½¿ç”¨ @{ADVICE-NAME} æ³¨é‡Šå£°æ˜äº”ä¸ªå»ºè®®ä¸­çš„ä»»æ„ä¸€ä¸ªï¼Œå¦‚ä¸‹æ‰€ç¤ºã€‚è¿™å‡è®¾ä½ å·²ç»å®šä¹‰äº†ä¸€ä¸ªåˆ‡å…¥ç‚¹æ ‡ç­¾æ–¹æ³• businessService()ï¼š
+@Before("businessService()")
+public void doBeforeTask(){
+ ...
+}
+@After("businessService()")
+public void doAfterTask(){
+ ...
+}
+@AfterReturning(pointcut = "businessService()", returning="retVal")
+public void doAfterReturnningTask(Object retVal){
+  // you can intercept retVal here.
+  ...
+}
+@AfterThrowing(pointcut = "businessService()", throwing="ex")
+public void doAfterThrowingTask(Exception ex){
+  // you can intercept thrown exception here.
+  ...
+}
+@Around("businessService()")
+public void doAroundTask(){
+ ...
+}
+ä½ å¯ä»¥ä¸ºä»»æ„ä¸€ä¸ªå»ºè®®å®šä¹‰ä½ çš„åˆ‡å…¥ç‚¹å†…è”ã€‚ä¸‹é¢æ˜¯åœ¨å»ºè®®ä¹‹å‰å®šä¹‰å†…è”åˆ‡å…¥ç‚¹çš„ä¸€ä¸ªç¤ºä¾‹ï¼š
+@Before("execution(* com.xyz.myapp.service.*.*(..))")
+public doBeforeTask(){
+ ...
+}
+
+4.demoï¼š
+----Logging.java----
+package com.tutorialspoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+@Aspect
+public class Logging {
+   /** Following is the definition for a pointcut to select
+    *  all the methods available. So advice will be called
+    *  for all the methods.
+    */
+   @Pointcut("execution(* com.tutorialspoint.*.*(..))")
+   private void selectAll(){}
+   /** 
+    * This is the method which I would like to execute
+    * before a selected method execution.
+    */
+   @Before("selectAll()")
+   public void beforeAdvice(){
+      System.out.println("Going to setup student profile.");
+   }
+   /** 
+    * This is the method which I would like to execute
+    * after a selected method execution.
+    */
+   @After("selectAll()")
+   public void afterAdvice(){
+      System.out.println("Student profile has been setup.");
+   }
+   /** 
+    * This is the method which I would like to execute
+    * when any method returns.
+    */
+   @AfterReturning(pointcut = "selectAll()", returning="retVal")
+   public void afterReturningAdvice(Object retVal){
+      System.out.println("Returning:" + retVal.toString() );
+   }
+   /**
+    * This is the method which I would like to execute
+    * if there is an exception raised by any method.
+    */
+   @AfterThrowing(pointcut = "selectAll()", throwing = "ex")
+   public void AfterThrowingAdvice(IllegalArgumentException ex){
+      System.out.println("There has been an exception: " + ex.toString());   
+   }  
+}
+----Student.java---
+package com.tutorialspoint;
+public class Student {
+   private Integer age;
+   private String name;
+   public void setAge(Integer age) {
+      this.age = age;
+   }
+   public Integer getAge() {
+      System.out.println("Age : " + age );
+      return age;
+   }
+   public void setName(String name) {
+      this.name = name;
+   }
+   public String getName() {
+      System.out.println("Name : " + name );
+      return name;
+   }
+   public void printThrowException(){
+      System.out.println("Exception raised");
+      throw new IllegalArgumentException();
+   }
+}
+----MainApp.java----
+package com.tutorialspoint;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class MainApp {
+   public static void main(String[] args) {
+      ApplicationContext context = 
+             new ClassPathXmlApplicationContext("Beans.xml");
+      Student student = (Student) context.getBean("student");
+      student.getName();
+      student.getAge();     
+      student.printThrowException();
+   }
+}
+----Beans.xml----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+    <aop:aspectj-autoproxy/>
+
+   <!-- Definition for student bean -->
+   <bean id="student" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>      
+   </bean>
+
+   <!-- Definition for logging aspect -->
+   <bean id="logging" class="com.tutorialspoint.Logging"/> 
+
+</beans>

@@ -1,0 +1,249 @@
+﻿事务管理
+一、事务管理
+1.事务管理
+一个数据库事务是一个被视为单一的工作单元的操作序列。这些操作应该要么完整地执行，要么完全不执行。
+事务管理是一个重要组成部分，RDBMS 面向企业应用程序，以确保数据完整性和一致性。事务的概念可以描述为具有以下四个关键属性说成是 ACID：
+原子性：事务应该当作一个单独单元的操作，这意味着整个序列操作要么是成功，要么是失败的。
+一致性：这表示数据库的引用完整性的一致性，表中唯一的主键等。
+隔离性：可能同时处理很多有相同的数据集的事务，每个事务应该与其他事务隔离，以防止数据损坏。
+持久性：一个事务一旦完成全部操作后，这个事务的结果必须是永久性的，不能因系统故障而从数据库中删除。
+
+2.Spring 事务抽象
+Spring 事务抽象的关键是由 org.springframework.transaction.PlatformTransactionManager 接口定义，如下所示：
+public interface PlatformTransactionManager {
+   TransactionStatus getTransaction(TransactionDefinition definition);
+   throws TransactionException;
+   void commit(TransactionStatus status) throws TransactionException;
+   void rollback(TransactionStatus status) throws TransactionException;
+}
+
+TransactionStatus getTransaction(TransactionDefinition definition)  
+根据指定的传播行为，该方法返回当前活动事务或创建一个新的事务。
+---
+void commit(TransactionStatus status)
+该方法提交给定的事务和关于它的状态。
+---
+void rollback(TransactionStatus status)
+该方法执行一个给定事务的回滚。
+
+3.TransactionDefinition 是在 Spring 中事务支持的核心接口，它的定义如下：
+public interface TransactionDefinition {
+   int getPropagationBehavior();
+   int getIsolationLevel();
+   String getName();
+   int getTimeout();
+   boolean isReadOnly();
+}
+---
+int getPropagationBehavior()
+该方法返回传播行为。Spring 提供了与 EJB CMT 类似的所有的事务传播选项。
+--
+int getIsolationLevel()
+该方法返回该事务独立于其他事务的工作的程度。
+--
+String getName()
+该方法返回该事务的名称。
+--
+int getTimeout()
+该方法返回以秒为单位的时间间隔，事务必须在该时间间隔内完成。
+--
+boolean isReadOnly()
+该方法返回该事务是否是只读的。
+--------------------
+下面是隔离级别的可能值:
+--
+TransactionDefinition.ISOLATION_DEFAULT
+默认的隔离级别。
+--
+TransactionDefinition.ISOLATION_READ_COMMITTED
+表明能够阻止误读；可以发生不可重复读和虚读。
+--
+TransactionDefinition.ISOLATION_READ_UNCOMMITTED
+表明可以发生误读、不可重复读和虚读。
+--
+TransactionDefinition.ISOLATION_REPEATABLE_READ
+表明能够阻止误读和不可重复读；可以发生虚读。
+--
+TransactionDefinition.ISOLATION_SERIALIZABLE
+表明能够阻止误读、不可重复读和虚读。
+---------------------------
+下面是传播类型的可能值:
+--
+TransactionDefinition.PROPAGATION_MANDATORY
+支持当前事务；如果不存在当前事务，则抛出一个异常。
+--
+TransactionDefinition.PROPAGATION_NESTED
+如果存在当前事务，则在一个嵌套的事务中执行。
+--
+TransactionDefinition.PROPAGATION_NEVER
+不支持当前事务；如果存在当前事务，则抛出一个异常。
+--
+TransactionDefinition.PROPAGATION_NOT_SUPPORTED
+不支持当前事务；而总是执行非事务性。
+--
+TransactionDefinition.PROPAGATION_REQUIRED
+支持当前事务；如果不存在事务，则创建一个新的事务。
+--
+TransactionDefinition.PROPAGATION_REQUIRES_NEW
+创建一个新事务，如果存在一个事务，则把当前事务挂起。
+--
+TransactionDefinition.PROPAGATION_SUPPORTS
+支持当前事务；如果不存在，则执行非事务性。
+--
+TransactionDefinition.TIMEOUT_DEFAULT
+使用默认超时的底层事务系统，或者如果不支持超时则没有。
+
+4.TransactionStatus 接口为事务代码提供了一个简单的方法来控制事务的执行和查询事务状态。
+public interface TransactionStatus extends SavepointManager {
+   boolean isNewTransaction();
+   boolean hasSavepoint();
+   void setRollbackOnly();
+   boolean isRollbackOnly();
+   boolean isCompleted();
+}
+---
+boolean hasSavepoint()
+该方法返回该事务内部是否有一个保存点，也就是说，基于一个保存点已经创建了嵌套事务。
+--
+boolean isCompleted()
+该方法返回该事务是否完成，也就是说，它是否已经提交或回滚。
+--
+boolean isNewTransaction()
+在当前事务时新的情况下，该方法返回 true。
+--
+boolean isRollbackOnly()
+该方法返回该事务是否已标记为 rollback-only。
+--
+void setRollbackOnly()
+该方法设置该事务为 rollback-only 标记。
+
+二、 编程式事务管理
+主要区别在于实现DAO时加入transaction和beans中的区别
+---StudentJDBCTemplate.java--
+package com.tutorialspoint;
+import java.util.List;
+import javax.sql.DataSource;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+public class StudentJDBCTemplate implements StudentDAO {
+   private DataSource dataSource;
+   private JdbcTemplate jdbcTemplateObject;
+   private PlatformTransactionManager transactionManager;
+   public void setDataSource(DataSource dataSource) {
+      this.dataSource = dataSource;
+      this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+   }
+   public void setTransactionManager(																					//transactionManager
+      PlatformTransactionManager transactionManager) {
+      this.transactionManager = transactionManager;
+   }
+   public void create(String name, Integer age, Integer marks, Integer year){
+      TransactionDefinition def = new DefaultTransactionDefinition();					//TransactionDefinition
+      TransactionStatus status = transactionManager.getTransaction(def);			//TransactionStatus
+      try {
+         String SQL1 = "insert into Student (name, age) values (?, ?)";
+         jdbcTemplateObject.update( SQL1, name, age);
+         // Get the latest student id to be used in Marks table
+         String SQL2 = "select max(id) from Student";
+         int sid = jdbcTemplateObject.queryForInt( SQL2 );
+         String SQL3 = "insert into Marks(sid, marks, year) " + 
+                       "values (?, ?, ?)";
+         jdbcTemplateObject.update( SQL3, sid, marks, year);
+         System.out.println("Created Name = " + name + ", Age = " + age);
+         transactionManager.commit(status);																		//commit
+      } catch (DataAccessException e) {
+         System.out.println("Error in creating record, rolling back");
+         transactionManager.rollback(status);																	//rollback
+         throw e;
+      }
+      return;
+   }
+   public List<StudentMarks> listStudents() {
+      String SQL = "select * from Student, Marks where Student.id=Marks.sid";
+      List <StudentMarks> studentMarks = jdbcTemplateObject.query(SQL, 
+                                         new StudentMarksMapper());
+      return studentMarks;
+   }
+}
+----beans.xml----
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+   <!-- Initialization for data source -->
+   <bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+      <property name="url" value="jdbc:mysql://localhost:3306/TEST"/>
+      <property name="username" value="root"/>
+      <property name="password" value="password"/>
+   </bean>
+
+   <!-- Initialization for TransactionManager -->
+   <bean id="transactionManager" 
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+
+   <!-- Definition for studentJDBCTemplate bean -->
+   <bean id="studentJDBCTemplate"
+      class="com.tutorialspoint.StudentJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />
+      <property name="transactionManager"  ref="transactionManager" />    
+   </bean>
+
+</beans>
+
+三、声明式事务管理
+主要区别在于DAO实现类加入try/catch
+---Beans.xml---
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+   <!-- Initialization for data source -->
+   <bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+      <property name="url" value="jdbc:mysql://localhost:3306/TEST"/>
+      <property name="username" value="root"/>
+      <property name="password" value="cohondob"/>
+   </bean>
+
+   <tx:advice id="txAdvice"  transaction-manager="transactionManager">
+      <tx:attributes>
+      <tx:method name="create"/>
+      </tx:attributes>
+   </tx:advice>
+
+   <aop:config>
+      <aop:pointcut id="createOperation" 
+      expression="execution(* com.tutorialspoint.StudentJDBCTemplate.create(..))"/>
+      <aop:advisor advice-ref="txAdvice" pointcut-ref="createOperation"/>
+   </aop:config>
+
+   <!-- Initialization for TransactionManager -->
+   <bean id="transactionManager"
+   class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+
+   <!-- Definition for studentJDBCTemplate bean -->
+   <bean id="studentJDBCTemplate"  
+   class="com.tutorialspoint.StudentJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />  
+   </bean>
+</beans>

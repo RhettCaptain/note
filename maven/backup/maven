@@ -1,0 +1,105 @@
+一、Maven概述
+1.Maven 是什么？
+Maven 是一个项目管理和整合工具。
+Maven 的主要目的是为开发者提供一个可复用、可维护、更易理解的工程综合模型，与这个模型交互的插件或者工具
+Maven 工程结构和内容被定义在一个 xml 文件中 － pom.xml，是 Project Object Model (POM) 的简称，此文件是整个 Maven 系统的基础组件。
+
+二、环境配置
+Maven 是一个基于 Java 的工具，所以要做的第一件事情就是安装 JDK。
+步骤 1：检查 Java 安装
+现在打开控制台，执行下面的 java 命令。
+步骤 2：设置 Java 环境
+设置 JAVA_HOME 环境变量，并指向你机器上的 Java 安装目录。
+ JAVA_HOME to C:\Program Files\Java\jdk1.6.0_21
+ 将字符串“;C:\Program Files\Java\jdk1.6.0_21\bin”添加到系统变量“Path”的末尾
+步骤 3：下载 Maven 文件
+从以下网址下载 Maven 3.2.5：http://maven.apache.org/download.html
+步骤 4：解压 Maven 文件
+解压文件到你想要的位置来安装 Maven 3.2.5，你会得到 apache-maven-3.2.5 子目录。
+步骤 5：设置 Maven 环境变量
+添加 M2_HOME、M2、MAVEN_OPTS 到环境变量中。
+步骤 6：添加 Maven bin 目录到系统路径中
+现在添加 M2 变量到系统“Path”变量中
+步骤 7：验证 Maven 安装
+现在打开控制台，执行以下 mvn 命令。
+
+三、Maven POM
+1.Maven - POM
+POM 代表工程对象模型。它是使用 Maven 工作时的基本组建，是一个 xml 文件。它被放在工程根目录下，文件命名为 pom.xml。
+在创建 POM 之前，我们首先确定工程组（groupId），及其名称（artifactId）和版本，在仓库中这些属性是工程的唯一标识。
+POM 举例
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>com.companyname.project-group</groupId>
+   <artifactId>project</artifactId>
+   <version>1.0</version>
+
+</project>
+需要说明的是每个工程应该只有一个 POM 文件。
+
+所有的 POM 文件需要 project 元素和三个必须的字段：groupId, artifactId,version。
+在仓库中的工程标识为 groupId:artifactId:version
+POM.xml 的根元素是 project，它有三个主要的子节点：
+节点	描述
+groupId	这是工程组的标识。它在一个组织或者项目中通常是唯一的。例如，一个银行组织 com.company.bank 拥有所有的和银行相关的项目。
+artifactId	这是工程的标识。它通常是工程的名称。例如，消费者银行。groupId 和 artifactId 一起定义了 artifact 在仓库中的位置。
+version	这是工程的版本号。在 artifact 的仓库中，它用来区分不同的版本。例如：
+
+2.Super POM
+所有的 POM 都继承自一个父 POM（无论是否显式定义了这个父 POM）。父 POM 也被称作 Super POM，它包含了一些可以被继承的默认设置。
+Maven 使用 effective pom（Super pom 加上工程自己的配置）来执行相关的目标，它帮助开发者在 pom.xml 中做尽可能少的配置，当然这些配置可以被方便的重写。
+
+四、Maven 构建生命周期
+1.什么是构建生命周期
+构建生命周期是一组阶段的序列（sequence of phases），每个阶段定义了目标被执行的顺序。这里的阶段是生命周期的一部分。
+举例说明，一个典型的 Maven 构建生命周期是由以下几个阶段的序列组成的：
+阶段	处理	描述
+prepare-resources	资源拷贝	本阶段可以自定义需要拷贝的资源
+compile	编译	本阶段完成源代码编译
+package	打包	本阶段根据 pom.xml 中描述的打包配置创建 JAR / WAR 包
+install	安装	本阶段在本地 / 远程仓库中安装工程包
+
+当需要在某个特定阶段之前或之后执行目标时，可以使用 pre 和 post 来定义这个目标。
+当 Maven 开始构建工程，会按照所定义的阶段序列的顺序执行每个阶段注册的目标。Maven 有以下三个标准的生命周期：
+clean
+default(or build)
+site
+目标表示一个特定的、对构建和管理工程有帮助的任务。它可能绑定了 0 个或多个构建阶段。没有绑定任何构建阶段的目标可以在构建生命周期之外被直接调用执行。
+例如，考虑下面的命令。clean 和 package 参数是构建阶段，而 dependency:copy-dependencies 是一个目标。
+mvn clean dependency:copy-dependencies package
+
+2.Clean 生命周期
+当我们执行 mvn post-clean 命令时，Maven 调用 clean 生命周期，它包含以下阶段。
+pre-clean、clean、post-clean
+
+3.Default (or Build) 生命周期
+这是 Maven 的主要生命周期，被用于构建应用。包括下面的 23 个阶段。
+
+4.Site 生命周期
+Maven Site 插件一般用来创建新的报告文档、部署站点等。
+阶段：
+pre-site、site、post-site、site-deploy
+
+五、构建配置文件
+1.什么是构建配置文件？
+构建配置文件是一组配置的集合，用来设置或者覆盖 Maven 构建的默认配置。使用构建配置文件
+Profile 在 pom.xml 中使用 activeProfiles / profiles 元素指定，并且可以用很多方式触发。
+
+2.Profile 类型
+Profile 主要有三种类型。
+类型	在哪里定义
+Per Project	定义在工程 POM 文件 pom.xml 中
+Per User	定义在 Maven 设置 xml 文件中 （%USER_HOME%/.m2/settings.xml）
+Global	定义在 Maven 全局配置 xml 文件中 （%M2_HOME%/conf/settings.xml）
+
+3.Profile 激活
+Maven 的 Profile 能够通过几种不同的方式激活。
+（1）显式使用命令控制台输入
+通过 maven 设置
+基于环境变量（用户 / 系统变量）
+操作系统配置（例如，Windows family）
+现存 / 缺失 文件

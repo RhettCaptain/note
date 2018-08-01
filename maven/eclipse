@@ -1,0 +1,90 @@
+一、安装Maven插件
+下载下来的maven插件如下图所示：，插件存放的路径是：E:/MavenProject/Maven2EclipsePlugin
+进入到eclipse中的dropins目录下，新建三个txt文件（zest.txt,m2e.txt,m2e-extras.txt）
+m2e.txtt文件的内容如下：path=E:/MavenProject/Maven2EclipsePlugin/m2e
+m2e-extras.txt文件的内容如下：path=E:/MavenProject/Maven2EclipsePlugin/m2e-extras
+zest.txt文件的内容如下：path=E:/MavenProject/Maven2EclipsePlugin/GEF-zest-3.7.1
+path路径的值为插件在本机上存放的路径地址
+重新启动eclipse,点击windows→preferences,Maven插件安装成功后看到如下画面：
+
+二、配置Maven插件
+2.1、配置使用的Maven
+preferences-Maven-Installation
+2.2、配置User Settings
+在之前安装和配置Maven时，我已经将Maven本地仓库的位置设置成了"E:\repository"目录，所以需要将"C:\Users\gacl\.m2\repository"改成"E:\repository"
+首先找到Maven安装目录下的conf目录下的settings.xml文件，
+将conf目录下的settings.xml文件拷贝一份到Maven本地仓库的位置"E:\repository"目录，
+2.3、配置Maven编译时使用的JDK
+　因为Maven必须要JDK1.6以上才能够正常运行，所以需要配置一下Eclipse使用的JDK。
+　进入window->preferences窗口，选择java->Installed JREs，通过add按钮增加jdk对对应的路径加进来，否则在编译的时候会报错：
+	No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+	接着，进入Installed JREs的子项Execute Environment：在左侧选择JavaSE-1.5、JavaSE-1.6、JavaSE-1.7，右侧选择编译时使用的jdk版本
+	
+三、Eclipse中使用Maven插件
+3.1、导入Maven项目
+　　File→import
+3.2、新建Maven项目
+3.3、在Eclipse执行mvn命令
+　　选中项目，点击鼠标右键→【Run As】或者【Debug As】→选择相应的Maven命令执行，
+
+四、将Web项目自动部署到tomcat服务器
+2.1、在pom.xml文件中配置tomcat服务器
+　　配置web项目的pom.xml文件，配置如下：
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>me.gacl.maven</groupId>
+  <artifactId>WebProject</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>WebProject Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <!-- 将Web项目自动部署到tomcat服务器的相关 配置信息-->
+  <build>
+      <!-- 将WebProject项目打包成WebProject.war自动部署到tomcat服务器的webapps目录下面 -->
+    <finalName>WebProject</finalName>
+    <plugins>
+          <plugin>
+              <groupId>org.codehaus.cargo</groupId>
+              <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.2.3</version>
+                <configuration>
+                    <container>
+                          <!-- 指明使用的tomcat服务器版本 -->
+                        <containerId>tomcat7x</containerId>
+                        <!--指明tomcat服务器的安装目录 -->
+                        <home>D:/apache-tomcat-7.0.53</home>
+                    </container>
+                    <configuration>
+                        <type>existing</type>
+                        <!--指明tomcat服务器的安装目录 -->
+                        <home>D:/apache-tomcat-7.0.53</home>
+                    </configuration>
+                </configuration>
+                <executions>  
+                  <execution>  
+                      <id>cargo-run</id>  
+                      <phase>install</phase>  
+                      <goals>  
+                          <goal>run</goal>  
+                      </goals>  
+                  </execution>  
+              </executions>
+          </plugin>
+      </plugins>
+  </build>
+</project>
+2.2、将web项目发布到tomca服务器的webapps目录
+　　选中Web项目(或者选中Web项目的pom.xml文件)→【Run As】→【Maven install】，如下图所示：
+　　执行完【Maven install】命令之后，就可以将WebProject项目打包成WebProject.war包发布到tomca服务器的webapps目录下，如下图所示：
+　　测试部署好的Web项目，如下图所示：

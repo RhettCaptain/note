@@ -1,10 +1,10 @@
-×¢½â×¢Èë
-Ò»¡¢»ùÓÚ×¢½âµÄÅäÖÃ
-´Ó Spring 2.5 ¿ªÊ¼¾Í¿ÉÒÔÊ¹ÓÃ×¢½âÀ´ÅäÖÃÒÀÀµ×¢Èë¡£¶ø²»ÊÇ²ÉÓÃ XML À´ÃèÊöÒ»¸ö bean Á¬Ïß¡£
-Äã¿ÉÒÔÊ¹ÓÃÏà¹ØÀà£¬·½·¨»ò×Ö¶ÎÉùÃ÷µÄ×¢½â£¬½« bean ÅäÖÃÒÆ¶¯µ½×é¼şÀà±¾Éí¡£
-ÔÚ XML ×¢ÈëÖ®Ç°½øĞĞ×¢½â×¢Èë£¬Òò´ËºóÕßµÄÅäÖÃ½«Í¨¹ıÁ½ÖÖ·½Ê½µÄÊôĞÔÁ¬Ïß±»Ç°ÕßÖØĞ´¡£
-×¢½âÁ¬ÏßÔÚÄ¬ÈÏÇé¿öÏÂÔÚ Spring ÈİÆ÷ÖĞ²»´ò¿ª¡£Òò´Ë£¬ÔÚ¿ÉÒÔÊ¹ÓÃ»ùÓÚ×¢½âµÄÁ¬ÏßÖ®Ç°£¬ÎÒÃÇ½«ĞèÒªÔÚÎÒÃÇµÄ Spring ÅäÖÃÎÄ¼şÖĞÆôÓÃËü¡£
-ËùÒÔÈç¹ûÄãÏëÔÚ Spring Ó¦ÓÃ³ÌĞòÖĞÊ¹ÓÃµÄÈÎºÎ×¢½â£¬¿ÉÒÔ¿¼ÂÇµ½ÏÂÃæµÄÅäÖÃÎÄ¼ş¡£
+ï»¿æ³¨è§£æ³¨å…¥
+ä¸€ã€åŸºäºæ³¨è§£çš„é…ç½®
+ä» Spring 2.5 å¼€å§‹å°±å¯ä»¥ä½¿ç”¨æ³¨è§£æ¥é…ç½®ä¾èµ–æ³¨å…¥ã€‚è€Œä¸æ˜¯é‡‡ç”¨ XML æ¥æè¿°ä¸€ä¸ª bean è¿çº¿ã€‚
+ä½ å¯ä»¥ä½¿ç”¨ç›¸å…³ç±»ï¼Œæ–¹æ³•æˆ–å­—æ®µå£°æ˜çš„æ³¨è§£ï¼Œå°† bean é…ç½®ç§»åŠ¨åˆ°ç»„ä»¶ç±»æœ¬èº«ã€‚
+åœ¨ XML æ³¨å…¥ä¹‹å‰è¿›è¡Œæ³¨è§£æ³¨å…¥ï¼Œå› æ­¤åè€…çš„é…ç½®å°†é€šè¿‡ä¸¤ç§æ–¹å¼çš„å±æ€§è¿çº¿è¢«å‰è€…é‡å†™ã€‚
+æ³¨è§£è¿çº¿åœ¨é»˜è®¤æƒ…å†µä¸‹åœ¨ Spring å®¹å™¨ä¸­ä¸æ‰“å¼€ã€‚å› æ­¤ï¼Œåœ¨å¯ä»¥ä½¿ç”¨åŸºäºæ³¨è§£çš„è¿çº¿ä¹‹å‰ï¼Œæˆ‘ä»¬å°†éœ€è¦åœ¨æˆ‘ä»¬çš„ Spring é…ç½®æ–‡ä»¶ä¸­å¯ç”¨å®ƒã€‚
+æ‰€ä»¥å¦‚æœä½ æƒ³åœ¨ Spring åº”ç”¨ç¨‹åºä¸­ä½¿ç”¨çš„ä»»ä½•æ³¨è§£ï¼Œå¯ä»¥è€ƒè™‘åˆ°ä¸‹é¢çš„é…ç½®æ–‡ä»¶ã€‚
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -18,10 +18,10 @@
    <!-- bean definitions go here -->
 </beans>
 
-¶ş¡¢@Required ×¢½â
-@Required ×¢ÊÍÓ¦ÓÃÓÚ bean ÊôĞÔµÄ setter ·½·¨£¬
-Ëü±íÃ÷ÊÜÓ°ÏìµÄ bean ÊôĞÔÔÚÅäÖÃÊ±±ØĞë·ÅÔÚ XML ÅäÖÃÎÄ¼şÖĞ£¬·ñÔòÈİÆ÷¾Í»áÅ×³öÒ»¸ö BeanInitializationException Òì³£¡£
-demo£º
+äºŒã€@Required æ³¨è§£
+@Required æ³¨é‡Šåº”ç”¨äº bean å±æ€§çš„ setter æ–¹æ³•ï¼Œ
+å®ƒè¡¨æ˜å—å½±å“çš„ bean å±æ€§åœ¨é…ç½®æ—¶å¿…é¡»æ”¾åœ¨ XML é…ç½®æ–‡ä»¶ä¸­ï¼Œå¦åˆ™å®¹å™¨å°±ä¼šæŠ›å‡ºä¸€ä¸ª BeanInitializationException å¼‚å¸¸ã€‚
+demoï¼š
 ----Student
 public class Student {
    private Integer age;
@@ -57,19 +57,19 @@ public class Student {
    <!-- Definition for student bean -->
    <bean id="student" class="com.tutorialspoint.Student">
       <property name="name"  value="Zara" />
-      <property name="age"  value="11"/>		//Ã»ÓĞ³õÊ¼»¯»á±¨´í
+      <property name="age"  value="11"/>		//æ²¡æœ‰åˆå§‹åŒ–ä¼šæŠ¥é”™
    </bean>
 
 </beans>
 
-Èı¡¢@Autowired ×¢½â
-1.Setter ·½·¨ÖĞµÄ @Autowired
-Äã¿ÉÒÔÔÚ XML ÎÄ¼şÖĞµÄ setter ·½·¨ÖĞÊ¹ÓÃ @Autowired ×¢ÊÍÀ´³ıÈ¥ ÔªËØ¡£
-µ± SpringÓöµ½Ò»¸öÔÚ setter ·½·¨ÖĞÊ¹ÓÃµÄ @Autowired ×¢ÊÍ£¬Ëü»áÔÚ·½·¨ÖĞÊÓÍ¼Ö´ĞĞ byType ×Ô¶¯Á¬½Ó¡£
+ä¸‰ã€@Autowired æ³¨è§£
+1.Setter æ–¹æ³•ä¸­çš„ @Autowired
+ä½ å¯ä»¥åœ¨ XML æ–‡ä»¶ä¸­çš„ setter æ–¹æ³•ä¸­ä½¿ç”¨ @Autowired æ³¨é‡Šæ¥é™¤å» å…ƒç´ ã€‚
+å½“ Springé‡åˆ°ä¸€ä¸ªåœ¨ setter æ–¹æ³•ä¸­ä½¿ç”¨çš„ @Autowired æ³¨é‡Šï¼Œå®ƒä¼šåœ¨æ–¹æ³•ä¸­è§†å›¾æ‰§è¡Œ byType è‡ªåŠ¨è¿æ¥ã€‚
 -----TextEditor
 public class TextEditor {
    private SpellChecker spellChecker;
-   @Autowired					//xml¾Í²»ÓÃ×°ÅäÁË
+   @Autowired					//xmlå°±ä¸ç”¨è£…é…äº†
    public void setSpellChecker( SpellChecker spellChecker ){
       this.spellChecker = spellChecker;
    }
@@ -89,9 +89,9 @@ public class TextEditor {
    <bean id="spellChecker" class="com.tutorialspoint.SpellChecker">
    </bean>
    
-2.ÊôĞÔÖĞµÄ @Autowired
-Äã¿ÉÒÔÔÚÊôĞÔÖĞÊ¹ÓÃ @Autowired ×¢ÊÍÀ´³ıÈ¥ setter ·½·¨¡£(ºÃÏñÒ²ÊÇbyType£©
-µ±Ê±Ê¹ÓÃ Îª×Ô¶¯Á¬½ÓÊôĞÔ´«µİµÄÊ±ºò£¬Spring »á½«ÕâĞ©´«µİ¹ıÀ´µÄÖµ»òÕßÒıÓÃ×Ô¶¯·ÖÅä¸øÄÇĞ©ÊôĞÔ¡£
+2.å±æ€§ä¸­çš„ @Autowired
+ä½ å¯ä»¥åœ¨å±æ€§ä¸­ä½¿ç”¨ @Autowired æ³¨é‡Šæ¥é™¤å» setter æ–¹æ³•ã€‚(å¥½åƒä¹Ÿæ˜¯byTypeï¼‰
+å½“æ—¶ä½¿ç”¨ ä¸ºè‡ªåŠ¨è¿æ¥å±æ€§ä¼ é€’çš„æ—¶å€™ï¼ŒSpring ä¼šå°†è¿™äº›ä¼ é€’è¿‡æ¥çš„å€¼æˆ–è€…å¼•ç”¨è‡ªåŠ¨åˆ†é…ç»™é‚£äº›å±æ€§ã€‚
 -----TextEditor
 public class TextEditor {
    @Autowired
@@ -115,7 +115,7 @@ public class TextEditor {
    <bean id="spellChecker" class="com.tutorialspoint.SpellChecker">
    </bean>
    
-3.¹¹Ôìº¯ÊıÖĞµÄ @Autowired
+3.æ„é€ å‡½æ•°ä¸­çš„ @Autowired
  @Autowired
    public TextEditor(SpellChecker spellChecker){
       System.out.println("Inside TextEditor constructor." );
@@ -125,17 +125,17 @@ public class TextEditor {
       spellChecker.checkSpelling();
    }
 
-4.@Autowired µÄ£¨required=false£©Ñ¡Ïî
-Ä¬ÈÏÇé¿öÏÂ£¬@Autowired ×¢ÊÍÒâÎ¶×ÅÒÀÀµÊÇ±ØĞëµÄ£¬ËüÀàËÆÓÚ @Required ×¢ÊÍ£¬
-È»¶ø£¬Äã¿ÉÒÔÊ¹ÓÃ @Autowired µÄ £¨required=false£© Ñ¡Ïî¹Ø±ÕÄ¬ÈÏĞĞÎª¡£
+4.@Autowired çš„ï¼ˆrequired=falseï¼‰é€‰é¡¹
+é»˜è®¤æƒ…å†µä¸‹ï¼Œ@Autowired æ³¨é‡Šæ„å‘³ç€ä¾èµ–æ˜¯å¿…é¡»çš„ï¼Œå®ƒç±»ä¼¼äº @Required æ³¨é‡Šï¼Œ
+ç„¶è€Œï¼Œä½ å¯ä»¥ä½¿ç”¨ @Autowired çš„ ï¼ˆrequired=falseï¼‰ é€‰é¡¹å…³é—­é»˜è®¤è¡Œä¸ºã€‚
 
-ËÄ¡¢@Qualifier ×¢ÊÍ
-µ±Äã´´½¨¶à¸ö¾ßÓĞÏàÍ¬ÀàĞÍµÄ bean Ê±£¬²¢ÇÒÏëÒªÓÃÒ»¸öÊôĞÔÖ»ÎªËüÃÇÆäÖĞµÄÒ»¸ö½øĞĞ×°Åä£¬
-ÔÚÕâÖÖÇé¿öÏÂ£¬Äã¿ÉÒÔÊ¹ÓÃ @Qualifier ×¢ÊÍºÍ @Autowired ×¢ÊÍÍ¨¹ıÖ¸¶¨ÄÄÒ»¸öÕæÕıµÄ bean ½«»á±»×°ÅäÀ´Ïû³ı»ìÂÒ¡£
+å››ã€@Qualifier æ³¨é‡Š
+å½“ä½ åˆ›å»ºå¤šä¸ªå…·æœ‰ç›¸åŒç±»å‹çš„ bean æ—¶ï¼Œå¹¶ä¸”æƒ³è¦ç”¨ä¸€ä¸ªå±æ€§åªä¸ºå®ƒä»¬å…¶ä¸­çš„ä¸€ä¸ªè¿›è¡Œè£…é…ï¼Œ
+åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œä½ å¯ä»¥ä½¿ç”¨ @Qualifier æ³¨é‡Šå’Œ @Autowired æ³¨é‡Šé€šè¿‡æŒ‡å®šå“ªä¸€ä¸ªçœŸæ­£çš„ bean å°†ä¼šè¢«è£…é…æ¥æ¶ˆé™¤æ··ä¹±ã€‚
 ----Profile
 public class Profile {
    @Autowired
-   @Qualifier("student1")		(¸Ğ¾õÊÇbyName£©
+   @Qualifier("student1")		(æ„Ÿè§‰æ˜¯byNameï¼‰
    private Student student;
    public Profile(){
       System.out.println("Inside Profile constructor." );
@@ -164,16 +164,16 @@ public class Profile {
       <property name="age"  value="2"/>
    </bean>
    
-Îå¡¢JSR-250 ×¢ÊÍ
-Spring»¹Ê¹ÓÃ»ùÓÚ JSR-250 ×¢ÊÍ£¬Ëü°üÀ¨ @PostConstruct£¬ @PreDestroy ºÍ @Resource ×¢ÊÍ¡£
-ÒòÎªÄãÒÑ¾­ÓĞÁËÆäËûµÄÑ¡Ôñ£¬¾¡¹ÜÕâĞ©×¢ÊÍ²¢²»ÊÇÕæÕıËùĞèÒªµÄ
+äº”ã€JSR-250 æ³¨é‡Š
+Springè¿˜ä½¿ç”¨åŸºäº JSR-250 æ³¨é‡Šï¼Œå®ƒåŒ…æ‹¬ @PostConstructï¼Œ @PreDestroy å’Œ @Resource æ³¨é‡Šã€‚
+å› ä¸ºä½ å·²ç»æœ‰äº†å…¶ä»–çš„é€‰æ‹©ï¼Œå°½ç®¡è¿™äº›æ³¨é‡Šå¹¶ä¸æ˜¯çœŸæ­£æ‰€éœ€è¦çš„
 https://www.w3cschool.cn/wkspring/lmsq1mm4.html
 
-Áù¡¢»ùÓÚ Java µÄÅäÖÃ
-1.@Configuration ºÍ @Bean ×¢½â
-´øÓĞ @Configuration µÄ×¢½âÀà±íÊ¾Õâ¸öÀà¿ÉÒÔÊ¹ÓÃ Spring IoC ÈİÆ÷×÷Îª bean ¶¨ÒåµÄÀ´Ô´¡£
-@Bean ×¢½â¸æËß Spring£¬Ò»¸ö´øÓĞ @Bean µÄ×¢½â·½·¨½«·µ»ØÒ»¸ö¶ÔÏó£¬¸Ã¶ÔÏóÓ¦¸Ã±»×¢²áÎªÔÚ Spring Ó¦ÓÃ³ÌĞòÉÏÏÂÎÄÖĞµÄ bean¡£
-×î¼òµ¥¿ÉĞĞµÄ @Configuration ÀàÈçÏÂËùÊ¾£º
+å…­ã€åŸºäº Java çš„é…ç½®
+1.@Configuration å’Œ @Bean æ³¨è§£
+å¸¦æœ‰ @Configuration çš„æ³¨è§£ç±»è¡¨ç¤ºè¿™ä¸ªç±»å¯ä»¥ä½¿ç”¨ Spring IoC å®¹å™¨ä½œä¸º bean å®šä¹‰çš„æ¥æºã€‚
+@Bean æ³¨è§£å‘Šè¯‰ Springï¼Œä¸€ä¸ªå¸¦æœ‰ @Bean çš„æ³¨è§£æ–¹æ³•å°†è¿”å›ä¸€ä¸ªå¯¹è±¡ï¼Œè¯¥å¯¹è±¡åº”è¯¥è¢«æ³¨å†Œä¸ºåœ¨ Spring åº”ç”¨ç¨‹åºä¸Šä¸‹æ–‡ä¸­çš„ beanã€‚
+æœ€ç®€å•å¯è¡Œçš„ @Configuration ç±»å¦‚ä¸‹æ‰€ç¤ºï¼š
 import org.springframework.context.annotation.*;
 @Configuration
 public class HelloWorldConfig {
@@ -182,12 +182,12 @@ public class HelloWorldConfig {
       return new HelloWorld();
    }
 }
-µÈÍ¬ÓÚ
+ç­‰åŒäº
 <beans>
    <bean id="helloWorld" class="com.tutorialspoint.HelloWorld" />
 </beans>
-ÔÚÕâÀï£¬´øÓĞ @Bean ×¢½âµÄ·½·¨Ãû³Æ×÷Îª bean µÄ ID£¬Ëü´´½¨²¢·µ»ØÊµ¼ÊµÄ bean¡£ÄãµÄÅäÖÃÀà¿ÉÒÔÉùÃ÷¶à¸ö @Bean¡£
-Ò»µ©¶¨ÒåÁËÅäÖÃÀà£¬Äã¾Í¿ÉÒÔÊ¹ÓÃ AnnotationConfigApplicationContext À´¼ÓÔØ²¢°ÑËûÃÇÌá¹©¸ø Spring ÈİÆ÷£¬ÈçÏÂËùÊ¾£º
+åœ¨è¿™é‡Œï¼Œå¸¦æœ‰ @Bean æ³¨è§£çš„æ–¹æ³•åç§°ä½œä¸º bean çš„ IDï¼Œå®ƒåˆ›å»ºå¹¶è¿”å›å®é™…çš„ beanã€‚ä½ çš„é…ç½®ç±»å¯ä»¥å£°æ˜å¤šä¸ª @Beanã€‚
+ä¸€æ—¦å®šä¹‰äº†é…ç½®ç±»ï¼Œä½ å°±å¯ä»¥ä½¿ç”¨ AnnotationConfigApplicationContext æ¥åŠ è½½å¹¶æŠŠä»–ä»¬æä¾›ç»™ Spring å®¹å™¨ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 public static void main(String[] args) {
    ApplicationContext ctx = 
    new AnnotationConfigApplicationContext(HelloWorldConfig.class); 
@@ -195,7 +195,7 @@ public static void main(String[] args) {
    helloWorld.setMessage("Hello World!");
    helloWorld.getMessage();
 }
-¿ÉÒÔ¼ÓÔØ¸÷ÖÖÅäÖÃÀà
+å¯ä»¥åŠ è½½å„ç§é…ç½®ç±»
 public static void main(String[] args) {
    AnnotationConfigApplicationContext ctx = 
    new AnnotationConfigApplicationContext();
@@ -206,9 +206,9 @@ public static void main(String[] args) {
    myService.doStuff();
 }
 
-2.@Import ×¢½â:
-@import ×¢½âÔÊĞí´ÓÁíÒ»¸öÅäÖÃÀàÖĞ¼ÓÔØ @Bean ¶¨Òå¡£
-¿¼ÂÇ ConfigA Àà£¬ÈçÏÂËùÊ¾£º
+2.@Import æ³¨è§£:
+@import æ³¨è§£å…è®¸ä»å¦ä¸€ä¸ªé…ç½®ç±»ä¸­åŠ è½½ @Bean å®šä¹‰ã€‚
+è€ƒè™‘ ConfigA ç±»ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 
 @Configuration
 public class ConfigA {
@@ -217,7 +217,7 @@ public class ConfigA {
       return new A(); 
    }
 }
-Äã¿ÉÒÔÔÚÁíÒ»¸ö Bean ÉùÃ÷ÖĞµ¼ÈëÉÏÊö Bean ÉùÃ÷£¬ÈçÏÂËùÊ¾£º
+ä½ å¯ä»¥åœ¨å¦ä¸€ä¸ª Bean å£°æ˜ä¸­å¯¼å…¥ä¸Šè¿° Bean å£°æ˜ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 @Configuration
 @Import(ConfigA.class)
 public class ConfigB {
@@ -226,7 +226,7 @@ public class ConfigB {
       return new A(); 
    }
 }
-ÏÖÔÚ£¬µ±ÊµÀı»¯ÉÏÏÂÎÄÊ±£¬²»ĞèÒªÍ¬Ê±Ö¸¶¨ ConfigA.class ºÍ ConfigB.class£¬Ö»ÓĞ ConfigB ÀàĞèÒªÌá¹©£¬ÈçÏÂËùÊ¾£º
+ç°åœ¨ï¼Œå½“å®ä¾‹åŒ–ä¸Šä¸‹æ–‡æ—¶ï¼Œä¸éœ€è¦åŒæ—¶æŒ‡å®š ConfigA.class å’Œ ConfigB.classï¼Œåªæœ‰ ConfigB ç±»éœ€è¦æä¾›ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 public static void main(String[] args) {
    ApplicationContext ctx = 
    new AnnotationConfigApplicationContext(ConfigB.class);
@@ -235,8 +235,8 @@ public static void main(String[] args) {
    B b = ctx.getBean(B.class);
 }
 
-3.ÉúÃüÖÜÆÚ»Øµ÷
-@Bean ×¢½âÖ§³ÖÖ¸¶¨ÈÎÒâµÄ³õÊ¼»¯ºÍÏú»ÙµÄ»Øµ÷·½·¨£¬¾ÍÏñÔÚ bean ÔªËØÖĞ Spring µÄ XML µÄ³õÊ¼»¯·½·¨ºÍÏú»Ù·½·¨µÄÊôĞÔ£º
+3.ç”Ÿå‘½å‘¨æœŸå›è°ƒ
+@Bean æ³¨è§£æ”¯æŒæŒ‡å®šä»»æ„çš„åˆå§‹åŒ–å’Œé”€æ¯çš„å›è°ƒæ–¹æ³•ï¼Œå°±åƒåœ¨ bean å…ƒç´ ä¸­ Spring çš„ XML çš„åˆå§‹åŒ–æ–¹æ³•å’Œé”€æ¯æ–¹æ³•çš„å±æ€§ï¼š
 public class Foo {
    public void init() {
       // initialization logic
@@ -253,7 +253,7 @@ public class AppConfig {
       return new Foo();
    }
 }
-Ä¬ÈÏ·¶Î§ÊÇµ¥ÊµÀı£¬µ«ÊÇÄã¿ÉÒÔÖØĞ´´øÓĞ @Scope ×¢½âµÄ¸Ã·½·¨
+é»˜è®¤èŒƒå›´æ˜¯å•å®ä¾‹ï¼Œä½†æ˜¯ä½ å¯ä»¥é‡å†™å¸¦æœ‰ @Scope æ³¨è§£çš„è¯¥æ–¹æ³•
 @Configuration
 public class AppConfig {
    @Bean
@@ -263,32 +263,32 @@ public class AppConfig {
    }
 }
 
-Æß¡¢Spring ÖĞµÄÊÂ¼ş´¦Àí
-1.Spring ÖĞµÄÊÂ¼ş´¦Àí
-ÄãÒÑ¾­¿´µ½ÁËÔÚËùÓĞÕÂ½ÚÖĞ Spring µÄºËĞÄÊÇ ApplicationContext£¬Ëü¸ºÔğ¹ÜÀí beans µÄÍêÕûÉúÃüÖÜÆÚ¡£
-µ±¼ÓÔØ beans Ê±£¬ApplicationContext ·¢²¼Ä³Ğ©ÀàĞÍµÄÊÂ¼ş¡£
-ÀıÈç£¬µ±ÉÏÏÂÎÄÆô¶¯Ê±£¬ContextStartedEvent ·¢²¼£¬µ±ÉÏÏÂÎÄÍ£Ö¹Ê±£¬ContextStoppedEvent ·¢²¼¡£
-Í¨¹ı ApplicationEvent ÀàºÍ ApplicationListener ½Ó¿ÚÀ´Ìá¹©ÔÚ ApplicationContext ÖĞ´¦ÀíÊÂ¼ş¡£
-Èç¹ûÒ»¸ö bean ÊµÏÖ ApplicationListener£¬ÄÇÃ´Ã¿´Î ApplicationEvent ±»·¢²¼µ½ ApplicationContext ÉÏ£¬ÄÇ¸ö bean »á±»Í¨Öª¡£
-Spring Ìá¹©ÁËÒÔÏÂµÄ±ê×¼ÊÂ¼ş£º
-£¨1£©ContextRefreshedEvent
-ApplicationContext ±»³õÊ¼»¯»òË¢ĞÂÊ±£¬¸ÃÊÂ¼ş±»·¢²¼¡£ÕâÒ²¿ÉÒÔÔÚ ConfigurableApplicationContext ½Ó¿ÚÖĞÊ¹ÓÃ refresh() ·½·¨À´·¢Éú¡£
-£¨2£©ContextStartedEvent
-µ±Ê¹ÓÃ ConfigurableApplicationContext ½Ó¿ÚÖĞµÄ start() ·½·¨Æô¶¯ ApplicationContext Ê±£¬¸ÃÊÂ¼ş±»·¢²¼¡£
-Äã¿ÉÒÔµ÷²éÄãµÄÊı¾İ¿â£¬»òÕßÄã¿ÉÒÔÔÚ½ÓÊÜµ½Õâ¸öÊÂ¼şºóÖØÆôÈÎºÎÍ£Ö¹µÄÓ¦ÓÃ³ÌĞò¡£
-£¨3£©ContextStoppedEvent
-µ±Ê¹ÓÃ ConfigurableApplicationContext ½Ó¿ÚÖĞµÄ stop() ·½·¨Í£Ö¹ ApplicationContext Ê±£¬·¢²¼Õâ¸öÊÂ¼ş¡£
-Äã¿ÉÒÔÔÚ½ÓÊÜµ½Õâ¸öÊÂ¼şºó×ö±ØÒªµÄÇåÀíµÄ¹¤×÷¡£
-£¨4£©ContextClosedEvent
-µ±Ê¹ÓÃ ConfigurableApplicationContext ½Ó¿ÚÖĞµÄ close() ·½·¨¹Ø±Õ ApplicationContext Ê±£¬¸ÃÊÂ¼ş±»·¢²¼¡£
-Ò»¸öÒÑ¹Ø±ÕµÄÉÏÏÂÎÄµ½´ïÉúÃüÖÜÆÚÄ©¶Ë£»Ëü²»ÄÜ±»Ë¢ĞÂ»òÖØÆô¡£
-£¨5£©RequestHandledEvent
-ÕâÊÇÒ»¸ö web-specific ÊÂ¼ş£¬¸æËßËùÓĞ bean HTTP ÇëÇóÒÑ¾­±»·şÎñ¡£
-ÓÉÓÚ Spring µÄÊÂ¼ş´¦ÀíÊÇµ¥Ïß³ÌµÄ£¬ËùÒÔÈç¹ûÒ»¸öÊÂ¼ş±»·¢²¼£¬Ö±ÖÁ²¢ÇÒ³ı·ÇËùÓĞµÄ½ÓÊÕÕßµÃµ½µÄ¸ÃÏûÏ¢£¬¸Ã½ø³Ì±»×èÈû²¢ÇÒÁ÷³Ì½«²»»á¼ÌĞø¡£
-Òò´Ë£¬Èç¹ûÊÂ¼ş´¦Àí±»Ê¹ÓÃ£¬ÔÚÉè¼ÆÓ¦ÓÃ³ÌĞòÊ±Ó¦×¢Òâ¡£
+ä¸ƒã€Spring ä¸­çš„äº‹ä»¶å¤„ç†
+1.Spring ä¸­çš„äº‹ä»¶å¤„ç†
+ä½ å·²ç»çœ‹åˆ°äº†åœ¨æ‰€æœ‰ç« èŠ‚ä¸­ Spring çš„æ ¸å¿ƒæ˜¯ ApplicationContextï¼Œå®ƒè´Ÿè´£ç®¡ç† beans çš„å®Œæ•´ç”Ÿå‘½å‘¨æœŸã€‚
+å½“åŠ è½½ beans æ—¶ï¼ŒApplicationContext å‘å¸ƒæŸäº›ç±»å‹çš„äº‹ä»¶ã€‚
+ä¾‹å¦‚ï¼Œå½“ä¸Šä¸‹æ–‡å¯åŠ¨æ—¶ï¼ŒContextStartedEvent å‘å¸ƒï¼Œå½“ä¸Šä¸‹æ–‡åœæ­¢æ—¶ï¼ŒContextStoppedEvent å‘å¸ƒã€‚
+é€šè¿‡ ApplicationEvent ç±»å’Œ ApplicationListener æ¥å£æ¥æä¾›åœ¨ ApplicationContext ä¸­å¤„ç†äº‹ä»¶ã€‚
+å¦‚æœä¸€ä¸ª bean å®ç° ApplicationListenerï¼Œé‚£ä¹ˆæ¯æ¬¡ ApplicationEvent è¢«å‘å¸ƒåˆ° ApplicationContext ä¸Šï¼Œé‚£ä¸ª bean ä¼šè¢«é€šçŸ¥ã€‚
+Spring æä¾›äº†ä»¥ä¸‹çš„æ ‡å‡†äº‹ä»¶ï¼š
+ï¼ˆ1ï¼‰ContextRefreshedEvent
+ApplicationContext è¢«åˆå§‹åŒ–æˆ–åˆ·æ–°æ—¶ï¼Œè¯¥äº‹ä»¶è¢«å‘å¸ƒã€‚è¿™ä¹Ÿå¯ä»¥åœ¨ ConfigurableApplicationContext æ¥å£ä¸­ä½¿ç”¨ refresh() æ–¹æ³•æ¥å‘ç”Ÿã€‚
+ï¼ˆ2ï¼‰ContextStartedEvent
+å½“ä½¿ç”¨ ConfigurableApplicationContext æ¥å£ä¸­çš„ start() æ–¹æ³•å¯åŠ¨ ApplicationContext æ—¶ï¼Œè¯¥äº‹ä»¶è¢«å‘å¸ƒã€‚
+ä½ å¯ä»¥è°ƒæŸ¥ä½ çš„æ•°æ®åº“ï¼Œæˆ–è€…ä½ å¯ä»¥åœ¨æ¥å—åˆ°è¿™ä¸ªäº‹ä»¶åé‡å¯ä»»ä½•åœæ­¢çš„åº”ç”¨ç¨‹åºã€‚
+ï¼ˆ3ï¼‰ContextStoppedEvent
+å½“ä½¿ç”¨ ConfigurableApplicationContext æ¥å£ä¸­çš„ stop() æ–¹æ³•åœæ­¢ ApplicationContext æ—¶ï¼Œå‘å¸ƒè¿™ä¸ªäº‹ä»¶ã€‚
+ä½ å¯ä»¥åœ¨æ¥å—åˆ°è¿™ä¸ªäº‹ä»¶ååšå¿…è¦çš„æ¸…ç†çš„å·¥ä½œã€‚
+ï¼ˆ4ï¼‰ContextClosedEvent
+å½“ä½¿ç”¨ ConfigurableApplicationContext æ¥å£ä¸­çš„ close() æ–¹æ³•å…³é—­ ApplicationContext æ—¶ï¼Œè¯¥äº‹ä»¶è¢«å‘å¸ƒã€‚
+ä¸€ä¸ªå·²å…³é—­çš„ä¸Šä¸‹æ–‡åˆ°è¾¾ç”Ÿå‘½å‘¨æœŸæœ«ç«¯ï¼›å®ƒä¸èƒ½è¢«åˆ·æ–°æˆ–é‡å¯ã€‚
+ï¼ˆ5ï¼‰RequestHandledEvent
+è¿™æ˜¯ä¸€ä¸ª web-specific äº‹ä»¶ï¼Œå‘Šè¯‰æ‰€æœ‰ bean HTTP è¯·æ±‚å·²ç»è¢«æœåŠ¡ã€‚
+ç”±äº Spring çš„äº‹ä»¶å¤„ç†æ˜¯å•çº¿ç¨‹çš„ï¼Œæ‰€ä»¥å¦‚æœä¸€ä¸ªäº‹ä»¶è¢«å‘å¸ƒï¼Œç›´è‡³å¹¶ä¸”é™¤éæ‰€æœ‰çš„æ¥æ”¶è€…å¾—åˆ°çš„è¯¥æ¶ˆæ¯ï¼Œè¯¥è¿›ç¨‹è¢«é˜»å¡å¹¶ä¸”æµç¨‹å°†ä¸ä¼šç»§ç»­ã€‚
+å› æ­¤ï¼Œå¦‚æœäº‹ä»¶å¤„ç†è¢«ä½¿ç”¨ï¼Œåœ¨è®¾è®¡åº”ç”¨ç¨‹åºæ—¶åº”æ³¨æ„ã€‚
 
-2.¼àÌıÉÏÏÂÎÄÊÂ¼ş
-ÎªÁË¼àÌıÉÏÏÂÎÄÊÂ¼ş£¬Ò»¸ö bean Ó¦¸ÃÊµÏÖÖ»ÓĞÒ»¸ö·½·¨ onApplicationEvent() µÄ ApplicationListener ½Ó¿Ú¡£
+2.ç›‘å¬ä¸Šä¸‹æ–‡äº‹ä»¶
+ä¸ºäº†ç›‘å¬ä¸Šä¸‹æ–‡äº‹ä»¶ï¼Œä¸€ä¸ª bean åº”è¯¥å®ç°åªæœ‰ä¸€ä¸ªæ–¹æ³• onApplicationEvent() çš„ ApplicationListener æ¥å£ã€‚
 ---- CStartEventHandler.java 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextStartedEvent;
@@ -305,7 +305,7 @@ public void onApplicationEvent(ContextStoppedEvent event) {
       <property name="message" value="Hello World!"/>
    </bean>
 
-   <bean id="cStartEventHandler" 							//²»Ğ´²»°ó¶¨
+   <bean id="cStartEventHandler" 							//ä¸å†™ä¸ç»‘å®š
          class="com.tutorialspoint.CStartEventHandler"/>
 
    <bean id="cStopEventHandler" 
@@ -316,7 +316,7 @@ public class MainApp {
       ConfigurableApplicationContext context = 
       new ClassPathXmlApplicationContext("Beans.xml");
       // Let us raise a start event.
-      context.start();			//²»Ğ´²»ÔËĞĞ
+      context.start();			//ä¸å†™ä¸è¿è¡Œ
       HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
       obj.getMessage();
       // Let us raise a stop event.
@@ -324,8 +324,8 @@ public class MainApp {
    }
 }
 
-°Ë¡¢×Ô¶¨ÒåÊÂ¼ş
-1.±àĞ´ÊÂ¼ş±¾Éí£¬ÊµÏÖApplicationEvent
+å…«ã€è‡ªå®šä¹‰äº‹ä»¶
+1.ç¼–å†™äº‹ä»¶æœ¬èº«ï¼Œå®ç°ApplicationEvent
 public class CustomEvent extends ApplicationEvent{ 
    public CustomEvent(Object source) {
       super(source);
@@ -334,7 +334,7 @@ public class CustomEvent extends ApplicationEvent{
       return "My Custom Event";
    }
 }
-2.±àĞ´ÊÂ¼ş·¢²¼Æ÷£¬ÊµÏÖApplicationEventPublisherAware 
+2.ç¼–å†™äº‹ä»¶å‘å¸ƒå™¨ï¼Œå®ç°ApplicationEventPublisherAware 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 public class CustomEventPublisher 
@@ -349,7 +349,7 @@ public class CustomEventPublisher
       publisher.publishEvent(ce);
    }
 }
-3.±àĞ´ÊÂ¼ş¼àÌıÆ÷£¬ÊµÏÖApplicationListener<CustomEvent>
+3.ç¼–å†™äº‹ä»¶ç›‘å¬å™¨ï¼Œå®ç°ApplicationListener<CustomEvent>
 import org.springframework.context.ApplicationListener;
 public class CustomEventHandler 
    implements ApplicationListener<CustomEvent>{
@@ -357,7 +357,7 @@ public class CustomEventHandler
       System.out.println(event.toString());
    }
 }
-4.ÊµÀı»¯·¢²¼Æ÷²¢·¢²¼,ÊµÀı»¯¼àÌıÆ÷
+4.å®ä¾‹åŒ–å‘å¸ƒå™¨å¹¶å‘å¸ƒ,å®ä¾‹åŒ–ç›‘å¬å™¨
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class MainApp {
