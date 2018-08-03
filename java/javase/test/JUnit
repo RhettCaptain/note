@@ -1,0 +1,95 @@
+JUnit
+一、下载
+下载JUnit.jar和hamcrest.jar
+ 许多IDE都自带了JUnit,但是并不推荐使用,  我们自己动手下载Jar包(不推荐使用的原因后面会说明)
+1.点击http://www.junit.org可以下载到最新版本的JUnit，进入官网选择Download and Install guide,
+然后选择Plain-old JAR下的junit.jar,找到最新的4.11版本,下载jar包.
+2. 点击http://code.google.com/p/hamcrest/downloads/list下载最新的hamcrest-1.3.zip,解压.找到hamcrest-core-1.3.jar
+3.在项目中引用junit-4.11.jar和hamcrest-core-1.3.jar,
+
+二、Hello World
+1.建立项目引用junit-4.11.jar和hamcrest-core-1.3.jar
+2.编写Calculator类,代码如下:
+package com.zjw.junit4;
+public class Calculator { 
+	public int plus(int x, int y) {
+		return x + y;
+	}
+	public int subtraction(int x, int y) {
+		return x - y;
+	}
+	public int multiplication(int x, int y) {
+		return x * y;
+	}
+ 	public int division(int x, int y) {
+		return x / y;
+	}
+}
+3.编写单元测试类
+package com.zjw.junit4.test;
+import static org.junit.Assert.*; //注意这边,静态导入
+import org.junit.Ignore;
+import org.junit.Test;
+import com.zjw.junit4.Calculator;
+ 
+public class TestCalculator {
+	@Test
+	public void testPlus() {
+		Calculator cal = new Calculator();
+		assertEquals(cal.plus(5, 5), 10);
+	}
+	@Test
+	public void testSubtraction() {
+		Calculator cal = new Calculator();
+		assertEquals(cal.subtraction(5, 5), 0);
+	}
+	@Ignore
+	@Test
+	public void testMultiplication() {
+		Calculator cal = new Calculator();
+		assertTrue(cal.multiplication(5, 5) > 20);
+	}
+	@Test(expected = java.lang.ArithmeticException.class, timeout = 50)
+	public void testDivision() {
+		Calculator cal = new Calculator();
+		assertEquals(cal.division(8, 0), 4); //大家注意看,除数是0
+	}
+}
+4.:测试,在这里,我用的是MyEclipse,在TestCalculator类上右键找到Run As 下的JUnit Test,点击然后就开始测试了
+5.观察测试结果
+ Failure是指测试失败
+ Error是指测试程序本身出错
+ 由于我在testMultiplication方法上加了@Ignore 所以该方法会被忽略
+ testDivision为什么报测试异常？
+@Test(expected = java.lang.ArithmeticException.class, timeout = 50)
+看这个@Test expected后面指定你希望抛出的异常,timeout的意思是 如果测试没有在50ms内完成,那么就算测试失败.
+6.大家有没有觉得在每个测试方法下都new一个Calculator对象很浪费资源,假如有80个测试方法呢?所以接下来我们要使用@BeforeClass,代码如下:
+
+package com.zjw.junit4.test;
+ 
+import com.zjw.junit4.Calculator;
+ 
+public class TestCalculator {
+	
+	private static Calculator cal;
+		
+	@BeforeClass
+	public static void beforeClass(){ //静态方法
+		cal=new Calculator();
+	}
+	
+	@Test
+	public void testPlus() {
+		assertEquals(cal.plus(5, 5), 10);
+	}
+....
+
+三、JUnit的Annoation:
+1.         @Test: 测试方法
+a)        (expected=XXException.class)
+b)        (timeout=xxx)
+2.         @Ignore: 忽略测试方法
+3.         @Before: 每一个测试方法之前运行
+4.         @After: 每一个测试方法之后运行
+5.         @BeforeClass: 所有测试开始之前运行,别忘了方法是静态的.
+6.         @AfterClass: 所有测试结束之后运行
