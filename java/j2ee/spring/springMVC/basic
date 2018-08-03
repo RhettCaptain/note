@@ -309,7 +309,152 @@ public ModelAndView Hello(){}
 (6)headers 指定request中必须包含某些特定的header值才处理
 @RequestMapping(headers="Referer=http://www.fkit.org")
 
-4.Model和ModelAndView
+4.How to Use HTTP Session
+@Controller
+@RequestMapping("/sample")
+public class SampleController {
+  @RequestMapping(value="hello", method=RequestMethod.GET)
+  public String hello(HttpSession session) {		//Then, you can inject Controllers and Services.
+    return "show-hello";
+  }
+}
+
+5.@Scope Annotation
+This time, we explain the way to specify scopes with the annotation, as Controllers and Services are also specified with them.
+@Component
+@Scope("prototype")
+public class SampleComponent {
+  public String sample() {
+    return "sample";
+  }
+}
+Frequently-set scopes include singleton, prototype, request, and session.
+Set an appropriate scope if there are problems with singleton.
+
+6.Passing input / output parameters
+（1）overview
+Let’s learn Spring MVC methods to provide ways to receive the data from, and to send any data to the browsers.
+In this section, you will learn the following input / output parameters with each annotation.
+@PathVariable : Using URI Template
+@RequestParam : Using form parameter
+@ModelAttribute : Using Entity model for request parameter
+@RequestBody : Using json object for request parameter
+@ResponseBody : Using json object for response parameter
+（2）URI Template with @PathVariable
+You may like to receive the last “12” as an argument when you design the URI that /sample/employees/12 stands for an employee with employee ID (or number) 12.
+To implement this, spring provides a function called URI template.
+By using URI template, variables can be specified in URI. (At the following code, URI template is employeeId)
+URI template is to be specified in @RequestMapping, and is able to receive the specified variable as an argument with @PathVariable.
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees/{employeeId}", method=RequestMethod.GET)
+  public String whois(@PathVariable("employeeId") String employeeId) {
+    return "show-employee";
+  }
+}
+---
+@RequestMapping(value="employees/{employeeId}", method=RequestMethod.GET)
+  public String whois(@PathVariable String employeeId) {
+    return "show-employee";
+  }
+---
+ @RequestMapping(value="employees/{employeeId}/", method=RequestMethod.GET)
+  public String whois(@PathVariable String employeeId) {
+    return "show-employee";
+  }
+
+  @RequestMapping(value="employees/{employeeId}/skills/{skillId}", method=RequestMethod.GET)
+  public String hasSkill(@PathVariable String employeeId, @PathVariable String skillId) {
+    return "show-employee";
+  }
+}
+（3）Request parameter with @RequestParam
+You may like to receive the parameter employeeId=12 as an argument when you design the URI that /sample/employees?employeeId=12 stands for an employee with employee ID (or number) 12.
+The values in the form are sent in this format if the method is set to “GET” in the form tag.
+To implement this, spring has an annotation @RequestParam.
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees", method=RequestMethod.GET)
+  public String whois(@RequestParam("employeeId") String employeeId) {
+    return "show-employee";
+  }
+}
+----
+Also in @RequestParam, it is possible to omit parameter name if the parameter name coincides with the argument name.
+  public String whois(@RequestParam String employeeId) 
+----
+@RequestParam can show omittable things explicitly with required = false parameter.
+public String whois(@RequestParam String employeeId,
+      @RequestParam(value = "skillId", required = false) String skillId) {
+-----
+It is possible to set default values for non-requirement parameter with defaultValue parameter.
+For example, the default value of skillId in the below code is 0.
+public String whois(@RequestParam String employeeId,
+      @RequestParam(value = "skillId", required = false, defaultValue = "0") String skillId) {
+（4）Model Class with @ModelAttribute
+For example, it creates a class EmployeeModel as following, which corresponds to the input form.
+public class EmployeeModel {
+  private String employeeId;
+  private String skillId;
+    :
+  //setter & getter
+}
+----
+This following is the code to link this class to input values in the form, and to receive it as an argument.
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees", method=RequestMethod.GET)
+  public String whois(@ModelAttribute("employee") EmployeeModel employee) {
+    return "show-employee";
+  }
+}
+Note that the field name must correspond to the name in the form.
+(5)Treating JSON data with @RequestBody
+It gets closer to the functions of business applications.
+However, recent WEB applications do not use forms.
+In most cases, they use AJAX, convert input data into JSON, and sent them to the servers.
+Then, it is necessary to receive data in another way.
+It needs some JSON libraries, which is able to process mapping, to convert data into instances.
+Add one to dependency library. This time, add Jackson.
+Spring is compatible to Jackson. Thus, it works by setting <mvc:annotation-driven /> in applicationContext.xml.
+----
+Use @RequestBody to make the Controller possible to receive instances as arguments.
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees", method=RequestMethod.GET)
+  public String whois(@RequestBody EmployeeModel employee) {
+    return "show-employee";
+  }
+}
+---
+It is possible to implement this by passing a jsp file and model data, which is called ModelAndView class.
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees", method=RequestMethod.GET)
+  public ModelAndView whois(@RequestBody EmployeeModel employee) {
+    return new ModelAndView("show-employee", "employee", employee);
+  }
+}
+Now, employee variable can be used in show-employee.jsp file.
+---
+Pass a json object to .jsp with @ResponseBody
+@Controller
+@RequestMapping("/sample")
+public class EmployeeController {
+  @RequestMapping(value="employees", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
+  public EmployeeModel whois(@RequestParam("employeeId") String employeeId) {
+    return new EmployeeModel();
+  }
+}
+
+六、Controller to View展现层
+1.Model和ModelAndView
 在请求处理方法可出现和返回的参数类型中，最重要的就是Model和ModelAndView
 对于MVC框架，控制器（Controller）执行业务逻辑，用于产生模型数据（Model），而视图（View）则用于渲染模型数据。
 SpringMVC通过以下途径将模型数据传递给视图：
@@ -370,11 +515,101 @@ public class User3Controller{
 }
 （3）@ModelAttribute
 （4）@SessionAttributes
+（5）InternalResourceViewResolver
+@Controller
+@RequestMapping("/sample")
+public class SampleController {
+  @RequestMapping("hello")
+  public String hello() {
+    return "show-hello";
+  }
+}
+SampleController is in a Controller layer,
+hello method simply returns the view that managed by a view named show-hello.
+view is set in SampleWebMVCConfiguration as：
+------
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
+         version="3.0">
+  <display-name>Archetype Created Web Application</display-name>
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>spring</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </init-param>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>  set your Configuration Class  </param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+</web-app>
+----
+@ComponentScan("com.worksap.bootcamp.spring")
+@Configuration
+@EnableWebMvc
+public class SampleWebMVCConfiguration extends WebMvcConfigurerAdapter {
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
+    @Bean
+    public InternalResourceViewResolver jspViewResolver() {
+        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        bean.setPrefix("/WEB-INF/views/");
+        bean.setSuffix(".jsp");
+        return bean;
+    }
+}
+Now, it calls hello method to access http://localhost:8080/webApplication/sample/hello.html 
+and to return /WEB-INF/views/show-hello.jsp as the result.
 
 ......补充
 to be continue
 
-六、Spring MVC 处理器映射
+七、Controller from Model/Service（业务逻辑层）
+1.conception
+In combination with Spring MVC, create Service layer to be bean, and inject it into Controller with @Autowired, to implement clear division and injection of implementation class.
+Let’s see an example.
+public interface SampleService {
+  public String showMessage();
+}
+
+@Service
+public class HelloService implements SampleService {
+  public String showMessage() {
+    return "show-hello";
+  }
+}
+
+@Controller
+@RequestMapping("/sample")
+public class SampleController {
+  @Autowired
+  private SampleService service;
+
+  @RequestMapping("hello")
+  public String hello() {
+    return service.showMessage();
+  }
+}
+
+八、Model from Persistent Layer持久层
+Persistent layer is where to save and load the data.
+It is sometimes called Repository pattern that is one of design pattern.
+Though it is out of the scope of Spring MVC, it can be classified using @Repository annotation.
+Create DAO as beans, to make them enable to be injected into the beans in Service layer with @Autowired.
+
+九、Spring MVC 处理器映射
 在Spring的上个版本中，用户需要在web应用的上下文中定义一个或多个的HandlerMappingbean，用以将进入容器的web请求映射到合适的处理器方法上。
 允许在控制器上添加注解后，通常你就不必这么做了，因为RequestMappingHandlerMapping类会自动查找所有注解了@RequestMapping的@Controller控制器bean。
 同时也请知道，所有继承自AbstractHandlerMapping的处理器方法映射HandlerMapping类都拥有下列的属性，你可以对它们进行定制。
@@ -424,3 +659,11 @@ public class TimeBasedAccessInterceptor extends HandlerInterceptorAdapter {
 }
 在上面的例子中，所有被此处理器处理的请求都会被TimeBasedAccessInterceptor拦截器拦截。
 如果当前时间在工作时间以外，那么用户就会被重定向到一个HTML文件提示用户，比如显示“你只有在工作时间才可以访问本网站”之类的信息。
+
+十、Utilize REST
+REST (Representational State Transfer) is an architecture for building applications that exchange data between client and server.
+In the REST API, information to be provided to clients from among information managed by storage such as database is extracted as resources.
+1.Design policy using REST
+URI (Uniform Resource Identifier) is used as an identifier uniquely pointing to a resource.
+The principle of REST is also to identify resources like URI.
+2.Utilize HTTP method : @RequestMapping
