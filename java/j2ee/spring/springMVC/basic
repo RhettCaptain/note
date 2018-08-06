@@ -90,10 +90,11 @@ ${requestScope.message }
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-											http://www.springframework.org/schema/beans/spring-beans-4.2.xsd"
+											http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 											http://www.springframework.org/schema/mvc
-											http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd"
+											http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
 											http://www.springframework.org/schema/context 
 											http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 											
@@ -136,6 +137,71 @@ public class HelloController implements Controller{
 		return mv;
 	}
 }
+-----将 DispatcherServlet 配置在 Servlet 容器中而不再使用 web.xml----
+public class RtpFrontWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    /**
+     * 指定 Root WebApplicationContext 类，这个类必须@Configuration来注解，从而代替XML配置文件
+     */
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[]{RootConfig.class};
+    }
+    /**
+     * 指定 Servlet WebApplicationContext 类，这个类必须@Configuration来注解，从而代替XML配置文件
+     */
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[]{WebConfig.class};
+    }
+    /**
+     * 指定 Servlet mappings
+     */
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{"/"};
+    }
+}
+
+-----WebConfig.java配置spring mvc 取代springmvc-servlet.xml----
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "spittr.web")
+public class WebConfig  extends WebMvcConfigurerAdapter {
+
+    @Bean
+    public ViewResolver viewResolver(){
+        InternalResourceViewResolver resolver = 
+                new InternalResourceViewResolver();
+
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        resolver.setExposeContextBeansAsAttributes(true);
+
+        return resolver;
+    }
+
+    @Override 
+    public void configureDefaultServletHandling(
+            DefaultServletHandlerConfigurer configurer){
+        configurer.enable();
+    }
+}
+此时web.xml中的配置为
+<servlet>
+	<servlet-name>springmvc</servlet-name>
+	<servlet-class>
+		org.springframework.web.servlet.DispatcherServlet
+	</servlet-class>
+	<init-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		XmlWebApplicationContext
+	</init-param>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.rhett.config.WebConfig</param-value>
+	</init-param>
+</servlet>
 
 三、、Spring MVC执行流程
 1.应用开发步骤

@@ -83,3 +83,14 @@ The server time zone value '???ú±ê×??±??' is unrecognized or represents mor
     步骤:
     a.找一份正常的相同环境(找同学同事相同开发环境机子或者网上下载的正常demo等)
     b.依次替换问题项目文件,进行排除,定位.直到解决.
+    
+11.项目出现 The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build Path 解决方法
+①项目右击-->build path -->添加libraries-->server runtime-->ok
+
+12.Circular view path [hello]: would dispatch back to the current handler URL 
+1). 缺省转发， 2). view和path同名
+3）检查ModelAndView引入的包对不对，是servlet.mvc那个
+
+13.Spring boot扫描不到@Controller注解
+需要在启动类中加扫描注解
+@ComponentScan("com.xiaowu.controller")

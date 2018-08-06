@@ -60,7 +60,7 @@ pom.xml文件中默认有两个模块：
 spring-boot-starter：核心模块，包括自动配置支持、日志和YAML；
 spring-boot-starter-test：测试模块，包括JUnit、Hamcrest、Mockito。
 （2）编写controller内容
-@RestController
+@RestController					//Controller是不行的
 public class HelloWorldController {
     @RequestMapping("/hello")
     public String index() {
@@ -82,7 +82,7 @@ public class Application {
 具体run方法会启动嵌入式的Tomcat并初始化Spring环境及其各Spring组件。
 4.Tomcat
 内嵌tomcat，不过要看一下8080是否被占用
-nestat -ano
+netstat -ano
 tasklist | findstr "1756"
 taskkill /f /t /im javaw.exe
 
