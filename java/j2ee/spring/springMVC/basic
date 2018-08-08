@@ -508,6 +508,8 @@ public class EmployeeController {
 }
 Now, employee variable can be used in show-employee.jsp file.
 ---
+}
+相应的，如果要传回前端响应，需要使用@ResponseBody
 Pass a json object to .jsp with @ResponseBody
 @Controller
 @RequestMapping("/sample")
@@ -517,7 +519,6 @@ public class EmployeeController {
   public EmployeeModel whois(@RequestParam("employeeId") String employeeId) {
     return new EmployeeModel();
   }
-}
 
 六、Controller to View展现层
 1.Model和ModelAndView

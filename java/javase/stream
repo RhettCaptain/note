@@ -1,0 +1,47 @@
+Stream API
+java 8 新特性
+一、Display Contents in Collection One by One
+1.stream.forEach
+Old Style
+for (int x : Arrays.asList(1, 2, 3)) {
+        System.out.println(x);
+}
+-----
+New Style
+Arrays.asList(1, 2, 3).stream() // .stream()は無くてもOK
+        .forEach(System.out::println);
+		
+2.map/lamda
+Old Style
+for (int x : Arrays.asList(1, 2, 3)) {
+        System.out.println("x = " + x);
+}
+------
+New Style
+Arrays.asList(1, 2, 3).stream()
+        .map(x -> "x = " + x)
+        .forEach(System.out::println);
+Or,
+Arrays.asList(1, 2, 3).stream() // .stream()は無くてもOK
+        .forEach(x -> System.out.println("x = " + x));
+3.Instream
+Stream and IntStream classes can generate Stream. It also has the builder, so it is okay to build after adding the elements to the builder.
+IntStream.of(1, 2, 3)
+        .forEach(x -> System.out.println("x = " + x));
+However, it is easy to generate by passing the initial values, as above. By using range method of IntStream;
+
+IntStream.range(1, 4)
+        .forEach(x -> System.out.println("x = " + x));
+		
+二、Generate Stream from Iterator / Iterable
+It is easy to generate stream from Iterable. From any Iterable itb;
+StreamSupport.stream(itb.spliterator(), false);
+----
+It may be easy to create Iterable first, applying its characteristics, when to create Stream from Iterator it.
+Iterable<String> itb = new Iterable<String>() {
+        @Override
+        public Iterator<String> iterator() {
+                return it;
+        }
+};
+StreamSupport.stream(itb.spliterator(), false);
