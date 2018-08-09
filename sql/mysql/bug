@@ -1,5 +1,0 @@
-1.服务无法启动1067
-（1）四中方法
-https://www.cnblogs.com/yfceshi/p/6897668.html
-（2）看一看data下面的错误输出.err
-可能是某个表出问题的了，删掉
