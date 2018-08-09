@@ -87,3 +87,65 @@ var txt = '{ "employees" : [' +
 JavaScript 函数 eval() 可用于将 JSON 文本转换为 JavaScript 对象
 eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后生成 JavaScript 对象。必须把文本包围在括号中，这样才能避免语法错误：
 var obj = eval ("(" + txt + ")");
+
+2.使用JQUERY ajax传输数据
+（1）获取$.get() 方法
+$.get() 方法通过 HTTP GET 请求从服务器上请求数据。
+$.get(URL,callback);
+必需的 URL 参数规定您希望请求的 URL。
+可选的 callback 参数是请求成功后所执行的函数名。
+$.get("demo_test.asp",function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+  提示：这个 ASP 文件 ("demo_test.asp") 类似这样：
+<%
+response.write("This is some text from an external ASP file.")
+%>
+spring中
++ @ResponseBody
+返回对象没问题
+
+（2）$.post() 方法
+$.post() 方法通过 HTTP POST 请求从服务器上请求数据。
+$.post(URL,data,callback);
+必需的 URL 参数规定您希望请求的 URL。
+可选的 data 参数规定连同请求发送的数据。
+可选的 callback 参数是请求成功后所执行的函数名。
+ $.post("demo_test_post.asp",
+  {
+    name:"Donald Duck",
+    city:"Duckburg"
+  },function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+ 提示：这个 ASP 文件 ("demo_test_post.asp") 类似这样：
+
+<%
+dim fname,city
+fname=Request.Form("name")
+city=Request.Form("city")
+Response.Write("Dear " & fname & ". ")
+Response.Write("Hope you live well in " & city & ".")
+%>
+注意两个问题，一个可能被Struts等拦截，需要输出json格式。
+一个是对象传输做序列话JSON.stringify
+见下
+
+（3）$.ajax上面两种方法的底层
+	var data = {
+         name:name,
+         sno:sno
+     }//与对象类匹配
+    $.ajax({
+        type:"POST",
+        url:"/he ",
+        data: JSON.stringify(data),//必要
+        dataType:"json",
+        contentType:"application/json",
+        async: false,
+        cache:false,
+        success:function(data){
+        }
+    });
+spring的控制器
++ @RequestBody和@ResponseBody
