@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: Sample project
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: ￦ﾴﾪ￥ﾮﾇ
+Implementation-Vendor-Id: com.worksap.stm2017
+Build-Jdk: 1.8.0_144
+Implementation-URL: http://projects.spring.io/spring-boot/sample-proje
+ ct/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

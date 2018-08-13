@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.worksap.stm2017.SampleApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.947 sec - in com.worksap.stm2017.SampleApplicationTests
