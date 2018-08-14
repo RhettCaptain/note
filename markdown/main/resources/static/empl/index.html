@@ -2,9 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<title>NurseHub</title>
 </head>
 <body>
-	empl index
+
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="/admin/index.html">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Roster</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Notice</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p id="welcome">2</p>
+    	<a href="/login/quit">quit</a>
+    </div>
+	</div>
+ </nav>
+<script>
+$("#welcome").text("welcome " + checkLogin() );
+ </script>
 </body>
 </html>

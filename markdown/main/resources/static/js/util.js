@@ -14,7 +14,7 @@ $.fn.jsonify = function()  {
    return o;  
 }
 function debug(){
-	alert("debug");
+	return "deu";
 }
 
 function checkLogin(){
@@ -22,15 +22,17 @@ function checkLogin(){
 	$.ajax({   
 	       type: "post",   
 	       url: "/login/checkSession",   
-	       dataType: "json",   
-	       success: function (data) {  
+	       dataType: "json",
+	       async: false,
+	       success: function (data) {
 	           if(data.loginOk != "true"){
 	        	   window.location.href="/";
 	           }else{
 	        	   name = data.userName;
 	           }           
 	       },   
-	       error: function () {   
+	       error: function () {  
+	    	   alert("err");
 	    	   window.location.href="/";
 	       }   
 	 });  

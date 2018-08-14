@@ -71,4 +71,13 @@ public class LoginController {
 		return json;
 	}
 	
+	@RequestMapping("/quit")
+	public ModelAndView quit(HttpSession session){
+		session.removeAttribute("loginOk");
+		session.removeAttribute("userName");
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/login.html");
+		return mv;
+	}
+	
 }

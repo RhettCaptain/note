@@ -1,10 +1,3 @@
-document.writeln("<!DOCTYPE html>");
-document.writeln("<html>");
-document.writeln("<head>");
-document.writeln("<script src=\'http://libs.baidu.com/jquery/2.0.0/jquery.min.js\'></script>");
-document.writeln("<script src=\'js/util.js\'></script>");
-document.writeln("</head>");
-document.writeln("<body>");
-document.writeln("<div>i\', heda</div>");
-document.writeln("</body>");
-document.writeln("</html>");
+document.writeln("<script src=\'https://code.jquery.com/jquery-3.2.1.min.js\'></script>");
+document.writeln("<link rel=\'stylesheet\' href=\'https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css\'>");
+document.writeln("<script src=\'https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js\'></script>");
