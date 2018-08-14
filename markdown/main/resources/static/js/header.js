@@ -1,0 +1,10 @@
+document.writeln("<!DOCTYPE html>");
+document.writeln("<html>");
+document.writeln("<head>");
+document.writeln("<script src=\'http://libs.baidu.com/jquery/2.0.0/jquery.min.js\'></script>");
+document.writeln("<script src=\'js/util.js\'></script>");
+document.writeln("</head>");
+document.writeln("<body>");
+document.writeln("<div>i\', heda</div>");
+document.writeln("</body>");
+document.writeln("</html>");
