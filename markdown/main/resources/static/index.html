@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="js/header.js"></script>
+<script src="js/util.js"></script>
+<script>
+function showDay(day){
+	switch(day){
+	case 1:
+		return "Mon";
+	case 2:
+		return "Tus";
+	case 3:
+		return "Wed";
+	case 4:
+		return "Thu";
+	case 5:
+		return "Fri";
+	case 6:
+		return "Sat";
+	case 0:
+		return "Sun";
+	}
+}
+
+function showHead(){
+	var date = new Date();
+	var day = date.getDay();
+	if(day==0){
+		day = 7;
+	}
+	date.setDate(date.getDate()-day);
+	for(i=0;i<14;i++){
+		date.setDate(date.getDate()+1);
+		var str = showDay(date.getDay()) + "(" + (date.getMonth()+1) + "/" + date.getDate() +")";
+		$(".day").eq(i).text(str);
+	}
+}
+
+function getRoster(week){
+	var ros="";
+	$.ajax({
+        type:"POST",
+        url:"/getRoster/"+week,
+        dataType:"json",
+        contentType:"application/json",
+        async: false,
+        cache:false,
+        success:function(data){
+        	ros = data;
+        }
+	});
+	return ros;
+}
+
+function fillRoster(){
+	var ros1 = getRoster(1);
+	alert(ros1[0].friShift);
+	var cont = "";
+	for(i in ros1){
+		cont = cont + "<tr>";
+		for (j in ros1[i]){
+			cont = cont + "<th>" +ros1[i][j] + "</th>";
+		}
+		cont = cont + "</tr>";
+	}
+	$("#tbody1").html(cont);
+	var ros2 = getRoster(2);
+	cont = "";
+	for(i in ros2){
+		cont = cont + "<tr>";
+		for (j in ros2[i]){
+			cont = cont + "<th>" +ros2[i][j] + "</th>";
+		}
+		cont = cont + "</tr>";
+	}
+	$("#tbody2").html(cont);
+}
+
+function thisWeek(){
+	$("#tbNextWeek").hide();
+	$("#tbThisWeek").show();
+}
+
+function nextWeek(){
+	$("#tbThisWeek").hide();
+	$("#tbNextWeek").show();
+}
+
+function init(){
+	showHead();
+	fillRoster();
+	thisWeek();
+}
+</script>
+<title>NurseHub</title>
+</head>
+<body>
+
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="#">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#" onclick="thisWeek()" >ThisWeek</a></li>
+            <li><a href="#" onclick="nextWeek()">NextWeek</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p> </p>
+    	<a href="login.html">login</a>
+    </div>
+	</div>
+ </nav>
+
+ 
+ <table id="tbThisWeek" class="table table-striped">
+  <caption>ROSTER THIS WEEK</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+    </tr>
+  </thead>
+  <tbody id="tbody1"></tbody>
+</table>
+
+<table id="tbNextWeek"  class="table table-striped">
+  <caption>ROSTER NEXT WEEK</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+      <th class="day"></th>
+    </tr>
+  </thead>
+  <tbody id="tbody2"> </tbody>
+</table>
+
+<script>
+init();
+</script>
+
+
+
+</body>
+</html>

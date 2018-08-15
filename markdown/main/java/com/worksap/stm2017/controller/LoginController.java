@@ -1,5 +1,8 @@
 package com.worksap.stm2017.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,12 +75,11 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/quit")
-	public ModelAndView quit(HttpSession session){
+	@ResponseBody
+	public void quit(HttpServletResponse response,HttpSession session) throws IOException{
 		session.removeAttribute("loginOk");
 		session.removeAttribute("userName");
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/login.html");
-		return mv;
+		response.sendRedirect("/");
 	}
 	
 }

@@ -23,7 +23,7 @@ function login(act){
         success:function(data,status){
         	if(data.loginOk == "true"){
         		if(act == '/login/admin'){
-        			window.location.href="admin/index.html?userId="+data.userId;
+     	  			window.location.href="admin/index.html?userId="+data.userId;
         		}else if(act == '/login/empl'){
         			window.location.href="empl/index.html?userId="+data.userId;
         		}else{
@@ -54,6 +54,7 @@ function login(act){
 		<div>
 			<input type="button" value="admin" onclick="login('/login/admin')">
 			<input type="button" value="empl" onclick="login('/login/empl')">
+			<input type="button" value="exit" onclick="window.location.href='/';">
 		</div>
 	</form>
 </body>
