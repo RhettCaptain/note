@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.worksap.stm2017.dao.DaoFactory;
 import com.worksap.stm2017.dao.RosterDao;
 import com.worksap.stm2017.model.Roster;
+import com.worksap.stm2017.vo.RosterVo;
 
 @Controller
 public class MainController {
@@ -31,7 +32,7 @@ public class MainController {
 	
 	@RequestMapping("/getRoster/{week}")
 	@ResponseBody
-	public List<Roster> getRoster(@PathVariable int week){
+	public List<RosterVo> getRoster(@PathVariable int week){
 		System.out.println("week is " + week);
 		
 		RosterDao rs = factory.getRosterDao();
@@ -39,7 +40,7 @@ public class MainController {
 			System.out.println("rosterDao is ok");
 		}
 		
-		List<Roster> t = rs.getRoster(week);
+		List<RosterVo> t = rs.getRosterVo(week);
 		if(t != null){
 			System.out.println("list is ok");
 		}

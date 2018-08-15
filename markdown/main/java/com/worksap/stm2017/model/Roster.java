@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class Roster {
 	private Integer userId;
-	private String userName;
 	private String monShift;
 	private String tusShift;
 	private String wedShift;
@@ -16,11 +15,10 @@ public class Roster {
 	
 	public Roster(){}
 	
-	public Roster(Integer userId,String userName,String monShift,
+	public Roster(Integer userId,String monShift,
 			String tusShift,String wedShift,String thuShift,
 			String friShift,String satShift,String sunShift){
 		this.userId = userId;
-		this.userName = userName;
 		this.monShift = monShift;
 		this.tusShift = tusShift;
 		this.wedShift = wedShift;

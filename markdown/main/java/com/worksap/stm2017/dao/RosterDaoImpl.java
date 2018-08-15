@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.worksap.stm2017.model.Roster;
+import com.worksap.stm2017.vo.RosterVo;
 
 @Component
 public class RosterDaoImpl implements RosterDao{
@@ -19,12 +20,12 @@ public class RosterDaoImpl implements RosterDao{
 	}
 	
 	@Override
-	public List<Roster> getRoster(int idx) {
+	public List<RosterVo> getRosterVo(int idx) {
 		// TODO Auto-generated method stub
-		List<Roster> test = new ArrayList();
-		Roster ros1 = new Roster();
+		List<RosterVo> test = new ArrayList();
+		RosterVo ros1 = new RosterVo();
 		ros1.setFriShift("hhh");
-		Roster ros2 = new Roster();
+		RosterVo ros2 = new RosterVo();
 		ros2.setFriShift("hhh2");
 		test.add(ros1);
 		test.add(ros2);
