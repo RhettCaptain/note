@@ -5,19 +5,19 @@ import lombok.Data;
 @Data
 public class Roster {
 	private Integer userId;
-	private String monShift;
-	private String tusShift;
-	private String wedShift;
-	private String thuShift;
-	private String friShift;
-	private String satShift;
-	private String sunShift;
+	private Integer monShift;
+	private Integer tusShift;
+	private Integer wedShift;
+	private Integer thuShift;
+	private Integer friShift;
+	private Integer satShift;
+	private Integer sunShift;
 	
 	public Roster(){}
 	
-	public Roster(Integer userId,String monShift,
-			String tusShift,String wedShift,String thuShift,
-			String friShift,String satShift,String sunShift){
+	public Roster(Integer userId,Integer monShift,
+			Integer tusShift,Integer wedShift,Integer thuShift,
+			Integer friShift,Integer satShift,Integer sunShift){
 		this.userId = userId;
 		this.monShift = monShift;
 		this.tusShift = tusShift;

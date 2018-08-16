@@ -8,27 +8,20 @@
 
 <script>
 function loadShiftType(){
-	var res="";
-	$.ajax({
-        type:"POST",
-        url:"/admin/loadShiftType/",
-        dataType:"json",
-        contentType:"application/json",
-        async: false,
-        cache:false,
-        success:function(data){
-        	res = data;
-        }
-	});
+	var res= getJson("/admin/loadShiftType/");
 	
 	var cont = "";
 	for(i in res){
 		cont = cont + "<tr>";
+		
+		
 		for(j in res[i]){
 			cont = cont + "<td>" +res[i][j] + "</td>";
 		}
-		var edit = 'onclick="editShiftType(\'' + res[i].name + '\')"';
-		var drop = 'onclick="dropShiftType(\'' + res[i].name + '\')"';
+		
+		
+		var edit = 'onclick="editShiftType(\'' + res[i].id + '\')"';
+		var drop = 'onclick="dropShiftType(\'' + res[i].id + '\')"';
 		cont = cont + "<td style=\"text-align:right\">"
       		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
       		+ "<button class=\"btn btn-danger\" " + drop +">Drop</button>"
@@ -37,14 +30,55 @@ function loadShiftType(){
 	$("#shiftType").html(cont);
 }
 
-function editShiftType(name){
-	window.location.href="/admin/editShiftType.html?name="+name;
+function editShiftType(id){
+	window.location.href="/admin/editShiftType.html?id="+id;
 }
 
-function dropShiftType(name){
-	alert(name);
+function dropShiftType(id){
+	window.location.href="/admin/deleteShiftType?id="+id;
 }
 
+function loadShiftDemand(){
+	var res= getJson("/admin/loadShiftDemand/");
+	
+	var cont = "";
+	for(i in res){
+		cont = cont + "<form method='post'><tr>";
+		
+		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='id' value='"
+			+ res[i].id + "'></td>";
+		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='name' value='"
+			+ res[i].name + "'></td>";
+		var preStr = "<td><input type='text' class='form-control level' readonly='readonly' name='lv";
+		var arr = new Array();
+		var idx=0;
+		for(k in res[i]){
+			arr[idx] = res[i][k];
+			idx = idx+1;
+		}
+		for(j=2;j<7;j++){
+			cont = cont + preStr + (j-1) + "' value='" + arr[j] + "(" + arr[j+5] + ")'></td>"
+		}
+		var edit = 'onclick="editShiftDemand(this)"';
+		cont = cont + "<td style=\"text-align:right\">"
+      		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
+     	 	+ "</td></tr></form>"
+	}
+	$("#shiftDemand").html(cont);
+}
+
+function editShiftDemand(obj){
+	var tr = $(obj).parent().parent();
+	alert($(obj).text());
+	if($(obj).text() == "Edit"){
+		$(obj).text("Save");
+		tr.find(".level").removeAttr("readonly");
+	}else{
+		$(obj).text("Edit");
+		sendJson("/admin/updateShiftDemand",tr.parent().jsonify());
+		loadShiftDemand();
+	}
+}
 </script>
 
 </head>
@@ -92,7 +126,19 @@ function dropShiftType(name){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 				  <caption><button class="btn btn-success" onclick="editShiftType('')">Add New Type</button></caption>
-				  <tbody id="shiftType">
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>BeginTime</th>
+				  	<th>EndTime</th>
+				  	<th>Total(h)</th>
+				  	<th>In Use</th>
+				  	<th>Score(5)</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="shiftType" >
 				  </tbody>
 				</table>
 		    </div>
@@ -114,7 +160,25 @@ function dropShiftType(name){
 		        <h3 class="panel-title">Shift Demand</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>Shift Demand</p>
+		    	<table class="table table-striped">
+				  <caption>
+				  	<span>Hint:a(b):a is current set,b is recommended. Please input a only when modify.</span>
+				  </caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>LV1</th>
+				  	<th>LV2</th>
+				  	<th>LV3</th>
+				  	<th>LV4</th>
+				  	<th>LV5</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="shiftDemand" >
+				  </tbody>
+				</table>
 		    </div>
 		</div>
 		
@@ -124,7 +188,17 @@ function dropShiftType(name){
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>Time Limit</p>
+				 <span style="color:gray">Hint:a(b):a is current set,b is recommended. Please input a only when modify.</span>
+			
+		    	<form method="post"  class="input-group">
+			  		<span class="input-group-addon">Min Work Time(h/week)</span>
+			  		<input id=minTime type="text" name="minTime" class="form-control"/>
+			  		<span class="input-group-addon">Man Work Time(h/week)</span>
+			  		<input id="maxTime" type="text" name="maxTime" class="form-control"/>
+			  		<span class="input-group-btn">
+			  			<button class="form-control btn btn-primary" onclick="editTimeLimit()">Edit</button>
+			  		<span class="input-group-btn">
+				</form>
 		    </div>
 		</div>
 	</div>
@@ -133,7 +207,9 @@ function dropShiftType(name){
 
 <script>
 //$("#welcome").text("welcome " + checkLogin() );
+$("td,th").addClass("text-center");
 loadShiftType();
+loadShiftDemand();
  </script>
 </body>
 </html>

@@ -1,23 +1,29 @@
 package com.worksap.stm2017.vo;
 
+import java.sql.Time;
+
 import lombok.Data;
 
 @Data
 public class ShiftTypeVo {
+	private Integer id;
 	private String name;
-	private String time;
-	private String total;
-	private String state;
-	private String score;
+	private Time beginTime;
+	private Time endTime;
+	private Double total;
+	private Boolean used;
+	private Double score;
 	
 	public ShiftTypeVo(){}
 	
-	public ShiftTypeVo(String name,String time,
-			String total,String state,String score){
+	public ShiftTypeVo(Integer id,String name,Time beginTime,Time endTime,
+			Double total,Boolean used,Double score){
+		this.id = id;
 		this.name = name;
-		this.time = time;
+		this.beginTime = beginTime;
+		this.endTime = endTime;
 		this.total = total;
-		this.state = state;
+		this.used = used;
 		this.score = score;
 	}
 }

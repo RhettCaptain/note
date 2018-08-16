@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class ShiftType {
+	private Integer id;
 	private String name;
 	private Time beginTime;
 	private Time endTime;
@@ -14,8 +15,9 @@ public class ShiftType {
 	
 	public ShiftType(){}
 	
-	public ShiftType(String name,Time beginTime,
+	public ShiftType(Integer id,String name,Time beginTime,
 			Time endTime,Boolean used){
+		this.id = id;
 		this.name = name;
 		this.beginTime = beginTime;
 		this.endTime = endTime;

@@ -5,6 +5,7 @@ import java.util.List;
 import com.worksap.stm2017.model.Roster;
 import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.vo.RosterVo;
+import com.worksap.stm2017.vo.ShiftDemandVo;
 import com.worksap.stm2017.vo.ShiftTypeVo;
 
 public interface RosterDao {
@@ -12,5 +13,15 @@ public interface RosterDao {
 	
 	public List<ShiftTypeVo> getShiftTypeVo();
 	
-	public ShiftType getShiftTypeByName(String name);
+	public ShiftTypeVo getShiftTypeById(Integer id);
+	
+	public void addShiftType(ShiftTypeVo stv);
+	
+	public void updateShiftType(ShiftTypeVo stv);
+	
+	public void deleteShiftType(Integer id);
+	
+	public List<ShiftDemandVo> getShiftDemandVo();
+	
+	public void updateShiftDemand(ShiftDemandVo sdv);
 }

@@ -43,4 +43,35 @@ function getUrlParam(name) {
     if (r != null) return unescape(r[2]); return null; 
 }
 
+function getJson(url){
+	var res = null;
+	$.ajax({
+        type:"POST",
+        url:url,
+        dataType:"json",
+        contentType:"application/json",
+        async: false,
+        cache:false,
+        success:function(data){
+        	res = data;
+        }
+    });
+	return res;
+}
 
+function sendJson(url,data){
+	var res = null;
+	$.ajax({
+        type:"POST",
+        url:url,
+        data: JSON.stringify(data),
+        dataType:"json",
+        contentType:"application/json",
+        async: false,
+        cache:false,
+        success:function(databack){
+        	res = databack;
+        }
+    });
+	return res;
+}

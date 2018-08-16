@@ -10,8 +10,6 @@
 <title>NurseHub</title>
 
 <script>
-var editState="new";
-var rawName = "";
 
 function timePickerConfig(type){
 	var now = new Date();
@@ -36,30 +34,13 @@ function timePickerConfig(type){
 }
 
 function getShiftType(){
-	var name = getUrlParam("name");
-	alert(name);
-	if(name==null || name==""){
-		alert(name);
-		editState = "new";
-		rawName = "";
+	var id = getUrlParam("id");
+	if(id==null || id==""){
 		return null;
 	}
-	alert(name);
 	editState = "update";
-	rawName = name;
-	var shiftType="";
-	$.ajax({
-		type:"POST",
-		url:"/admin/getShiftTypeByName",
-		data: JSON.stringify(name),
-		dataType:"json",
-		contentType:"application/json",
-		async: false,
-		cache:false,
-		success:function(data){
-		    shiftType=data;
-		}
-	});
+	
+	var shiftType = sendJson("/admin/getShiftTypeById",id);
 	return shiftType;
 }
 
@@ -76,16 +57,41 @@ function init(){
 
 function confirm(){
 	var form = $('form').jsonify();
-	//to do
-	$.ajax({
-        type:"POST",
-        url:"/admin/editShiftType",
-        data: JSON.stringify(data),
-        dataType:"json",
-        contentType:"application/json",
-        async: false,
-        cache:false,
-        success:function(data){
+	if($('#used').prop("checked") == true){
+		form.used = "true";
+	}else{
+		form.used = "false";
+	}
+	if(form.beginTime.length > 5){
+		form.beginTime = form.beginTime.slice(form.beginTime.length-5);
+	}
+	if(form.endTime.length > 5){
+		form.endTime = form.endTime.slice(form.endTime.length-5);
+	}
+	if(form.beginTime == "" || form.endTime == "" || form.name== ""){
+		alert("please fill the black!");
+		return;
+	}else{
+		form.beginTime = form.beginTime + ":00";
+		form.endTime = form.endTime + ":00";
+	}
+	
+	var url = "/admin/confirmShiftType?id=";
+	
+	var id = getUrlParam("id");
+	if(id==null || id==""){
+		url = url + "-1";
+	}else{
+		url = url + id;
+	}
+	
+	var res = sendJson(url,form);
+	if(res.state == "ok"){
+		alert("success");
+		window.location.href="/admin/strategy.html";
+	}else{
+		alert("save fail");
+	}
 }
 
 function cancel(){
@@ -110,7 +116,7 @@ function cancel(){
 	  		<input type="text" readonly="readonly" class="form-control" value="In Use"/>
 		</div>
 		<div style="margin:10px;" class="input-group">
-			<span class="input-group-addon">StartTime</span>
+			<span class="input-group-addon">BeginTime</span>
 			<input type="text" name="beginTime" class="form-control"  value=""
 						id="beginTimePicker"  data-date-format="hh:ii"/>
 			<span class="input-group-addon">EndTime</span>

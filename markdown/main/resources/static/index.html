@@ -39,24 +39,12 @@ function showHead(){
 }
 
 function getRoster(week){
-	var ros="";
-	$.ajax({
-        type:"POST",
-        url:"/getRoster/"+week,
-        dataType:"json",
-        contentType:"application/json",
-        async: false,
-        cache:false,
-        success:function(data){
-        	ros = data;
-        }
-	});
-	return ros;
+	var url = "/getRoster/"+week;
+	return getJson(url);
 }
 
 function fillRoster(){
 	var ros1 = getRoster(1);
-	alert(ros1[0].friShift);
 	var cont = "";
 	for(i in ros1){
 		cont = cont + "<tr>";
