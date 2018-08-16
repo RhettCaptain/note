@@ -1,0 +1,137 @@
+   <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<script src="../js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="../css/bootstrap-datetimepicker.min.css"/>
+<title>NurseHub</title>
+
+<script>
+var editState="new";
+var rawName = "";
+
+function timePickerConfig(type){
+	var now = new Date();
+	var date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
+	
+	if(type!=null){
+		$('#beginTimePicker').val(date + " " + type.beginTime);
+		$('#endTimePicker').val(date + " " + type.endTime);
+	}
+	$('#beginTimePicker').datetimepicker({
+	    format: 'hh:ii',
+	    startView: 0,
+	    maxView: 1,
+	    autoclose:true
+	});
+	$('#endTimePicker').datetimepicker({
+	    format: 'hh:ii',
+	    startView: 0,
+	    maxView: 1,
+	    autoclose:true
+	});
+}
+
+function getShiftType(){
+	var name = getUrlParam("name");
+	alert(name);
+	if(name==null || name==""){
+		alert(name);
+		editState = "new";
+		rawName = "";
+		return null;
+	}
+	alert(name);
+	editState = "update";
+	rawName = name;
+	var shiftType="";
+	$.ajax({
+		type:"POST",
+		url:"/admin/getShiftTypeByName",
+		data: JSON.stringify(name),
+		dataType:"json",
+		contentType:"application/json",
+		async: false,
+		cache:false,
+		success:function(data){
+		    shiftType=data;
+		}
+	});
+	return shiftType;
+}
+
+function init(){
+	type = getShiftType();
+	if(type!=null && type!=""){
+		$('#name').val(type.name);
+		if(type.used == true){
+			$('#used').prop("checked",true);
+		}
+	}
+	timePickerConfig(type);
+}
+
+function confirm(){
+	var form = $('form').jsonify();
+	//to do
+	$.ajax({
+        type:"POST",
+        url:"/admin/editShiftType",
+        data: JSON.stringify(data),
+        dataType:"json",
+        contentType:"application/json",
+        async: false,
+        cache:false,
+        success:function(data){
+}
+
+function cancel(){
+	window.location.href = "strategy.html";
+}
+</script>
+</head>
+
+<body>
+<div class="panel panel-default" style="margin-left:25%;margin-right:25%;margin-top:20px;">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Shift Type
+        </h3>
+    </div>
+    <div class="panel-body">
+    <form method="post">
+	  	<div style="margin:10px;" class="input-group">
+	  		<span class="input-group-addon">Name</span>
+	  		<input id="name" type="text" name="name" class="form-control"/>
+	  		<span class="input-group-addon"><input id="used" type="checkbox" name="used"/></span>
+	  		<input type="text" readonly="readonly" class="form-control" value="In Use"/>
+		</div>
+		<div style="margin:10px;" class="input-group">
+			<span class="input-group-addon">StartTime</span>
+			<input type="text" name="beginTime" class="form-control"  value=""
+						id="beginTimePicker"  data-date-format="hh:ii"/>
+			<span class="input-group-addon">EndTime</span>
+			<input type="text" name="endTime" class="form-control" value=""
+						id="endTimePicker"  data-date-format="hh:ii"/>
+		</div>
+		<div style="margin-top:10px;">
+			
+		<!-- button -->
+		</div>
+		<div style="text-align:center;">
+			<input type="button" value="Confirm" class="btn btn-success" onclick="confirm()">
+			<input style="margin:20px;" type="button" value="Cancel" class="btn btn-danger" onclick="cancel()">
+		</div>
+	</form>
+    </div>
+</div>
+
+<script>
+init();
+</script>
+                
+</body>
+</html>

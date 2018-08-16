@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<title>NurseHub</title>
+</head>
+<body>
+
+<!-- nav -->
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="/empl/notice.html">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li ><a href="notice.html">Notice</a></li>
+            <li class="active"><a href="preference.html">Preference</a></li>
+            <li><a href="application.html">Application</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p id="welcome"></p>
+    	<a href="/login/quit">quit</a>
+    </div>
+	</div>
+ </nav>
+ 
+
+ <div class="row">
+  	<!-- mark nav -->
+	<div class="col-xs-2">
+		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
+			<li><a href="#shiftTypeMark" >Shift Type</a></li>
+			<li><a href="#shiftRuleMark" >Shift Rule</a></li>
+			<li><a href="#shiftDemandMark" >Shift Demand</a></li>
+			<li><a href="#timeLimitMark" >Time Limit</a></li>
+			<li><a href="#workDayMark">Work Day</a></li>
+		</ul>
+	</div>
+	
+	<div class="col-xs-10">
+		<div class="panel panel-primary">
+		    <a name="shiftTypeMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Shift Type</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>Shift Type</p>
+		    </div>
+		</div>
+		
+		<div class="panel panel-success" >
+			<a name="shiftRuleMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Shift Rule</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>Shift Rule</p>
+		    </div>
+		</div>
+		
+		<div class="panel panel-info">
+		    <a name="shiftDemandMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Shift Demand</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>Shift Demand</p>
+		    </div>
+		</div>
+		
+		<div class="panel panel-warning" >
+			<a name="timeLimitMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Time Limit</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>Time Limit</p>
+		    </div>
+		</div>
+		
+		<div class="panel panel-danger" >
+			<a name="workDayMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Work Day</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>Work Day</p>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+//$("#welcome").text("welcome " + checkLogin() );
+ </script>
+</body>
+</html>

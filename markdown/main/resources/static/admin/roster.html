@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<title>NurseHub</title>
+</head>
+<body>
+
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="/admin/notice.html">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li><a href="notice.html">Notice</a></li>
+            <li><a href="strategy.html">Strategy</a></li>
+            <li class="active"><a href="roster.html">Roster</a></li>
+            <li><a href="approval.html">Approval</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p id="welcome"></p>
+    	<a href="/login/quit">quit</a>
+    </div>
+	</div>
+ </nav>
+ 
+ <div class="row">
+	<div class="col-xs-2">
+		<ul class="nav nav-pills nav-stacked"  data-toggle="buttons">
+			<li><a href="#thisWeekMark">This Week</a></li>
+			<li><a href="#nextWeekMark" >Next Week</a></li>
+		</ul>
+	</div>
+	
+	<div class="col-xs-10">
+		<div class="panel panel-primary">
+		    <a name="thisWeekMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Roster This Week</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>This Week</p>
+		    </div>
+		</div>
+		<!-- announcements -->
+		<div class="panel panel-success" >
+			<a name="nextWeekMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Roster Next Week</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>NextWeek</p>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+//$("#welcome").text("welcome " + checkLogin() );
+ </script>
+</body>
+</html>

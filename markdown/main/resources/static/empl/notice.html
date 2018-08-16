@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<title>NurseHub</title>
+</head>
+<body>
+<!-- nav -->
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="/empl/notice.html">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="notice.html">Notice</a></li>
+            <li><a href="preference.html">Preference</a></li>
+            <li><a href="application.html">Application</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p id="welcome"></p>
+    	<a href="/login/quit">quit</a>
+    </div>
+	</div>
+ </nav>
+ 
+ <div class="row">
+  	<!-- mark nav -->
+	<div class="col-xs-2">
+		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
+			<li><a href="#notificationsMark" >Notifications</a></li>
+			<li><a href="#announcementsMark" >Announcements</a></li>
+		</ul>
+	</div>
+	
+	<div class="col-xs-10">
+		<div class="panel panel-primary">
+		    <a name="notificationsMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Notifications</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>notifications</p>
+		    </div>
+		</div>
+		<!-- announcements -->
+		<div class="panel panel-success" >
+			<a name="announcementsMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Announcements</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<p>announcesments</p>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+//$("#welcome").text("welcome " + checkLogin() );
+ </script>
+</body>
+</html>

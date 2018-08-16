@@ -13,9 +13,7 @@ $.fn.jsonify = function()  {
    });  
    return o;  
 }
-function debug(){
-	return "deu";
-}
+
 
 function checkLogin(){
 	var name = "null";
@@ -37,6 +35,12 @@ function checkLogin(){
 	       }   
 	 });  
 	 return name;
+}
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+    var r = window.location.search.substr(1).match(reg);  
+    if (r != null) return unescape(r[2]); return null; 
 }
 
 

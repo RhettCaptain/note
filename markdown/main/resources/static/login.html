@@ -10,7 +10,6 @@ function login(act){
 	//TO DO
 	//非空检查
 	//类型检查
-	
 	var data = $('form').jsonify();
 	$.ajax({
         type:"POST",
@@ -20,12 +19,12 @@ function login(act){
         contentType:"application/json",
         async: false,
         cache:false,
-        success:function(data,status){
+        success:function(data){
         	if(data.loginOk == "true"){
         		if(act == '/login/admin'){
-     	  			window.location.href="admin/index.html?userId="+data.userId;
+     	  			window.location.href="admin/notice.html?userId="+data.userId;
         		}else if(act == '/login/empl'){
-        			window.location.href="empl/index.html?userId="+data.userId;
+        			window.location.href="empl/notice.html?userId="+data.userId;
         		}else{
         			window.location.href="/";
         		}
@@ -41,21 +40,43 @@ function login(act){
 }
 </script>
 	
+<style>
+.heading{
+    display: block;
+    font-size: 35px;
+    font-weight: 700;
+    padding: 35px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 30px;
+    background: #fff;
+    border-radius: 15px;
+    text-align: center;
+}
+</style>
+
 </head>
 
 <body>
+
+<div style="margin-left:25%;margin-right:25%">
 	<form method="post">
+		<span class="heading">Login</span>
+		<i ></i>
 		<div>
-			ID：<input type="text" name="userId"/>
+			<input type="text" name="userId" class="form-control" placeholder="ID"/>
 		</div>
-		<div>
-			Password：<input type="password" name="password"/>
+		<div style="margin-top:10px;">
+			<input type="password" name="password" class="form-control" placeholder="Password"/>
 		</div>
-		<div>
-			<input type="button" value="admin" onclick="login('/login/admin')">
-			<input type="button" value="empl" onclick="login('/login/empl')">
-			<input type="button" value="exit" onclick="window.location.href='/';">
+		<div style="text-align:center;">
+			<input type="button" value="admin" class="btn btn-primary" onclick="login('/login/admin')">
+			<input style="margin:20px;" type="button" value="empl" class="btn btn-primary" onclick="login('/login/empl')">
+			<input type="button" value="exit" class="btn btn-danger" onclick="window.location.href='/';">
 		</div>
-	</form>
+	</form>	
+</div>
+
+	
+                
 </body>
 </html>
