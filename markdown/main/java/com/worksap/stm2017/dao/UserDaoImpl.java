@@ -29,9 +29,8 @@ public class UserDaoImpl implements UserDao{
 					ps.setString(2, user.getPassword());
 				},
 				(rs,rowNum) -> new User(rs.getInt(1),rs.getString(2),
-						rs.getString(3),rs.getInt(4),rs.getInt(5),
-						rs.getArray(6)));
-		if(res.isEmpty() || res.get(0).getAuthLevel() == 0 ){
+						rs.getString(3),rs.getInt(4),rs.getBoolean(5)));
+		if(res.isEmpty() || res.get(0).getIsManager() == false ){
 			return false;
 		}else{
 			return true;
@@ -46,8 +45,7 @@ public class UserDaoImpl implements UserDao{
 					ps.setString(2, user.getPassword());
 				},
 				(rs,rowNum) -> new User(rs.getInt(1),rs.getString(2),
-						rs.getString(3),rs.getInt(4),rs.getInt(5),
-						rs.getArray(6)));
+						rs.getString(3),rs.getInt(4),rs.getBoolean(5)));
 		if(res.isEmpty()){
 			return false;
 		}else{
@@ -60,8 +58,7 @@ public class UserDaoImpl implements UserDao{
 		List<User> res = template.query(SEARCH_SQL, 
 				ps -> ps.setInt(1,userId),
 				(rs,rowNum) -> new User(rs.getInt(1),rs.getString(2),
-						rs.getString(3),rs.getInt(4),rs.getInt(5),
-						rs.getArray(6)));
+						rs.getString(3),rs.getInt(4),rs.getBoolean(5)));
 		if(res.size() == 0){
 			System.out.println("no such person");
 			return null;

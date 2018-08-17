@@ -8,4 +8,6 @@ public interface UserDao {
 	public boolean checkEmpl(User user);
 	
 	public User getUser(Integer userId);
+	
+	
 }

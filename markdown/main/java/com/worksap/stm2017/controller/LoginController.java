@@ -37,6 +37,7 @@ public class LoginController {
 		if(checked){
 			User res = userDao.getUser(user.getUserId());
 			session.setAttribute("loginOk", "true");
+			session.setAttribute("userId", res.getUserId());
 			session.setAttribute("userName", res.getName());
 		}else{
 			session.setAttribute("loginOk", "false");
@@ -54,6 +55,7 @@ public class LoginController {
 		if(checked){
 			User res = userDao.getUser(user.getUserId());
 			session.setAttribute("loginOk", "true");
+			session.setAttribute("userId", res.getUserId());
 			session.setAttribute("userName", res.getName());
 		}else{
 			session.setAttribute("loginOk", "false");
@@ -74,10 +76,24 @@ public class LoginController {
 		return json;
 	}
 	
+	@RequestMapping("/getUserId")
+	@ResponseBody
+	public String getUserId(HttpSession session){
+		if(session.getAttribute("loginOk")==null 
+				|| session.getAttribute("userId")==null){
+			return JsonUtil.jsonify("loginOk","false","userId","");
+		}
+		String json = JsonUtil.jsonify(
+				"loginOk",session.getAttribute("loginOk").toString(),
+				"userId",session.getAttribute("userId").toString());
+		return json;
+	}
+	
 	@RequestMapping("/quit")
 	@ResponseBody
 	public void quit(HttpServletResponse response,HttpSession session) throws IOException{
 		session.removeAttribute("loginOk");
+		session.removeAttribute("userId");
 		session.removeAttribute("userName");
 		response.sendRedirect("/");
 	}

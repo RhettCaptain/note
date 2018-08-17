@@ -12,7 +12,11 @@ import com.worksap.stm2017.model.Roster;
 import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.vo.RosterVo;
 import com.worksap.stm2017.vo.ShiftDemandVo;
+import com.worksap.stm2017.vo.ShiftScoreVo;
 import com.worksap.stm2017.vo.ShiftTypeVo;
+import com.worksap.stm2017.vo.TimeLimitRecVo;
+import com.worksap.stm2017.vo.TimeLimitVo;
+import com.worksap.stm2017.vo.WorkDayVo;
 
 @Component
 public class RosterDaoImpl implements RosterDao{
@@ -87,6 +91,61 @@ public class RosterDaoImpl implements RosterDao{
 
 	@Override
 	public void updateShiftDemand(ShiftDemandVo sdv) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public TimeLimitVo getTimeLimitVo() {
+		// TODO Auto-generated method stub
+		TimeLimitVo tlv = new TimeLimitVo(6.0,9.0,5.0,8.0);
+		return tlv;
+	}
+
+	@Override
+	public void updateTimeLimit(TimeLimitVo tlv) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<ShiftScoreVo> getShiftScoreVoByUser(Integer userId) {
+		// TODO Auto-generated method stub
+		List<ShiftScoreVo> list = new ArrayList();
+		ShiftScoreVo ssv = new ShiftScoreVo(1,"A",1,2,3,4,5,3.3);
+		list.add(ssv);
+		list.add(ssv);
+		return list;
+	}
+
+	@Override
+	public void updateShiftScoreVo(Integer userId, ShiftScoreVo ssv) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public TimeLimitRecVo getTimeLimitRecVoByUser(Integer userId) {
+		// TODO Auto-generated method stub
+		TimeLimitRecVo tlrv = new TimeLimitRecVo(4.8,10.8);
+		return tlrv;
+	}
+
+	@Override
+	public void updateTimeLimitRec(Integer userId, TimeLimitRecVo tlrv) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public WorkDayVo getWorkDayVoByUser(Integer userId) {
+		// TODO Auto-generated method stub
+		WorkDayVo wdv = new WorkDayVo(1.1,2.1,3.1,4.1,6.1,6.1,7.1);
+		return wdv;
+	}
+
+	@Override
+	public void updateWorkDay(Integer userId, WorkDayVo wdv) {
 		// TODO Auto-generated method stub
 		
 	}

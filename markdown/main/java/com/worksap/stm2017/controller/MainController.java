@@ -33,17 +33,10 @@ public class MainController {
 	@RequestMapping("/getRoster/{week}")
 	@ResponseBody
 	public List<RosterVo> getRoster(@PathVariable int week){
-		System.out.println("week is " + week);
-		
+
 		RosterDao rs = factory.getRosterDao();
-		if(rs != null){
-			System.out.println("rosterDao is ok");
-		}
 		
 		List<RosterVo> t = rs.getRosterVo(week);
-		if(t != null){
-			System.out.println("list is ok");
-		}
 		
 		return t;
 	}

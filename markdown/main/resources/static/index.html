@@ -5,23 +5,23 @@
 <script src="js/header.js"></script>
 <script src="js/util.js"></script>
 <script>
-function showDay(day){
-	switch(day){
-	case 1:
-		return "Mon";
-	case 2:
-		return "Tus";
-	case 3:
-		return "Wed";
-	case 4:
-		return "Thu";
-	case 5:
-		return "Fri";
-	case 6:
-		return "Sat";
-	case 0:
-		return "Sun";
+
+function loadShiftType(){
+	var res= getJson("/admin/loadShiftType");
+	var color = ["'success'","'warning'","'danger'"];
+	var cont = "";
+	for(i in res){
+		cont = cont + "<tr class=" + color[i%3] + ">";
+		
+		
+		for(j in res[i]){
+			if(j!="score"){
+				cont = cont + "<td>" +res[i][j] + "</td>";
+			}
+		}
+		cont = cont + "</td></tr>"
 	}
+	$("#shiftType").html(cont);
 }
 
 function showHead(){
@@ -77,6 +77,7 @@ function nextWeek(){
 }
 
 function init(){
+	loadShiftType();
 	showHead();
 	fillRoster();
 	thisWeek();
@@ -104,6 +105,21 @@ function init(){
 	</div>
  </nav>
 
+<table class="table table-striped">
+	<caption>Shift Type</caption>
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>BeginTime</th>
+		<th>EndTime</th>
+		<th>Total(h)</th>
+		<th>In Use</th>
+	</tr>
+	</thead>
+	<tbody id="shiftType" >
+	</tbody>
+</table>
  
  <table id="tbThisWeek" class="table table-striped">
   <caption>ROSTER THIS WEEK</caption>
@@ -118,6 +134,7 @@ function init(){
       <th class="day"></th>
       <th class="day"></th>
       <th class="day"></th>
+      <th>Hours</th>
     </tr>
   </thead>
   <tbody id="tbody1"></tbody>

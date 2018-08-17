@@ -8,7 +8,7 @@
 
 <script>
 function loadShiftType(){
-	var res= getJson("/admin/loadShiftType/");
+	var res= getJson("/admin/loadShiftType");
 	
 	var cont = "";
 	for(i in res){
@@ -39,11 +39,11 @@ function dropShiftType(id){
 }
 
 function loadShiftDemand(){
-	var res= getJson("/admin/loadShiftDemand/");
+	var res= getJson("/admin/loadShiftDemand");
 	
 	var cont = "";
 	for(i in res){
-		cont = cont + "<form method='post'><tr>";
+		cont = cont + "<tr id='shiftDemandTr'>";
 		
 		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='id' value='"
 			+ res[i].id + "'></td>";
@@ -62,21 +62,40 @@ function loadShiftDemand(){
 		var edit = 'onclick="editShiftDemand(this)"';
 		cont = cont + "<td style=\"text-align:right\">"
       		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
-     	 	+ "</td></tr></form>"
+     	 	+ "</td></tr>"
 	}
 	$("#shiftDemand").html(cont);
 }
 
 function editShiftDemand(obj){
 	var tr = $(obj).parent().parent();
-	alert($(obj).text());
 	if($(obj).text() == "Edit"){
 		$(obj).text("Save");
 		tr.find(".level").removeAttr("readonly");
 	}else{
 		$(obj).text("Edit");
-		sendJson("/admin/updateShiftDemand",tr.parent().jsonify());
+		sendJson("/admin/updateShiftDemand",jsonify(tr));
 		loadShiftDemand();
+	}
+}
+
+function loadTimeLimit(){
+	var res = getJson("/admin/loadTimeLimit");
+	$("#minTime").val(res.minTime + "(" + res.minTimeRec + ")");	
+	$("#maxTime").val(res.maxTime + "(" + res.maxTimeRec + ")");
+}
+
+
+function editTimeLimit(){
+	var btn = $("#timeLimitForm").find("button");
+	if(btn.text() == "Edit"){
+		btn.text("Save");
+		$("#timeLimitForm").find("input").removeAttr("readonly");
+	}else{
+		btn.text("Edit");
+		sendJson("/admin/updateTimeLimit",$("#timeLimitForm").jsonify());
+		$("#timeLimitForm").find("input").attr("readonly","readonly");
+		loadTimeLimit();
 	}
 }
 </script>
@@ -96,6 +115,7 @@ function editShiftDemand(obj){
             <li class="active"><a href="strategy.html">Strategy</a></li>
             <li><a href="roster.html">Roster</a></li>
             <li><a href="approval.html">Approval</a></li>
+            <li><a href="staff.html">Staff</a></li>
         </ul>
     </div>
     <div style="text-align:right">
@@ -108,16 +128,18 @@ function editShiftDemand(obj){
 
  <div class="row">
   	<!-- mark nav -->
-	<div class="col-xs-2">
+	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
 			<li><a href="#shiftTypeMark" >Shift Type</a></li>
+		<!-- 
 			<li><a href="#shiftRuleMark" >Shift Rule</a></li>
+		-->
 			<li><a href="#shiftDemandMark" >Shift Demand</a></li>
 			<li><a href="#timeLimitMark" >Time Limit</a></li>
 		</ul>
 	</div>
 	
-	<div class="col-xs-10">
+	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
 		    <a name="shiftTypeMark"></a>
 		    <div class="panel-heading">
@@ -143,8 +165,8 @@ function editShiftDemand(obj){
 				</table>
 		    </div>
 		</div>
-		
-		<div class="panel panel-success" >
+<!--  
+		<div class="panel panel-info" >
 			<a name="shiftRuleMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Rule</h3>
@@ -153,8 +175,9 @@ function editShiftDemand(obj){
 		    	<p>Shift Rule</p>
 		    </div>
 		</div>
-		
-		<div class="panel panel-info">
+-->
+
+		<div class="panel panel-success">
 		    <a name="shiftDemandMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Demand</h3>
@@ -190,14 +213,14 @@ function editShiftDemand(obj){
 		    <div class="panel-body">
 				 <span style="color:gray">Hint:a(b):a is current set,b is recommended. Please input a only when modify.</span>
 			
-		    	<form method="post"  class="input-group">
+		    	<form class="input-group" id="timeLimitForm">
 			  		<span class="input-group-addon">Min Work Time(h/week)</span>
-			  		<input id=minTime type="text" name="minTime" class="form-control"/>
+			  		<input id="minTime" type="text" name="minTime" class="form-control" readonly="readonly"/>
 			  		<span class="input-group-addon">Man Work Time(h/week)</span>
-			  		<input id="maxTime" type="text" name="maxTime" class="form-control"/>
+			  		<input id="maxTime" type="text" name="maxTime" class="form-control" readonly="readonly"/>
 			  		<span class="input-group-btn">
-			  			<button class="form-control btn btn-primary" onclick="editTimeLimit()">Edit</button>
-			  		<span class="input-group-btn">
+			  			<button type="button" class="form-control btn btn-primary" onclick="editTimeLimit()">Edit</button>
+			  		</span>
 				</form>
 		    </div>
 		</div>
@@ -207,9 +230,10 @@ function editShiftDemand(obj){
 
 <script>
 //$("#welcome").text("welcome " + checkLogin() );
-$("td,th").addClass("text-center");
 loadShiftType();
 loadShiftDemand();
+loadTimeLimit();
+$("td,th").addClass("text-center");
  </script>
 </body>
 </html>

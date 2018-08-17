@@ -14,6 +14,17 @@ $.fn.jsonify = function()  {
    return o;  
 }
 
+function jsonify(ele){
+	var arr = ele.find("input");
+	arr.each(function(){
+		$(this).attr("value",$(this).val());
+	});
+		
+	var tmpForm=$('<form id="_tmpForm"></form>');
+	var con = ele.html();
+	tmpForm.html(con);
+	return tmpForm.jsonify();
+}
 
 function checkLogin(){
 	var name = "null";
@@ -35,6 +46,16 @@ function checkLogin(){
 	       }   
 	 });  
 	 return name;
+}
+
+function getUserId(){
+	var res = getJson("/login/getUserId");
+	if(res.loginOk == "true"){
+		return res.userId;
+	}else{
+		window.location.href="/";
+		return null;
+	}
 }
 
 function getUrlParam(name) {
@@ -74,4 +95,23 @@ function sendJson(url,data){
         }
     });
 	return res;
+}
+
+function showDay(day){
+	switch(day){
+	case 1:
+		return "Mon";
+	case 2:
+		return "Tus";
+	case 3:
+		return "Wed";
+	case 4:
+		return "Thu";
+	case 5:
+		return "Fri";
+	case 6:
+		return "Sat";
+	case 0:
+		return "Sun";
+	}
 }

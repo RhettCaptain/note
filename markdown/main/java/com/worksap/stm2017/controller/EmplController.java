@@ -20,82 +20,65 @@ import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.model.User;
 import com.worksap.stm2017.util.JsonUtil;
 import com.worksap.stm2017.vo.ShiftDemandVo;
+import com.worksap.stm2017.vo.ShiftScoreVo;
 import com.worksap.stm2017.vo.ShiftTypeVo;
+import com.worksap.stm2017.vo.TimeLimitRecVo;
 import com.worksap.stm2017.vo.TimeLimitVo;
+import com.worksap.stm2017.vo.WorkDayVo;
 
-@RequestMapping("/admin")
+@RequestMapping("/empl")
 @Controller
-public class AdminController {
+public class EmplController {
 	private DaoFactory factory;
 	
 	@Autowired
-	public AdminController(DaoFactory factory){
+	public EmplController(DaoFactory factory){
 		this.factory = factory;
 	}
 	
-	@RequestMapping("/loadShiftType")
-	@ResponseBody
-	public List<ShiftTypeVo> loadShiftType(){
-		RosterDao rosterDao = factory.getRosterDao();
-		return rosterDao.getShiftTypeVo();
-	}
-	
-	@RequestMapping("/getShiftTypeById")
-	@ResponseBody
-	public ShiftTypeVo getShiftTypeById(@RequestBody Integer id){
-		RosterDao rosterDao = factory.getRosterDao();
-		return rosterDao.getShiftTypeById(id);
-	}
-	
-	@RequestMapping("/confirmShiftType")
-	@ResponseBody
-	public String confirmShiftType(@RequestBody ShiftTypeVo stv,@RequestParam("id") Integer id){
-		RosterDao rosterDao = factory.getRosterDao();
-		if(id==-1){
-			rosterDao.addShiftType(stv);
-		}else{
-			rosterDao.updateShiftType(stv);
-		}
-		return JsonUtil.jsonify("state","ok");
-	}
-	
-	@RequestMapping("/deleteShiftType")
-	public void deleteShiftType(@RequestParam("id") Integer id,HttpServletResponse response) throws IOException{
-		RosterDao rosterDao = factory.getRosterDao();
-		rosterDao.deleteShiftType(id);
-		response.sendRedirect("/admin/strategy.html");
-		
-	}
-	
-	@RequestMapping("/loadShiftDemand")
-	@ResponseBody
-	public List<ShiftDemandVo> loadShiftDemand(){
-		RosterDao rosterDao = factory.getRosterDao();
-		return rosterDao.getShiftDemandVo();
-	}
-	
-	
-	@RequestMapping("/updateShiftDemand")
-	@ResponseBody
-	public String updateShiftDemand(@RequestBody ShiftDemandVo sdv){
-		RosterDao rosterDao = factory.getRosterDao();
-		rosterDao.updateShiftDemand(sdv);
-		return JsonUtil.jsonify("state","ok");
-	}
-	
 
-	@RequestMapping("/loadTimeLimit")
+	@RequestMapping("/loadShiftScore")
 	@ResponseBody
-	public TimeLimitVo loadTimeLimit(){
+	public List<ShiftScoreVo> loadShiftScore(@RequestParam("userId") Integer userId){
 		RosterDao rosterDao = factory.getRosterDao();
-		return rosterDao.getTimeLimitVo();
+		return rosterDao.getShiftScoreVoByUser(userId);
 	}
 	
-	@RequestMapping("/updateTimeLimit")
+	@RequestMapping("/updateShiftScore")
 	@ResponseBody
-	public String updateTimeLimit(@RequestBody TimeLimitVo tlv){
+	public String updateShiftScore(@RequestBody ShiftScoreVo ssv,@RequestParam("userId") Integer userId){
 		RosterDao rosterDao = factory.getRosterDao();
-		rosterDao.updateTimeLimit(tlv);
+		rosterDao.updateShiftScoreVo(userId, ssv);
+		return JsonUtil.jsonify("state","ok");
+	}
+	
+	@RequestMapping("/loadTimeLimitRec")
+	@ResponseBody
+	public TimeLimitRecVo loadTimeLimitRec(@RequestParam("userId") Integer userId){
+		RosterDao rosterDao = factory.getRosterDao();
+		return rosterDao.getTimeLimitRecVoByUser(userId);
+	}
+	
+	@RequestMapping("/updateTimeLimitRec")
+	@ResponseBody
+	public String updateTimeLimitRec(@RequestBody TimeLimitRecVo tlrv,@RequestParam("userId") Integer userId){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.updateTimeLimitRec(userId, tlrv);
+		return JsonUtil.jsonify("state","ok");
+	}
+	
+	@RequestMapping("/loadWorkDay")
+	@ResponseBody
+	public WorkDayVo loadWorkDay(@RequestParam("userId") Integer userId){
+		RosterDao rosterDao = factory.getRosterDao();
+		return rosterDao.getWorkDayVoByUser(userId);
+	}
+	
+	@RequestMapping("/updateWorkDay")
+	@ResponseBody
+	public String updateWorkDay(@RequestBody WorkDayVo wdv,@RequestParam("userId") Integer userId){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.updateWorkDay(userId, wdv);
 		return JsonUtil.jsonify("state","ok");
 	}
 	

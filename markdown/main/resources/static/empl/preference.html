@@ -5,6 +5,97 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <title>NurseHub</title>
+<script>
+
+function loadShiftScore(){
+	var res= getJson("/empl/loadShiftScore?userId="+getUserId());
+	var cont = "";
+	for(i in res){
+		cont = cont + "<tr>";
+		var preStr = "<td><input type='text' class='form-control' readonly='readonly' name='";
+		for(j in res[i]){
+			if(j!="id" && j!='name'){
+				preStr = "<td><input type='text' class='form-control editable' readonly='readonly' name='";
+			}
+			cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
+		}
+		
+		var edit = 'onclick="scoreShiftType(this)"';
+		cont = cont + "<td style=\"text-align:right\">"
+      		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
+     	 	+ "</td></tr>"
+	}
+	$("#shift").html(cont);
+}
+
+function scoreShiftType(btn){
+	var tr = $(btn).parent().parent();
+	if($(btn).text() == "Edit"){
+		$(btn).text("Save");
+		tr.find(".editable").removeAttr("readonly");
+	}else{
+		$(btn).text("Edit");
+		sendJson("/empl/updateShiftScore?userId="+getUserId(),jsonify(tr));
+		loadShiftScore();
+	}
+}
+
+function loadTimeLimitRec(){
+	var res = getJson("/empl/loadTimeLimitRec?userId=" + getUserId());
+	$("#minTimeRec").val(res.minTimeRec);	
+	$("#maxTimeRec").val(res.maxTimeRec);
+}
+
+
+function editTimeLimitRec(){
+	var btn = $("#timeLimitForm").find("button");
+	if(btn.text() == "Edit"){
+		btn.text("Save");
+		$("#timeLimitForm").find("input").removeAttr("readonly");
+	}else{
+		btn.text("Edit");
+		sendJson("/empl/updateTimeLimitRec?userId=" + getUserId(),$("#timeLimitForm").jsonify());
+		$("#timeLimitForm").find("input").attr("readonly","readonly");
+		loadTimeLimitRec();
+	}
+}
+
+function loadWorkDay(){
+	var res= getJson("/empl/loadWorkDay?userId=" + getUserId());
+	var cont = "";
+	for(i in res){
+		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='"
+			+i + "' value='" + res[i] + "'></td>";
+	}
+	var edit = 'onclick="editWorkDay()"';
+	cont = cont + "<td style=\"text-align:right\">"
+		+ "<button type='button' class=\"btn btn-primary\" " + edit +">Edit</button>"
+	 	+ "</td>";
+	$("#workdayTr").html(cont);
+	
+}
+
+function editWorkDay(){
+	var btn = $("#workdayTr").find("button");
+	var tr = $("#workdayTr");
+	if(btn.text() == "Edit"){
+		btn.text("Save");
+		tr.find("input").removeAttr("readonly");
+	}else{
+		btn.text("Edit");
+		sendJson("/empl/updateWorkDay?userId=" + getUserId(),jsonify(tr));
+		var t = jsonify(tr);
+		alert(t);
+		alert(t.length);
+		for(i in t){alert(i + ":" + t[i]);}
+		
+		tr.find("input").attr("readonly","readonly");
+		loadWorkDay();
+	}
+}
+
+</script>
+
 </head>
 <body>
 
@@ -31,54 +122,73 @@
 
  <div class="row">
   	<!-- mark nav -->
-	<div class="col-xs-2">
+	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
-			<li><a href="#shiftTypeMark" >Shift Type</a></li>
+			<li><a href="#shiftMark" >Shift</a></li>
+		<!--  
 			<li><a href="#shiftRuleMark" >Shift Rule</a></li>
-			<li><a href="#shiftDemandMark" >Shift Demand</a></li>
+		-->
+			
 			<li><a href="#timeLimitMark" >Time Limit</a></li>
 			<li><a href="#workDayMark">Work Day</a></li>
 		</ul>
 	</div>
 	
-	<div class="col-xs-10">
+	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
-		    <a name="shiftTypeMark"></a>
+		    <a name="shiftMark"></a>
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Shift Type</h3>
+		        <h3 class="panel-title">Shift</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>Shift Type</p>
+		    	<table class="table table-striped">
+		    	<caption>
+		    		Recommend demand for each Level,and score the shift.
+		    	</caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>LV1</th>
+				  	<th>LV2</th>
+				  	<th>LV3</th>
+				  	<th>LV4</th>
+				  	<th>LV5</th>
+				  	<th>Score(5)</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="shift" >
+				  </tbody>
+				</table>
 		    </div>
 		</div>
 		
+		<!--  
 		<div class="panel panel-success" >
 			<a name="shiftRuleMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Rule</h3>
 		    </div>
-		    <div class="panel-body">
-		    	<p>Shift Rule</p>
-		    </div>
+		    
 		</div>
+		-->
 		
-		<div class="panel panel-info">
-		    <a name="shiftDemandMark"></a>
-		    <div class="panel-heading">
-		        <h3 class="panel-title">Shift Demand</h3>
-		    </div>
-		    <div class="panel-body">
-		    	<p>Shift Demand</p>
-		    </div>
-		</div>
-		
-		<div class="panel panel-warning" >
+		<div class="panel panel-success" >
 			<a name="timeLimitMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>Time Limit</p>
+		    	<form class="input-group" id="timeLimitForm">
+			  		<span class="input-group-addon">Min Work Time(h/week)</span>
+			  		<input id="minTimeRec" type="text" name="minTimeRec" class="form-control" readonly="readonly"/>
+			  		<span class="input-group-addon">Man Work Time(h/week)</span>
+			  		<input id="maxTimeRec" type="text" name="maxTimeRec" class="form-control" readonly="readonly"/>
+			  		<span class="input-group-btn">
+			  			<button type="button" class="form-control btn btn-primary" onclick="editTimeLimitRec()">Edit</button>
+			  		</span>
+				</form>
 		    </div>
 		</div>
 		
@@ -88,7 +198,26 @@
 		        <h3 class="panel-title">Work Day</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>Work Day</p>
+		    	<table class="table table-striped">
+		    	<caption>
+		    		Score your preference between 0-5.
+		    	</caption>
+				  <thead>
+				  <tr>
+				  	<th>Mon</th>
+				  	<th>Tus</th>
+				  	<th>Wed</th>
+				  	<th>Thu</th>
+				  	<th>Fri</th>
+				  	<th>Sat</th>
+				  	<th>Sun</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="workday">
+				  	<tr id="workdayTr"></tr>
+				  </tbody>
+				</table>
 		    </div>
 		</div>
 	</div>
@@ -96,6 +225,9 @@
 
 
 <script>
+loadShiftScore();
+loadTimeLimitRec();
+loadWorkDay();
 //$("#welcome").text("welcome " + checkLogin() );
  </script>
 </body>

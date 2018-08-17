@@ -7,7 +7,7 @@
 <title>NurseHub</title>
 </head>
 <body>
-
+<!-- nav -->
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
  	<div class="navbar-header">
@@ -17,9 +17,9 @@
         <ul class="nav navbar-nav">
             <li><a href="notice.html">Notice</a></li>
             <li><a href="strategy.html">Strategy</a></li>
-            <li class="active"><a href="roster.html">Roster</a></li>
+            <li><a href="roster.html">Roster</a></li>
             <li><a href="approval.html">Approval</a></li>
-            <li><a href="staff.html">Staff</a></li>
+            <li class="active"><a href="staff.html">Staff</a></li>
         </ul>
     </div>
     <div style="text-align:right">
@@ -30,33 +30,24 @@
  </nav>
  
  <div class="row">
+  	<!-- mark nav -->
 	<div class="col-xs-2 col-md-1">
-		<ul class="nav nav-pills nav-stacked"  data-toggle="buttons">
-			<li><a href="#thisWeekMark">This Week</a></li>
-			<li><a href="#nextWeekMark">Next Week</a></li>
+		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
+			<li><a href="#staffMark" >Staff Management</a></li>
 		</ul>
 	</div>
 	
 	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
-		    <a name="thisWeekMark"></a>
+		    <a name="staffMark"></a>
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Roster This Week</h3>
+		        <h3 class="panel-title">Staff Management</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>This Week</p>
+		    	<p>#staffMark</p>
 		    </div>
 		</div>
-		<!-- announcements -->
-		<div class="panel panel-success" >
-			<a name="nextWeekMark"></a>
-		    <div class="panel-heading">
-		        <h3 class="panel-title">Roster Next Week</h3>
-		    </div>
-		    <div class="panel-body">
-		    	<p>NextWeek</p>
-		    </div>
-		</div>
+		
 	</div>
 </div>
 
