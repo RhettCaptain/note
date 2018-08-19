@@ -85,10 +85,6 @@ function editWorkDay(){
 		btn.text("Edit");
 		sendJson("/empl/updateWorkDay?userId=" + getUserId(),jsonify(tr));
 		var t = jsonify(tr);
-		alert(t);
-		alert(t.length);
-		for(i in t){alert(i + ":" + t[i]);}
-		
 		tr.find("input").attr("readonly","readonly");
 		loadWorkDay();
 	}

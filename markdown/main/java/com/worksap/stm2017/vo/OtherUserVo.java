@@ -4,13 +4,15 @@ import lombok.Data;
 
 @Data
 public class OtherUserVo {
+	private Integer id;
 	private String name;
 	private Integer workLevel;
 	private Boolean isManager;
 	
 	public OtherUserVo(){}
 	
-	public OtherUserVo(String name,Integer workLevel,Boolean isManager){
+	public OtherUserVo(Integer id,String name,Integer workLevel,Boolean isManager){
+		this.id = id;
 		this.name = name;
 		this.workLevel = workLevel;
 		this.isManager = isManager;

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.worksap.stm2017.model.Roster;
 import com.worksap.stm2017.model.ShiftType;
+import com.worksap.stm2017.vo.OtherUserVo;
+import com.worksap.stm2017.vo.RosterReportVo;
 import com.worksap.stm2017.vo.RosterVo;
 import com.worksap.stm2017.vo.ShiftDemandVo;
 import com.worksap.stm2017.vo.ShiftScoreVo;
@@ -44,6 +46,21 @@ public interface RosterDao {
 	public WorkDayVo getWorkDayVoByUser(Integer userId);
 
 	public void updateWorkDay(Integer userId, WorkDayVo wdv);
+
+	public List<RosterReportVo> getRosterReportVo();
+
+	public void updateRosterById(String which, RosterVo rv);
+
+	public List<RosterReportVo> getNewRosterReportVo();
+
+	public void updateNewRosterById(String which, RosterVo rv);
+
+	public List<RosterVo> getNewRosterVo(String which);
+
+	public void generateRosters();
+
+	
+
 	
 	
 }

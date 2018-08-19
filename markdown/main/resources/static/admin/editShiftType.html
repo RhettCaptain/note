@@ -62,17 +62,20 @@ function confirm(){
 	}else{
 		form.used = "false";
 	}
-	if(form.beginTime.length > 5){
-		form.beginTime = form.beginTime.slice(form.beginTime.length-5);
-	}
-	if(form.endTime.length > 5){
-		form.endTime = form.endTime.slice(form.endTime.length-5);
-	}
+	
 	if(form.beginTime == "" || form.endTime == "" || form.name== ""){
 		alert("please fill the black!");
 		return;
+	}
+	
+	if(form.beginTime.length > 8){
+		form.beginTime = form.beginTime.slice(form.beginTime.length-8);
 	}else{
 		form.beginTime = form.beginTime + ":00";
+	}
+	if(form.endTime.length > 8){
+		form.endTime = form.endTime.slice(form.endTime.length-8);
+	}else{
 		form.endTime = form.endTime + ":00";
 	}
 	

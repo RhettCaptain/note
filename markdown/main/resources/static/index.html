@@ -49,21 +49,28 @@ function fillRoster(){
 	for(i in ros1){
 		cont = cont + "<tr>";
 		for (j in ros1[i]){
-			cont = cont + "<th>" +ros1[i][j] + "</th>";
+			if(j!="monId" && j!="tusId" && j!="wedId" && j!="thuId"
+				&& j!="friId" && j!="satId" && j!="sunId"){
+				cont = cont + "<th>" +ros1[i][j] + "</th>";
+			}
+			
 		}
 		cont = cont + "</tr>";
 	}
-	$("#tbody1").html(cont);
+	$("#thisTbody").html(cont);
 	var ros2 = getRoster(2);
 	cont = "";
 	for(i in ros2){
 		cont = cont + "<tr>";
 		for (j in ros2[i]){
-			cont = cont + "<th>" +ros2[i][j] + "</th>";
+			if(j!="monId" && j!="tusId" && j!="wedId" && j!="thuId"
+				&& j!="friId" && j!="satId" && j!="sunId"){
+				cont = cont + "<th>" +ros2[i][j] + "</th>";
+			}
 		}
 		cont = cont + "</tr>";
 	}
-	$("#tbody2").html(cont);
+	$("#nextTbody").html(cont);
 }
 
 function thisWeek(){
@@ -109,8 +116,8 @@ function init(){
 	<caption>Shift Type</caption>
 <thead>
 	<tr>
-		<th>ID</th>
-		<th>Name</th>
+		<th>ShiftID</th>
+		<th>ShiftName</th>
 		<th>BeginTime</th>
 		<th>EndTime</th>
 		<th>Total(h)</th>
@@ -125,8 +132,8 @@ function init(){
   <caption>ROSTER THIS WEEK</caption>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
+      <th>UserID</th>
+      <th>UserName</th>
       <th class="day"></th>
       <th class="day"></th>
       <th class="day"></th>
@@ -137,15 +144,15 @@ function init(){
       <th>Hours</th>
     </tr>
   </thead>
-  <tbody id="tbody1"></tbody>
+  <tbody id="thisTbody"></tbody>
 </table>
 
 <table id="tbNextWeek"  class="table table-striped">
   <caption>ROSTER NEXT WEEK</caption>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
+      <th>UserID</th>
+      <th>UserName</th>
       <th class="day"></th>
       <th class="day"></th>
       <th class="day"></th>
@@ -153,9 +160,10 @@ function init(){
       <th class="day"></th>
       <th class="day"></th>
       <th class="day"></th>
+      <th>Hours</th>
     </tr>
   </thead>
-  <tbody id="tbody2"> </tbody>
+  <tbody id="nextTbody"> </tbody>
 </table>
 
 <script>

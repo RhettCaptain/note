@@ -19,7 +19,6 @@ function loadShiftType(){
 			cont = cont + "<td>" +res[i][j] + "</td>";
 		}
 		
-		
 		var edit = 'onclick="editShiftType(\'' + res[i].id + '\')"';
 		var drop = 'onclick="dropShiftType(\'' + res[i].id + '\')"';
 		cont = cont + "<td style=\"text-align:right\">"
@@ -74,7 +73,13 @@ function editShiftDemand(obj){
 		tr.find(".level").removeAttr("readonly");
 	}else{
 		$(obj).text("Edit");
-		sendJson("/admin/updateShiftDemand",jsonify(tr));
+		var form = jsonify(tr);
+		for(var n in form){
+			if(n!="id" && n!="name"){
+				form[n] = form[n].split("(")[0];
+			}
+		}
+		sendJson("/admin/updateShiftDemand",form);
 		loadShiftDemand();
 	}
 }
@@ -93,7 +98,11 @@ function editTimeLimit(){
 		$("#timeLimitForm").find("input").removeAttr("readonly");
 	}else{
 		btn.text("Edit");
-		sendJson("/admin/updateTimeLimit",$("#timeLimitForm").jsonify());
+		var form = $("#timeLimitForm").jsonify();
+		for(var n in form){
+			form[n] = form[n].split("(")[0];
+		}
+		sendJson("/admin/updateTimeLimit",form);
 		$("#timeLimitForm").find("input").attr("readonly","readonly");
 		loadTimeLimit();
 	}
@@ -185,7 +194,7 @@ function editTimeLimit(){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 				  <caption>
-				  	<span>Hint:a(b):a is current set,b is recommended. Please input a only when modify.</span>
+				  	<span>Hint:a(b):a is current set,b is recommended.</span>
 				  </caption>
 				  <thead>
 				  <tr>
@@ -211,7 +220,7 @@ function editTimeLimit(){
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
 		    <div class="panel-body">
-				 <span style="color:gray">Hint:a(b):a is current set,b is recommended. Please input a only when modify.</span>
+				 <span style="color:gray">Hint:a(b):a is current set,b is recommended. </span>
 			
 		    	<form class="input-group" id="timeLimitForm">
 			  		<span class="input-group-addon">Min Work Time(h/week)</span>

@@ -5,6 +5,40 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <title>NurseHub</title>
+
+<script>
+function loadUser(){
+	var res= getJson("/admin/loadUser");
+	
+	var cont = "";
+	for(i in res){
+		cont = cont + "<tr>";
+		
+		
+		for(j in res[i]){
+			cont = cont + "<td>" +res[i][j] + "</td>";
+		}
+		
+		var edit = 'onclick="editUser(\'' + res[i].id + '\')"';
+		var drop = 'onclick="dropUser(\'' + res[i].id + '\')"';
+		cont = cont + "<td style=\"text-align:right\">"
+      		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
+      		+ "<button class=\"btn btn-danger\" " + drop +">Drop</button>"
+     	 	+ "</td></tr>"
+	}
+	$("#user").html(cont);
+}
+
+function editUser(id){
+	window.location.href="/admin/editOtherUser.html?id="+id;
+}
+
+function dropUser(id){
+	window.location.href="/admin/deleteOtherUser?id="+id;
+}
+
+</script>
+
 </head>
 <body>
 <!-- nav -->
@@ -44,7 +78,20 @@
 		        <h3 class="panel-title">Staff Management</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>#staffMark</p>
+		    	<table class="table table-striped">
+				  <caption><button class="btn btn-success" onclick="editUser('')">Add New Nurse</button></caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>Level</th>
+				  	<th>Manager</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="user" >
+				  </tbody>
+				</table>
 		    </div>
 		</div>
 		
@@ -53,6 +100,8 @@
 
 
 <script>
+loadUser();
+$("td,th").addClass("text-center");
 //$("#welcome").text("welcome " + checkLogin() );
  </script>
 </body>

@@ -5,6 +5,242 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <title>NurseHub</title>
+<script>
+var color = ['','btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
+var modalBtn = "";
+var whichWeek = "thisWeek";
+
+function thisWeek(){
+	$("#thisDiv").show();
+	$("#nextDiv").hide();
+	whichWeek = "thisWeek";
+}
+function nextWeek(){
+	$("#thisDiv").hide();
+	$("#nextDiv").show();
+	whichWeek = "nextWeek";
+}
+function showDemand(week,which){
+	var hide = "."+which +" .demand";
+	$(hide).hide();
+	var show = hide + "." + week;
+	$(show).show();
+}
+
+function loadRosterReport(){
+	var res= getJson("/admin/loadRosterReport");
+	
+	var thisArr = new Array();
+	var nextArr = new Array();
+	var idx=0;
+	for(i in res[0]){
+		thisArr[idx] = res[0][i];
+		idx = idx+1;
+	}
+	idx = 0;
+	for(i in res[1]){
+		nextArr[idx] = res[1][i];
+		idx = idx+1;
+	}
+	
+	$(".thisWeek .timeLimitOk").text("Time Limit Ok: " + thisArr[0]);
+	$(".thisWeek .demandOk").text("  Demand Ok: " + thisArr[1]);
+	$(".thisWeek .compScore").text("Comprehensive Score: " + thisArr[2]);
+	
+	$(".nextWeek .timeLimitOk").text("Time Limit Ok: " + nextArr[0]);
+	$(".nextWeek .demandOk").text("  Demand Ok: " + nextArr[1]);
+	$(".nextWeek .compScore").text("Comprehensive Score: " + nextArr[2]);
+	
+	for(i=0;i<9;i++){
+		$(".thisWeek .prefTd").eq(i).text(thisArr[i+3]);
+		$(".nextWeek .prefTd").eq(i).text(nextArr[i+3]);
+	}
+	
+	var thisDemands = thisArr[12];
+	var nextDemands = nextArr[12];
+	
+	for(i=0;i<7;i++){
+		
+		var cont = "";
+		for(sh in thisDemands[i]){
+			cont = cont + "<tr><td>" + thisDemands[i][sh].id + "</td>";
+			cont = cont + "<td>" + thisDemands[i][sh].name + "</td>";
+			var arr = new Array();
+			var idx=0;
+			for(j in thisDemands[i][sh]){
+				arr[idx] = thisDemands[i][sh][j];
+				idx = idx+1;
+			}
+			for(j=2;j<7;j++){
+				cont = cont + "<td>" + arr[j] + "(" + arr[j+5] + ")</td>";
+			}
+			cont = cont + "</tr>";
+		}
+		$(".thisWeek .demand").eq(i).html(cont);
+		
+		cont = "";
+		for(sh in nextDemands[i]){
+			cont = cont + "<tr><td>" + nextDemands[i][sh].id + "</td>";
+			cont = cont + "<td>" + nextDemands[i][sh].name + "</td>";
+			var arr = new Array();
+			var idx=0;
+			for(j in nextDemands[i][sh]){
+				arr[idx] = nextDemands[i][sh][j];
+				idx = idx+1;
+			}
+			for(j=2;j<7;j++){
+				cont = cont + "<td>" + arr[j] + "(" + arr[j+5] + ")</td>";
+			}
+			cont = cont + "</tr>";
+		}
+		$(".nextWeek .demand").eq(i).html(cont);
+	}
+}
+
+
+function showHead(){
+	var date = new Date();
+	var day = date.getDay();
+	if(day==0){
+		day = 7;
+	}
+	date.setDate(date.getDate()-day);
+	for(i=0;i<14;i++){
+		date.setDate(date.getDate()+1);
+		var str = showDay(date.getDay()) + "(" + (date.getMonth()+1) + "/" + date.getDate() +")";
+		$(".day").eq(i).text(str);
+	}
+}
+
+function strNum(str){
+	if(str==null || str==""){
+		return 0;
+	}
+	var len = str.length;
+	var num=0;
+	for(var idx=0;idx<len;idx++){
+		num = num + str.charCodeAt(idx);
+	}
+	return num%6;
+}
+
+function getRoster(week){
+	var url = "/getRoster/"+week;
+	return getJson(url);
+}
+
+function fillRoster(){
+	var ros1 = getRoster(1);
+	var cont = "";
+	for(i in ros1){
+		cont = cont + "<tr>";
+		for (j in ros1[i]){
+			var preStr ="";
+			var gUserId;
+			if(j=="monId" || j=="tusId" || j=="wedId" || j=="thuId"
+				|| j=="friId" || j=="satId" || j=="sunId"){
+				if(j=="monId"){cont = cont + "<td>"}
+				preStr = "<input type='text' class='hide' name='" 
+					+ j + "' value='" +ros1[i][j] + "' ";
+
+				cont = cont + preStr + ">";
+				if(j=="sunId"){
+					cont = cont + "<input type='text' class='hide' name='userId'value='"
+					+ gUserId + "'>'</td>";}
+			}else if(j!="userId" && j!="userName" &&j!="totalTime"){
+				preStr = "<td><input type='button' class='btn " + color[strNum(ros1[i][j])] + "' name='" + j + "' value='" +ros1[i][j] 
+					+ "' onclick='modalBtn=$(this)' data-toggle=\"modal\" data-target=\"#myModal\" ";
+				cont = cont + preStr + "></td>";
+			}else{
+				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros1[i][j] + "' ";
+				cont = cont + preStr + "></td>";
+				if(j=="userId"){gUserId = ros1[i][j];}
+			}
+		}
+		
+		cont = cont + "</tr>";
+	}
+	$("#thisTbody").html(cont);
+	var ros2 = getRoster(2);
+	cont = "";
+	for(i in ros2){
+		cont = cont + "<tr>";
+		for (j in ros2[i]){
+			var preStr ="";
+			var gUserId;
+			if(j=="monId" || j=="tusId" || j=="wedId" || j=="thuId"
+				|| j=="friId" || j=="satId" || j=="sunId"){
+				if(j=="monId"){cont = cont + "<td>"}
+				preStr = "<input type='text' class='hide' name='" 
+					+ j + "' value='" +ros2[i][j] + "' ";
+
+				cont = cont + preStr + ">";
+				if(j=="sunId"){
+					cont = cont + "<input type='text' class='hide' name='userId'value='"
+					+ gUserId + "'>'</td>";}
+			}else if(j!="userId" && j!="userName" &&j!="totalTime"){
+				preStr = "<td><input type='button' class='btn " + color[strNum(ros2[i][j])] + "' name='" + j + "' value='" +ros2[i][j] 
+					+ "' onclick='modalBtn=$(this)' data-toggle=\"modal\" data-target=\"#myModal\" ";
+				cont = cont + preStr + "></td>";
+			}else{
+				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros2[i][j] + "' ";
+				cont = cont + preStr + "></td>";
+				if(j=="userId"){gUserId = ros2[i][j];}
+			}
+		}
+		cont = cont + "</tr>";
+	}
+	$("#nextTbody").html(cont);	
+	$(".hide").hide();
+}
+
+
+function setModal(){
+	var res= getJson("/admin/loadShiftType");
+	var cont = "";
+	for(i in res){
+		cont = cont + "<button class='btn btn-block " + "" + color[strNum(res[i].name)]
+			+ "' onclick=\" changeShift('" + res[i].id + "','" + res[i].name + "','"
+			+ color[strNum(res[i].name)] + "') \">" + res[i].name + "</button>";
+	}
+	$(".modal-body").html(cont);
+}
+
+function changeShift(id,name,color){
+	var tr = modalBtn.parent().parent();
+	var raw = modalBtn.attr("name");
+	if(raw.indexOf("mon")>-1){
+		tr.find(".hide").eq(0).attr("value",id);
+	}else if(raw.indexOf("tus")>-1){
+		tr.find(".hide").eq(1).attr("value",id);
+	}else if(raw.indexOf("wed")>-1){
+		tr.find(".hide").eq(2).attr("value",id);
+	}else if(raw.indexOf("thu")>-1){
+		tr.find(".hide").eq(3).attr("value",id);
+	}else if(raw.indexOf("fri")>-1){
+		tr.find(".hide").eq(4).attr("value",id);
+	}else if(raw.indexOf("sat")>-1){
+		tr.find(".hide").eq(5).attr("value",id);
+	}else if(raw.indexOf("sun")>-1){
+		tr.find(".hide").eq(6).attr("value",id);
+	}
+	modalBtn.attr("value",name);
+	modalBtn.attr("class","btn " + color);
+	sendJson("/admin/updateRosterById/" + whichWeek ,jsonify(tr));
+	window.location.href="roster.html";
+}
+
+function init(){
+	thisWeek();
+	loadRosterReport();
+	showDemand('mon','thisWeek');
+	showDemand('mon','nextWeek');
+	showHead();
+	fillRoster();
+	setModal();
+}
+
+</script>
 </head>
 <body>
 
@@ -32,37 +268,253 @@
  <div class="row">
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked"  data-toggle="buttons">
-			<li><a href="#thisWeekMark">This Week</a></li>
-			<li><a href="#nextWeekMark">Next Week</a></li>
+			<li><a href="#" onclick="thisWeek()">This Week</a></li>
+			<li><a href="#" onclick="nextWeek()">Next Week</a></li>
+			<li><a href="#" onclick="window.location.href='rosterNextWeek.html'">Roster Next Week</a></li>
 		</ul>
 	</div>
 	
 	<div class="col-xs-10 col-md-11">
+	<div id="thisDiv" class="thisWeek">
 		<div class="panel panel-primary">
-		    <a name="thisWeekMark"></a>
+		    
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Report This Week</h3>
+		    </div>
+		    <div class="panel-body">
+		    
+		    	<table class="table">
+				  <caption>
+				  	<div class="compScore">Comprehensive Score:</div>
+				  	<div>
+				  		<span class="timeLimitOk">Time Limit Ok:</span>
+				  		<span class="demandOk">Demand Ok:</span>
+				  	</div>
+				  </caption>
+				  <thead>
+				    <tr>
+				      <th></th>
+				      <th>Min</th>
+				      <th>Avg</th>
+				      <th>Max</th>
+				    </tr>
+				  </thead>
+				  <tbody >
+				    <tr class="success">
+				      <td>ShiftPref(5)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				    <tr class="warning">
+				      <td>WorkTime(h)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				    <tr class="danger">
+				      <td>WorkdayPref(5)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				</tbody>
+				</table>
+				
+				<ol class="breadcrumb">
+					<li>Demands</li>
+				    <li><a href="#" onclick="showDemand('mon','thisWeek')">mon</a></li>
+				    <li><a href="#" onclick="showDemand('tus','thisWeek')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('wed','thisWeek')">wed</a></li>
+					<li><a href="#" onclick="showDemand('thu','thisWeek')">thu</a></li>
+					<li><a href="#" onclick="showDemand('fri','thisWeek')">fri</a></li>
+					<li><a href="#" onclick="showDemand('sat','thisWeek')">sat</a></li>
+					<li><a href="#" onclick="showDemand('sun','thisWeek')">sun</a></li>
+				</ol>
+				
+				<table class="table table-striped">
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>LV1</th>
+				  	<th>LV2</th>
+				  	<th>LV3</th>
+				  	<th>LV4</th>
+				  	<th>LV5</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody class="mon demand" ></tbody>
+				  <tbody class="tus demand" ></tbody>
+				  <tbody class="wed demand" ></tbody>
+				  <tbody class="thu demand" ></tbody>
+				  <tbody class="fri demand" ></tbody>
+				  <tbody class="sat demand" ></tbody>
+				  <tbody class="sun demand" ></tbody>
+				</table>
+		    </div>
+		</div>
+		
+		<div class="panel panel-success">
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Roster This Week</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>This Week</p>
+		    	<table id="tbThisWeek" class="table table-striped">
+				  <thead>
+				    <tr>
+				      <th>UserID</th>
+				      <th>UserName</th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th>Hours</th>
+				    </tr>
+				  </thead>
+				  <tbody id="thisTbody"></tbody>
+				</table>
 		    </div>
 		</div>
-		<!-- announcements -->
-		<div class="panel panel-success" >
-			<a name="nextWeekMark"></a>
+	</div>
+	
+	
+	<!-- next week -->
+	
+	<div id="nextDiv" class="nextWeek">
+		<div class="panel panel-info">
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Report Next Week</h3>
+		    </div>
+		    <div class="panel-body">
+		    	
+		    	<table class="table">
+				  <caption>
+				  	<div class="compScore">Comprehensive Score:</div>
+				  	<div>
+				  		<span class="timeLimitOk">Time Limit Ok:</span>
+				  		<span class="demandOk">Demand Ok:</span>
+				  	</div>
+				  </caption>
+				  <thead>
+				    <tr>
+				      <th></th>
+				      <th>Min</th>
+				      <th>Avg</th>
+				      <th>Max</th>
+				    </tr>
+				  </thead>
+				  <tbody >
+				    <tr class="success">
+				      <td>ShiftPref(5)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				    <tr class="warning">
+				      <td>WorkTime(h)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				    <tr class="danger">
+				      <td>WorkdayPref(5)</td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				      <td class="prefTd"></td>
+				    </tr>
+				</tbody>
+				</table>
+				
+				<ol class="breadcrumb">
+					<li>Demands</li>
+				    <li><a href="#" onclick="showDemand('mon','nextWeek')">mon</a></li>
+				    <li><a href="#" onclick="showDemand('tus','nextWeek')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('wed','nextWeek')">wed</a></li>
+					<li><a href="#" onclick="showDemand('thu','nextWeek')">thu</a></li>
+					<li><a href="#" onclick="showDemand('fri','nextWeek')">fri</a></li>
+					<li><a href="#" onclick="showDemand('sat','nextWeek')">sat</a></li>
+					<li><a href="#" onclick="showDemand('sun','nextWeek')">sun</a></li>
+				</ol>
+				
+				<table class="table table-striped">
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>Name</th>
+				  	<th>LV1</th>
+				  	<th>LV2</th>
+				  	<th>LV3</th>
+				  	<th>LV4</th>
+				  	<th>LV5</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody class="mon demand" ></tbody>
+				  <tbody class="tus demand" ></tbody>
+				  <tbody class="wed demand" ></tbody>
+				  <tbody class="thu demand" ></tbody>
+				  <tbody class="fri demand" ></tbody>
+				  <tbody class="sat demand" ></tbody>
+				  <tbody class="sun demand" ></tbody>
+				</table>
+		    </div>
+		</div>
+		
+		<div class="panel panel-warning" >
+			
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Roster Next Week</h3>
 		    </div>
 		    <div class="panel-body">
-		    	<p>NextWeek</p>
+		    	<table id="tbNextWeek"  class="table table-striped">
+				  <thead>
+				    <tr>
+				      <th>UserID</th>
+				      <th>UserName</th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th class="day"></th>
+				      <th>Hours</th>
+				    </tr>
+				  </thead>
+				  <tbody id="nextTbody"> </tbody>
+				</table>
 		    </div>
 		</div>
+		
+		
+		
+	<!-- end -->	
+	</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	            </div>
+	            <div class="modal-body"></div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
 	</div>
 </div>
 
 
 <script>
+init();
 //$("#welcome").text("welcome " + checkLogin() );
- </script>
+</script>
+			
 </body>
 </html>

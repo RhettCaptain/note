@@ -3,7 +3,7 @@ package com.worksap.stm2017.model;
 import lombok.Data;
 
 @Data
-public class ShiftDemand {
+public class ShiftDemand implements Cloneable {
 	private Integer id;
 	private Integer lv1;
 	private Integer lv2;
@@ -22,4 +22,14 @@ public class ShiftDemand {
 		this.lv4 = lv4;
 		this.lv5 = lv5;
 	}
+	
+	public Object clone() {   
+		ShiftDemand o = null;   
+        try {   
+            o = (ShiftDemand) super.clone();   
+        } catch (CloneNotSupportedException e) {   
+            e.printStackTrace();   
+        }   
+        return o;   
+    }   
 }

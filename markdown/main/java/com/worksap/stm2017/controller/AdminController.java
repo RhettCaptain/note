@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,9 @@ import com.worksap.stm2017.dao.UserDao;
 import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.model.User;
 import com.worksap.stm2017.util.JsonUtil;
+import com.worksap.stm2017.vo.OtherUserVo;
+import com.worksap.stm2017.vo.RosterReportVo;
+import com.worksap.stm2017.vo.RosterVo;
 import com.worksap.stm2017.vo.ShiftDemandVo;
 import com.worksap.stm2017.vo.ShiftTypeVo;
 import com.worksap.stm2017.vo.TimeLimitVo;
@@ -54,6 +58,7 @@ public class AdminController {
 		if(id==-1){
 			rosterDao.addShiftType(stv);
 		}else{
+			stv.setId(id);
 			rosterDao.updateShiftType(stv);
 		}
 		return JsonUtil.jsonify("state","ok");
@@ -99,4 +104,88 @@ public class AdminController {
 		return JsonUtil.jsonify("state","ok");
 	}
 	
+	@RequestMapping("/loadUser")
+	@ResponseBody
+	public List<OtherUserVo> loadUser(){
+		UserDao userDao = factory.getUserDao();
+		return userDao.getOtherUserVo();
+	}
+	
+	@RequestMapping("/getOtherUserById")
+	@ResponseBody
+	public OtherUserVo getOtherUserById(@RequestBody Integer id){
+		UserDao userDao = factory.getUserDao();
+		return userDao.getOtherUserById(id);
+	}
+	
+	@RequestMapping("/confirmOtherUser")
+	@ResponseBody
+	public String confirmOtherUser(@RequestBody OtherUserVo stv,@RequestParam("id") Integer id){
+		UserDao userDao = factory.getUserDao();
+		if(id==-1){
+			userDao.addUser(stv);
+		}else{
+			stv.setId(id);
+			userDao.updateUser(stv);
+		}
+		return JsonUtil.jsonify("state","ok");
+	}
+	
+	@RequestMapping("/deleteOtherUser")
+	public void deleteOtherUser(@RequestParam("id") Integer id,HttpServletResponse response) throws IOException{
+		UserDao userDao = factory.getUserDao();
+		userDao.deleteUser(id);
+		response.sendRedirect("/admin/staff.html");
+		
+	}
+	
+	@RequestMapping("/loadRosterReport")
+	@ResponseBody
+	public List<RosterReportVo> loadRosterReport(){
+		RosterDao rosterDao = factory.getRosterDao();
+		return rosterDao.getRosterReportVo();
+	}
+	
+	@RequestMapping("/updateRosterById/{which}")
+	@ResponseBody
+	public String updateRosterById(@PathVariable String which,@RequestBody RosterVo rv){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.updateRosterById(which,rv);
+		return JsonUtil.jsonify("state","ok");
+	}
+	
+	
+	@RequestMapping("/loadNewRosterReport")
+	@ResponseBody
+	public List<RosterReportVo> loadNewRosterReport(){
+		RosterDao rosterDao = factory.getRosterDao();
+		return rosterDao.getNewRosterReportVo();
+	}
+	
+	@RequestMapping("/updateNewRosterById/{which}")
+	@ResponseBody
+	public String updateNewRosterById(@PathVariable String which,@RequestBody RosterVo rv){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.updateNewRosterById(which,rv);
+		return JsonUtil.jsonify("state","ok");
+	}
+	
+	@RequestMapping("/getNewRoster/{which}")
+	@ResponseBody
+	public List<RosterVo> getNewRoster(@PathVariable String which){
+
+		RosterDao rs = factory.getRosterDao();
+		
+		List<RosterVo> t = rs.getNewRosterVo(which);
+		
+		return t;
+	}
+	
+	@RequestMapping("/generateRosters")
+	@ResponseBody
+	public String generateRosters(){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.generateRosters();
+		return JsonUtil.jsonify("state","ok");
+	}
 }
