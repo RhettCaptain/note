@@ -19,11 +19,13 @@ import com.worksap.stm2017.dao.UserDao;
 import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.model.User;
 import com.worksap.stm2017.util.JsonUtil;
+import com.worksap.stm2017.vo.OtherUserVo;
 import com.worksap.stm2017.vo.ShiftDemandVo;
 import com.worksap.stm2017.vo.ShiftScoreVo;
 import com.worksap.stm2017.vo.ShiftTypeVo;
 import com.worksap.stm2017.vo.TimeLimitRecVo;
 import com.worksap.stm2017.vo.TimeLimitVo;
+import com.worksap.stm2017.vo.UserVo;
 import com.worksap.stm2017.vo.WorkDayVo;
 
 @RequestMapping("/empl")
@@ -82,4 +84,18 @@ public class EmplController {
 		return JsonUtil.jsonify("state","ok");
 	}
 	
+	@RequestMapping("/getUserById")
+	@ResponseBody
+	public UserVo getUserById(@RequestParam("id") Integer id){
+		UserDao userDao = factory.getUserDao();
+		return userDao.getUserById(id);
+	}
+	
+	@RequestMapping("/changePassword")
+	@ResponseBody
+	public String changePassword(@RequestBody UserVo user){
+		UserDao userDao = factory.getUserDao();
+		userDao.updatePassword(user.getId(), user.getPassword());
+		return JsonUtil.jsonify("state","ok");
+	}
 }

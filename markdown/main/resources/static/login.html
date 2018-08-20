@@ -10,6 +10,10 @@ function login(act){
 	//TO DO
 	//非空检查
 	//类型检查
+	if($("#userId").val()=="" || isNaN($("#userId").val())){
+		alert("please input correct id");
+		return;
+	}
 	var data = $('form').jsonify();
 	$.ajax({
         type:"POST",
@@ -63,10 +67,10 @@ function login(act){
 		<span class="heading">Login</span>
 		<i ></i>
 		<div>
-			<input type="text" name="userId" class="form-control" placeholder="ID"/>
+			<input id="userId" type="text" name="userId" class="form-control" placeholder="ID"/>
 		</div>
 		<div style="margin-top:10px;">
-			<input type="password" name="password" class="form-control" placeholder="Password"/>
+			<input id="password" type="password" name="password" class="form-control" placeholder="Password"/>
 		</div>
 		<div style="text-align:center;">
 			<input type="button" value="admin" class="btn btn-primary" onclick="login('/login/admin')">

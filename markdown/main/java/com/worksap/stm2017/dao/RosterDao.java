@@ -59,6 +59,11 @@ public interface RosterDao {
 
 	public void generateRosters();
 
+	public void chooseRoster(String which);
+
+	public void shiftRoster();
+
+
 	
 
 	

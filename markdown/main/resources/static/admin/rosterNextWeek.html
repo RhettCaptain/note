@@ -82,8 +82,8 @@ function workdayPrefAvg(){
 }
 
 
-function showDemand(week,which){
-	var hide = "."+which +" .demand";
+function showDemand(week,whichA){
+	var hide = "."+whichA +" .demand";
 	$(hide).hide();
 	var show = hide + "." + week;
 	$(show).show();
@@ -191,12 +191,12 @@ function loadNewRosterReport(){
 	var i = 0;
 	for(i=0;i<7;i++){
 		loadTmpFunc(recDemands,".recommend",i);
-		loadTmpFunc(spmDemands,".shiftPrefMin");
-		loadTmpFunc(spaDemands,".shiftPrefMax");
-		loadTmpFunc(wtlDemands,".workTimeLong");
-		loadTmpFunc(wtsDemands,".workTimeShort");
-		loadTmpFunc(wpmDemands,".workdayPrefMin");
-		loadTmpFunc(wpaDemands,".workdayPrefAvg");
+		loadTmpFunc(spmDemands,".shiftPrefMin",i);
+		loadTmpFunc(spaDemands,".shiftPrefAvg",i);
+		loadTmpFunc(wtlDemands,".workTimeLong",i);
+		loadTmpFunc(wtsDemands,".workTimeShort",i);
+		loadTmpFunc(wpmDemands,".workdayPrefMin",i);
+		loadTmpFunc(wpaDemands,".workdayPrefAvg",i);
 	}
 }
 
@@ -338,6 +338,10 @@ function changeShift(id,name,color){
 	window.location.href="roster.html";
 }
 
+function choose(whichRos){
+	window.location.href="/admin/chooseRoster/" + whichRos;
+}
+
 function init(){
 	recommend();
 	generateRosters();
@@ -410,6 +414,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('recommend')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -519,6 +524,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('shiftPrefMin')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -631,6 +637,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('shiftPrefAvg')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -742,6 +749,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('workTimeLong')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -851,6 +859,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('workTimeShort')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -961,6 +970,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('workdayPrefMin')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -1071,6 +1081,7 @@ function init(){
 				  		<span class="timeLimitOk">Time Limit Ok:</span>
 				  		<span class="demandOk">Demand Ok:</span>
 				  	</div>
+				  	<div><button class="btn btn-success" onclick="choose('workdayPrefAvg')">USE THIS ROSTER</button></div>
 				  </caption>
 				  <thead>
 				    <tr>
@@ -1186,7 +1197,7 @@ function init(){
 
 <script>
 init();
-//$("#welcome").text("welcome " + checkLogin() );
+$("#welcome").text("welcome " + checkLogin() );
 </script>
 			
 </body>

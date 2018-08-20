@@ -188,4 +188,12 @@ public class AdminController {
 		rosterDao.generateRosters();
 		return JsonUtil.jsonify("state","ok");
 	}
+	
+	@RequestMapping("/chooseRoster/{which}")
+	public void chooseRoster(@PathVariable("which") String which,HttpServletResponse response) throws IOException{
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.chooseRoster(which);
+		response.sendRedirect("/admin/roster.html");
+		
+	}
 }

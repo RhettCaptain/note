@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<title>NurseHub</title>
+<script>
+var user;
+function loadUser(){
+	user = getJson("/empl/getUserById?id=" + getUserId());
+	$("#id").val(user.id);
+	$("#name").val(user.name);
+	$("#workLevel").val(user.workLevel);
+	$("#isManager").val(user.isManager);
+}
+function changePwd(){
+	if($("#rawPassword").val() != user.password){
+		alert("raw password err");
+		return;
+	}
+	if($("#newPassword").val() != $("#confirmPassword").val()){
+		alert("new password  confirm err");
+		return;
+	}
+	user.password = $("#newPassword").val();
+	sendJson("/empl/changePassword",user);
+}
+</script>
+</head>
+
+<body>
+<!-- nav -->
+ <nav class="navbar navbar-default" role="navigation">
+ 	<div class="container-fluid">
+ 	<div class="navbar-header">
+        <a class="navbar-brand" href="/empl/notice.html">NurseHub</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li><a href="notice.html">Notice</a></li>
+            <li><a href="preference.html">Preference</a></li>
+            <li><a href="application.html">Application</a></li>
+            <li class="active"><a href="config.html">Config</a></li>
+        </ul>
+    </div>
+    <div style="text-align:right">
+    	<p id="welcome"></p>
+    	<a href="/login/quit">quit</a>
+    </div>
+	</div>
+ </nav>
+ 
+ <div class="row">
+  	<!-- mark nav -->
+	<div class="col-xs-2 col-md-1">
+		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
+			<li><a href="#profileMark" >Profile</a></li>
+		</ul>
+	</div>
+	
+	<div class="col-xs-10 col-md-11">
+		<div class="panel panel-primary">
+		    <a name="profileMark"></a>
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Profile</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<div style="margin:10px;" class="input-group">
+		    		<span class="input-group-addon">Id</span>
+			  		<input id="id" type="text"  class="form-control" readonly="readonly"/>
+			  		<span class="input-group-addon">Name</span>
+			  		<input id="name" type="text"class="form-control" readonly="readonly"/>
+				</div>
+				<div style="margin:10px;" class="input-group">
+					<span class="input-group-addon">workLevel</span>
+			  		<input id="workLevel" type="text" class="form-control" readonly="readonly"/>
+			  		<span class="input-group-addon">Is Manager</span>
+			  		<input id="isManager" type="text" class="form-control" readonly="readonly" />
+				</div>
+				<div style="margin:10px;" class="input-group">
+					<button id="changePws" class="btn btn-success" data-toggle="modal" data-target="#myModal">Change Password</button> 
+				</div>
+		    </div>
+		</div>
+		
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	            </div>
+	            <div class="modal-body">
+	            	<div style="margin:10px;" class="input-group">
+		    			<span class="input-group-addon">Raw Password: </span>
+			  			<input id="rawPassword" type="text"  class="form-control"/>
+			  		</div>
+			  		<div style="margin:10px;" class="input-group">
+		    			<span class="input-group-addon">New Password: </span>
+			  			<input id="newPassword" type="text"  class="form-control"/>
+			  		</div>
+			  		<div style="margin:10px;" class="input-group">
+		    			<span class="input-group-addon">confirm Password: </span>
+			  			<input id="confirmPassword" type="text"  class="form-control"/>
+			  		</div>
+			  		<div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                <button type="button" class="btn btn-primary" onclick="changePwd()" data-dismiss="modal">Confirm</button>
+		            </div>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+</div>
+
+<script>
+loadUser();
+$("#welcome").text("welcome " + checkLogin() );
+
+ </script>
+</body>
+</html>

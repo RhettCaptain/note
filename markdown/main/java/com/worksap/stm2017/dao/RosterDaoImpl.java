@@ -45,7 +45,7 @@ public class RosterDaoImpl implements RosterDao{
 			+ " FROM \"shiftScore\" WHERE \"shiftId\"=?";
 	private final String DELETE_SHIFT_SCORE_BY_SHIFTID_SQL = "DELETE FROM \"shiftScore\" WHERE \"shiftId\"=?";
 	private final String GET_SHIFT_SCORE_BY_USERID_SQL = "SELECT * FROM \"shiftScore\" WHERE \"userId\"=? ORDER BY \"shiftId\"";
-	private final String UPDATE_SHIFT_SCORE_SQL = "UPDATE \"shiftScore\" SET lv1=?, lv2=?, lv3=?, lv4=?, lv5=? score=?"
+	private final String UPDATE_SHIFT_SCORE_SQL = "UPDATE \"shiftScore\" SET \"lv1\"=?, \"lv2\"=?, \"lv3\"=?, \"lv4\"=?, \"lv5\"=?, \"score\"=?"
 			+ " WHERE \"userId\"=? AND \"shiftId\"=?";
 	
 	private final String ADD_SHIFT_DEMAND_SQL = "INSERT INTO \"shiftDemand\" (id, \"lv1\", \"lv2\" ,"
@@ -220,7 +220,7 @@ public class RosterDaoImpl implements RosterDao{
 
 	@Override
 	public void addShiftType(ShiftTypeVo stv) {
-		Integer id = generateId(GET_USER_IDS_SQL,1);
+		Integer id = generateId(GET_USER_IDS_SQL,0);
 		template.update(ADD_SHIFT_TYPE_SQL,
 				ps -> {
 					ps.setInt(1, id);
@@ -260,6 +260,10 @@ public class RosterDaoImpl implements RosterDao{
 
 	@Override
 	public void updateShiftType(ShiftTypeVo stv) {
+		//save rest
+		if(stv.getId() == 0){
+				return;
+		}
 		template.update(UPDATE_SHIFT_TYPE_SQL,
 				ps -> {
 					ps.setString(1, stv.getName());
@@ -272,6 +276,10 @@ public class RosterDaoImpl implements RosterDao{
 
 	@Override
 	public void deleteShiftType(Integer id) {
+		//save rest
+		if(id == 0){
+			return;
+		}
 		template.update(DELETE_SHIFT_TYPE_BYID_SQL,
 				ps -> ps.setInt(1, id));
 		
@@ -700,12 +708,6 @@ public class RosterDaoImpl implements RosterDao{
 					workdayPrefAvg.get(i).getThuId(),workdayPrefAvg.get(i).getFriId(),workdayPrefAvg.get(i).getSatId(),workdayPrefAvg.get(i).getSunId()));
 			
 		}
-		for(int i=0;i<size;i++){
-			System.out.println(recRos.get(i).getUserId());
-			System.out.println(recRos.get(i).getMonShift());
-			System.out.println(recRos.get(i).getTusShift());
-			System.out.println(recRos.get(i).getWedShift());
-		}
 		result.add(getRosterReportVo(recRos));
 		result.add(getRosterReportVo(spmRos));
 		result.add(getRosterReportVo(spaRos));
@@ -730,6 +732,7 @@ public class RosterDaoImpl implements RosterDao{
 		Map<Integer,Integer> levelMap= new HashMap<Integer,Integer>();
 		Map<Integer,List<ShiftScoreVo>> scoreMap = new HashMap<Integer,List<ShiftScoreVo>>();
 		Map<Integer,List<Double>> workdayMap= new HashMap<Integer,List<Double>>();
+		Map<Integer,Boolean> usedMap = new HashMap<Integer,Boolean>();
 				
 		List<ShiftType> tmpType = template.query(GET_SHIFT_TYPE_SQL, 
 				(rs,rowNum) -> {
@@ -740,6 +743,7 @@ public class RosterDaoImpl implements RosterDao{
 						totalTime += 24;
 					}
 					timeMap.put(rs.getInt(1),totalTime);
+					usedMap.put(rs.getInt(1),rs.getBoolean(5));
 					return new ShiftType();
 				});
 				
@@ -816,6 +820,9 @@ public class RosterDaoImpl implements RosterDao{
 			for(ShiftDemandVo aShift : demands){
 				int[] nums = {aShift.getLv1(),aShift.getLv2(),aShift.getLv3(),aShift.getLv4(),aShift.getLv5()};
 				int shiftId = aShift.getId();
+				if(!usedMap.get(shiftId)){
+					continue;
+				}
 				int idx = 0;
 				
 				for(int lv=0;lv<5;lv++){
@@ -915,6 +922,38 @@ public class RosterDaoImpl implements RosterDao{
 		}
 		return newId;
 	}
+
+	@Override
+	public void chooseRoster(String which) {
+		List<RosterVo> chosen = recommend;
+		if(which.equals("recommend")){
+			chosen = recommend;
+		}else{
+			//
+		}
+		
+		for(RosterVo rv : chosen){
+			template.update(UPDATE_NEXTWEEK_ROSTER_BYID_SQL,
+					ps -> {
+						ps.setInt(1, rv.getMonId());
+						ps.setInt(2, rv.getTusId());
+						ps.setInt(3, rv.getWedId());
+						ps.setInt(4, rv.getThuId());
+						ps.setInt(5, rv.getFriId());
+						ps.setInt(6, rv.getSatId());
+						ps.setInt(7, rv.getSunId());
+						ps.setInt(8, rv.getUserId());
+					});
+		}
+	}
+
+	@Override
+	public void shiftRoster() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	
 
