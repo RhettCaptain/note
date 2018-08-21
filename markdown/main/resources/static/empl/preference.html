@@ -94,7 +94,7 @@ function editWorkDay(){
 
 </head>
 <body>
-
+<a id="top"></a>
 <!-- nav -->
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
@@ -121,19 +121,19 @@ function editWorkDay(){
   	<!-- mark nav -->
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
-			<li><a href="#shiftMark" >Shift</a></li>
+			<li><a href="#shiftMark" onclick="window.location.hash='#shiftMark'">Shift</a></li>
 		<!--  
 			<li><a href="#shiftRuleMark" >Shift Rule</a></li>
 		-->
 			
-			<li><a href="#timeLimitMark" >Time Limit</a></li>
-			<li><a href="#workDayMark">Work Day</a></li>
+			<li><a href="#timeLimitMark" onclick="window.location.hash='#timeLimitMark'">Time Limit</a></li>
+			<li><a href="#workDayMark" onclick="window.location.hash='#workDayMark'">Work Day</a></li>
 		</ul>
 	</div>
 	
 	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
-		    <a name="shiftMark"></a>
+		    <a id="shiftMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift</h3>
 		    </div>
@@ -172,7 +172,7 @@ function editWorkDay(){
 		-->
 		
 		<div class="panel panel-success" >
-			<a name="timeLimitMark"></a>
+			<a id="timeLimitMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
@@ -190,7 +190,7 @@ function editWorkDay(){
 		</div>
 		
 		<div class="panel panel-danger" >
-			<a name="workDayMark"></a>
+			<a id="workDayMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Work Day</h3>
 		    </div>
@@ -202,7 +202,7 @@ function editWorkDay(){
 				  <thead>
 				  <tr>
 				  	<th>Mon</th>
-				  	<th>Tus</th>
+				  	<th>Tue</th>
 				  	<th>Wed</th>
 				  	<th>Thu</th>
 				  	<th>Fri</th>
@@ -219,7 +219,7 @@ function editWorkDay(){
 		</div>
 	</div>
 </div>
-
+<div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
 loadShiftScore();

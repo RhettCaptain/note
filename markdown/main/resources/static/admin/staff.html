@@ -7,16 +7,31 @@
 <title>NurseHub</title>
 
 <script>
-function loadUser(){
-	var res= getJson("/admin/loadUser");
-	
+function loadUserLv(tbName){
+	var lv=1;
+	if(tbName=="lv2tb"){
+		lv=2;
+	}else if(tbName=="lv3tb"){
+		lv=3;
+	}else if(tbName=="lv4tb"){
+		lv=4;
+	}else if(tbName=="lv5tb"){
+		lv=5;
+	}
+	var res= getJson("/admin/loadUser?lv=" + lv);
+	var count = 0;
 	var cont = "";
 	for(i in res){
+		count = count+1;
 		cont = cont + "<tr>";
-		
-		
-		for(j in res[i]){
-			cont = cont + "<td>" +res[i][j] + "</td>";
+
+		cont = cont + "<td>" +res[i].id + "</td>";
+		cont = cont + "<td>" +res[i].nickName + "</td>";
+		cont = cont + "<td>" +res[i].name + "</td>";
+		if(res[i].isManager==true){
+			cont = cont + "<td>√</td>";
+		}else{
+			cont = cont + "<td></td>";
 		}
 		
 		var edit = 'onclick="editUser(\'' + res[i].id + '\')"';
@@ -26,7 +41,22 @@ function loadUser(){
       		+ "<button class=\"btn btn-danger\" " + drop +">Drop</button>"
      	 	+ "</td></tr>"
 	}
-	$("#user").html(cont);
+	$("#" + tbName).html(cont);
+	return count;
+}
+
+function loadUser(){
+	var lv1 = loadUserLv("lv1tb");
+	var lv2 = loadUserLv("lv2tb");
+	var lv3 = loadUserLv("lv3tb");
+	var lv4 = loadUserLv("lv4tb");
+	var lv5 = loadUserLv("lv5tb");
+	$("#count1").text(lv1);
+	$("#count2").text(lv2);
+	$("#count3").text(lv3);
+	$("#count4").text(lv4);
+	$("#count5").text(lv5);
+	$("#countAll").text(lv1+lv2+lv3+lv4+lv5);
 }
 
 function editUser(id){
@@ -41,6 +71,7 @@ function dropUser(id){
 
 </head>
 <body>
+<a id="top"></a>
 <!-- nav -->
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
@@ -67,29 +98,132 @@ function dropUser(id){
   	<!-- mark nav -->
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
-			<li><a href="#staffMark" >Staff Management</a></li>
+			<li><a href="#overviewMark" onclick="window.location.hash='#overviewMark'">Overview</a></li>
+			<li><a href="#lv1Mark" onclick="window.location.hash='#lv1Mark'" >LV1 NURSES</a></li>
+			<li><a href="#lv2Mark" onclick="window.location.hash='#lv2Mark'">LV2 NURSES</a></li>
+			<li><a href="#lv3Mark" onclick="window.location.hash='#lv3Mark'">LV3 NURSES</a></li>
+			<li><a href="#lv4Mark" onclick="window.location.hash='#lv4Mark'">LV4 NURSES</a></li>
+			<li><a href="#lv5Mark" onclick="window.location.hash='#lv5Mark'">LV5 NURSES</a></li>
 		</ul>
 	</div>
 	
 	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
-		    <a name="staffMark"></a>
+		    <a id="overviewMark"></a>
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Staff Management</h3>
+		        <h3 class="panel-title">Overview</h3>
 		    </div>
 		    <div class="panel-body">
 		    	<table class="table table-striped">
-				  <caption><button class="btn btn-success" onclick="editUser('')">Add New Nurse</button></caption>
+				  <caption>The people count for each level</caption>
+				  <thead>
+				  <tr>
+				  	<th>LV1</th>
+				  	<th>LV2</th>
+				  	<th>LV3</th>
+				  	<th>LV4</th>
+				  	<th>LV5</th>
+				  	<th>Total</th>
+				  </tr>
+				  </thead>
+				  <tbody id="overview" >
+				  <tr>
+				  	<td id="count1"></td>
+				  	<td id="count2"></td>
+				  	<td id="count3"></td>
+				  	<td id="count4"></td>
+				  	<td id="count5"></td>
+				  	<td id="countAll"></td>
+				  </tr>
+				  </tbody>
+				</table>
+		    </div>
+		</div>
+		
+		
+		<div class="panel panel-info">
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Management</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<button class="btn btn-success" onclick="editUser('')">Add New Nurse</button>
+		    	<a id="lv1Mark"></a>
+		    	<table class="table table-striped">
+				  <caption>LV1 NURSES</caption>
 				  <thead>
 				  <tr>
 				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>Level</th>
+				  	<th>NickName</th>
+				  	<th>RealName</th>
 				  	<th>Manager</th>
 				  	<th></th>
 				  </tr>
 				  </thead>
-				  <tbody id="user" >
+				  <tbody id="lv1tb" >
+				  </tbody>
+				</table>
+				
+				<a id="lv2Mark"></a>
+				<table class="table table-striped">
+				  <caption>LV2 NURSES</caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>NickName</th>
+				  	<th>RealName</th>
+				  	<th>Manager</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="lv2tb" >
+				  </tbody>
+				</table>
+				
+				<a id="lv3Mark"></a>
+				<table class="table table-striped">
+				  <caption>LV3 NURSES</caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>NickName</th>
+				  	<th>RealName</th>
+				  	<th>Manager</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="lv3tb" >
+				  </tbody>
+				</table>
+				
+				<a id="lv4Mark"></a>
+				<table class="table table-striped">
+				  <caption>LV4 NURSES</caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>NickName</th>
+				  	<th>RealName</th>
+				  	<th>Manager</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="lv4tb" >
+				  </tbody>
+				</table>
+				
+				<a id="lv5Mark"></a>
+				<table class="table table-striped">
+				  <caption>LV5 NURSES</caption>
+				  <thead>
+				  <tr>
+				  	<th>ID</th>
+				  	<th>NickName</th>
+				  	<th>RealName</th>
+				  	<th>Manager</th>
+				  	<th></th>
+				  </tr>
+				  </thead>
+				  <tbody id="lv5tb" >
 				  </tbody>
 				</table>
 		    </div>
@@ -97,7 +231,7 @@ function dropUser(id){
 		
 	</div>
 </div>
-
+<div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
 loadUser();

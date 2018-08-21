@@ -111,7 +111,7 @@ function editTimeLimit(){
 
 </head>
 <body>
-
+<a id="top"></a>
 <!-- nav -->
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
@@ -139,18 +139,18 @@ function editTimeLimit(){
   	<!-- mark nav -->
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
-			<li><a href="#shiftTypeMark" >Shift Type</a></li>
+			<li><a href="#shiftTypeMark" onclick="window.location.hash='#shiftTypeMark'">Shift Type</a></li>
 		<!-- 
 			<li><a href="#shiftRuleMark" >Shift Rule</a></li>
 		-->
-			<li><a href="#shiftDemandMark" >Shift Demand</a></li>
-			<li><a href="#timeLimitMark" >Time Limit</a></li>
+			<li><a href="#shiftDemandMark" onclick="window.location.hash='#shiftDemandMark'">Shift Demand</a></li>
+			<li><a href="#timeLimitMark" onclick="window.location.hash='#timeLimitMark'">Time Limit</a></li>
 		</ul>
 	</div>
 	
 	<div class="col-xs-10 col-md-11">
 		<div class="panel panel-primary">
-		    <a name="shiftTypeMark"></a>
+		    <a id="shiftTypeMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Type</h3>
 		    </div>
@@ -187,7 +187,7 @@ function editTimeLimit(){
 -->
 
 		<div class="panel panel-success">
-		    <a name="shiftDemandMark"></a>
+		    <a id="shiftDemandMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Demand</h3>
 		    </div>
@@ -215,7 +215,7 @@ function editTimeLimit(){
 		</div>
 		
 		<div class="panel panel-warning" >
-			<a name="timeLimitMark"></a>
+			<a id="timeLimitMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
@@ -235,7 +235,7 @@ function editTimeLimit(){
 		</div>
 	</div>
 </div>
-
+<div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
 $("#welcome").text("welcome " + checkLogin() );

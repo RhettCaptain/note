@@ -6,7 +6,7 @@ import lombok.Data;
 public class Roster {
 	private Integer userId;
 	private Integer monShift;
-	private Integer tusShift;
+	private Integer tueShift;
 	private Integer wedShift;
 	private Integer thuShift;
 	private Integer friShift;
@@ -16,11 +16,11 @@ public class Roster {
 	public Roster(){}
 	
 	public Roster(Integer userId,Integer monShift,
-			Integer tusShift,Integer wedShift,Integer thuShift,
+			Integer tueShift,Integer wedShift,Integer thuShift,
 			Integer friShift,Integer satShift,Integer sunShift){
 		this.userId = userId;
 		this.monShift = monShift;
-		this.tusShift = tusShift;
+		this.tueShift = tueShift;
 		this.wedShift = wedShift;
 		this.thuShift = thuShift;
 		this.friShift = friShift;

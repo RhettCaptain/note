@@ -37,8 +37,7 @@ public class WeekListener implements Runnable{
 			}
 			lastDay = date.getDay();
 			try {
-			//	TimeUnit.HOURS.sleep(8);
-				TimeUnit.SECONDS.sleep(20);
+				TimeUnit.HOURS.sleep(8);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

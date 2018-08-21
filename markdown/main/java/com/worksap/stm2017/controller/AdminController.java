@@ -106,9 +106,9 @@ public class AdminController {
 	
 	@RequestMapping("/loadUser")
 	@ResponseBody
-	public List<OtherUserVo> loadUser(){
+	public List<OtherUserVo> loadUser(@RequestParam("lv") Integer lv){
 		UserDao userDao = factory.getUserDao();
-		return userDao.getOtherUserVo();
+		return userDao.getOtherUserVoByLevel(lv);
 	}
 	
 	@RequestMapping("/getOtherUserById")
@@ -194,6 +194,14 @@ public class AdminController {
 		RosterDao rosterDao = factory.getRosterDao();
 		rosterDao.chooseRoster(which);
 		response.sendRedirect("/admin/roster.html");
-		
 	}
+	
+	@RequestMapping("/shiftRoster")
+	@ResponseBody
+	public String shiftRoster(){
+		RosterDao rosterDao = factory.getRosterDao();
+		rosterDao.shiftRoster();
+		return JsonUtil.jsonify("state","ok");
+	}
+	
 }

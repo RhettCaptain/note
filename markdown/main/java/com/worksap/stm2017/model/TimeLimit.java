@@ -10,7 +10,15 @@ public class TimeLimit {
 	public TimeLimit(){}
 	
 	public TimeLimit(Double minTime,Double maxTime){
-		this.minTime = minTime;
-		this.maxTime = maxTime;
+		this.minTime = Math.round(minTime*100)/100.0;
+		this.maxTime = Math.round(maxTime*100)/100.0;;
+	}
+	
+	public void setMinTime(Double minTime){
+		this.minTime = Math.round(minTime*100)/100.0;
+	}
+	
+	public void setMaxTime(Double maxTime){
+		this.maxTime = Math.round(maxTime*100)/100.0;
 	}
 }

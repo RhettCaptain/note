@@ -31,15 +31,18 @@ public class LoginController {
 	@ResponseBody
 	public String loginAdmin(@RequestBody User user,HttpSession session){
 		UserDao userDao = factory.getUserDao();
-		Boolean checked = userDao.checkAdmin(user);
-		String json = JsonUtil.jsonify("loginOk",checked.toString(),
-				"userId",user.getUserId().toString());
-		if(checked){
-			User res = userDao.getUser(user.getUserId());
+		Integer userId = userDao.checkAdmin(user);
+		String json = "";
+		if(userId>=0){
+			json = JsonUtil.jsonify("loginOk","true",
+					"userId",userId.toString());
+			User res = userDao.getUser(userId);
 			session.setAttribute("loginOk", "true");
 			session.setAttribute("userId", res.getUserId());
 			session.setAttribute("userName", res.getName());
 		}else{
+			json = JsonUtil.jsonify("loginOk","false",
+					"userId","-1");
 			session.setAttribute("loginOk", "false");
 		}
 		return json;
@@ -49,15 +52,18 @@ public class LoginController {
 	@ResponseBody
 	public String loginEmpl(@RequestBody User user,HttpSession session){
 		UserDao userDao = factory.getUserDao();
-		Boolean checked = userDao.checkEmpl(user);
-		String json = JsonUtil.jsonify("loginOk",checked.toString(),
-				"userId",user.getUserId().toString());
-		if(checked){
-			User res = userDao.getUser(user.getUserId());
+		Integer userId = userDao.checkEmpl(user);
+		String json="";
+		if(userId>=0){
+			json = JsonUtil.jsonify("loginOk","true",
+					"userId",userId.toString());
+			User res = userDao.getUser(userId);
 			session.setAttribute("loginOk", "true");
 			session.setAttribute("userId", res.getUserId());
 			session.setAttribute("userName", res.getName());
 		}else{
+			json = JsonUtil.jsonify("loginOk","false",
+					"userId","-1");
 			session.setAttribute("loginOk", "false");
 		}
 		return json;

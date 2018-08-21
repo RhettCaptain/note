@@ -24,7 +24,10 @@ public class ShiftScoreVo {
 		this.lv3 = lv3;
 		this.lv4 = lv4;
 		this.lv5 = lv5;
-		this.score = score;
+		this.score = Math.round(score*100)/100.0;
 	}
 	
+	public void setScore(Double score){
+		this.score = score;
+	}
 }

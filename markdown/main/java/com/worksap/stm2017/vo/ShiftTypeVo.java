@@ -22,8 +22,15 @@ public class ShiftTypeVo {
 		this.name = name;
 		this.beginTime = beginTime;
 		this.endTime = endTime;
-		this.total = total;
+		this.total = Math.round(total*100)/100.0;
 		this.used = used;
-		this.score = score;
+		this.score = Math.round(score*100)/100.0;
+	}
+	
+	public void setTotal(Double total){
+		this.total = Math.round(total*100)/100.0;
+	}
+	public void setScore(Double score){
+		this.score = Math.round(score*100)/100.0;
 	}
 }

@@ -102,7 +102,7 @@ function showDay(day){
 	case 1:
 		return "Mon";
 	case 2:
-		return "Tus";
+		return "Tue";
 	case 3:
 		return "Wed";
 	case 4:

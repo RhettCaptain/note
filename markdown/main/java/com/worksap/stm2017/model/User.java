@@ -17,16 +17,20 @@ public class User {
 	private String password;
 	private Integer workLevel;
 	private Boolean isManager;
+	private String nickName;
+	private Boolean deleted;
 	 
 	public User(){
 	}
 	
 	public User(Integer userId,String name,String password,
-			Integer workLevel,Boolean isManager){
+			Integer workLevel,Boolean isManager,String nickName,Boolean deleted){
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
 		this.workLevel = workLevel;
 		this.isManager = isManager;
+		this.nickName = nickName;
+		this.deleted = deleted;
 	}
 }

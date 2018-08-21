@@ -10,8 +10,8 @@ function login(act){
 	//TO DO
 	//非空检查
 	//类型检查
-	if($("#userId").val()=="" || isNaN($("#userId").val())){
-		alert("please input correct id");
+	if($("#nickName").val()=="" ){
+		alert("please input your nickName");
 		return;
 	}
 	var data = $('form').jsonify();
@@ -67,7 +67,7 @@ function login(act){
 		<span class="heading">Login</span>
 		<i ></i>
 		<div>
-			<input id="userId" type="text" name="userId" class="form-control" placeholder="ID"/>
+			<input id="nickName" type="text" name="nickName" class="form-control" placeholder="NickName"/>
 		</div>
 		<div style="margin-top:10px;">
 			<input id="password" type="password" name="password" class="form-control" placeholder="Password"/>

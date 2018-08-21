@@ -137,7 +137,7 @@ function fillRoster(){
 		for (j in ros1[i]){
 			var preStr ="";
 			var gUserId;
-			if(j=="monId" || j=="tusId" || j=="wedId" || j=="thuId"
+			if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
 				|| j=="friId" || j=="satId" || j=="sunId"){
 				if(j=="monId"){cont = cont + "<td>"}
 				preStr = "<input type='text' class='hide' name='" 
@@ -168,7 +168,7 @@ function fillRoster(){
 		for (j in ros2[i]){
 			var preStr ="";
 			var gUserId;
-			if(j=="monId" || j=="tusId" || j=="wedId" || j=="thuId"
+			if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
 				|| j=="friId" || j=="satId" || j=="sunId"){
 				if(j=="monId"){cont = cont + "<td>"}
 				preStr = "<input type='text' class='hide' name='" 
@@ -199,9 +199,11 @@ function setModal(){
 	var res= getJson("/admin/loadShiftType");
 	var cont = "";
 	for(i in res){
-		cont = cont + "<button class='btn btn-block " + "" + color[strNum(res[i].name)]
-			+ "' onclick=\" changeShift('" + res[i].id + "','" + res[i].name + "','"
-			+ color[strNum(res[i].name)] + "') \">" + res[i].name + "</button>";
+		if(res[i].used==true){
+			cont = cont + "<button class='btn btn-block " + "" + color[strNum(res[i].name)]
+				+ "' onclick=\" changeShift('" + res[i].id + "','" + res[i].name + "','"
+				+ color[strNum(res[i].name)] + "') \">" + res[i].name + "</button>";
+		}
 	}
 	$(".modal-body").html(cont);
 }
@@ -211,7 +213,7 @@ function changeShift(id,name,color){
 	var raw = modalBtn.attr("name");
 	if(raw.indexOf("mon")>-1){
 		tr.find(".hide").eq(0).attr("value",id);
-	}else if(raw.indexOf("tus")>-1){
+	}else if(raw.indexOf("tue")>-1){
 		tr.find(".hide").eq(1).attr("value",id);
 	}else if(raw.indexOf("wed")>-1){
 		tr.find(".hide").eq(2).attr("value",id);
@@ -230,8 +232,13 @@ function changeShift(id,name,color){
 	window.location.href="roster.html";
 }
 
+function shiftRoster(){
+	var res= getJson("/admin/shiftRoster");
+	window.location.href="roster.html";
+}
+
 function init(){
-	thisWeek();
+	nextWeek();
 	loadRosterReport();
 	showDemand('mon','thisWeek');
 	showDemand('mon','nextWeek');
@@ -240,10 +247,11 @@ function init(){
 	setModal();
 }
 
+
 </script>
 </head>
 <body>
-
+<a id="top"></a>
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
  	<div class="navbar-header">
@@ -268,9 +276,10 @@ function init(){
  <div class="row">
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked"  data-toggle="buttons">
-			<li><a href="#" onclick="thisWeek()">This Week</a></li>
-			<li><a href="#" onclick="nextWeek()">Next Week</a></li>
 			<li><a href="#" onclick="window.location.href='rosterNextWeek.html'">Roster Next Week</a></li>
+			<li><a href="#" onclick="nextWeek()">Next Week</a></li>
+			<li><a href="#" onclick="thisWeek()">This Week</a></li>
+			<li><a href="#" onclick="shiftRoster()">Shift Roster</a></li>
 		</ul>
 	</div>
 	
@@ -323,13 +332,13 @@ function init(){
 				
 				<ol class="breadcrumb">
 					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','thisWeek')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','thisWeek')">tus</a></li>
-				    <li><a href="#" onclick="showDemand('wed','thisWeek')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','thisWeek')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','thisWeek')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','thisWeek')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','thisWeek')">sun</a></li>
+				    <li><a href="#" onclick="showDemand('mon','thisWeek')">Mon</a></li>
+				    <li><a href="#" onclick="showDemand('tue','thisWeek')">Tue</a></li>
+				    <li><a href="#" onclick="showDemand('wed','thisWeek')">Wed</a></li>
+					<li><a href="#" onclick="showDemand('thu','thisWeek')">Thu</a></li>
+					<li><a href="#" onclick="showDemand('fri','thisWeek')">Fri</a></li>
+					<li><a href="#" onclick="showDemand('sat','thisWeek')">Sat</a></li>
+					<li><a href="#" onclick="showDemand('sun','thisWeek')">Sun</a></li>
 				</ol>
 				
 				<table class="table table-striped">
@@ -346,7 +355,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -432,13 +441,13 @@ function init(){
 				
 				<ol class="breadcrumb">
 					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','nextWeek')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','nextWeek')">tus</a></li>
-				    <li><a href="#" onclick="showDemand('wed','nextWeek')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','nextWeek')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','nextWeek')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','nextWeek')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','nextWeek')">sun</a></li>
+				    <li><a href="#" onclick="showDemand('mon','nextWeek')">Mon</a></li>
+				    <li><a href="#" onclick="showDemand('tue','nextWeek')">Tue</a></li>
+				    <li><a href="#" onclick="showDemand('wed','nextWeek')">Wed</a></li>
+					<li><a href="#" onclick="showDemand('thu','nextWeek')">Thu</a></li>
+					<li><a href="#" onclick="showDemand('fri','nextWeek')">Fri</a></li>
+					<li><a href="#" onclick="showDemand('sat','nextWeek')">Sat</a></li>
+					<li><a href="#" onclick="showDemand('sun','nextWeek')">Sun</a></li>
 				</ol>
 				
 				<table class="table table-striped">
@@ -454,13 +463,13 @@ function init(){
 				  	<th></th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody class="Mon demand" ></tbody>
+				  <tbody class="Tue demand" ></tbody>
+				  <tbody class="Wed demand" ></tbody>
+				  <tbody class="Thu demand" ></tbody>
+				  <tbody class="Fri demand" ></tbody>
+				  <tbody class="Sat demand" ></tbody>
+				  <tbody class="Sun demand" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -509,7 +518,7 @@ function init(){
 	    </div><!-- /.modal -->
 	</div>
 </div>
-
+<div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
 init();

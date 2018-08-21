@@ -277,7 +277,7 @@ function fillTmpFunc(which,tbody){
 		cont = cont + "<tr>";
 		for (j in ros[i]){
 			var preStr ="";
-			if(j=="monId" || j=="tusId" || j=="wedId" || j=="thuId"
+			if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
 				|| j=="friId" || j=="satId" || j=="sunId"){
 				if(j=="monId"){cont = cont + "<td>"}
 				preStr = "<input type='text' class='hide' name='" 
@@ -319,7 +319,7 @@ function changeShift(id,name,color){
 	var raw = modalBtn.attr("name");
 	if(raw.indexOf("mon")>-1){
 		tr.find(".hide").eq(0).attr("value",id);
-	}else if(raw.indexOf("tus")>-1){
+	}else if(raw.indexOf("tue")>-1){
 		tr.find(".hide").eq(1).attr("value",id);
 	}else if(raw.indexOf("wed")>-1){
 		tr.find(".hide").eq(2).attr("value",id);
@@ -361,7 +361,7 @@ function init(){
 </script>
 </head>
 <body>
-
+<a id="top"></a>
  <nav class="navbar navbar-default" role="navigation">
  	<div class="container-fluid">
  	<div class="navbar-header">
@@ -449,7 +449,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','recommend')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','recommend')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','recommend')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','recommend')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','recommend')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','recommend')">fri</a></li>
@@ -471,7 +471,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -559,7 +559,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','shiftPrefMin')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','shiftPrefMin')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','shiftPrefMin')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','shiftPrefMin')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','shiftPrefMin')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','shiftPrefMin')">fri</a></li>
@@ -581,7 +581,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -672,7 +672,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','shiftPrefAvg')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','shiftPrefAvg')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','shiftPrefAvg')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','shiftPrefAvg')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','shiftPrefAvg')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','shiftPrefAvg')">fri</a></li>
@@ -694,7 +694,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -784,7 +784,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','workTimeLong')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','workTimeLong')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','workTimeLong')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','workTimeLong')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','workTimeLong')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','workTimeLong')">fri</a></li>
@@ -806,7 +806,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -894,7 +894,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','workTimeShort')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','workTimeShort')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','workTimeShort')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','workTimeShort')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','workTimeShort')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','workTimeShort')">fri</a></li>
@@ -916,7 +916,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -1005,7 +1005,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','workdayPrefMin')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','workdayPrefMin')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','workdayPrefMin')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','workdayPrefMin')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','workdayPrefMin')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','workdayPrefMin')">fri</a></li>
@@ -1027,7 +1027,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -1116,7 +1116,7 @@ function init(){
 				<ol class="breadcrumb">
 					<li>Demands</li>
 				    <li><a href="#" onclick="showDemand('mon','workdayPrefAvg')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tus','workdayPrefAvg')">tus</a></li>
+				    <li><a href="#" onclick="showDemand('tue','workdayPrefAvg')">tue</a></li>
 				    <li><a href="#" onclick="showDemand('wed','workdayPrefAvg')">wed</a></li>
 					<li><a href="#" onclick="showDemand('thu','workdayPrefAvg')">thu</a></li>
 					<li><a href="#" onclick="showDemand('fri','workdayPrefAvg')">fri</a></li>
@@ -1138,7 +1138,7 @@ function init(){
 				  </tr>
 				  </thead>
 				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tus demand" ></tbody>
+				  <tbody class="tue demand" ></tbody>
 				  <tbody class="wed demand" ></tbody>
 				  <tbody class="thu demand" ></tbody>
 				  <tbody class="fri demand" ></tbody>
@@ -1193,7 +1193,7 @@ function init(){
 	    </div><!-- /.modal -->
 	</div>
 </div>
-
+<div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
 init();

@@ -6,7 +6,7 @@ import lombok.Data;
 public class WorkDay {
 	private Integer userId;
 	private Double mon;
-	private Double tus;
+	private Double tue;
 	private Double wed;
 	private Double thu;
 	private Double fri;
@@ -15,16 +15,37 @@ public class WorkDay {
 	
 	public WorkDay(){}
 	
-	public WorkDay(Integer userId,Double mon,Double tus,Double wed,
+	public WorkDay(Integer userId,Double mon,Double tue,Double wed,
 			Double thu,Double fri,Double sat,Double sun){
 		this.userId = userId;
-		this.mon = mon;
-		this.tus = tus;
-		this.wed = wed;
-		this.thu = thu;
-		this.fri = fri;
-		this.sat = sat;
-		this.sun = sun;
+		this.mon = Math.round(mon*100)/100.0;
+		this.tue = Math.round(tue*100)/100.0;
+		this.wed = Math.round(wed*100)/100.0;
+		this.thu = Math.round(thu*100)/100.0;
+		this.fri = Math.round(fri*100)/100.0;
+		this.sat = Math.round(sat*100)/100.0;
+		this.sun = Math.round(sun*100)/100.0;
 	}
 	
+	public void setMon(Double mon){
+		this.mon = Math.round(mon*100)/100.0;
+	}
+	public void setTue(Double tue){
+		this.tue = Math.round(tue*100)/100.0;
+	}
+	public void setWed(Double wed){
+		this.wed = Math.round(wed*100)/100.0;
+	}
+	public void setThu(Double thu){
+		this.thu = Math.round(thu*100)/100.0;
+	}
+	public void setFri(Double fri){
+		this.fri = Math.round(fri*100)/100.0;
+	}
+	public void setSat(Double sat){
+		this.sat = Math.round(sat*100)/100.0;
+	}
+	public void setSun(Double sun){
+		this.sun = Math.round(sun*100)/100.0;
+	}
 }
