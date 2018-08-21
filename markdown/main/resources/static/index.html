@@ -43,6 +43,11 @@ function getRoster(week){
 	return getJson(url);
 }
 
+function getRosterByLevel(week,level){
+	var url = "/getRoster/"+week + "/" + level;
+	return getJson(url);
+}
+
 function fillRoster(){
 	var ros1 = getRoster(1);
 	var cont = "";
@@ -128,12 +133,21 @@ function init(){
 	</tbody>
 </table>
  
- <table id="tbThisWeek" class="table table-striped">
+ <div id ="tbThisWeek">
+ <ol class="breadcrumb">
+    <span>ROSTER THIS WEEK:</span>
+    <li><a href="#">byShift</a></li>
+    <li><a href="#">byNurse</a></li>
+</ol>
+
+
+ <table  id="tbNurse" class="table table-striped">
   <caption>ROSTER THIS WEEK</caption>
   <thead>
     <tr>
-      <th>UserID</th>
-      <th>UserName</th>
+      <th>Level</th>
+      <th>NickName</th>
+      <th>RealName</th>
       <th class="day"></th>
       <th class="day"></th>
       <th class="day"></th>
@@ -147,7 +161,10 @@ function init(){
   <tbody id="thisTbody"></tbody>
 </table>
 
-<table id="tbNextWeek"  class="table table-striped">
+
+
+<div id="tbNextWeek"></div>
+<table id="tbNurse"  class="table table-striped">
   <caption>ROSTER NEXT WEEK</caption>
   <thead>
     <tr>

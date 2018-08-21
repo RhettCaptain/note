@@ -98,4 +98,20 @@ public class EmplController {
 		userDao.updatePassword(user.getId(), user.getPassword());
 		return JsonUtil.jsonify("state","ok");
 	}
+	
+	@RequestMapping("/checkNickName")
+	@ResponseBody
+	public String checkNickName(@RequestBody UserVo user){
+		UserDao userDao = factory.getUserDao();
+		Boolean exist = userDao.checkNickName(user.getNickName());
+		return JsonUtil.jsonify("exist",exist.toString());
+	}
+	
+	@RequestMapping("/changeNickName")
+	@ResponseBody
+	public String changeNickName(@RequestBody UserVo user){
+		UserDao userDao = factory.getUserDao();
+		userDao.updateNickName(user.getId(),user.getNickName());
+		return JsonUtil.jsonify("state","ok");
+	}
 }

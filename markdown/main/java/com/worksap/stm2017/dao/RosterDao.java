@@ -63,6 +63,8 @@ public interface RosterDao {
 
 	public void shiftRoster();
 
+	public List<RosterVo> getRosterVoByLevel(int week, int level);
+
 
 	
 

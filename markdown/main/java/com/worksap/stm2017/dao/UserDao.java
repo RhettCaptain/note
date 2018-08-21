@@ -30,4 +30,10 @@ public interface UserDao {
 	public void updateNickName(Integer id, String nickName);
 
 	public List<OtherUserVo> getOtherUserVoByLevel(Integer lv);
+
+	public Boolean checkNickName(String nickName);
+
+	public void recoverByNickName(String nickName);
+
+	public List<OtherUserVo> getDeletedUser();
 }

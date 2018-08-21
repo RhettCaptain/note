@@ -204,4 +204,18 @@ public class AdminController {
 		return JsonUtil.jsonify("state","ok");
 	}
 	
+	@RequestMapping("/getDeletedUser")
+	@ResponseBody
+	public List<OtherUserVo> loadUser(){
+		UserDao userDao = factory.getUserDao();
+		return userDao.getDeletedUser();
+	}
+	
+	@RequestMapping("/recoverByNickName")
+	public void recoverByNickName(@RequestParam("nickName") String nickName,HttpServletResponse response) throws IOException{
+		UserDao userDao = factory.getUserDao();
+		userDao.recoverByNickName(nickName);
+		response.sendRedirect("/admin/staff.html");
+		
+	}
 }

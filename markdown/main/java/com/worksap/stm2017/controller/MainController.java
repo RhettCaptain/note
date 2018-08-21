@@ -41,4 +41,15 @@ public class MainController {
 		return t;
 	}
 	
+	@RequestMapping("/getRoster/{week}/{level}")
+	@ResponseBody
+	public List<RosterVo> getRosterByLevel(@PathVariable("week") int week,@PathVariable("level") int level){
+
+		RosterDao rs = factory.getRosterDao();
+		
+		List<RosterVo> t = rs.getRosterVoByLevel(week,level);
+		
+		return t;
+	}
+	
 }

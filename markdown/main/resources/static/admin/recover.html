@@ -1,0 +1,70 @@
+   <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<script src="../js/header.js"></script>
+<script src="../js/util.js"></script>
+<script src="../js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="../css/bootstrap-datetimepicker.min.css"/>
+<title>NurseHub</title>
+
+<script>
+
+
+function init(){
+	var users = getJson("/admin/getDeletedUser");
+	var cont = "";
+	
+	for(i in users){
+		cont = cont + "<tr><td>" + users[i].nickName + "</td><td>" +users[i].name 
+			+ "</td><td>";
+		if(users[i].isManager==true){
+			cont = cont+ "√";
+		}
+		cont = cont +"</td><td><button class='btn btn-success' onclick='recover(\""
+				+ users[i].nickName + "\")'>Recover</button></td></tr>";
+	}
+	$("#recover").html(cont);
+}
+
+function recover(nickName){
+	window.location.href="/admin/recoverByNickName?nickName=" + nickName;
+}
+
+function cancel(){
+	window.location.href = "staff.html";
+}
+</script>
+</head>
+
+<body>
+<div class="panel panel-default" style="margin-left:25%;margin-right:25%;margin-top:20px;">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            User Info
+        </h3>
+    </div>
+    <div class="panel-body">
+   		<table class="table table-striped">
+			<caption></caption>
+			<thead>
+			<tr>
+				<th>NickName</th>
+				<th>RealName</th>
+				<th>Level</th>
+				<th>Manager</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody id="recover" ></tbody>
+		</table>
+    </div>
+</div>
+
+<script>
+init();
+</script>
+                
+</body>
+</html>

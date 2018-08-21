@@ -16,19 +16,21 @@ import com.worksap.stm2017.vo.UserVo;
 public class UserDaoImpl implements UserDao{
 	private JdbcTemplate template;
 	
-	private final String LOAD_SQL = "select * from users order by \"userId\" where \"deleted\"=false ";
+	private final String LOAD_SQL = "select * from users where \"deleted\"=false order by \"userId\"" ;
+	private final String LOAD_DELETED_SQL = "select * from users where \"deleted\"=true order by \"userId\" ";
 	private final String LOAD_BY_LV_SQL = "select * from users where \"workLevel\" = ? and \"deleted\"=false order by \"userId\" ";
 	private final String SEARCH_SQL = "select * from users where \"userId\" = ? and \"deleted\"=false";
 	private final String CHECK_BY_NICKNAME_SQL = "select * from users where \"nickName\" = ? and password = ? and \"deleted\"=false ";
 	private final String CHECK_NICKNAME_SQL = "select * from users where \"nickName\" = ?";
 	private final String CHECK_BY_ID_SQL = "select * from users where \"userId\" = ? and password = ? \"deleted\"=false";
-	private final String ALL_ID_SQL =  "select \"userId\" from users where \"deleted\"=false order by \"userId\"";
+	private final String ALL_ID_SQL =  "select \"userId\" from users order by \"userId\"";
 	private final String INSERT_SQL = "insert into users(\"userId\",name,password,\"workLevel\", \"isManager\",\"nickName\",\"deleted\") values (?,?,?,?,?,?,?)";
 	private final String UPDATE_SQL = "update users set name=?,\"workLevel\"=?, \"isManager\"=? where \"userId\"=?";
 //	private final String DELETE_SQL = "delete from users where \"userId\"=?";
 	private final String DELETE_SQL = "update users set \"deleted\"=true where \"userId\"=?";
 	private final String UPDATE_PWD_SQL = "update users set \"password\"=? where \"userId\"=?";
-	private final String UPDATE_NICKNAME_SQL = "update users set \"nickname\"=? where \"userId\"=?";
+	private final String UPDATE_NICKNAME_SQL = "update users set \"nickName\"=? where \"userId\"=?";
+	private final String RECOVER_BY_NICKNAME_SQL = "update users set \"deleted\"=false where \"nickName\"=?";
 	
 	private final String INSERT_THIS_ROSTER_SQL = "insert into \"thisWeekRoster\" (\"userId\",\"monShift\",\"tueShift\",\"wedShift\",\"thuShift\",\"friShift\",\"satShift\",\"sunShift\") "
 			+ "values (?,?,?,?,?,?,?,?)";
@@ -141,16 +143,27 @@ public class UserDaoImpl implements UserDao{
 	}
 	
 
+	public Boolean checkNickName(String nickName){
+		List<Integer> res = template.query(CHECK_NICKNAME_SQL, 
+				ps -> ps.setString(1,nickName),
+				(rs,rowNum) -> new Integer(0));
+		if(res==null || res.size()==0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	
 	@Override
 	public void addUser(OtherUserVo stv) {
 		//add user
 		Integer userId = generateId();
 		String name = stv.getName();
-		String password = userId.toString();
+		String password = name;
 		Integer workLevel = stv.getWorkLevel();
 		Boolean isManager = stv.getIsManager();
-		String nickName = name + userId;
+		String nickName = name;
 		template.update(INSERT_SQL,
 				ps -> {
 					ps.setInt(1, userId);
@@ -158,7 +171,16 @@ public class UserDaoImpl implements UserDao{
 					ps.setString(3, password);
 					ps.setInt(4, workLevel);
 					ps.setBoolean(5, isManager);
-					ps.setString(6, nickName);
+					if(checkNickName(nickName)){
+						String tmp=nickName;
+						while(checkNickName(tmp)){
+							tmp+=userId;
+						}
+						ps.setString(6, tmp);
+					}else{
+						ps.setString(6, nickName);
+					}
+					
 					ps.setBoolean(7, false);
 				});
 		//add def roster
@@ -275,7 +297,6 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public void updatePassword(Integer id, String password) {
-		// TODO Auto-generated method stub UPDATE_PWD_SQL
 		template.update(UPDATE_PWD_SQL,
 				ps -> {
 					ps.setString(1, password);
@@ -285,12 +306,80 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public void updateNickName(Integer id, String nickName) {
-		// TODO Auto-generated method stub UPDATE_PWD_SQL
 		template.update(UPDATE_NICKNAME_SQL,
 				ps -> {
 					ps.setString(1, nickName);
 					ps.setInt(2, id);
 				});
+	}
+
+
+	@Override
+	public void recoverByNickName(String nickName) {
+		template.update(RECOVER_BY_NICKNAME_SQL,
+				nickName);
+		
+		List<Integer> id = template.query(CHECK_NICKNAME_SQL, 
+				ps -> ps.setString(1,nickName),
+				(rs,rowNum) -> new Integer(rs.getInt(1)));
+		
+		Integer userId = id.get(0);
+		//add def roster
+				template.update(INSERT_THIS_ROSTER_SQL,
+						ps -> {
+							ps.setInt(1, userId);
+							for(int i=0;i<7;i++){
+								ps.setInt(i+2, 0);
+							}
+						});
+				template.update(INSERT_NEXT_ROSTER_SQL,
+						ps -> {
+							ps.setInt(1, userId);
+							for(int i=0;i<7;i++){
+								ps.setInt(i+2, 0);
+							}
+						});
+				
+				//add def shiftScore
+				List<Integer> shiftType = template.query(GET_SHIFT_TYPE_ID_SQL, 
+						(rs,rowNum) -> new Integer(rs.getInt(1)));
+				for(Integer type : shiftType){
+					template.update(INSERT_SHIFT_SCORE_SQL,
+							ps -> {
+								ps.setInt(1, type);
+								ps.setInt(2, userId);
+								for(int i=0;i<5;i++){
+									ps.setInt(i+3, 0);
+								}
+								ps.setDouble(8, 3.0);
+							});
+				}
+				
+				//add def time limit rec
+				template.update(INSERT_LIMIT_REC_SQL,
+						ps -> {
+							ps.setInt(1, userId);
+							ps.setDouble(2, 0);
+							ps.setDouble(3, 56);
+						});
+				
+				//add def workday
+				template.update(INSERT_WORKDAY_SQL,
+						ps -> {
+							ps.setInt(1, userId);
+							for(int i=0;i<7;i++){
+								ps.setDouble(i+2, 3.0);
+							}
+						});
+	}
+
+
+	@Override
+	public List<OtherUserVo> getDeletedUser() {
+		List<OtherUserVo> list = template.query(LOAD_DELETED_SQL, 
+				(rs,rowNum) -> new OtherUserVo(rs.getInt(1),rs.getString(2),
+						rs.getInt(4),rs.getBoolean(5),rs.getString(6),rs.getBoolean(7)));
+		return list;
 	}
 
 	

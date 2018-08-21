@@ -26,6 +26,24 @@ function changePwd(){
 	user.password = $("#newPassword").val();
 	sendJson("/empl/changePassword",user);
 }
+
+function changeNickName(){
+	if($("#password").val() != user.password){
+		alert("password err");
+		return;
+	}
+	if($("#newNickName").val() == ""){
+		alert("nick name can't be empty");
+		return;
+	}
+	user.nickName = $("#newNickName").val();
+	var check = sendJson("/empl/checkNickName",user)
+	if(check.exist=="true"){
+		alert("the nick name exists");
+	}else{
+		sendJson("/empl/changeNickName",user);
+	}
+}
 </script>
 </head>
 
@@ -81,6 +99,7 @@ function changePwd(){
 				</div>
 				<div style="margin:10px;" class="input-group">
 					<button id="changePws" class="btn btn-success" data-toggle="modal" data-target="#myModal">Change Password</button> 
+					<button id="changeNickName" class="btn btn-warning" data-toggle="modal" data-target="#nickModal">Change NickName</button> 
 				</div>
 		    </div>
 		</div>
@@ -115,12 +134,36 @@ function changePwd(){
 	        </div><!-- /.modal-content -->
 	    </div><!-- /.modal -->
 	</div>
+	
+	<div class="modal fade" id="nickModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	            </div>
+	            <div class="modal-body">
+	            	<div style="margin:10px;" class="input-group">
+		    			<span class="input-group-addon">New NickName: </span>
+			  			<input id="newNickName" type="text"  class="form-control"/>
+			  		</div>
+			  		<div style="margin:10px;" class="input-group">
+		    			<span class="input-group-addon">Password: </span>
+			  			<input id="password" type="text"  class="form-control"/>
+			  		</div>
+			  		<div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                <button type="button" class="btn btn-primary" onclick="changeNickName()" data-dismiss="modal">Confirm</button>
+		            </div>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
 </div>
+
 <div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 <script>
 loadUser();
 $("#welcome").text("welcome " + checkLogin() );
-
- </script>
+</script>
 </body>
 </html>

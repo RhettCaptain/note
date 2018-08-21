@@ -67,9 +67,9 @@ public class RosterDaoImpl implements RosterDao{
 	private final String UPDATE_WORKDAY_BY_USERID_SQL = "UPDATE \"workDay\" SET \"mon\"=?, \"tue\"=?,\"wed\"=?, \"thu\"=?, "
 			+ "\"fri\"=?, \"sat\"=?,\"sun\"=? WHERE \"userId\"=?";
 	
-	private final String GET_USER_SQL = "SELECT * FROM \"users\" ORDER BY \"userId\"";
-	private final String GET_USER_IDS_SQL = "SELECT \"userId\" FROM \"users\" ORDER BY \"userId\"";
-	private final String GET_USER_BY_LEVEL_SQL = "SELECT * FROM \"users\" WHERE \"workLevel\"=?";
+	private final String GET_USER_SQL = "SELECT * FROM \"users\" WHERE \"deleted\"=false ORDER BY \"userId\"";
+	private final String GET_USER_IDS_SQL = "SELECT \"userId\" FROM \"users\" WHERE \"deleted\"=false ORDER BY \"userId\"";
+	private final String GET_USER_BY_LEVEL_SQL = "SELECT * FROM \"users\" WHERE \"deleted\"=false AND \"workLevel\"=?";
 	
 	private final String GET_THIS_ROSTER_SQL = "SELECT * FROM \"thisWeekRoster\" ORDER BY \"userId\"";
 	private final String GET_NEXT_ROSTER_SQL = "SELECT * FROM \"nextWeekRoster\" ORDER BY \"userId\"";
@@ -94,6 +94,73 @@ public class RosterDaoImpl implements RosterDao{
 	
 	@Override
 	public List<RosterVo> getRosterVo(int idx) {
+		//1 this week,2 next week
+		Map<Integer,String> typeMap= new HashMap<Integer,String>();
+		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
+		Map<Integer,String> userMap= new HashMap<Integer,String>();
+		
+		
+		List<ShiftType> shiftType = template.query(GET_SHIFT_TYPE_SQL, 
+				(rs,rowNum) -> {
+					typeMap.put(rs.getInt(1),rs.getString(2));
+					Double totalTime = (rs.getTime(4).getHours() + rs.getTime(4).getMinutes()/60.0) 
+							- (rs.getTime(3).getHours() + rs.getTime(3).getMinutes()/60.0);
+					if(totalTime < 0){
+						totalTime += 24;
+					}
+					timeMap.put(rs.getInt(1),totalTime);
+					return new ShiftType();
+				});
+		
+		List<User> users = template.query(GET_USER_SQL, 
+				(rs,rowNum) -> {
+					userMap.put(rs.getInt(1),rs.getString(2));
+					return new User();
+				});
+		
+		List<RosterVo> rv = null;
+		if(idx == 1){
+			rv =template.query(GET_THIS_ROSTER_SQL,
+					(rs,rowNum) -> {
+						Integer userId = rs.getInt(1);
+						String userName = userMap.get(userId);
+						List<Integer> shiftId = new ArrayList<Integer>();
+						List<String> shiftName = new ArrayList<String>();
+						Double totalTime = 0.0;
+						for(int i=0;i<7;i++){
+							int typeId = rs.getInt(i+2);
+							shiftId.add(typeId);
+							shiftName.add(typeMap.get(typeId));
+							totalTime += timeMap.get(typeId);
+						}
+						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
+								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
+								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+					});
+		}else if(idx == 2){
+			rv =template.query(GET_NEXT_ROSTER_SQL,
+					(rs,rowNum) -> {
+						Integer userId = rs.getInt(1);
+						String userName = userMap.get(userId);
+						List<Integer> shiftId = new ArrayList<Integer>();
+						List<String> shiftName = new ArrayList<String>();
+						Double totalTime = 0.0;
+						for(int i=0;i<7;i++){
+							int typeId = rs.getInt(i+2);
+							shiftId.add(typeId);
+							shiftName.add(typeMap.get(typeId));
+							totalTime += timeMap.get(typeId);
+						}
+						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
+								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
+								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+					});
+		}
+		return rv;
+	}
+	
+	@Override
+	public List<RosterVo> getRosterVoByLevel(int idx,int lv) {
 		//1 this week,2 next week
 		Map<Integer,String> typeMap= new HashMap<Integer,String>();
 		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
