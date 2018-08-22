@@ -11,6 +11,13 @@
 var color = ['','btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
 var modalBtn = "";
 var which = "recomend";
+var gMinTimeLimit=0;
+var gMaxTimeLimit=1000;
+function loadTimeLimit(){
+	var res = getJson("/admin/loadTimeLimit");
+	gMinTimeLimit = res.minTime;
+	gMaxTimeLimit = res.maxTime;
+}
 
 function recommend(){
 	$("#recommend").show();
@@ -84,13 +91,6 @@ function workdayPrefAvg(){
 }
 
 
-function showDemand(week,whichA){
-	var hide = "."+whichA +" .demand";
-	$(hide).hide();
-	var show = hide + "." + week;
-	$(show).show();
-}
-
 function generateRosters(){
 	getJson("/admin/generateRosters");
 }
@@ -143,108 +143,108 @@ function loadNewRosterReport(){
 	}
 	
 	if(recArr[0]==true){
-		$(".recommend .timeLimitOk").text("√");
-		$(".recommend .timeLimitOk").css("color","green");
+		$(".recommend .timeLimitOk").text(" √");
+		$(".recommend .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".recommend .timeLimitOk").text("×");
-		$(".recommend .timeLimitOk").css("color","red");
+		$(".recommend .timeLimitOk").text(" ×");
+		$(".recommend .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(recArr[1]==true){
-		$(".recommend .demandOk").text("√");
-		$(".recommend .demandOk").css("color","green");
+		$(".recommend .demandOk").text(" √");
+		$(".recommend .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".recommend .demandOk").text("×");
-		$(".recommend .demandOk").css("color","red");
+		$(".recommend .demandOk").text(" ×");
+		$(".recommend .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(spmArr[0]==true){
-		$(".shiftPrefMin .timeLimitOk").text("√");
-		$(".shiftPrefMin .timeLimitOk").css("color","green");
+		$(".shiftPrefMin .timeLimitOk").text(" √");
+		$(".shiftPrefMin .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".shiftPrefMin .timeLimitOk").text("×");
-		$(".shiftPrefMin .timeLimitOk").css("color","red");
+		$(".shiftPrefMin .timeLimitOk").text(" ×");
+		$(".shiftPrefMin .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(spmArr[1]==true){
-		$(".shiftPrefMin .demandOk").text("√");
-		$(".shiftPrefMin .demandOk").css("color","green");
+		$(".shiftPrefMin .demandOk").text(" √");
+		$(".shiftPrefMin .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".shiftPrefMin .demandOk").text("×");
-		$(".shiftPrefMin .demandOk").css("color","red");
+		$(".shiftPrefMin .demandOk").text(" ×");
+		$(".shiftPrefMin .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(spaArr[0]==true){
-		$(".shiftPrefAvg .timeLimitOk").text("√");
-		$(".shiftPrefAvg .timeLimitOk").css("color","green");
+		$(".shiftPrefAvg .timeLimitOk").text(" √");
+		$(".shiftPrefAvg .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".shiftPrefAvg .timeLimitOk").text("×");
-		$(".shiftPrefAvg .timeLimitOk").css("color","red");
+		$(".shiftPrefAvg .timeLimitOk").text(" ×");
+		$(".shiftPrefAvg .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(spaArr[1]==true){
-		$(".shiftPrefAvg .demandOk").text("√");
-		$(".shiftPrefAvg .demandOk").css("color","green");
+		$(".shiftPrefAvg .demandOk").text(" √");
+		$(".shiftPrefAvg .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".shiftPrefAvg .demandOk").text("×");
-		$(".shiftPrefAvg .demandOk").css("color","red");
+		$(".shiftPrefAvg .demandOk").text(" ×");
+		$(".shiftPrefAvg .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(wtlArr[0]==true){
-		$(".workTimeLong .timeLimitOk").text("√");
-		$(".workTimeLong .timeLimitOk").css("color","green");
+		$(".workTimeLong .timeLimitOk").text(" √");
+		$(".workTimeLong .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workTimeLong .timeLimitOk").text("×");
-		$(".workTimeLong .timeLimitOk").css("color","red");
+		$(".workTimeLong .timeLimitOk").text(" ×");
+		$(".workTimeLong .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(wtlArr[1]==true){
-		$(".workTimeLong .demandOk").text("√");
-		$(".workTimeLong .demandOk").css("color","green");
+		$(".workTimeLong .demandOk").text(" √");
+		$(".workTimeLong .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workTimeLong .demandOk").text("×");
-		$(".workTimeLong .demandOk").css("color","red");
+		$(".workTimeLong .demandOk").text(" ×");
+		$(".workTimeLong .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(wtsArr[0]==true){
-		$(".workTimeShort .timeLimitOk").text("√");
-		$(".workTimeShort .timeLimitOk").css("color","green");
+		$(".workTimeShort .timeLimitOk").text(" √");
+		$(".workTimeShort .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workTimeShort .timeLimitOk").text("×");
-		$(".workTimeShort .timeLimitOk").css("color","red");
+		$(".workTimeShort .timeLimitOk").text(" ×");
+		$(".workTimeShort .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(wtsArr[1]==true){
-		$(".workTimeShort .demandOk").text("√");
-		$(".workTimeShort .demandOk").css("color","green");
+		$(".workTimeShort .demandOk").text(" √");
+		$(".workTimeShort .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workTimeShort .demandOk").text("×");
-		$(".workTimeShort .demandOk").css("color","red");
+		$(".workTimeShort .demandOk").text(" ×");
+		$(".workTimeShort .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(wpmArr[0]==true){
-		$(".workdayPrefMin .timeLimitOk").text("√");
-		$(".workdayPrefMin .timeLimitOk").css("color","green");
+		$(".workdayPrefMin .timeLimitOk").text(" √");
+		$(".workdayPrefMin .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workdayPrefMin .timeLimitOk").text("×");
-		$(".workdayPrefMin .timeLimitOk").css("color","red");
+		$(".workdayPrefMin .timeLimitOk").text(" ×");
+		$(".workdayPrefMin .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(wpmArr[1]==true){
-		$(".workdayPrefMin .demandOk").text("√");
-		$(".workdayPrefMin .demandOk").css("color","green");
+		$(".workdayPrefMin .demandOk").text(" √");
+		$(".workdayPrefMin .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workdayPrefMin .demandOk").text("×");
-		$(".workdayPrefMin .demandOk").css("color","red");
+		$(".workdayPrefMin .demandOk").text(" ×");
+		$(".workdayPrefMin .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	if(wpaArr[0]==true){
-		$(".workdayPrefAvg .timeLimitOk").text("√");
-		$(".workdayPrefAvg .timeLimitOk").css("color","green");
+		$(".workdayPrefAvg .timeLimitOk").text(" √");
+		$(".workdayPrefAvg .timeLimitOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workdayPrefAvg .timeLimitOk").text("×");
-		$(".workdayPrefAvg .timeLimitOk").css("color","red");
+		$(".workdayPrefAvg .timeLimitOk").text(" ×");
+		$(".workdayPrefAvg .timeLimitOk").css({"color":"red","font-size":"150%"});
 	}
 	if(wpaArr[1]==true){
-		$(".workdayPrefAvg .demandOk").text("√");
-		$(".workdayPrefAvg .demandOk").css("color","green");
+		$(".workdayPrefAvg .demandOk").text(" √");
+		$(".workdayPrefAvg .demandOk").css({"color":"green","font-size":"150%"});
 	}else{
-		$(".workdayPrefAvg .demandOk").text("×");
-		$(".workdayPrefAvg .demandOk").css("color","red");
+		$(".workdayPrefAvg .demandOk").text(" ×");
+		$(".workdayPrefAvg .demandOk").css({"color":"red","font-size":"150%"});
 	}
 	
 	$(".recommend .compScore").val(recArr[2]);
@@ -292,36 +292,44 @@ function loadNewRosterReport(){
 	var wpmDemands = wpmArr[12];
 	var wpaDemands = wpaArr[12];
 	
-	var i = 0;
-	for(i=0;i<7;i++){
-		loadTmpFunc(recDemands,".recommend",i);
-		loadTmpFunc(spmDemands,".shiftPrefMin",i);
-		loadTmpFunc(spaDemands,".shiftPrefAvg",i);
-		loadTmpFunc(wtlDemands,".workTimeLong",i);
-		loadTmpFunc(wtsDemands,".workTimeShort",i);
-		loadTmpFunc(wpmDemands,".workdayPrefMin",i);
-		loadTmpFunc(wpaDemands,".workdayPrefAvg",i);
-	}
+	$("#recommendTb").html(loadTmpFunc(recDemands));
+	$("#shiftPrefMinTb").html(loadTmpFunc(spmDemands));
+	$("#shiftPrefAvgTb").html(loadTmpFunc(spaDemands));
+	$("#workTimeLongTb").html(loadTmpFunc(wtlDemands));
+	$("#workTimeShortTb").html(loadTmpFunc(wtsDemands));
+	$("#workdayPrefMinTb").html(loadTmpFunc(wpmDemands));
+	$("#workdayPrefAvgTb").html(loadTmpFunc(wpaDemands));
 }
 
 
-function loadTmpFunc(demand,className,i){
-	var cont = "";
-	for(sh in demand[i]){
-	//	cont = cont + "<tr><td>" + demand[i][sh].id + "</td>";
-		cont = cont + "<td>" + demand[i][sh].name + "</td>";
-		var arr = new Array();
-		var idx=0;
-		for(j in demand[i][sh]){
-			arr[idx] = demand[i][sh][j];
-			idx = idx+1;
+function loadTmpFunc(demand){
+	var contShift = "";
+	var colorShift = ['','primary','success','info','warning','danger'];
+	var levelName = ["N0:Nurse","N1:Nurse Practitioner","N2:Nurse-in-charge","N3:Associate Professor of Nursing","N4:Professor of Nursing"];
+	for(var sh in demand[0]){
+		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(demand[i][sh].name)] + "><b>" + demand[i][sh].name +"</b></td>";
+		for(var idxL=0;idxL<5;idxL++){
+			if(idxL!=0){
+				contShift += "<tr>"
+			}
+			contShift = contShift + "<td class='info' colspan='9'><b>" + levelName[idxL] + "</b></td></tr>";
+			contShift = contShift + "<tr><td class='warning'>Arranged</td>"
+			for(var idxD=0;idxD<7;idxD++){
+				var arranged = demand[idxD][sh]["lv"+(idxL+1)];
+				var demanded = demand[idxD][sh]["lv"+(idxL+1)+"rec"];
+				var pre="<td>";
+				if(arranged < demanded){
+					pre = "<td style='color:red'>";
+				}else if(arranged > demanded){
+					pre = "<td style='color:blue'>";
+				}
+				contShift = contShift + pre + arranged + "</td>";
+			}
+			contShift = contShift + "<td>" + demand[0][sh]["lv"+(idxL+1)+"rec"] + "</td></tr>";
 		}
-		for(j=2;j<7;j++){
-			cont = cont + "<td>" + arr[j] + "(" + arr[j+5] + ")</td>";
-		}
-		cont = cont + "</tr>";
 	}
-	$(className + " .demand").eq(i).html(cont);
+	 
+	return contShift;
 }
 
 
@@ -335,13 +343,10 @@ function showHead(){
 	for(i=0;i<7;i++){
 		date.setDate(date.getDate()+1);
 		var str = showDay(date.getDay()) + "(" + (date.getMonth()+1) + "/" + date.getDate() +")";
-		$(".day").eq(i).text(str);
-		$(".day").eq(i+7).text(str);
-		$(".day").eq(i+14).text(str);
-		$(".day").eq(i+21).text(str);
-		$(".day").eq(i+28).text(str);
-		$(".day").eq(i+35).text(str);
-		$(".day").eq(i+42).text(str);
+		for(j=0;j<7;j++){
+			$(".day").eq(i+7*j).text(str);
+			$(".dayShift").eq(i+7*j).text(str);
+		}
 	}
 }
 
@@ -362,56 +367,171 @@ function getNewRoster(which){
 	return getJson(url);
 }
 
-function fillRoster(){
-	fillTmpFunc("recommend",$("#recTbody"));
-	fillTmpFunc("shiftPrefMin",$("#spmTbody"));
-	fillTmpFunc("shiftPrefAvg",$("#spaTbody"));
-	fillTmpFunc("workTimeLong",$("#wtlTbody"));
-	fillTmpFunc("workTimeShort",$("#wtsTbody"));
-	fillTmpFunc("workdayPrefMin",$("#wpmTbody"));
-	fillTmpFunc("workdayPrefAvg",$("#wpaTbody"));
+function getNewRosterByLevel(which,level){
+	var url = "/admin/getNewRosterByLevel/"+which +"/" + level;
+	return getJson(url);
 }
 
-function fillTmpFunc(which,tbody){
 
-	var ros = getNewRoster(which);
+function fillerHelper(week){
+	var levelName = ["N0:Nurse","N1:Nurse Practitioner","N2:Nurse-in-charge","N3:Associate Professor of Nursing","N4:Professor of Nursing"];
 	var cont = "";
+	var shiftRoster =new Object();
+	for(var lv=1;lv<=5;lv++){
+		var ros1 = getNewRosterByLevel(week,lv);
+		cont = cont + "<tr><td colspan='9' class='info'><b>"+levelName[lv-1]+"</b></td></tr>"
 
-	for(i in ros){
-		cont = cont + "<tr>";
-		for (j in ros[i]){
-			var preStr ="";
-			var gUserId;
-			if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
-				|| j=="friId" || j=="satId" || j=="sunId"){
-				if(j=="monId"){cont = cont + "<td>"}
-				preStr = "<input type='text' class='hide' name='" 
-					+ j + "' value='" +ros[i][j] + "' ";
-
-				cont = cont + preStr + ">";
-				if(j=="sunId"){
-					cont = cont + "<input type='text' class='hide' name='userId'value='"
-					+ gUserId + "'></td>";}
-			}else if(j=="userId"){
-				gUserId = ros[i][j];
-			}else if(j=="userName"){
-				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros[i].nickName + "' ";
-				cont = cont + preStr + "></td>";
-			}else if(j=="nickName"){
-			}else if(j!="totalTime"){
-				preStr = "<td><input type='button' class='btn " + color[strNum(ros[i][j])] + "' name='" + j + "' value='" +ros[i][j] 
-					+ "' onclick='modalBtn=$(this)' ";
-				cont = cont + preStr + "></td>";
+		for(i in ros1){
+			//get shift roster
+			if(shiftRoster[ros1[i].monShift] == undefined){
+				shiftRoster[ros1[i].monShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].monShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].monShift][j][k]="";
+					}
+				}
+				
+				shiftRoster[ros1[i].monShift][0][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+				
 			}else{
-				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros[i][j] + "' ";
-				cont = cont + preStr + "></td>";
+				shiftRoster[ros1[i].monShift][0][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//tue
+			if(shiftRoster[ros1[i].tueShift] == undefined){
+				shiftRoster[ros1[i].tueShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].tueShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].tueShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].tueShift][1][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].tueShift][1][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//wed
+			if(shiftRoster[ros1[i].wedShift] == undefined){
+				shiftRoster[ros1[i].wedShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].wedShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].wedShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].wedShift][2][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].wedShift][2][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//thu
+			if(shiftRoster[ros1[i].thuShift] == undefined){
+				shiftRoster[ros1[i].thuShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].thuShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].thuShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].thuShift][3][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].thuShift][3][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//fri
+			if(shiftRoster[ros1[i].friShift] == undefined){
+				shiftRoster[ros1[i].friShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].friShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].friShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].friShift][4][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].friShift][4][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//sat
+			if(shiftRoster[ros1[i].satShift] == undefined){
+				shiftRoster[ros1[i].satShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].satShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].satShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].satShift][5][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].satShift][5][lv-1] += "<div>"+ros1[i].nickName + "</div>";
+			}
+			//sun
+			if(shiftRoster[ros1[i].sunShift] == undefined){
+				shiftRoster[ros1[i].sunShift] = new Array();
+				for(var j=0;j<7;j++){
+					shiftRoster[ros1[i].sunShift][j] = new Array();
+					for(var k=0;k<5;k++){
+						shiftRoster[ros1[i].sunShift][j][k]="";
+					}
+				}
+				shiftRoster[ros1[i].sunShift][6][lv-1] = "<div>"+ros1[i].nickName + "</div>";
+			}else{
+				shiftRoster[ros1[i].sunShift][6][lv-1] += "<div>"+ros1[i].nickName + "</div>";
 			}
 			
-		}	
-		cont = cont + "</tr>";
+			
+			//fill roster
+			cont = cont + "<tr>";
+			cont = cont + "<th>" +ros1[i].nickName + "</th>";
+			for (j in ros1[i]){
+				var preStr ="";
+				var gUserId;
+				if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
+					|| j=="friId" || j=="satId" || j=="sunId"){
+					if(j=="monId"){cont = cont + "<td>"}
+					preStr = "<input type='text' class='hide' name='" 
+						+ j + "' value='" +ros1[i][j] + "' ";
 
+					cont = cont + preStr + ">";
+					if(j=="sunId"){
+						cont = cont + "<input type='text' class='hide' name='userId'value='"
+						+ gUserId + "'></td>";}
+				}else if(j=="userId"){
+					gUserId = ros1[i][j];
+				}else if(j=="userName"){
+				//	preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros1[i].nickName + "' ";
+				//	cont = cont + preStr + "></td>";
+				}else if(j=="nickName"){
+				}else if(j=="totalTime"){
+					var total = ros1[i][j];
+					if(total > gMaxTimeLimit || total < gMinTimeLimit){
+						cont = cont + "<td style='color:red'>" + total + "</td>";
+					}else{
+						cont = cont + "<td>" + total + "</td>";
+					}
+					
+				}else{
+					preStr = "<td><input type='button' class='btn " + color[strNum(ros1[i][j])] + "' name='" + j + "' value='" +ros1[i][j] 
+					+ "' onclick='modalBtn=$(this)' ";
+					cont = cont + preStr + "></td>";
+				}
+			}
+			cont = cont + "</tr>";
+			
+		}
 	}
-	tbody.html(cont);
+	return cont;
+}
+
+
+function fillRoster(){
+	
+	$("#recTbody").html(fillerHelper("recommend"));
+	$("#spmTbody").html(fillerHelper("shiftPrefMin"));
+	$("#spaTbody").html(fillerHelper("shiftPrefAvg"));
+	$("#wtlTbody").html(fillerHelper("workTimeLong"));
+	$("#wtsTbody").html(fillerHelper("workTimeShort"));
+	$("#wpmTbody").html(fillerHelper("workdayPrefMin"));
+	$("#wpaTbody").html(fillerHelper("workdayPrefAvg"));
+	
+	$(".hide").hide();
 }
 
 function setModal(){
@@ -454,16 +574,10 @@ function choose(whichRos){
 }
 
 function init(){
+	loadTimeLimit();
 	recommend();
 	generateRosters();
 	loadNewRosterReport();
-	showDemand('mon','recommend');
-	showDemand('mon','shiftPrefMin');
-	showDemand('mon','shiftPrefAvg');
-	showDemand('mon','workTimeLong');
-	showDemand('mon','workTimeShort');
-	showDemand('mon','workdayPrefMin');
-	showDemand('mon','workdayPrefAvg');
 	showHead();
 	fillRoster();
 	setModal();
@@ -557,36 +671,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','recommend')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','recommend')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','recommend')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','recommend')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','recommend')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','recommend')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','recommend')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="recommendTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -665,36 +765,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','shiftPrefMin')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','shiftPrefMin')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','shiftPrefMin')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','shiftPrefMin')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','shiftPrefMin')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','shiftPrefMin')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','shiftPrefMin')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="shiftPrefMinTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -776,36 +862,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','shiftPrefAvg')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','shiftPrefAvg')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','shiftPrefAvg')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','shiftPrefAvg')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','shiftPrefAvg')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','shiftPrefAvg')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','shiftPrefAvg')">sun</a></li>
-				</ol>
-				
-				<table class="table table-striped">
+				 <table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="shiftPrefAvgTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -886,36 +958,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','workTimeLong')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','workTimeLong')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','workTimeLong')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','workTimeLong')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','workTimeLong')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','workTimeLong')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','workTimeLong')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="workTimeLongTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -994,36 +1052,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','workTimeShort')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','workTimeShort')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','workTimeShort')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','workTimeShort')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','workTimeShort')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','workTimeShort')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','workTimeShort')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="workTimeShortTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -1103,36 +1147,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','workdayPrefMin')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','workdayPrefMin')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','workdayPrefMin')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','workdayPrefMin')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','workdayPrefMin')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','workdayPrefMin')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','workdayPrefMin')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="workdayPrefMinTb" ></tbody>
 				</table>
 		    </div>
 		</div>
@@ -1212,36 +1242,22 @@ function init(){
 				</tbody>
 				</table>
 				
-				<ol class="breadcrumb">
-					<li>Demands</li>
-				    <li><a href="#" onclick="showDemand('mon','workdayPrefAvg')">mon</a></li>
-				    <li><a href="#" onclick="showDemand('tue','workdayPrefAvg')">tue</a></li>
-				    <li><a href="#" onclick="showDemand('wed','workdayPrefAvg')">wed</a></li>
-					<li><a href="#" onclick="showDemand('thu','workdayPrefAvg')">thu</a></li>
-					<li><a href="#" onclick="showDemand('fri','workdayPrefAvg')">fri</a></li>
-					<li><a href="#" onclick="showDemand('sat','workdayPrefAvg')">sat</a></li>
-					<li><a href="#" onclick="showDemand('sun','workdayPrefAvg')">sun</a></li>
-				</ol>
-				
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Shift</th>
 				  	<th></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				    <th class="dayShift"></th>
+				  	<th>Demand</th>
 				  </tr>
 				  </thead>
-				  <tbody class="mon demand" ></tbody>
-				  <tbody class="tue demand" ></tbody>
-				  <tbody class="wed demand" ></tbody>
-				  <tbody class="thu demand" ></tbody>
-				  <tbody class="fri demand" ></tbody>
-				  <tbody class="sat demand" ></tbody>
-				  <tbody class="sun demand" ></tbody>
+				  <tbody id="workdayPrefAvgTb" ></tbody>
 				</table>
 		    </div>
 		</div>

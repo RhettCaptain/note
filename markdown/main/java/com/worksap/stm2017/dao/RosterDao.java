@@ -65,6 +65,8 @@ public interface RosterDao {
 
 	public List<RosterVo> getRosterVoByLevel(int week, int level);
 
+	public List<RosterVo> getNewRosterVoByLevel(String which, Integer level);
+
 
 	
 

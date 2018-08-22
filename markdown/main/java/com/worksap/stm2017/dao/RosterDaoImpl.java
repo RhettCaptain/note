@@ -1006,6 +1006,72 @@ public class RosterDaoImpl implements RosterDao{
 		return null;
 	}
 	
+	@Override
+	public List<RosterVo> getNewRosterVoByLevel(String which,Integer lv) {
+
+		Map<Integer,String> typeMap= new HashMap<Integer,String>();
+		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
+		Map<Integer,String> userMap= new HashMap<Integer,String>();
+		Map<Integer,String> nickMap= new HashMap<Integer,String>();
+		Map<Integer,Integer> lvMap= new HashMap<Integer,Integer>();
+		
+		List<ShiftType> shiftType = template.query(GET_SHIFT_TYPE_SQL, 
+				(rs,rowNum) -> {
+					typeMap.put(rs.getInt(1),rs.getString(2));
+					Double totalTime = (rs.getTime(4).getHours() + rs.getTime(4).getMinutes()/60.0) 
+							- (rs.getTime(3).getHours() + rs.getTime(3).getMinutes()/60.0);
+					if(totalTime < 0){
+						totalTime += 24;
+					}
+					timeMap.put(rs.getInt(1),totalTime);
+					return new ShiftType();
+				});
+		
+		List<User> users = template.query(GET_USER_SQL, 
+				(rs,rowNum) -> {
+					userMap.put(rs.getInt(1),rs.getString(2));
+					nickMap.put(rs.getInt(1),rs.getString(6));
+					lvMap.put(rs.getInt(1), rs.getInt(4));
+					return new User();
+				});
+		
+		List<RosterVo> rv = null;
+		if(which.equals("recommend")){
+			rv =  recommend;
+		}
+		if(which.equals("shiftPrefMin")){
+			rv = shiftPrefMin;
+		}
+		if(which.equals("shiftPrefAvg")){
+			rv =  shiftPrefAvg;
+		}
+		if(which.equals("workTimeLong")){
+			rv =  workTimeLong;
+		}
+		if(which.equals("workTimeShort")){
+			rv =  workTimeShort;
+		}
+		if(which.equals("workdayPrefMin")){
+			rv =  workdayPrefMin;
+		}
+		if(which.equals("workdayPrefAvg")){
+			rv =  workdayPrefAvg;
+		}
+		List<RosterVo> tmp = new ArrayList();
+		for(RosterVo rvv : rv){
+			tmp.add(rvv);
+		}
+		int size = tmp.size();
+		for(int i=0;i<size;i++){
+			if(lvMap.get(tmp.get(i).getUserId()) != lv){
+				tmp.remove(i);
+				size--;
+				i--;
+			}
+		}
+		return tmp;
+	}
+	
 	
 
 	private Integer generateId(String sql,Integer startIdx){

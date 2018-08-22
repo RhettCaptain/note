@@ -181,6 +181,17 @@ public class AdminController {
 		return t;
 	}
 	
+	@RequestMapping("/getNewRosterByLevel/{which}/{level}")
+	@ResponseBody
+	public List<RosterVo> getNewRoster(@PathVariable("which") String which,@PathVariable("level") Integer level){
+
+		RosterDao rs = factory.getRosterDao();
+		
+		List<RosterVo> t = rs.getNewRosterVoByLevel(which,level);
+		
+		return t;
+	}
+	
 	@RequestMapping("/generateRosters")
 	@ResponseBody
 	public String generateRosters(){
@@ -195,6 +206,7 @@ public class AdminController {
 		rosterDao.chooseRoster(which);
 		response.sendRedirect("/admin/roster.html");
 	}
+	
 	
 	@RequestMapping("/shiftRoster")
 	@ResponseBody
