@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
+<script src="../js/bootstrap-rating.min.js"></script>
+<link href="../css/bootstrap-rating.css" rel="stylesheet">
 <title>NurseHub</title>
 <script>
 var color = ['','btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
@@ -43,17 +45,49 @@ function loadRosterReport(){
 		idx = idx+1;
 	}
 	
-	$(".thisWeek .timeLimitOk").text("Time Limit Ok: " + thisArr[0]);
-	$(".thisWeek .demandOk").text("  Demand Ok: " + thisArr[1]);
-	$(".thisWeek .compScore").text("Comprehensive Score: " + thisArr[2]);
+	if(thisArr[0]==true){
+		$(".thisWeek .timeLimitOk").text("√");
+		$(".thisWeek .timeLimitOk").css("color","green");
+	}else{
+		$(".thisWeek .timeLimitOk").text("×");
+		$(".thisWeek .timeLimitOk").css("color","red");
+	}
+	if(thisArr[1]==true){
+		$(".thisWeek .demandOk").text("√");
+		$(".thisWeek .demandOk").css("color","green");
+	}else{
+		$(".thisWeek .demandOk").text("×");
+		$(".thisWeek .demandOk").css("color","red");
+	}
+	if(nextArr[0]==true){
+		$(".nextWeek .timeLimitOk").text("√");
+		$(".nextWeek .timeLimitOk").css("color","green");
+	}else{
+		$(".nextWeek .timeLimitOk").text("×");
+		$(".nextWeek .timeLimitOk").css("color","red");
+	}
+	if(nextArr[1]==true){
+		$(".nextWeek .demandOk").text("√");
+		$(".nextWeek .demandOk").css("color","green");
+	}else{
+		$(".nextWeek .demandOk").text("×");
+		$(".nextWeek .demandOk").css("color","red");
+	}
 	
-	$(".nextWeek .timeLimitOk").text("Time Limit Ok: " + nextArr[0]);
-	$(".nextWeek .demandOk").text("  Demand Ok: " + nextArr[1]);
-	$(".nextWeek .compScore").text("Comprehensive Score: " + nextArr[2]);
+	$(".thisWeek .compScore").val(thisArr[2]);
+	$(".nextWeek .compScore").val(nextArr[2]);
 	
-	for(i=0;i<9;i++){
-		$(".thisWeek .prefTd").eq(i).text(thisArr[i+3]);
-		$(".nextWeek .prefTd").eq(i).text(nextArr[i+3]);
+	for(i=0;i<3;i++){
+		$(".thisWeek .prefTd").eq(i).val(thisArr[i+3]);
+		$(".nextWeek .prefTd").eq(i).val(nextArr[i+3]);
+	}
+	for(i=6;i<9;i++){
+		$(".thisWeek .prefTd").eq(i-3).val(thisArr[i+3]);
+		$(".nextWeek .prefTd").eq(i-3).val(nextArr[i+3]);
+	}
+	for(i=3;i<6;i++){
+		$(".thisWeek .prefTd").eq(i+3).text(thisArr[i+3]);
+		$(".nextWeek .prefTd").eq(i+3).text(nextArr[i+3]);
 	}
 	
 	var thisDemands = thisArr[12];
@@ -63,8 +97,8 @@ function loadRosterReport(){
 		
 		var cont = "";
 		for(sh in thisDemands[i]){
-			cont = cont + "<tr><td>" + thisDemands[i][sh].id + "</td>";
-			cont = cont + "<td>" + thisDemands[i][sh].name + "</td>";
+		//	cont = cont + "<td>" + thisDemands[i][sh].id + "</td>";
+			cont = cont + "<tr><td>" + thisDemands[i][sh].name + "</td>";
 			var arr = new Array();
 			var idx=0;
 			for(j in thisDemands[i][sh]){
@@ -80,8 +114,8 @@ function loadRosterReport(){
 		
 		cont = "";
 		for(sh in nextDemands[i]){
-			cont = cont + "<tr><td>" + nextDemands[i][sh].id + "</td>";
-			cont = cont + "<td>" + nextDemands[i][sh].name + "</td>";
+		//	cont = cont + "<tr><td>" + nextDemands[i][sh].id + "</td>";
+			cont = cont + "<tr><td>" + nextDemands[i][sh].name + "</td>";
 			var arr = new Array();
 			var idx=0;
 			for(j in nextDemands[i][sh]){
@@ -146,15 +180,20 @@ function fillRoster(){
 				cont = cont + preStr + ">";
 				if(j=="sunId"){
 					cont = cont + "<input type='text' class='hide' name='userId'value='"
-					+ gUserId + "'>'</td>";}
-			}else if(j!="userId" && j!="userName" &&j!="totalTime"){
+					+ gUserId + "'></td>";}
+			}else if(j=="userId"){
+				gUserId = ros1[i][j];
+			}else if(j=="userName"){
+				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros1[i].nickName + "' ";
+				cont = cont + preStr + "></td>";
+			}else if(j=="nickName"){
+			}else if(j!="totalTime"){
 				preStr = "<td><input type='button' class='btn " + color[strNum(ros1[i][j])] + "' name='" + j + "' value='" +ros1[i][j] 
 					+ "' onclick='modalBtn=$(this)' data-toggle=\"modal\" data-target=\"#myModal\" ";
 				cont = cont + preStr + "></td>";
 			}else{
 				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros1[i][j] + "' ";
 				cont = cont + preStr + "></td>";
-				if(j=="userId"){gUserId = ros1[i][j];}
 			}
 		}
 		
@@ -177,15 +216,20 @@ function fillRoster(){
 				cont = cont + preStr + ">";
 				if(j=="sunId"){
 					cont = cont + "<input type='text' class='hide' name='userId'value='"
-					+ gUserId + "'>'</td>";}
-			}else if(j!="userId" && j!="userName" &&j!="totalTime"){
+					+ gUserId + "'></td>";}
+			}else if(j=="userId"){
+				gUserId = ros2[i][j];
+			}else if(j=="userName"){
+				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros2[i].nickName + "' ";
+				cont = cont + preStr + "></td>";
+			}else if(j=="nickName"){
+			}else if(j!="totalTime"){
 				preStr = "<td><input type='button' class='btn " + color[strNum(ros2[i][j])] + "' name='" + j + "' value='" +ros2[i][j] 
 					+ "' onclick='modalBtn=$(this)' data-toggle=\"modal\" data-target=\"#myModal\" ";
 				cont = cont + preStr + "></td>";
 			}else{
 				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros2[i][j] + "' ";
 				cont = cont + preStr + "></td>";
-				if(j=="userId"){gUserId = ros2[i][j];}
 			}
 		}
 		cont = cont + "</tr>";
@@ -294,10 +338,10 @@ function init(){
 		    
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  </caption>
 				  <thead>
@@ -310,19 +354,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -344,13 +388,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -373,7 +416,6 @@ function init(){
 		    	<table id="tbThisWeek" class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -403,10 +445,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  </caption>
 				  <thead>
@@ -419,19 +461,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -453,13 +495,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -483,7 +524,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -523,6 +563,7 @@ function init(){
 <script>
 init();
 $("#welcome").text("welcome " + checkLogin() );
+$("td,th").addClass("text-center");
 </script>
 			
 </body>

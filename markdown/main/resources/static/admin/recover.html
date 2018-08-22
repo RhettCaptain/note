@@ -18,10 +18,11 @@ function init(){
 	
 	for(i in users){
 		cont = cont + "<tr><td>" + users[i].nickName + "</td><td>" +users[i].name 
-			+ "</td><td>";
+			+ "</td><td>N" + (users[i].workLevel-1) + "</td><td>";
 		if(users[i].isManager==true){
 			cont = cont+ "√";
 		}
+		
 		cont = cont +"</td><td><button class='btn btn-success' onclick='recover(\""
 				+ users[i].nickName + "\")'>Recover</button></td></tr>";
 	}

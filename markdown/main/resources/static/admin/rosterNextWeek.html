@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
+<script src="../js/bootstrap-rating.min.js"></script>
+<link href="../css/bootstrap-rating.css" rel="stylesheet">
 <title>NurseHub</title>
 <script>
 var color = ['','btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
@@ -140,44 +142,146 @@ function loadNewRosterReport(){
 		idx = idx+1;
 	}
 	
-	$(".recommend .timeLimitOk").text("Time Limit Ok: " + recArr[0]);
-	$(".recommend .demandOk").text("  Demand Ok: " + recArr[1]);
-	$(".recommend .compScore").text("Comprehensive Score: " + recArr[2]);
+	if(recArr[0]==true){
+		$(".recommend .timeLimitOk").text("√");
+		$(".recommend .timeLimitOk").css("color","green");
+	}else{
+		$(".recommend .timeLimitOk").text("×");
+		$(".recommend .timeLimitOk").css("color","red");
+	}
+	if(recArr[1]==true){
+		$(".recommend .demandOk").text("√");
+		$(".recommend .demandOk").css("color","green");
+	}else{
+		$(".recommend .demandOk").text("×");
+		$(".recommend .demandOk").css("color","red");
+	}
 	
-	$(".shiftPrefMin .timeLimitOk").text("Time Limit Ok: " + spmArr[0]);
-	$(".shiftPrefMin .demandOk").text("  Demand Ok: " + spmArr[1]);
-	$(".shiftPrefMin .compScore").text("Comprehensive Score: " + spmArr[2]);
+	if(spmArr[0]==true){
+		$(".shiftPrefMin .timeLimitOk").text("√");
+		$(".shiftPrefMin .timeLimitOk").css("color","green");
+	}else{
+		$(".shiftPrefMin .timeLimitOk").text("×");
+		$(".shiftPrefMin .timeLimitOk").css("color","red");
+	}
+	if(spmArr[1]==true){
+		$(".shiftPrefMin .demandOk").text("√");
+		$(".shiftPrefMin .demandOk").css("color","green");
+	}else{
+		$(".shiftPrefMin .demandOk").text("×");
+		$(".shiftPrefMin .demandOk").css("color","red");
+	}
 	
-	$(".shiftPrefAvg .timeLimitOk").text("Time Limit Ok: " + spaArr[0]);
-	$(".shiftPrefAvg .demandOk").text("  Demand Ok: " + spaArr[1]);
-	$(".shiftPrefAvg .compScore").text("Comprehensive Score: " + spaArr[2]);
+	if(spaArr[0]==true){
+		$(".shiftPrefAvg .timeLimitOk").text("√");
+		$(".shiftPrefAvg .timeLimitOk").css("color","green");
+	}else{
+		$(".shiftPrefAvg .timeLimitOk").text("×");
+		$(".shiftPrefAvg .timeLimitOk").css("color","red");
+	}
+	if(spaArr[1]==true){
+		$(".shiftPrefAvg .demandOk").text("√");
+		$(".shiftPrefAvg .demandOk").css("color","green");
+	}else{
+		$(".shiftPrefAvg .demandOk").text("×");
+		$(".shiftPrefAvg .demandOk").css("color","red");
+	}
 	
-	$(".workTimeLong .timeLimitOk").text("Time Limit Ok: " + wtlArr[0]);
-	$(".workTimeLong .demandOk").text("  Demand Ok: " + wtlArr[1]);
-	$(".workTimeLong .compScore").text("Comprehensive Score: " + wtlArr[2]);
+	if(wtlArr[0]==true){
+		$(".workTimeLong .timeLimitOk").text("√");
+		$(".workTimeLong .timeLimitOk").css("color","green");
+	}else{
+		$(".workTimeLong .timeLimitOk").text("×");
+		$(".workTimeLong .timeLimitOk").css("color","red");
+	}
+	if(wtlArr[1]==true){
+		$(".workTimeLong .demandOk").text("√");
+		$(".workTimeLong .demandOk").css("color","green");
+	}else{
+		$(".workTimeLong .demandOk").text("×");
+		$(".workTimeLong .demandOk").css("color","red");
+	}
 	
-	$(".workTimeShort .timeLimitOk").text("Time Limit Ok: " + wtsArr[0]);
-	$(".workTimeShort .demandOk").text("  Demand Ok: " + wtsArr[1]);
-	$(".workTimeShort .compScore").text("Comprehensive Score: " + wtsArr[2]);
+	if(wtsArr[0]==true){
+		$(".workTimeShort .timeLimitOk").text("√");
+		$(".workTimeShort .timeLimitOk").css("color","green");
+	}else{
+		$(".workTimeShort .timeLimitOk").text("×");
+		$(".workTimeShort .timeLimitOk").css("color","red");
+	}
+	if(wtsArr[1]==true){
+		$(".workTimeShort .demandOk").text("√");
+		$(".workTimeShort .demandOk").css("color","green");
+	}else{
+		$(".workTimeShort .demandOk").text("×");
+		$(".workTimeShort .demandOk").css("color","red");
+	}
 	
-	$(".workdayPrefMin .timeLimitOk").text("Time Limit Ok: " + spmArr[0]);
-	$(".workdayPrefMin .demandOk").text("  Demand Ok: " + spmArr[1]);
-	$(".workdayPrefMin .compScore").text("Comprehensive Score: " + spmArr[2]);
+	if(wpmArr[0]==true){
+		$(".workdayPrefMin .timeLimitOk").text("√");
+		$(".workdayPrefMin .timeLimitOk").css("color","green");
+	}else{
+		$(".workdayPrefMin .timeLimitOk").text("×");
+		$(".workdayPrefMin .timeLimitOk").css("color","red");
+	}
+	if(wpmArr[1]==true){
+		$(".workdayPrefMin .demandOk").text("√");
+		$(".workdayPrefMin .demandOk").css("color","green");
+	}else{
+		$(".workdayPrefMin .demandOk").text("×");
+		$(".workdayPrefMin .demandOk").css("color","red");
+	}
 	
-	$(".workdayPrefAvg .timeLimitOk").text("Time Limit Ok: " + wpaArr[0]);
-	$(".workdayPrefAvg .demandOk").text("  Demand Ok: " + wpaArr[1]);
-	$(".workdayPrefAvg .compScore").text("Comprehensive Score: " + wpaArr[2]);
+	if(wpaArr[0]==true){
+		$(".workdayPrefAvg .timeLimitOk").text("√");
+		$(".workdayPrefAvg .timeLimitOk").css("color","green");
+	}else{
+		$(".workdayPrefAvg .timeLimitOk").text("×");
+		$(".workdayPrefAvg .timeLimitOk").css("color","red");
+	}
+	if(wpaArr[1]==true){
+		$(".workdayPrefAvg .demandOk").text("√");
+		$(".workdayPrefAvg .demandOk").css("color","green");
+	}else{
+		$(".workdayPrefAvg .demandOk").text("×");
+		$(".workdayPrefAvg .demandOk").css("color","red");
+	}
+	
+	$(".recommend .compScore").val(recArr[2]);
+	$(".shiftPrefMin .compScore").val(spmArr[2]);
+	$(".shiftPrefAvg .compScore").val(spaArr[2]);
+	$(".workTimeLong .compScore").val(wtlArr[2]);
+	$(".workTimeShort .compScore").val(wtsArr[2]);
+	$(".workdayPrefMin .compScore").val(spmArr[2]);
+	$(".workdayPrefAvg .compScore").val(wpaArr[2]);
 	
 	
-	
-	for(i=0;i<9;i++){
-		$(".recommend .prefTd").eq(i).text(recArr[i+3]);
-		$(".shiftPrefMin .prefTd").eq(i).text(spmArr[i+3]);
-		$(".shiftPrefAvg .prefTd").eq(i).text(spaArr[i+3]);
-		$(".workTimeLong .prefTd").eq(i).text(wtlArr[i+3]);
-		$(".workTimeShort .prefTd").eq(i).text(wtsArr[i+3]);
-		$(".workdayPrefMin .prefTd").eq(i).text(wpmArr[i+3]);
-		$(".workdayPrefAvg .prefTd").eq(i).text(wpaArr[i+3]);
+	for(i=0;i<3;i++){
+		$(".recommend .prefTd").eq(i).val(recArr[i+3]);
+		$(".shiftPrefMin .prefTd").eq(i).val(spmArr[i+3]);
+		$(".shiftPrefAvg .prefTd").eq(i).val(spaArr[i+3]);
+		$(".workTimeLong .prefTd").eq(i).val(wtlArr[i+3]);
+		$(".workTimeShort .prefTd").eq(i).val(wtsArr[i+3]);
+		$(".workdayPrefMin .prefTd").eq(i).val(wpmArr[i+3]);
+		$(".workdayPrefAvg .prefTd").eq(i).val(wpaArr[i+3]);
+	}
+	for(i=6;i<9;i++){
+		$(".recommend .prefTd").eq(i-3).val(recArr[i+3]);
+		$(".shiftPrefMin .prefTd").eq(i-3).val(spmArr[i+3]);
+		$(".shiftPrefAvg .prefTd").eq(i-3).val(spaArr[i+3]);
+		$(".workTimeLong .prefTd").eq(i-3).val(wtlArr[i+3]);
+		$(".workTimeShort .prefTd").eq(i-3).val(wtsArr[i+3]);
+		$(".workdayPrefMin .prefTd").eq(i-3).val(wpmArr[i+3]);
+		$(".workdayPrefAvg .prefTd").eq(i-3).val(wpaArr[i+3]);
+	}
+	for(i=3;i<6;i++){
+		$(".recommend .prefTd").eq(i+3).text(recArr[i+3]);
+		$(".shiftPrefMin .prefTd").eq(i+3).text(spmArr[i+3]);
+		$(".shiftPrefAvg .prefTd").eq(i+3).text(spaArr[i+3]);
+		$(".workTimeLong .prefTd").eq(i+3).text(wtlArr[i+3]);
+		$(".workTimeShort .prefTd").eq(i+3).text(wtsArr[i+3]);
+		$(".workdayPrefMin .prefTd").eq(i+3).text(wpmArr[i+3]);
+		$(".workdayPrefAvg .prefTd").eq(i+3).text(wpaArr[i+3]);
 	}
 	
 	var recDemands = recArr[12];
@@ -204,7 +308,7 @@ function loadNewRosterReport(){
 function loadTmpFunc(demand,className,i){
 	var cont = "";
 	for(sh in demand[i]){
-		cont = cont + "<tr><td>" + demand[i][sh].id + "</td>";
+	//	cont = cont + "<tr><td>" + demand[i][sh].id + "</td>";
 		cont = cont + "<td>" + demand[i][sh].name + "</td>";
 		var arr = new Array();
 		var idx=0;
@@ -277,6 +381,7 @@ function fillTmpFunc(which,tbody){
 		cont = cont + "<tr>";
 		for (j in ros[i]){
 			var preStr ="";
+			var gUserId;
 			if(j=="monId" || j=="tueId" || j=="wedId" || j=="thuId"
 				|| j=="friId" || j=="satId" || j=="sunId"){
 				if(j=="monId"){cont = cont + "<td>"}
@@ -284,19 +389,25 @@ function fillTmpFunc(which,tbody){
 					+ j + "' value='" +ros[i][j] + "' ";
 
 				cont = cont + preStr + ">";
-				if(j=="sunId"){cont = cont + "</td>"}
-			}else if(j!="userId" && j!="userName" &&j!="totalTime"){
-		//		preStr = "<td><input type='button' class='btn " + color[strNum(ros[i][j])] + "' name='" + j + "' value='" +ros[i][j] 
-		//			+ "' onclick='modalBtn=$(this)' data-toggle=\"modal\" data-target=\"#myModal\" ";
+				if(j=="sunId"){
+					cont = cont + "<input type='text' class='hide' name='userId'value='"
+					+ gUserId + "'></td>";}
+			}else if(j=="userId"){
+				gUserId = ros[i][j];
+			}else if(j=="userName"){
+				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros[i].nickName + "' ";
+				cont = cont + preStr + "></td>";
+			}else if(j=="nickName"){
+			}else if(j!="totalTime"){
 				preStr = "<td><input type='button' class='btn " + color[strNum(ros[i][j])] + "' name='" + j + "' value='" +ros[i][j] 
-				+ "' onclick='modalBtn=$(this)' ";
+					+ "' onclick='modalBtn=$(this)' ";
 				cont = cont + preStr + "></td>";
 			}else{
 				preStr = "<td><input type='button' class='btn' name='" + j + "' value='" +ros[i][j] + "' ";
 				cont = cont + preStr + "></td>";
 			}
-		}
-	
+			
+		}	
 		cont = cont + "</tr>";
 
 	}
@@ -409,10 +520,10 @@ function init(){
 		    
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('recommend')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -426,19 +537,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -460,13 +571,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -489,7 +599,6 @@ function init(){
 		    	<table id="tbThisWeek" class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -519,10 +628,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('shiftPrefMin')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -536,19 +645,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -570,13 +679,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -600,7 +708,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -632,10 +739,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('shiftPrefAvg')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -649,19 +756,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -683,13 +790,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -713,7 +819,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -744,10 +849,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('workTimeLong')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -761,19 +866,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -795,13 +900,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -825,7 +929,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -854,10 +957,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('workTimeShort')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -871,19 +974,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -905,13 +1008,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -935,7 +1037,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -965,10 +1066,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('workdayPrefMin')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -982,19 +1083,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -1016,13 +1117,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -1046,7 +1146,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>
@@ -1076,10 +1175,10 @@ function init(){
 		    	
 		    	<table class="table">
 				  <caption>
-				  	<div class="compScore">Comprehensive Score:</div>
-				  	<div>
-				  		<span class="timeLimitOk">Time Limit Ok:</span>
-				  		<span class="demandOk">Demand Ok:</span>
+				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
+				  	<div><b>Meet Shift Demand:<span class="demandOk"></span></b></div>
+				  	<div><b>Comprehensive Score:</b>
+				  		<input type='hidden' class='rating compScore' data-readonly data-fractions='2'/>
 				  	</div>
 				  	<div><button class="btn btn-success" onclick="choose('workdayPrefAvg')">USE THIS ROSTER</button></div>
 				  </caption>
@@ -1093,19 +1192,19 @@ function init(){
 				  </thead>
 				  <tbody >
 				    <tr class="success">
-				      <td>ShiftPref(5)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>ShiftPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="warning">
-				      <td>WorkTime(h)</td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
-				      <td class="prefTd"></td>
+				      <td>WorkdayPref</td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
+				      <td><input type='hidden' class='rating prefTd' data-readonly data-fractions='2'/></td>
 				    </tr>
 				    <tr class="danger">
-				      <td>WorkdayPref(5)</td>
+				      <td>WorkTime(h)</td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
 				      <td class="prefTd"></td>
@@ -1127,13 +1226,12 @@ function init(){
 				<table class="table table-striped">
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th>ShiftName</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -1157,7 +1255,6 @@ function init(){
 		    	<table id="tbNextWeek"  class="table table-striped">
 				  <thead>
 				    <tr>
-				      <th>UserID</th>
 				      <th>UserName</th>
 				      <th class="day"></th>
 				      <th class="day"></th>

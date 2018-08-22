@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
+<script src="../js/bootstrap-rating.min.js"></script>
+<link href="../css/bootstrap-rating.css" rel="stylesheet">
 <title>NurseHub</title>
 <script>
 
@@ -12,18 +14,25 @@ function loadShiftScore(){
 	var cont = "";
 	for(i in res){
 		cont = cont + "<tr>";
-		var preStr = "<td><input type='text' class='form-control' readonly='readonly' name='";
 		for(j in res[i]){
-			if(j!="id" && j!='name'){
-				preStr = "<td><input type='text' class='form-control editable' readonly='readonly' name='";
+			if(j=="id"){
+			}else if(j=="name"){
+				var preStr = "<td><input type='text' class='form-control' readonly='readonly' name='";
+				cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
+			}else if(j=="score"){
+				cont = cont + "<td><input type='hidden' class='rating' disabled='disabled' data-fractions='2' name='score' value='" + res[i][j] + "'/></td>";
+			}else{
+				var preStr = "<td><input type='text' class='form-control editable' readonly='readonly' name='";
+				cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
 			}
-			cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
 		}
 		
 		var edit = 'onclick="scoreShiftType(this)"';
 		cont = cont + "<td style=\"text-align:right\">"
       		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
-     	 	+ "</td></tr>"
+     	 	+ "</td>";
+     	var preStr = "<td><input type='text' style='display:none' class='form-control' readonly='readonly' name='";
+     	cont = cont + preStr + "id' value='" + res[i].id +"'></td></tr>";
 	}
 	$("#shift").html(cont);
 }
@@ -33,10 +42,13 @@ function scoreShiftType(btn){
 	if($(btn).text() == "Edit"){
 		$(btn).text("Save");
 		tr.find(".editable").removeAttr("readonly");
+		tr.find(".rating").prop("disabled",false);
 	}else{
 		$(btn).text("Edit");
 		sendJson("/empl/updateShiftScore?userId="+getUserId(),jsonify(tr));
 		loadShiftScore();
+		$(".rating").rating();
+		$("td,th").addClass("text-center");
 	}
 }
 
@@ -64,8 +76,8 @@ function loadWorkDay(){
 	var res= getJson("/empl/loadWorkDay?userId=" + getUserId());
 	var cont = "";
 	for(i in res){
-		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='"
-			+i + "' value='" + res[i] + "'></td>";
+		cont = cont + "<td><input type='hidden' class='rating' disabled='disabled' data-fractions='2' name='"
+			+i + "' value='" + res[i] + "'/></td>";
 	}
 	var edit = 'onclick="editWorkDay()"';
 	cont = cont + "<td style=\"text-align:right\">"
@@ -80,13 +92,13 @@ function editWorkDay(){
 	var tr = $("#workdayTr");
 	if(btn.text() == "Edit"){
 		btn.text("Save");
-		tr.find("input").removeAttr("readonly");
+		tr.find(".rating").prop("disabled",false);
 	}else{
 		btn.text("Edit");
 		sendJson("/empl/updateWorkDay?userId=" + getUserId(),jsonify(tr));
-		var t = jsonify(tr);
-		tr.find("input").attr("readonly","readonly");
 		loadWorkDay();
+		$(".rating").rating();
+		$("td,th").addClass("text-center");
 	}
 }
 
@@ -140,18 +152,18 @@ function editWorkDay(){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 		    	<caption>
-		    		Recommend demand for each Level,and score the shift.
+		    		<div>Recommend people count for each Level</div>
+		    		<div>And score the shift.</div>
 		    	</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
 				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
-				  	<th>Score(5)</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th>Score</th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -197,7 +209,7 @@ function editWorkDay(){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 		    	<caption>
-		    		Score your preference between 0-5.
+		    		Score your preference for workday.
 		    	</caption>
 				  <thead>
 				  <tr>
@@ -225,6 +237,7 @@ function editWorkDay(){
 loadShiftScore();
 loadTimeLimitRec();
 loadWorkDay();
+$("td,th").addClass("text-center");
 $("#welcome").text("welcome " + checkLogin() );
  </script>
 </body>

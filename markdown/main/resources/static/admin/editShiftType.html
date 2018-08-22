@@ -5,32 +5,30 @@
 <title>Login</title>
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
-<script src="../js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" type="text/css"  href="../css/bootstrap-datetimepicker.min.css"/>
+<script src="../js/jquery.timepicker.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="../css/jquery.timepicker.css"/>
 <title>NurseHub</title>
 
 <script>
 
 function timePickerConfig(type){
-	var now = new Date();
-	var date = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate();
-	
 	if(type!=null){
-		$('#beginTimePicker').val(date + " " + type.beginTime);
-		$('#endTimePicker').val(date + " " + type.endTime);
+		$('#beginTimePicker').val(type.beginTime);
+		$('#endTimePicker').val(type.endTime);
+	}else{
+		$('#beginTimePicker').val("09:00:00");
+		$('#endTimePicker').val("17:00:00");
 	}
-	$('#beginTimePicker').datetimepicker({
-	    format: 'hh:ii',
-	    startView: 0,
-	    maxView: 1,
-	    autoclose:true
-	});
-	$('#endTimePicker').datetimepicker({
-	    format: 'hh:ii',
-	    startView: 0,
-	    maxView: 1,
-	    autoclose:true
-	});
+	$('#beginTimePicker').timepicker({ 'timeFormat': 'H:i:s' })
+	$('#endTimePicker').timepicker({ 'timeFormat': 'H:i:s' })
+}
+
+function setEndTime(){
+	var bt = $('#beginTimePicker').val();
+	var arr = bt.split(":");
+	arr[0] = parseInt(arr[0])+8;
+	if(arr[0]>=24){arr[0] = arr[0]-24;}
+	$('#endTimePicker').val(arr[0]+":"+arr[1]+":"+arr[2]);
 }
 
 function getShiftType(){
@@ -51,6 +49,9 @@ function init(){
 		if(type.used == true){
 			$('#used').prop("checked",true);
 		}
+	}else{
+		$('#name').val("NewShift");
+		$('#used').prop("checked",true);
 	}
 	timePickerConfig(type);
 }
@@ -68,16 +69,6 @@ function confirm(){
 		return;
 	}
 	
-	if(form.beginTime.length > 8){
-		form.beginTime = form.beginTime.slice(form.beginTime.length-8);
-	}else{
-		form.beginTime = form.beginTime + ":00";
-	}
-	if(form.endTime.length > 8){
-		form.endTime = form.endTime.slice(form.endTime.length-8);
-	}else{
-		form.endTime = form.endTime + ":00";
-	}
 	
 	var url = "/admin/confirmShiftType?id=";
 	
@@ -121,10 +112,10 @@ function cancel(){
 		<div style="margin:10px;" class="input-group">
 			<span class="input-group-addon">BeginTime</span>
 			<input type="text" name="beginTime" class="form-control"  value=""
-						id="beginTimePicker"  data-date-format="hh:ii"/>
+						id="beginTimePicker" onchange="setEndTime()"/>
 			<span class="input-group-addon">EndTime</span>
 			<input type="text" name="endTime" class="form-control" value=""
-						id="endTimePicker"  data-date-format="hh:ii"/>
+						id="endTimePicker"/>
 		</div>
 		<div style="margin-top:10px;">
 			

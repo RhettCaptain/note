@@ -23,6 +23,7 @@ public class RosterVo implements Comparable<RosterVo>{
 	private Integer friId;
 	private Integer satId;
 	private Integer sunId;
+	private String nickName;
 	
 	public RosterVo(){}
 	
@@ -30,7 +31,7 @@ public class RosterVo implements Comparable<RosterVo>{
 			String tueShift,String wedShift,String thuShift,
 			String friShift,String satShift,String sunShift,Double totalTime,
 			Integer monId,Integer tueId,Integer wedId,Integer thuId,
-			Integer friId,Integer satId,Integer sunId){
+			Integer friId,Integer satId,Integer sunId,String nickName){
 		this.userId = userId;
 		this.userName = userName;
 		this.monShift = monShift;
@@ -48,6 +49,7 @@ public class RosterVo implements Comparable<RosterVo>{
 		this.friId = friId;
 		this.satId = satId;
 		this.sunId = sunId;
+		this.nickName = nickName;
 	}
 
 	public void setTotalTime(Double totalTime){

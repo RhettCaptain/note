@@ -25,7 +25,7 @@ function loadUserLv(tbName){
 		count = count+1;
 		cont = cont + "<tr>";
 
-		cont = cont + "<td>" +res[i].id + "</td>";
+	//	cont = cont + "<td>" +res[i].id + "</td>";
 		cont = cont + "<td>" +res[i].nickName + "</td>";
 		cont = cont + "<td>" +res[i].name + "</td>";
 		if(res[i].isManager==true){
@@ -99,11 +99,11 @@ function dropUser(id){
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked" data-toggle="buttons">
 			<li><a href="#overviewMark" onclick="window.location.hash='#overviewMark'">Overview</a></li>
-			<li><a href="#lv1Mark" onclick="window.location.hash='#lv1Mark'" >LV1 NURSES</a></li>
-			<li><a href="#lv2Mark" onclick="window.location.hash='#lv2Mark'">LV2 NURSES</a></li>
-			<li><a href="#lv3Mark" onclick="window.location.hash='#lv3Mark'">LV3 NURSES</a></li>
-			<li><a href="#lv4Mark" onclick="window.location.hash='#lv4Mark'">LV4 NURSES</a></li>
-			<li><a href="#lv5Mark" onclick="window.location.hash='#lv5Mark'">LV5 NURSES</a></li>
+			<li><a href="#lv1Mark" onclick="window.location.hash='#lv1Mark'" >N0</a></li>
+			<li><a href="#lv2Mark" onclick="window.location.hash='#lv2Mark'">N1</a></li>
+			<li><a href="#lv3Mark" onclick="window.location.hash='#lv3Mark'">N2</a></li>
+			<li><a href="#lv4Mark" onclick="window.location.hash='#lv4Mark'">N3</a></li>
+			<li><a href="#lv5Mark" onclick="window.location.hash='#lv5Mark'">N4</a></li>
 		</ul>
 	</div>
 	
@@ -118,11 +118,11 @@ function dropUser(id){
 				  <caption>The people count for each level</caption>
 				  <thead>
 				  <tr>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th>Total</th>
 				  </tr>
 				  </thead>
@@ -150,14 +150,13 @@ function dropUser(id){
 		    	<button class="btn btn-warning" onclick="window.location.href='recover.html'">Recover New Nurse</button>
 		    	<a id="lv1Mark"></a>
 		    	<table class="table table-striped">
-				  <caption>LV1 NURSES</caption>
+				  <caption>N0:Nurse</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>NickName</th>
-				  	<th>RealName</th>
-				  	<th>Manager</th>
-				  	<th></th>
+				  	<th style="width:25%">NickName</th>
+				  	<th style="width:25%">RealName</th>
+				  	<th style="width:25%">Manager</th>
+				  	<th style="width:25%"></th>
 				  </tr>
 				  </thead>
 				  <tbody id="lv1tb" >
@@ -166,14 +165,13 @@ function dropUser(id){
 				
 				<a id="lv2Mark"></a>
 				<table class="table table-striped">
-				  <caption>LV2 NURSES</caption>
+				  <caption>N1:Nurse Practitioner</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>NickName</th>
-				  	<th>RealName</th>
-				  	<th>Manager</th>
-				  	<th></th>
+				  	<th style="width:25%">NickName</th>
+				  	<th style="width:25%">RealName</th>
+				  	<th style="width:25%">Manager</th>
+				  	<th style="width:25%"></th>
 				  </tr>
 				  </thead>
 				  <tbody id="lv2tb" >
@@ -182,14 +180,13 @@ function dropUser(id){
 				
 				<a id="lv3Mark"></a>
 				<table class="table table-striped">
-				  <caption>LV3 NURSES</caption>
+				  <caption>N2:Nurse-in-charge</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>NickName</th>
-				  	<th>RealName</th>
-				  	<th>Manager</th>
-				  	<th></th>
+				  	<th style="width:25%">NickName</th>
+				  	<th style="width:25%">RealName</th>
+				  	<th style="width:25%">Manager</th>
+				  	<th style="width:25%"></th>
 				  </tr>
 				  </thead>
 				  <tbody id="lv3tb" >
@@ -198,14 +195,13 @@ function dropUser(id){
 				
 				<a id="lv4Mark"></a>
 				<table class="table table-striped">
-				  <caption>LV4 NURSES</caption>
+				  <caption>N3:Associate Professor of Nursing</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>NickName</th>
-				  	<th>RealName</th>
-				  	<th>Manager</th>
-				  	<th></th>
+				  	<th style="width:25%">NickName</th>
+				  	<th style="width:25%">RealName</th>
+				  	<th style="width:25%">Manager</th>
+				  	<th style="width:25%"></th>
 				  </tr>
 				  </thead>
 				  <tbody id="lv4tb" >
@@ -214,14 +210,13 @@ function dropUser(id){
 				
 				<a id="lv5Mark"></a>
 				<table class="table table-striped">
-				  <caption>LV5 NURSES</caption>
+				  <caption>N4:Professor of Nursing</caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
-				  	<th>NickName</th>
-				  	<th>RealName</th>
-				  	<th>Manager</th>
-				  	<th></th>
+				  	<th style="width:25%">NickName</th>
+				  	<th style="width:25%">RealName</th>
+				  	<th style="width:25%">Manager</th>
+				  	<th style="width:25%"></th>
 				  </tr>
 				  </thead>
 				  <tbody id="lv5tb" >

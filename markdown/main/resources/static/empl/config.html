@@ -9,10 +9,14 @@
 var user;
 function loadUser(){
 	user = getJson("/empl/getUserById?id=" + getUserId());
-	$("#id").val(user.id);
+	$("#nickName").val(user.nickName);
 	$("#name").val(user.name);
-	$("#workLevel").val(user.workLevel);
-	$("#isManager").val(user.isManager);
+	$("#workLevel").val("N"+(user.workLevel-1));
+	if(user.isManager==true){
+		$("#isManager").val("√");
+	}else{
+		$("#isManager").val("×");
+	}
 }
 function changePwd(){
 	if($("#rawPassword").val() != user.password){
@@ -86,15 +90,15 @@ function changeNickName(){
 		    </div>
 		    <div class="panel-body">
 		    	<div style="margin:10px;" class="input-group">
-		    		<span class="input-group-addon">Id</span>
-			  		<input id="id" type="text"  class="form-control" readonly="readonly"/>
+		    		<span class="input-group-addon">NickName</span>
+			  		<input id="nickName" type="text"  class="form-control" readonly="readonly"/>
 			  		<span class="input-group-addon">Name</span>
 			  		<input id="name" type="text"class="form-control" readonly="readonly"/>
 				</div>
 				<div style="margin:10px;" class="input-group">
-					<span class="input-group-addon">workLevel</span>
+					<span class="input-group-addon">WorkLevel</span>
 			  		<input id="workLevel" type="text" class="form-control" readonly="readonly"/>
-			  		<span class="input-group-addon">Is Manager</span>
+			  		<span class="input-group-addon">Manager</span>
 			  		<input id="isManager" type="text" class="form-control" readonly="readonly" />
 				</div>
 				<div style="margin:10px;" class="input-group">
@@ -123,7 +127,7 @@ function changeNickName(){
 			  			<input id="newPassword" type="text"  class="form-control"/>
 			  		</div>
 			  		<div style="margin:10px;" class="input-group">
-		    			<span class="input-group-addon">confirm Password: </span>
+		    			<span class="input-group-addon">Confirm Password: </span>
 			  			<input id="confirmPassword" type="text"  class="form-control"/>
 			  		</div>
 			  		<div class="modal-footer">

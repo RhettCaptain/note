@@ -28,7 +28,7 @@ function init(){
 	user = getOtherUser();
 	if(user!=null && user!=""){
 		$('#name').val(user.name);
-		$('#workLevel').val(user.workLevel);
+		$('#workLevel').val("N" + (user.workLevel-1));
 		if(user.isManager == true){
 			$('#manager').prop("checked",true);
 		}
@@ -46,6 +46,11 @@ function confirm(){
 		alert("please fill the black!");
 		return;
 	}
+	if(form.workLevel=="N0"){form.workLevel=1;}
+	if(form.workLevel=="N1"){form.workLevel=2;}
+	if(form.workLevel=="N2"){form.workLevel=3;}
+	if(form.workLevel=="N3"){form.workLevel=4;}
+	if(form.workLevel=="N4"){form.workLevel=5;}
 	
 	var url = "/admin/confirmOtherUser?id=";
 	
@@ -87,11 +92,11 @@ function cancel(){
 		<div style="margin:10px;" class="input-group">
 			<span class="input-group-addon">WorkLevel</span>
 	  		<select style="min-width:80px" class="form-control" id="workLevel" name="workLevel">
-		      <option>1</option>
-		      <option>2</option>
-		      <option>3</option>
-		      <option>4</option>
-		      <option>5</option>
+		      <option>N0</option>
+		      <option>N1</option>
+		      <option>N2</option>
+		      <option>N3</option>
+		      <option>N4</option>
 		    </select>
 	  		<span class="input-group-addon"><input id="manager" type="checkbox" name="isManager"/></span>
 	  		<input type="text" readonly="readonly" class="form-control" value="Manager"/>

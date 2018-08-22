@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
+<script src="../js/bootstrap-rating.min.js"></script>
+<link href="../css/bootstrap-rating.css" rel="stylesheet">
 <title>NurseHub</title>
 
 <script>
@@ -16,7 +18,19 @@ function loadShiftType(){
 		
 		
 		for(j in res[i]){
-			cont = cont + "<td>" +res[i][j] + "</td>";
+			if(j=="id"){
+			}else if(j=="used"){
+				if(res[i][j]==true){
+					cont = cont + "<td>√</td>";
+				}else{
+					cont = cont + "<td></td>";
+				}
+				
+			}else if(j=="score"){
+				cont = cont + "<td><input type='hidden' class='rating' data-readonly data-fractions='2' value='" + res[i][j] + "'/></td>";
+			}else{
+				cont = cont + "<td>" +res[i][j] + "</td>";
+			}
 		}
 		
 		var edit = 'onclick="editShiftType(\'' + res[i].id + '\')"';
@@ -44,8 +58,7 @@ function loadShiftDemand(){
 	for(i in res){
 		cont = cont + "<tr id='shiftDemandTr'>";
 		
-		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='id' value='"
-			+ res[i].id + "'></td>";
+		
 		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='name' value='"
 			+ res[i].name + "'></td>";
 		var preStr = "<td><input type='text' class='form-control level' readonly='readonly' name='lv";
@@ -61,7 +74,10 @@ function loadShiftDemand(){
 		var edit = 'onclick="editShiftDemand(this)"';
 		cont = cont + "<td style=\"text-align:right\">"
       		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
-     	 	+ "</td></tr>"
+     	 	+ "</td>";
+		cont = cont + "<td><input type='text' style='display:none' class='form-control' readonly='readonly' name='id' value='"
+			+ res[i].id + "'></td></tr>";
+     	 	
 	}
 	$("#shiftDemand").html(cont);
 }
@@ -153,19 +169,20 @@ function editTimeLimit(){
 		    <a id="shiftTypeMark"></a>
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Shift Type</h3>
+		        
+	
 		    </div>
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 				  <caption><button class="btn btn-success" onclick="editShiftType('')">Add New Type</button></caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
 				  	<th>Name</th>
 				  	<th>BeginTime</th>
 				  	<th>EndTime</th>
 				  	<th>Total(h)</th>
 				  	<th>In Use</th>
-				  	<th>Score(5)</th>
+				  	<th>Score</th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -198,13 +215,13 @@ function editTimeLimit(){
 				  </caption>
 				  <thead>
 				  <tr>
-				  	<th>ID</th>
+				  	<th style='display:none'>ID</th>
 				  	<th>Name</th>
-				  	<th>LV1</th>
-				  	<th>LV2</th>
-				  	<th>LV3</th>
-				  	<th>LV4</th>
-				  	<th>LV5</th>
+				  	<th><abbr title="Nurse">N0</abbr></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
 				  	<th></th>
 				  </tr>
 				  </thead>
@@ -238,7 +255,7 @@ function editTimeLimit(){
 <div style="text-align:right"><button class="btn btn-primary" onclick="window.location.hash='#top'">TOP</button></div>
 
 <script>
-$("#welcome").text("welcome " + checkLogin() );
+//$("#welcome").text("welcome " + checkLogin() );
 loadShiftType();
 loadShiftDemand();
 loadTimeLimit();

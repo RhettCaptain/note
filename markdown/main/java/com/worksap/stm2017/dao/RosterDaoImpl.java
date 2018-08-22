@@ -98,6 +98,7 @@ public class RosterDaoImpl implements RosterDao{
 		Map<Integer,String> typeMap= new HashMap<Integer,String>();
 		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
 		Map<Integer,String> userMap= new HashMap<Integer,String>();
+		Map<Integer,String> nickMap= new HashMap<Integer,String>();
 		
 		
 		List<ShiftType> shiftType = template.query(GET_SHIFT_TYPE_SQL, 
@@ -115,6 +116,7 @@ public class RosterDaoImpl implements RosterDao{
 		List<User> users = template.query(GET_USER_SQL, 
 				(rs,rowNum) -> {
 					userMap.put(rs.getInt(1),rs.getString(2));
+					nickMap.put(rs.getInt(1),rs.getString(6));
 					return new User();
 				});
 		
@@ -124,6 +126,7 @@ public class RosterDaoImpl implements RosterDao{
 					(rs,rowNum) -> {
 						Integer userId = rs.getInt(1);
 						String userName = userMap.get(userId);
+						String nickName = nickMap.get(userId);
 						List<Integer> shiftId = new ArrayList<Integer>();
 						List<String> shiftName = new ArrayList<String>();
 						Double totalTime = 0.0;
@@ -135,13 +138,14 @@ public class RosterDaoImpl implements RosterDao{
 						}
 						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
 								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
-								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+								shiftId.get(4),shiftId.get(5),shiftId.get(6),nickName);
 					});
 		}else if(idx == 2){
 			rv =template.query(GET_NEXT_ROSTER_SQL,
 					(rs,rowNum) -> {
 						Integer userId = rs.getInt(1);
 						String userName = userMap.get(userId);
+						String nickName = nickMap.get(userId);
 						List<Integer> shiftId = new ArrayList<Integer>();
 						List<String> shiftName = new ArrayList<String>();
 						Double totalTime = 0.0;
@@ -153,7 +157,7 @@ public class RosterDaoImpl implements RosterDao{
 						}
 						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
 								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
-								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+								shiftId.get(4),shiftId.get(5),shiftId.get(6),nickName);
 					});
 		}
 		return rv;
@@ -165,7 +169,8 @@ public class RosterDaoImpl implements RosterDao{
 		Map<Integer,String> typeMap= new HashMap<Integer,String>();
 		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
 		Map<Integer,String> userMap= new HashMap<Integer,String>();
-		
+		Map<Integer,String> nickMap= new HashMap<Integer,String>();
+		Map<Integer,Integer> lvMap= new HashMap<Integer,Integer>();
 		
 		List<ShiftType> shiftType = template.query(GET_SHIFT_TYPE_SQL, 
 				(rs,rowNum) -> {
@@ -182,6 +187,8 @@ public class RosterDaoImpl implements RosterDao{
 		List<User> users = template.query(GET_USER_SQL, 
 				(rs,rowNum) -> {
 					userMap.put(rs.getInt(1),rs.getString(2));
+					nickMap.put(rs.getInt(1),rs.getString(6));
+					lvMap.put(rs.getInt(1), rs.getInt(4));
 					return new User();
 				});
 		
@@ -191,8 +198,10 @@ public class RosterDaoImpl implements RosterDao{
 					(rs,rowNum) -> {
 						Integer userId = rs.getInt(1);
 						String userName = userMap.get(userId);
+						String nickName = nickMap.get(userId);
 						List<Integer> shiftId = new ArrayList<Integer>();
 						List<String> shiftName = new ArrayList<String>();
+						
 						Double totalTime = 0.0;
 						for(int i=0;i<7;i++){
 							int typeId = rs.getInt(i+2);
@@ -202,13 +211,14 @@ public class RosterDaoImpl implements RosterDao{
 						}
 						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
 								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
-								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+								shiftId.get(4),shiftId.get(5),shiftId.get(6),nickName);
 					});
 		}else if(idx == 2){
 			rv =template.query(GET_NEXT_ROSTER_SQL,
 					(rs,rowNum) -> {
 						Integer userId = rs.getInt(1);
 						String userName = userMap.get(userId);
+						String nickName = nickMap.get(userId);
 						List<Integer> shiftId = new ArrayList<Integer>();
 						List<String> shiftName = new ArrayList<String>();
 						Double totalTime = 0.0;
@@ -220,8 +230,16 @@ public class RosterDaoImpl implements RosterDao{
 						}
 						return new RosterVo(userId,userName,shiftName.get(0),shiftName.get(1),shiftName.get(2),shiftName.get(3),shiftName.get(4),
 								shiftName.get(5),shiftName.get(6),totalTime,shiftId.get(0),shiftId.get(1),shiftId.get(2),shiftId.get(3),
-								shiftId.get(4),shiftId.get(5),shiftId.get(6));
+								shiftId.get(4),shiftId.get(5),shiftId.get(6),nickName);
 					});
+		}
+		int size = rv.size();
+		for(int i=0;i<size;i++){
+			if(lvMap.get(rv.get(i).getUserId()) != lv){
+				rv.remove(i);
+				size--;
+				i--;
+			}
 		}
 		return rv;
 	}
@@ -798,6 +816,7 @@ public class RosterDaoImpl implements RosterDao{
 		Map<Integer,String> typeMap= new HashMap<Integer,String>();
 		Map<Integer,Double> timeMap= new HashMap<Integer,Double>();
 		Map<Integer,String> userMap= new HashMap<Integer,String>();
+		Map<Integer,String> nickMap= new HashMap<Integer,String>();
 		Map<Integer,Integer> levelMap= new HashMap<Integer,Integer>();
 		Map<Integer,List<ShiftScoreVo>> scoreMap = new HashMap<Integer,List<ShiftScoreVo>>();
 		Map<Integer,List<Double>> workdayMap= new HashMap<Integer,List<Double>>();
@@ -819,6 +838,7 @@ public class RosterDaoImpl implements RosterDao{
 		List<User> tmpUser = template.query(GET_USER_SQL, 
 				(rs,rowNum) -> {
 					userMap.put(rs.getInt(1),rs.getString(2));
+					nickMap.put(rs.getInt(1),rs.getString(6));
 					levelMap.put(rs.getInt(1),rs.getInt(4));
 					scoreMap.put(rs.getInt(1), getShiftScoreVoByUser(rs.getInt(1)));
 					WorkDayVo wdv = getWorkDayVoByUser(rs.getInt(1));
@@ -836,8 +856,9 @@ public class RosterDaoImpl implements RosterDao{
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
 					String defShiftName = "REST";
+					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
-							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId);
+							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
 				}));
 		lvs.add(template.query(GET_USER_BY_LEVEL_SQL, 
 				ps -> ps.setInt(1,2),
@@ -845,8 +866,9 @@ public class RosterDaoImpl implements RosterDao{
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
 					String defShiftName = "rest";
+					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
-							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId);
+							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
 				}));
 		lvs.add(template.query(GET_USER_BY_LEVEL_SQL, 
 				ps -> ps.setInt(1,3),
@@ -854,8 +876,9 @@ public class RosterDaoImpl implements RosterDao{
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
 					String defShiftName = "rest";
+					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
-							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId);
+							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
 				}));
 		lvs.add(template.query(GET_USER_BY_LEVEL_SQL, 
 				ps -> ps.setInt(1,4),
@@ -863,8 +886,9 @@ public class RosterDaoImpl implements RosterDao{
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
 					String defShiftName = "rest";
+					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
-							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId);
+							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
 				}));
 		lvs.add(template.query(GET_USER_BY_LEVEL_SQL, 
 				ps -> ps.setInt(1,5),
@@ -872,8 +896,9 @@ public class RosterDaoImpl implements RosterDao{
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
 					String defShiftName = "rest";
+					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
-							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId);
+							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
 				}));
 		//demand
 		List<ShiftDemandVo> demands = getShiftDemandVo();
