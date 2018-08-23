@@ -11,7 +11,11 @@
 <link href="../css/bootstrap-spinner.min.css" rel="stylesheet">
 <link href="../css/jquery.range.css" rel="stylesheet">
 <title>NurseHub</title>
-
+<style>
+.label {
+	margin-left:10px;
+}
+</style>
 <script>
 function loadShiftType(){
 	var res= getJson("/admin/loadShiftType");
@@ -55,7 +59,16 @@ function dropShiftType(id){
 	window.location.href="/admin/deleteShiftType?id="+id;
 }
 
+
+
 function loadShiftDemand(){
+	$("#n0lab").text(getJson("/admin/loadUser?lv=1").length);
+	$("#n1lab").text(getJson("/admin/loadUser?lv=2").length);
+	$("#n2lab").text(getJson("/admin/loadUser?lv=3").length);
+	$("#n3lab").text(getJson("/admin/loadUser?lv=4").length);
+	$("#n4lab").text(getJson("/admin/loadUser?lv=5").length);
+	
+	
 	var res= getJson("/admin/loadShiftDemand");
 	
 	var cont = "";
@@ -76,7 +89,7 @@ function loadShiftDemand(){
 		for(j=2;j<7;j++){
 			cont = cont + "<td><div data-trigger='spinner' class='input-group'>" 
 				+ "<span class='input-group-btn'><button type='button' disabled='disabled' class='btn spinBtn' data-spin='down'>-</button></span>" 
-				+ "<input type='text' data-ruler='quantity' data-min='0' class='form-control level' readonly='readonly' name='lv"
+				+ "<input type='text' data-ruler='quantity' data-min='0' class='form-control level lv"+(j-1)+"' readonly='readonly' name='lv"
 				+ (j-1) + "' value='" + arr[j] + "' ";
 			if(arr[j]>arr[j+5]){cont += "style='color:blue'>";}
 			else if(arr[j]<arr[j+5]){cont += "style='color:red'>";}
@@ -100,6 +113,24 @@ function loadShiftDemand(){
 	
 }
 
+function checkLevelNum(){
+	var count = 0;
+	$(".lv1").each(function(){count += parseInt($(this).val());})
+	if(count > $("#n0lab").text()){alert("Warning: The Total Number of N0 is" + $("#n0lab").text() + " However Your Demand for N0 is " + count);}
+	count = 0;
+	$(".lv2").each(function(){count += parseInt($(this).val());})
+	if(count > $("#n1lab").text()){alert("Warning: The Total Number of N1 is" + $("#n1lab").text() + " However Your Demand for N1 is " + count);}
+	count = 0;
+	$(".lv3").each(function(){count += parseInt($(this).val());})
+	if(count > $("#n2lab").text()){alert("Warning: The Total Number of N2 is" + $("#n2lab").text() + " However Your Demand for N2 is " + count);}
+	count = 0;
+	$(".lv4").each(function(){count += parseInt($(this).val());})
+	if(count > $("#n3lab").text()){alert("Warning: The Total Number of N3 is" + $("#n3lab").text() + " However Your Demand for N3 is " + count);}
+	count = 0;
+	$(".lv5").each(function(){count += parseInt($(this).val());})
+	if(count > $("#n4lab").text()){alert("Warning: The Total Number of N4 is" + $("#n4lab").text() + " However Your Demand for N4 is " + count);}
+}
+
 function editShiftDemand(obj){
 	var tr = $(obj).parent().parent();
 	if($(obj).text() == "Edit"){
@@ -108,6 +139,7 @@ function editShiftDemand(obj){
 		tr.find(".spinBtn").attr("disabled",false);
 	}else{
 		$(obj).text("Edit");
+		checkLevelNum();
 		var form = jsonify(tr);
 		sendJson("/admin/updateShiftDemand",form);
 		window.location.href="strategy.html";
@@ -119,6 +151,7 @@ function refShiftDemand(obj){
 	for(var i=0;i<5;i++){
 		tr.find(".level").eq(i).val(tr.find(".ref").eq(i).text());
 	}
+	checkLevelNum();
 	var form = jsonify(tr);
 	sendJson("/admin/updateShiftDemand",form);
 	window.location.href="strategy.html";
@@ -324,16 +357,17 @@ function setRecTimeLimit(){
 				  <caption>
 				  	<p>Set The Shift's Demands of People Number for Each Level</p>
 				  	<p>The <i>Italic Number</i> is Recommended by Staff for Reference.</p>
+				  	<p><span class="label label-success">Label</span> Means the Total Number of This Level</p>
 				  </caption>
 				  <thead>
 				  <tr>
 				  	<th style='display:none'>ID</th>
 				  	<th>ShiftName</th>
-				  	<th><abbr title="Nurse">N0</abbr></th>
-				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
-				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
-				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
-				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
+				  	<th><abbr title="Nurse">N0</abbr><span id="n0lab" class="label label-success"></span></th>
+				  	<th><abbr title="Nurse Practitioner">N1</abbr><span id="n1lab" class="label label-success"></span></th>
+				  	<th><abbr title="Nurse-in-charg">N2</abbr><span id="n2lab" class="label label-success"></span></th>
+				  	<th><abbr title="Associate Professor of Nursing">N3</abbr><span id="n3lab" class="label label-success"></span></th>
+				  	<th><abbr title="Professor of Nursing">N4</abbr><span id="n4lab" class="label label-success"></span></th>
 				  	<th style='width:14%'></th>
 				  </tr>
 				  </thead>

@@ -265,6 +265,16 @@ function loadNewRosterReport(){
 		$(".workdayPrefMin .prefTd").eq(i).val(wpmArr[i+3]);
 		$(".workdayPrefAvg .prefTd").eq(i).val(wpaArr[i+3]);
 	}
+	//workday pref
+	for(i=6;i<9;i++){
+		$(".recommend .prefTd").eq(i-3).val(recArr[i+3]);
+		$(".shiftPrefMin .prefTd").eq(i-3).val(spmArr[i+3]);
+		$(".shiftPrefAvg .prefTd").eq(i-3).val(spaArr[i+3]);
+		$(".workTimeLong .prefTd").eq(i-3).val(wtlArr[i+3]);
+		$(".workTimeShort .prefTd").eq(i-3).val(wtsArr[i+3]);
+		$(".workdayPrefMin .prefTd").eq(i-3).val(wpmArr[i+3]);
+		$(".workdayPrefAvg .prefTd").eq(i-3).val(wpaArr[i+3]);
+	}
 	var wtCon = "";
 	for(i=6;i<9;i++){
 		if(recArr[i] < gMinTimeLimit || recArr[i] > gMaxTimeLimit){

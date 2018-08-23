@@ -962,14 +962,261 @@ public class RosterDaoImpl implements RosterDao{
             }
         });
 		
-		
 		//base
+		TimeLimitVo tlv = getTimeLimitVo();
+		Double minTimeLimit = tlv.getMinTime();
+		Double maxTimeLimit = tlv.getMaxTime();
+		
+		recommend = new ArrayList();
+		shiftPrefMin = new ArrayList();
+		shiftPrefAvg = new ArrayList();
+		workTimeLong = new ArrayList();
+		workTimeShort = new ArrayList();
+		workdayPrefMin = new ArrayList();
+		workdayPrefAvg = new ArrayList();
+	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+		List<RosterVo> base = baseRoster(lvs,demands,typeMap,timeMap,usedMap,minTimeLimit);
+		recommend.addAll(base);
+		shiftPrefMin.addAll(base);
+		shiftPrefAvg.addAll(base);
+		workTimeLong.addAll(base);
+		workTimeShort.addAll(base);
+		workdayPrefMin.addAll(base);
+		workdayPrefAvg.addAll(base);
+		
+		List<Roster> baseRos = new ArrayList();
+		int size = base.size();
+		for(int i=0;i<size;i++){
+			baseRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
+					base.get(i).getThuId(),base.get(i).getFriId(),base.get(i).getSatId(),base.get(i).getSunId()));
+		}
+		
+		RosterReportVo baseReport = getRosterReportVo(baseRos);
+		baseReport.setMaxWorkTime(baseReport.getAvgWorkTime());
+		baseReport.setMinWorkTime(baseReport.getAvgWorkTime());
+		
+		//multi
+		int round=3;
+	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+		for(int rou=0;rou<round;rou++){
+			base = baseRoster(lvs,demands,typeMap,timeMap,usedMap,minTimeLimit);
+	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+			List<Roster> newRos = new ArrayList();
+			for(int i=0;i<base.size();i++){
+				newRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
+						base.get(i).getThuId(),base.get(i).getFriId(),base.get(i).getSatId(),base.get(i).getSunId()));
+			}
+			RosterReportVo newReport = getRosterReportVo(newRos);
+			//recomend
+			if((!baseReport.getDemandOk() || !baseReport.getDemandOk()) 
+					&& (newReport.getTimeLimitOk() && newReport.getDemandOk())){
+				recommend.clear();
+				recommend.addAll(base);
+				baseReport.setTimeLimitOk(true);
+				baseReport.setDemandOk(true);
+			}else if((baseReport.getDemandOk() && baseReport.getDemandOk()) 
+					&& (!newReport.getTimeLimitOk() || !newReport.getDemandOk())){
+			}else if((baseReport.getDemandOk() || baseReport.getDemandOk()) 
+					&& (!newReport.getTimeLimitOk() && !newReport.getDemandOk())){
+			}else{
+				if(newReport.getCompScore() > baseReport.getCompScore()){
+					recommend.clear();
+					recommend.addAll(base);
+					baseReport.setCompScore(newReport.getCompScore());
+				}
+			}
+			//shift pref
+			if(newReport.getMinShiftPref() > baseReport.getMinShiftPref()){
+				shiftPrefMin.clear();
+				shiftPrefMin.addAll(base);
+				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+			}
+			if(newReport.getAvgShiftPref() > baseReport.getAvgShiftPref()){
+				shiftPrefAvg.clear();
+				shiftPrefAvg.addAll(base);
+				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+			}
+			//work time
+			if(newReport.getAvgWorkTime() > baseReport.getMaxWorkTime()){
+				workTimeLong.clear();
+				workTimeLong.addAll(base);
+				baseReport.setMaxShiftPref(newReport.getAvgShiftPref());
+			}
+			if(newReport.getAvgWorkTime() < baseReport.getMinWorkTime()){
+				workTimeShort.clear();
+				workTimeShort.addAll(base);
+				baseReport.setMinShiftPref(newReport.getAvgShiftPref());
+			}
+			//workday pref
+			if(newReport.getMinWorkdayPref() > baseReport.getMinWorkdayPref()){
+				workdayPrefMin.clear();
+				workdayPrefMin.addAll(base);
+				baseReport.setMinWorkdayPref(newReport.getMinWorkdayPref());
+			}
+			if(newReport.getAvgWorkdayPref() > baseReport.getAvgWorkdayPref()){
+				workdayPrefAvg.clear();
+				workdayPrefAvg.addAll(base);
+				baseReport.setAvgWorkdayPref(newReport.getAvgWorkdayPref());
+			}
+			/*
+			//rand rest
+			int shiftNum = demands.size();
+			for(RosterVo rv : base){
+				Double totalTime = rv.getTotalTime();
+				if(totalTime < maxTimeLimit){
+					if(rv.getMonId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setMonId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getTueId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setTueId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getWedId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setWedId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getThuId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setThuId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getFriId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setFriId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getSatId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setSatId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+					if(rv.getSunId()==0){
+						int change = (int)(Math.random()*shiftNum*2)-shiftNum;
+						if(change<0){change=0;}
+						if(totalTime + timeMap.get(change) < maxTimeLimit){
+							rv.setSunId(change);
+							totalTime += timeMap.get(change);
+						}
+					}
+				}
+			}
+			newRos.clear();
+			for(int i=0;i<base.size();i++){
+				newRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
+						base.get(i).getThuId(),base.get(i).getFriId(),base.get(i).getSatId(),base.get(i).getSunId()));
+			}
+			newReport = getRosterReportVo(newRos);
+			//recomend
+			if((!baseReport.getDemandOk() || !baseReport.getDemandOk()) 
+					&& (newReport.getTimeLimitOk() && newReport.getDemandOk())){
+				recommend.clear();
+				recommend.addAll(base);
+				baseReport.setTimeLimitOk(true);
+				baseReport.setDemandOk(true);
+			}else if((baseReport.getDemandOk() && baseReport.getDemandOk()) 
+					&& (!newReport.getTimeLimitOk() || !newReport.getDemandOk())){
+			}else if((baseReport.getDemandOk() || baseReport.getDemandOk()) 
+					&& (!newReport.getTimeLimitOk() && !newReport.getDemandOk())){
+			}else{
+				if(newReport.getCompScore() > baseReport.getCompScore()){
+					recommend.clear();
+					recommend.addAll(base);
+					baseReport.setCompScore(newReport.getCompScore());
+				}
+			}
+			//shift pref
+			if(newReport.getMinShiftPref() > baseReport.getMinShiftPref()){
+				shiftPrefMin.clear();
+				shiftPrefMin.addAll(base);
+				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+			}
+			if(newReport.getAvgShiftPref() > baseReport.getAvgShiftPref()){
+				shiftPrefAvg.clear();
+				shiftPrefAvg.addAll(base);
+				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+			}
+			//work time
+			if(newReport.getAvgWorkTime() > baseReport.getMaxWorkTime()){
+				workTimeLong.clear();
+				workTimeLong.addAll(base);
+				baseReport.setMaxShiftPref(newReport.getAvgShiftPref());
+			}
+			if(newReport.getAvgWorkTime() < baseReport.getMinWorkTime()){
+				workTimeShort.clear();
+				workTimeShort.addAll(base);
+				baseReport.setMinShiftPref(newReport.getAvgShiftPref());
+			}
+			//workday pref
+			if(newReport.getMinWorkdayPref() > baseReport.getMinWorkdayPref()){
+				workdayPrefMin.clear();
+				workdayPrefMin.addAll(base);
+				baseReport.setMinWorkdayPref(newReport.getMinWorkdayPref());
+			}
+			if(newReport.getAvgWorkdayPref() > baseReport.getAvgWorkdayPref()){
+				workdayPrefAvg.clear();
+				workdayPrefAvg.addAll(base);
+				baseReport.setAvgWorkdayPref(newReport.getAvgWorkdayPref());
+			}
+			*/
+		}
+		
+	}
+	
+	private  List<RosterVo> baseRoster(List<List<RosterVo>> rawLvs,List<ShiftDemandVo> demands,Map<Integer,String> typeMap,
+			Map<Integer,Double> timeMap,Map<Integer,Boolean> usedMap,Double minTimeLimit){
+		//load
+		List<List<RosterVo>> lvs = new ArrayList(); 
+		for(int i=0;i<5;i++){
+			List<RosterVo> tmp = new ArrayList();
+			for(RosterVo rv : rawLvs.get(i)){
+				RosterVo tRv = new RosterVo(rv.getUserId(),rv.getUserName(),rv.getMonShift(),rv.getTueShift(),rv.getWedShift(),
+						rv.getThuShift(),rv.getFriShift(),rv.getSatShift(),rv.getSunShift(),rv.getTotalTime(),rv.getMonId(),
+						rv.getTueId(),rv.getWedId(),rv.getThuId(),rv.getFriId(),rv.getSatId(),rv.getSunId(),rv.getNickName());
+				tmp.add(tRv);
+			}
+			lvs.add(tmp);
+		}
+		
 		int[] maxNum = {lvs.get(0).size(),lvs.get(1).size(),lvs.get(2).size(),lvs.get(3).size(),lvs.get(4).size()};
 		for(int day=0;day<7;day++){
 			int[] existNum = {0,0,0,0,0,0};
-			for(int lv=0;lv<5;lv++){
-				Collections.sort(lvs.get(lv));
+			if(day==0){
+				for(int lv=0;lv<5;lv++){
+					Collections.sort(lvs.get(lv),new Comparator<RosterVo>(){
+			            public int compare(RosterVo arg0, RosterVo arg1) {
+			                return (int)(Math.random()*3)-1;
+			            }
+			        });
+				}
+				
+			}else{
+				for(int lv=0;lv<5;lv++){
+					Collections.sort(lvs.get(lv));
+				}
 			}
+			
 			for(ShiftDemandVo aShift : demands){
 				int[] nums = {aShift.getLv1(),aShift.getLv2(),aShift.getLv3(),aShift.getLv4(),aShift.getLv5()};
 				int shiftId = aShift.getId();
@@ -1019,10 +1266,9 @@ public class RosterDaoImpl implements RosterDao{
 				}
 			}			
 		}
+		
 		//add time
-		TimeLimitVo tlv = getTimeLimitVo();
-		Double minTimeLimit = tlv.getMinTime();
-		Double maxTimeLimit = tlv.getMaxTime();
+		
 		for(int i=0;i<5;i++){
 			for(RosterVo r :lvs.get(i)){
 				int maxShiftType = demands.get(0).getId();
@@ -1059,40 +1305,15 @@ public class RosterDaoImpl implements RosterDao{
 				}
 			}
 		}
-		
+				
 		//collect
 		List<RosterVo> base = new ArrayList();
-		recommend = new ArrayList();
-		shiftPrefMin = new ArrayList();
-		shiftPrefAvg = new ArrayList();
-		workTimeLong = new ArrayList();
-		workTimeShort = new ArrayList();
-		workdayPrefMin = new ArrayList();
-		workdayPrefAvg = new ArrayList();
 		for(int i=0;i<5;i++){
 			base.addAll(lvs.get(i));
-			recommend.addAll(lvs.get(i));
-			shiftPrefMin.addAll(lvs.get(i));
-			shiftPrefAvg.addAll(lvs.get(i));
-			workTimeLong.addAll(lvs.get(i));
-			workTimeShort.addAll(lvs.get(i));
-			workdayPrefMin.addAll(lvs.get(i));
-			workdayPrefAvg.addAll(lvs.get(i));
 		}
-		
-		List<Roster> baseRos = new ArrayList();
-		int size = base.size();
-		for(int i=0;i<size;i++){
-			baseRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
-					base.get(i).getThuId(),base.get(i).getFriId(),base.get(i).getSatId(),base.get(i).getSunId()));
-		}
-		
-		RosterReportVo reportVo = getRosterReportVo(baseRos);
-		
-	//	getRosterReportVo(List<Roster>);
-		
-		
+		return base;
 	}
+	
 	
 	@Override
 	public List<RosterVo> getNewRosterVo(String which) {
