@@ -5,7 +5,11 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <script src="../js/bootstrap-rating.min.js"></script>
+<script src="../js/jquery.spinner.min.js"></script>
+<script src="../js/jquery.range-min.js"></script>
 <link href="../css/bootstrap-rating.css" rel="stylesheet">
+<link href="../css/bootstrap-spinner.min.css" rel="stylesheet">
+<link href="../css/jquery.range.css" rel="stylesheet">
 <title>NurseHub</title>
 <script>
 
@@ -22,8 +26,14 @@ function loadShiftScore(){
 			}else if(j=="score"){
 				cont = cont + "<td><input type='hidden' class='rating' disabled='disabled' data-fractions='2' name='score' value='" + res[i][j] + "'/></td>";
 			}else{
-				var preStr = "<td><input type='text' class='form-control editable' readonly='readonly' name='";
-				cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
+				cont = cont + "<td><div data-trigger='spinner' class='input-group'>" 
+					+ "<span class='input-group-btn'><button type='button' disabled='disabled' class='btn spinBtn' data-spin='down'>-</button></span>" 
+					+ "<input type='text' class='form-control editable' readonly='readonly' name='"
+					+ j + "' value='" + res[i][j] +"'>";
+				cont = cont +  "<span class='input-group-btn'><button type='button' disabled='disabled' class='btn spinBtn' data-spin='up'>+</button></span></div></td>"
+					
+			//	var preStr = "<td><input type='text' class='form-control editable' readonly='readonly' name='";
+			//	cont = cont + preStr + j + "' value='" + res[i][j] +"'></td>";
 			}
 		}
 		
@@ -43,12 +53,15 @@ function scoreShiftType(btn){
 		$(btn).text("Save");
 		tr.find(".editable").removeAttr("readonly");
 		tr.find(".rating").prop("disabled",false);
+		tr.find(".spinBtn").prop("disabled",false);
 	}else{
 		$(btn).text("Edit");
 		sendJson("/empl/updateShiftScore?userId="+getUserId(),jsonify(tr));
 		loadShiftScore();
 		$(".rating").rating();
+		$(".spinBtn").spinner();
 		$("td,th").addClass("text-center");
+		window.location.href="preference.html";
 	}
 }
 
@@ -56,19 +69,42 @@ function loadTimeLimitRec(){
 	var res = getJson("/empl/loadTimeLimitRec?userId=" + getUserId());
 	$("#minTimeRec").val(res.minTimeRec);	
 	$("#maxTimeRec").val(res.maxTimeRec);
+	$('#minTimeRec').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: true,
+	    snap: true,
+	    disable: true
+	});
+	$('#maxTimeRec').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: true,
+	    snap: true,
+	    disable: true
+	});
 }
 
 
 function editTimeLimitRec(){
-	var btn = $("#timeLimitForm").find("button");
+	var btn = $("#editBtn");
 	if(btn.text() == "Edit"){
 		btn.text("Save");
-		$("#timeLimitForm").find("input").removeAttr("readonly");
+		$("#minTimeRec").jRange('enable');
+		$("#maxTimeRec").jRange('enable');
 	}else{
 		btn.text("Edit");
 		sendJson("/empl/updateTimeLimitRec?userId=" + getUserId(),$("#timeLimitForm").jsonify());
-		$("#timeLimitForm").find("input").attr("readonly","readonly");
 		loadTimeLimitRec();
+		$("#minTimeRec").jRange('disable');
+		$("#maxTimeRec").jRange('disable');
+		$("td,th").addClass("text-center");
 	}
 }
 
@@ -152,8 +188,8 @@ function editWorkDay(){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 		    	<caption>
-		    		<div>Recommend people count for each Level</div>
-		    		<div>And score the shift.</div>
+		    		<div>Recommend Shift's Demand of People Number for Each Level</div>
+		    		<div>And Score the Shift.</div>
 		    	</caption>
 				  <thead>
 				  <tr>
@@ -190,13 +226,20 @@ function editWorkDay(){
 		    </div>
 		    <div class="panel-body">
 		    	<form class="input-group" id="timeLimitForm">
-			  		<span class="input-group-addon">Min Work Time(h/week)</span>
-			  		<input id="minTimeRec" type="text" name="minTimeRec" class="form-control" readonly="readonly"/>
-			  		<span class="input-group-addon">Max Work Time(h/week)</span>
-			  		<input id="maxTimeRec" type="text" name="maxTimeRec" class="form-control" readonly="readonly"/>
-			  		<span class="input-group-btn">
-			  			<button type="button" class="form-control btn btn-primary" onclick="editTimeLimitRec()">Edit</button>
-			  		</span>
+			  		<br>
+		    		<div class="input-group">
+			  			<span class="input-group-addon">Min Work Time(h/week)</span>
+			  			<input id="minTimeRec"  name="minTimeRec" type="hidden" class="slider-input"/>
+			  		</div>
+			  		<br>
+			  		<div class="input-group">
+			  			<span class="input-group-addon">Max Work Time(h/week)</span>
+			  			<input id="maxTimeRec"  name="maxTimeRec" type="hidden" class="slider-input" />
+			  		</div>
+			  		<br>
+			  		<div>
+			  			<button  id="editBtn" type="button" class="btn btn-primary" onclick="editTimeLimitRec()">Edit</button>
+			  		</div>
 				</form>
 		    </div>
 		</div>
@@ -239,6 +282,7 @@ loadTimeLimitRec();
 loadWorkDay();
 $("td,th").addClass("text-center");
 $("#welcome").text("welcome " + checkLogin() );
+rollBack();
  </script>
 </body>
 </html>

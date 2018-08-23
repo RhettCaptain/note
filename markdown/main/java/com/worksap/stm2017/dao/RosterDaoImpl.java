@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.worksap.stm2017.model.Roster;
+import com.worksap.stm2017.model.ShiftDemand;
 import com.worksap.stm2017.model.ShiftType;
 import com.worksap.stm2017.model.TimeLimit;
 import com.worksap.stm2017.model.User;
@@ -77,6 +78,20 @@ public class RosterDaoImpl implements RosterDao{
 			+ "\"thuShift\"=?,\"friShift\"=?,\"satShift\"=?,\"sunShift\"=? WHERE \"userId\"=? ";
 	private final String UPDATE_NEXTWEEK_ROSTER_BYID_SQL = "UPDATE \"nextWeekRoster\" SET \"monShift\"=?,\"tueShift\"=?,\"wedShift\"=?,"
 			+ "\"thuShift\"=?,\"friShift\"=?,\"satShift\"=?,\"sunShift\"=? WHERE \"userId\"=? ";
+	private final String UPDATE_THISMON_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"monShift\"=0 WHERE \"monShift\"=? ";
+	private final String UPDATE_THISTUE_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"tueShift\"=0 WHERE \"tueShift\"=? ";
+	private final String UPDATE_THISWED_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"wedShift\"=0 WHERE \"wedShift\"=? ";
+	private final String UPDATE_THISTHU_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"thuShift\"=0 WHERE \"thuShift\"=? ";
+	private final String UPDATE_THISFRI_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"friShift\"=0 WHERE \"friShift\"=? ";
+	private final String UPDATE_THISSAT_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"satShift\"=0 WHERE \"satShift\"=? ";
+	private final String UPDATE_THISSUN_ROSTER_BYSHIFT_SQL = "UPDATE \"thisWeekRoster\" SET \"sunShift\"=0 WHERE \"sunShift\"=? ";
+	private final String UPDATE_NEXTMON_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"monShift\"=0 WHERE \"monShift\"=? ";
+	private final String UPDATE_NEXTTUE_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"tueShift\"=0 WHERE \"tueShift\"=? ";
+	private final String UPDATE_NEXTWED_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"wedShift\"=0 WHERE \"wedShift\"=? ";
+	private final String UPDATE_NEXTTHU_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"thuShift\"=0 WHERE \"thuShift\"=? ";
+	private final String UPDATE_NEXTFRI_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"friShift\"=0 WHERE \"friShift\"=? ";
+	private final String UPDATE_NEXTSAT_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"satShift\"=0 WHERE \"satShift\"=? ";
+	private final String UPDATE_NEXTSUN_ROSTER_BYSHIFT_SQL = "UPDATE \"nextWeekRoster\" SET \"sunShift\"=0 WHERE \"sunShift\"=? ";
 	
 	private List<RosterVo> recommend = null;
 	private List<RosterVo> shiftPrefMin = null;
@@ -335,12 +350,35 @@ public class RosterDaoImpl implements RosterDao{
 		
 		//modify shiftDemand
 		//add default demand for new shift 
+		//calculate current avg
+		List<ShiftDemand> cur = template.query(GET_SHIFT_DEMAND_SQL, 
+				(rs,rowNum) -> new ShiftDemand(rs.getInt(1),rs.getInt(2),rs.getInt(3),
+						rs.getInt(4),rs.getInt(5),rs.getInt(6)));
+		ShiftDemand sum = new ShiftDemand(0,0,0,0,0,0);
+		int size = cur.size();
+		for(int i=1;i<size;i++){
+			sum.setLv1(sum.getLv1()+cur.get(i).getLv1());
+			sum.setLv2(sum.getLv2()+cur.get(i).getLv2());
+			sum.setLv3(sum.getLv3()+cur.get(i).getLv3());
+			sum.setLv4(sum.getLv4()+cur.get(i).getLv4());
+			sum.setLv5(sum.getLv5()+cur.get(i).getLv5());
+		}
+		size--;
+		if(size>0){
+			sum.setLv1(sum.getLv1()/size);
+			sum.setLv2(sum.getLv2()/size);
+			sum.setLv3(sum.getLv3()/size);
+			sum.setLv4(sum.getLv4()/size);
+			sum.setLv5(sum.getLv5()/size);
+		}
 		template.update(ADD_SHIFT_DEMAND_SQL,
 				ps -> {
 					ps.setInt(1, id);
-					for(int i=2;i<=6;i++){
-						ps.setInt(i, 0);
-					}
+					ps.setInt(2, sum.getLv1());
+					ps.setInt(3, sum.getLv2());
+					ps.setInt(4, sum.getLv3());
+					ps.setInt(5, sum.getLv4());
+					ps.setInt(6, sum.getLv5());
 				});
 		
 	}
@@ -369,6 +407,21 @@ public class RosterDaoImpl implements RosterDao{
 		}
 		template.update(DELETE_SHIFT_TYPE_BYID_SQL,
 				ps -> ps.setInt(1, id));
+		//modify roster
+		template.update(UPDATE_THISMON_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISTUE_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISWED_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISTHU_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISFRI_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISSAT_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_THISSUN_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTMON_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTTUE_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTWED_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTTHU_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTFRI_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTSAT_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
+		template.update(UPDATE_NEXTSUN_ROSTER_BYSHIFT_SQL,ps->ps.setInt(1, id));
 		
 		//modify shiftScore
 		//delete shift related recored
@@ -865,7 +918,7 @@ public class RosterDaoImpl implements RosterDao{
 				(rs,rowNum) -> {
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
-					String defShiftName = "rest";
+					String defShiftName = "REST";
 					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
 							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
@@ -875,7 +928,7 @@ public class RosterDaoImpl implements RosterDao{
 				(rs,rowNum) -> {
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
-					String defShiftName = "rest";
+					String defShiftName = "REST";
 					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
 							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
@@ -885,7 +938,7 @@ public class RosterDaoImpl implements RosterDao{
 				(rs,rowNum) -> {
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
-					String defShiftName = "rest";
+					String defShiftName = "REST";
 					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
 							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
@@ -895,7 +948,7 @@ public class RosterDaoImpl implements RosterDao{
 				(rs,rowNum) -> {
 					Integer id = rs.getInt(1);
 					Integer defShiftId = 0;
-					String defShiftName = "rest";
+					String defShiftName = "REST";
 					String nickName = nickMap.get(id);
 					return new RosterVo(id,userMap.get(id),defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,defShiftName,
 							0.0,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,defShiftId,nickName);
@@ -966,18 +1019,79 @@ public class RosterDaoImpl implements RosterDao{
 				}
 			}			
 		}
+		//add time
+		TimeLimitVo tlv = getTimeLimitVo();
+		Double minTimeLimit = tlv.getMinTime();
+		Double maxTimeLimit = tlv.getMaxTime();
+		for(int i=0;i<5;i++){
+			for(RosterVo r :lvs.get(i)){
+				int maxShiftType = demands.get(0).getId();
+				Double maxShiftTime = timeMap.get(maxShiftType);
+				if(r.getTotalTime() < minTimeLimit){
+					if(r.getMonId() == 0){
+						r.setMonId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getTueId() == 0){
+						r.setTueId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getWedId() == 0){
+						r.setWedId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getThuId() == 0){
+						r.setThuId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getFriId() == 0){
+						r.setFriId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getSatId() == 0){
+						r.setSatId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+					if(r.getTotalTime() < minTimeLimit && r.getSunId() == 0){
+						r.setSunId(maxShiftType);
+						r.setTotalTime(r.getTotalTime() + maxShiftTime);
+					}
+				}
+			}
+		}
 		
 		//collect
+		List<RosterVo> base = new ArrayList();
 		recommend = new ArrayList();
+		shiftPrefMin = new ArrayList();
+		shiftPrefAvg = new ArrayList();
+		workTimeLong = new ArrayList();
+		workTimeShort = new ArrayList();
+		workdayPrefMin = new ArrayList();
+		workdayPrefAvg = new ArrayList();
 		for(int i=0;i<5;i++){
+			base.addAll(lvs.get(i));
 			recommend.addAll(lvs.get(i));
+			shiftPrefMin.addAll(lvs.get(i));
+			shiftPrefAvg.addAll(lvs.get(i));
+			workTimeLong.addAll(lvs.get(i));
+			workTimeShort.addAll(lvs.get(i));
+			workdayPrefMin.addAll(lvs.get(i));
+			workdayPrefAvg.addAll(lvs.get(i));
 		}
-		shiftPrefMin = recommend;
-		shiftPrefAvg = recommend;
-		workTimeLong = recommend;
-		workTimeShort = recommend;
-		workdayPrefMin = recommend;
-		workdayPrefAvg = recommend;
+		
+		List<Roster> baseRos = new ArrayList();
+		int size = base.size();
+		for(int i=0;i<size;i++){
+			baseRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
+					base.get(i).getThuId(),base.get(i).getFriId(),base.get(i).getSatId(),base.get(i).getSunId()));
+		}
+		
+		RosterReportVo reportVo = getRosterReportVo(baseRos);
+		
+	//	getRosterReportVo(List<Roster>);
+		
+		
 	}
 	
 	@Override
@@ -1118,6 +1232,7 @@ public class RosterDaoImpl implements RosterDao{
 		List<Roster> nextWeekRoster = template.query(GET_NEXT_ROSTER_SQL, 
 				(rs,rowNum) -> new Roster(rs.getInt(1),rs.getInt(2),rs.getInt(3),
 						rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getInt(8)));
+		generateRosters();
 		for(Roster ros : nextWeekRoster){
 			template.update(UPDATE_THISWEEK_ROSTER_BYID_SQL,
 					ps -> {
@@ -1130,16 +1245,18 @@ public class RosterDaoImpl implements RosterDao{
 						ps.setInt(7, ros.getSunShift());
 						ps.setInt(8, ros.getUserId());
 					});
+		}
+		for(RosterVo rv:recommend){
 			template.update(UPDATE_NEXTWEEK_ROSTER_BYID_SQL,
 					ps -> {
-						ps.setInt(1, 0);
-						ps.setInt(2, 0);
-						ps.setInt(3, 0);
-						ps.setInt(4, 0);
-						ps.setInt(5, 0);
-						ps.setInt(6, 0);
-						ps.setInt(7, 0);
-						ps.setInt(8, ros.getUserId());
+						ps.setInt(1, rv.getMonId());
+						ps.setInt(2, rv.getThuId());
+						ps.setInt(3,rv.getWedId());
+						ps.setInt(4, rv.getThuId());
+						ps.setInt(5, rv.getFriId());
+						ps.setInt(6, rv.getSatId());
+						ps.setInt(7, rv.getSunId());
+						ps.setInt(8, rv.getUserId());
 					});
 		}
 		

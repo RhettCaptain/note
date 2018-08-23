@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.worksap.stm2017.model.ShiftDemand;
 import com.worksap.stm2017.model.User;
 import com.worksap.stm2017.vo.OtherUserVo;
 import com.worksap.stm2017.vo.UserVo;
@@ -38,6 +39,7 @@ public class UserDaoImpl implements UserDao{
 			+ "values (?,?,?,?,?,?,?,?)";
 	
 	private final String GET_SHIFT_TYPE_ID_SQL = "select id from \"shiftType\" order by id";
+	private final String GET_SHIFT_DEMAND_SQL = "SELECT * FROM \"shiftDemand\" ORDER BY id";
 	private final String INSERT_SHIFT_SCORE_SQL = "insert into \"shiftScore\" (\"shiftId\",\"userId\",\"lv1\",\"lv2\",\"lv3\",\"lv4\",\"lv5\",\"score\") "
 			+ "values (?,?,?,?,?,?,?,?)";
 	private final String INSERT_LIMIT_REC_SQL = "insert into \"timeLimitRec\" (\"userId\",\"minTimeRec\",\"maxTimeRec\") "
@@ -184,32 +186,59 @@ public class UserDaoImpl implements UserDao{
 					ps.setBoolean(7, false);
 				});
 		//add def roster
+		//round shift
+		List<Integer> shiftType = template.query(GET_SHIFT_TYPE_ID_SQL, 
+				(rs,rowNum) -> new Integer(rs.getInt(1)));
+		List<Integer> shiftType7 = new ArrayList();
+		for(int i=0;i<7;i++){
+			shiftType7.addAll(shiftType);
+		}
 		template.update(INSERT_THIS_ROSTER_SQL,
 				ps -> {
 					ps.setInt(1, userId);
 					for(int i=0;i<7;i++){
-						ps.setInt(i+2, 0);
+						ps.setInt(i+2, shiftType7.get(i));
 					}
 				});
 		template.update(INSERT_NEXT_ROSTER_SQL,
 				ps -> {
 					ps.setInt(1, userId);
 					for(int i=0;i<7;i++){
-						ps.setInt(i+2, 0);
+						ps.setInt(i+2, shiftType7.get(i));
 					}
 				});
 		
 		//add def shiftScore
-		List<Integer> shiftType = template.query(GET_SHIFT_TYPE_ID_SQL, 
-				(rs,rowNum) -> new Integer(rs.getInt(1)));
+		List<ShiftDemand> cur = template.query(GET_SHIFT_DEMAND_SQL, 
+				(rs,rowNum) -> new ShiftDemand(rs.getInt(1),rs.getInt(2),rs.getInt(3),
+						rs.getInt(4),rs.getInt(5),rs.getInt(6)));
+		ShiftDemand sum = new ShiftDemand(0,0,0,0,0,0);
+		int size = cur.size();
+		for(int i=1;i<size;i++){
+			sum.setLv1(sum.getLv1()+cur.get(i).getLv1());
+			sum.setLv2(sum.getLv2()+cur.get(i).getLv2());
+			sum.setLv3(sum.getLv3()+cur.get(i).getLv3());
+			sum.setLv4(sum.getLv4()+cur.get(i).getLv4());
+			sum.setLv5(sum.getLv5()+cur.get(i).getLv5());
+		}
+		if(size!=0){
+			sum.setLv1(sum.getLv1()/size);
+			sum.setLv2(sum.getLv2()/size);
+			sum.setLv3(sum.getLv3()/size);
+			sum.setLv4(sum.getLv4()/size);
+			sum.setLv5(sum.getLv5()/size);
+		}
+		
 		for(Integer type : shiftType){
 			template.update(INSERT_SHIFT_SCORE_SQL,
 					ps -> {
 						ps.setInt(1, type);
 						ps.setInt(2, userId);
-						for(int i=0;i<5;i++){
-							ps.setInt(i+3, 0);
-						}
+						ps.setInt(3, sum.getLv1());
+						ps.setInt(4, sum.getLv2());
+						ps.setInt(5, sum.getLv3());
+						ps.setInt(6, sum.getLv4());
+						ps.setInt(7, sum.getLv5());
 						ps.setDouble(8, 3.0);
 					});
 		}
@@ -218,7 +247,7 @@ public class UserDaoImpl implements UserDao{
 		template.update(INSERT_LIMIT_REC_SQL,
 				ps -> {
 					ps.setInt(1, userId);
-					ps.setDouble(2, 0);
+					ps.setDouble(2, 40);
 					ps.setDouble(3, 56);
 				});
 		

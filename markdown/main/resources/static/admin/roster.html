@@ -5,7 +5,9 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <script src="../js/bootstrap-rating.min.js"></script>
+<script src="../js/jquery.range-min.js"></script>
 <link href="../css/bootstrap-rating.css" rel="stylesheet">
+<link href="../css/jquery.range.css" rel="stylesheet">
 <title>NurseHub</title>
 <script>
 var color = ['','btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
@@ -85,17 +87,35 @@ function loadRosterReport(){
 	$(".thisWeek .compScore").val(thisArr[2]);
 	$(".nextWeek .compScore").val(nextArr[2]);
 	
+	//shift pref
 	for(i=0;i<3;i++){
 		$(".thisWeek .prefTd").eq(i).val(thisArr[i+3]);
 		$(".nextWeek .prefTd").eq(i).val(nextArr[i+3]);
 	}
+	//workday pref
 	for(i=6;i<9;i++){
 		$(".thisWeek .prefTd").eq(i-3).val(thisArr[i+3]);
 		$(".nextWeek .prefTd").eq(i-3).val(nextArr[i+3]);
 	}
-	for(i=3;i<6;i++){
-		$(".thisWeek .prefTd").eq(i+3).text(thisArr[i+3]);
-		$(".nextWeek .prefTd").eq(i+3).text(nextArr[i+3]);
+	//worktime
+	var wtCon = "";
+	for(i=6;i<9;i++){
+		if(thisArr[i] < gMinTimeLimit || thisArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + thisArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + thisArr[i] + "</abbr>";
+		}
+		$(".thisWeek .prefTd").eq(i).html(wtCon);
+		if(nextArr[i] < gMinTimeLimit || nextArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + nextArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + nextArr[i] + "</abbr>";
+		}
+		$(".nextWeek .prefTd").eq(i).html(wtCon);
 	}
 	
 	var thisDemands = thisArr[12];
@@ -106,7 +126,7 @@ function loadRosterReport(){
 	var colorShift = ['','primary','success','info','warning','danger'];
 	var levelName = ["N0:Nurse","N1:Nurse Practitioner","N2:Nurse-in-charge","N3:Associate Professor of Nursing","N4:Professor of Nursing"];
 	for(var sh in thisDemands[0]){
-		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(thisDemands[i][sh].name)] + "><b>" + thisDemands[i][sh].name +"</b></td>";
+		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(thisDemands[0][sh].name)] + "><b>" + thisDemands[0][sh].name +"</b></td>";
 		for(var idxL=0;idxL<5;idxL++){
 			if(idxL!=0){
 				contShift += "<tr>"
@@ -132,7 +152,7 @@ function loadRosterReport(){
 	
 	contShift = "";
 	for(var sh in nextDemands[0]){
-		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(nextDemands[i][sh].name)] + "><b>" + nextDemands[i][sh].name +"</b></td>";
+		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(nextDemands[0][sh].name)] + "><b>" + nextDemands[0][sh].name +"</b></td>";
 		for(var idxL=0;idxL<5;idxL++){
 			if(idxL!=0){
 				contShift += "<tr>"
@@ -438,7 +458,7 @@ function init(){
  <div class="row">
 	<div class="col-xs-2 col-md-1">
 		<ul class="nav nav-pills nav-stacked"  data-toggle="buttons">
-			<li><a href="#" onclick="window.location.href='rosterNextWeek.html'">Roster Next Week</a></li>
+			<li><a href="#" onclick="window.location.href='rosterNextWeek.html'">New Roster</a></li>
 			<li><a href="#" onclick="nextWeek()">Next Week</a></li>
 			<li><a href="#" onclick="thisWeek()">This Week</a></li>
 			<li><a href="#" onclick="shiftRoster()">Shift Roster</a></li>
@@ -450,9 +470,11 @@ function init(){
 		<div class="panel panel-primary">
 		    
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Report This Week</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">Report This Week</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapseOne" class="panel-body panel-collapse collapse in" >
 		    
 		    	<table class="table">
 				  <caption>
@@ -544,9 +566,11 @@ function init(){
 	<div id="nextDiv" class="nextWeek">
 		<div class="panel panel-info">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Report Next Week</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo">Report Next Week</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapseTwo" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>

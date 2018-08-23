@@ -5,7 +5,11 @@
 <script src="../js/header.js"></script>
 <script src="../js/util.js"></script>
 <script src="../js/bootstrap-rating.min.js"></script>
+<script src="../js/jquery.spinner.min.js"></script>
+<script src="../js/jquery.range-min.js"></script>
 <link href="../css/bootstrap-rating.css" rel="stylesheet">
+<link href="../css/bootstrap-spinner.min.css" rel="stylesheet">
+<link href="../css/jquery.range.css" rel="stylesheet">
 <title>NurseHub</title>
 
 <script>
@@ -61,25 +65,39 @@ function loadShiftDemand(){
 		
 		cont = cont + "<td><input type='text' class='form-control' readonly='readonly' name='name' value='"
 			+ res[i].name + "'></td>";
-		var preStr = "<td><input type='text' class='form-control level' readonly='readonly' name='lv";
+		
 		var arr = new Array();
 		var idx=0;
 		for(k in res[i]){
 			arr[idx] = res[i][k];
 			idx = idx+1;
 		}
+		//5 level
 		for(j=2;j<7;j++){
-			cont = cont + preStr + (j-1) + "' value='" + arr[j] + "(" + arr[j+5] + ")'></td>"
+			cont = cont + "<td><div data-trigger='spinner' class='input-group'>" 
+				+ "<span class='input-group-btn'><button type='button' disabled='disabled' class='btn spinBtn' data-spin='down'>-</button></span>" 
+				+ "<input type='text' data-ruler='quantity' data-min='0' class='form-control level' readonly='readonly' name='lv"
+				+ (j-1) + "' value='" + arr[j] + "' ";
+			if(arr[j]>arr[j+5]){cont += "style='color:blue'>";}
+			else if(arr[j]<arr[j+5]){cont += "style='color:red'>";}
+			else{cont += ">";}
+			cont = cont + "<span class='input-group-addon ref'><i>" + arr[j+5] + "</i></span>"
+				+ "<span class='input-group-btn'><button type='button' disabled='disabled' class='btn spinBtn' data-spin='up'>+</button></span></div></td>"
+
 		}
 		var edit = 'onclick="editShiftDemand(this)"';
+		var useREF = 'onclick="refShiftDemand(this)"';
 		cont = cont + "<td style=\"text-align:right\">"
-      		+ "<button class=\"btn btn-primary\" " + edit +">Edit</button>"
+      		+ "<button class=\"btn btn-primary btn-sm\" " + edit +">Edit</button>"
+     	 	+ "<button class=\"btn btn-success btn-sm\" " + useREF +">UseREF</button>"
      	 	+ "</td>";
 		cont = cont + "<td><input type='text' style='display:none' class='form-control' readonly='readonly' name='id' value='"
 			+ res[i].id + "'></td></tr>";
      	 	
 	}
 	$("#shiftDemand").html(cont);
+	
+	
 }
 
 function editShiftDemand(obj){
@@ -87,41 +105,134 @@ function editShiftDemand(obj){
 	if($(obj).text() == "Edit"){
 		$(obj).text("Save");
 		tr.find(".level").removeAttr("readonly");
+		tr.find(".spinBtn").attr("disabled",false);
 	}else{
 		$(obj).text("Edit");
 		var form = jsonify(tr);
-		for(var n in form){
-			if(n!="id" && n!="name"){
-				form[n] = form[n].split("(")[0];
-			}
-		}
 		sendJson("/admin/updateShiftDemand",form);
-		loadShiftDemand();
+		window.location.href="strategy.html";
 	}
 }
 
+function refShiftDemand(obj){
+	var tr = $(obj).parent().parent();
+	for(var i=0;i<5;i++){
+		tr.find(".level").eq(i).val(tr.find(".ref").eq(i).text());
+	}
+	var form = jsonify(tr);
+	sendJson("/admin/updateShiftDemand",form);
+	window.location.href="strategy.html";
+	
+	
+}
+
 function loadTimeLimit(){
+	$("#demoGreen").val(1);	
+	$("#demoBlue").val(1);
+	$('#demoGreen').jRange({
+		from: 0,
+	    to: 1,
+	    step: 0.5,
+	    format: '%s',
+	    width: 50,
+	    showLabels: false,
+	    showScale:false,
+	    snap: true,
+	    theme:'theme-green',
+	    disable: true
+	});
+	$('#demoBlue').jRange({
+		from: 0,
+	    to: 1,
+	    step: 0.5,
+	    format: '%s',
+	    width: 50,
+	    showLabels: false,
+	    showScale:false,
+	    snap: true,
+	    theme:'theme-blue',
+	    disable: true
+	});
+	
 	var res = getJson("/admin/loadTimeLimit");
-	$("#minTime").val(res.minTime + "(" + res.minTimeRec + ")");	
-	$("#maxTime").val(res.maxTime + "(" + res.maxTimeRec + ")");
+	$("#minTime").val(res.minTime);	
+	$("#maxTime").val(res.maxTime);
+	$("#minTimeRec").val(res.minTimeRec);	
+	$("#maxTimeRec").val(res.maxTimeRec);	
+	$('#minTime').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: true,
+	    showScale:false,
+	    snap: true,
+	    disable: true
+	});
+	$('#minTimeRec').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: false,
+	    snap: true,
+	    theme:'theme-blue',
+	    disable: true
+	});
+	$('#maxTime').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: true,
+	    showScale:false,
+	    snap: true,
+	    disable: true
+	});
+	$('#maxTimeRec').jRange({
+		from: 0,
+	    to: 100,
+	    step: 0.5,
+	    format: '%s',
+	    width: 600,
+	    showLabels: false,
+	    snap: true,
+	    theme:'theme-blue',
+	    disable: true
+	});
 }
 
 
 function editTimeLimit(){
-	var btn = $("#timeLimitForm").find("button");
+	var btn = $("#editBtn");
 	if(btn.text() == "Edit"){
 		btn.text("Save");
-		$("#timeLimitForm").find("input").removeAttr("readonly");
+		$("#minTime").jRange('enable');
+		$("#maxTime").jRange('enable');
 	}else{
 		btn.text("Edit");
 		var form = $("#timeLimitForm").jsonify();
-		for(var n in form){
-			form[n] = form[n].split("(")[0];
-		}
 		sendJson("/admin/updateTimeLimit",form);
-		$("#timeLimitForm").find("input").attr("readonly","readonly");
 		loadTimeLimit();
+		$("#minTime").jRange('disable');
+		$("#maxTime").jRange('disable');
+		$("td,th").addClass("text-center");
 	}
+}
+
+
+function setRecTimeLimit(){
+	$("#minTime").jRange('enable');
+	$("#maxTime").jRange('enable');
+	$("#minTime").val($("#minTimeRec").val());	
+	$("#maxTime").val($("#maxTimeRec").val());
+	var form = $("#timeLimitForm").jsonify();
+	sendJson("/admin/updateTimeLimit",form);
+	loadTimeLimit();
+	window.location.href="strategy.html";
 }
 </script>
 
@@ -211,18 +322,19 @@ function editTimeLimit(){
 		    <div class="panel-body">
 		    	<table class="table table-striped">
 				  <caption>
-				  	<span>Hint:a(b):a is current set,b is recommended.</span>
+				  	<p>Set The Shift's Demands of People Number for Each Level</p>
+				  	<p>The <i>Italic Number</i> is Recommended by Staff for Reference.</p>
 				  </caption>
 				  <thead>
 				  <tr>
 				  	<th style='display:none'>ID</th>
-				  	<th>Name</th>
+				  	<th>ShiftName</th>
 				  	<th><abbr title="Nurse">N0</abbr></th>
 				  	<th><abbr title="Nurse Practitioner">N1</abbr></th>
 				  	<th><abbr title="Nurse-in-charg">N2</abbr></th>
 				  	<th><abbr title="Associate Professor of Nursing">N3</abbr></th>
 				  	<th><abbr title="Professor of Nursing">N4</abbr></th>
-				  	<th></th>
+				  	<th style='width:14%'></th>
 				  </tr>
 				  </thead>
 				  <tbody id="shiftDemand" >
@@ -237,16 +349,34 @@ function editTimeLimit(){
 		        <h3 class="panel-title">Time Limit</h3>
 		    </div>
 		    <div class="panel-body">
-				 <span style="color:gray">Hint:a(b):a is current set,b is recommended. </span>
+				 <div style="color:gray">
+				 	<span style="margin-left:60px" >:The Time Limit Matron Set</span>
+				 	<input id="demoGreen" type="hidden" class="slider-input" />
+				 </div>
+				 <br>
+				 <div  style="color:gray">
+			  		<span style="margin-left:60px" >:The Time Limit Recommend by Staff for Reference</span>
+			  		<input id="demoBlue"  type="hidden" class="slider-input"/>
+				 </div>
 			
-		    	<form class="input-group" id="timeLimitForm">
-			  		<span class="input-group-addon">Min Work Time(h/week)</span>
-			  		<input id="minTime" type="text" name="minTime" class="form-control" readonly="readonly"/>
-			  		<span class="input-group-addon">Man Work Time(h/week)</span>
-			  		<input id="maxTime" type="text" name="maxTime" class="form-control" readonly="readonly"/>
-			  		<span class="input-group-btn">
-			  			<button type="button" class="form-control btn btn-primary" onclick="editTimeLimit()">Edit</button>
-			  		</span>
+		    	<form id="timeLimitForm">
+		    		<br>
+		    		<div class="input-group">
+			  			<span class="input-group-addon">Min Work Time(h/week)</span>
+			  			<input id="minTime"  name="minTime" type="hidden" class="slider-input" />
+			  			<input id="minTimeRec"  name="minTimeRec" type="hidden" class="slider-input"/>
+			  		</div>
+			  		<br>
+			  		<div class="input-group">
+			  			<span class="input-group-addon">Max Work Time(h/week)</span>
+			  			<input id="maxTime" name="maxTime"  type="hidden" class="slider-input" />
+			  			<input id="maxTimeRec"  name="maxTimeRec" type="hidden" class="slider-input" />
+			  		</div>
+			  		<br>
+			  		<div>
+			  			<button  id="editBtn" type="button" class="btn btn-primary" onclick="editTimeLimit()">Edit</button>
+			  			<button  id="autoBtn" type="button" class="btn btn-success" onclick="setRecTimeLimit()">UseREF</button>
+			  		</div>
 				</form>
 		    </div>
 		</div>
@@ -260,6 +390,7 @@ loadShiftType();
 loadShiftDemand();
 loadTimeLimit();
 $("td,th").addClass("text-center");
+rollBack();
  </script>
 </body>
 </html>

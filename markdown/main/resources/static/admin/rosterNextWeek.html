@@ -265,23 +265,70 @@ function loadNewRosterReport(){
 		$(".workdayPrefMin .prefTd").eq(i).val(wpmArr[i+3]);
 		$(".workdayPrefAvg .prefTd").eq(i).val(wpaArr[i+3]);
 	}
+	var wtCon = "";
 	for(i=6;i<9;i++){
-		$(".recommend .prefTd").eq(i-3).val(recArr[i+3]);
-		$(".shiftPrefMin .prefTd").eq(i-3).val(spmArr[i+3]);
-		$(".shiftPrefAvg .prefTd").eq(i-3).val(spaArr[i+3]);
-		$(".workTimeLong .prefTd").eq(i-3).val(wtlArr[i+3]);
-		$(".workTimeShort .prefTd").eq(i-3).val(wtsArr[i+3]);
-		$(".workdayPrefMin .prefTd").eq(i-3).val(wpmArr[i+3]);
-		$(".workdayPrefAvg .prefTd").eq(i-3).val(wpaArr[i+3]);
-	}
-	for(i=3;i<6;i++){
-		$(".recommend .prefTd").eq(i+3).text(recArr[i+3]);
-		$(".shiftPrefMin .prefTd").eq(i+3).text(spmArr[i+3]);
-		$(".shiftPrefAvg .prefTd").eq(i+3).text(spaArr[i+3]);
-		$(".workTimeLong .prefTd").eq(i+3).text(wtlArr[i+3]);
-		$(".workTimeShort .prefTd").eq(i+3).text(wtsArr[i+3]);
-		$(".workdayPrefMin .prefTd").eq(i+3).text(wpmArr[i+3]);
-		$(".workdayPrefAvg .prefTd").eq(i+3).text(wpaArr[i+3]);
+		if(recArr[i] < gMinTimeLimit || recArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + recArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + recArr[i] + "</abbr>";
+		}
+		$(".recommend .prefTd").eq(i).html(wtCon);
+		//------
+		if(spmArr[i] < gMinTimeLimit || spmArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + spmArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + spmArr[i] + "</abbr>";
+		}
+		$(".shiftPrefMin .prefTd").eq(i).html(wtCon);
+		//------
+		if(spaArr[i] < gMinTimeLimit || spaArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + spaArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + spaArr[i] + "</abbr>";
+		}
+		$(".shiftPrefAvg .prefTd").eq(i).html(wtCon);
+		//------
+		if(wtlArr[i] < gMinTimeLimit || wtlArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + wtlArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + wtlArr[i] + "</abbr>";
+		}
+		$(".workTimeLong .prefTd").eq(i).html(wtCon);
+		//------
+		if(wtsArr[i] < gMinTimeLimit || wtsArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + wtsArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + wtsArr[i] + "</abbr>";
+		}
+		$(".workTimeShort .prefTd").eq(i).html(wtCon);
+		//------
+		if(wpmArr[i] < gMinTimeLimit || wpmArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + wpmArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + wpmArr[i] + "</abbr>";
+		}
+		$(".workdayPrefMin .prefTd").eq(i).html(wtCon);
+		//------
+		if(wpaArr[i] < gMinTimeLimit || wpaArr[i] > gMaxTimeLimit){
+			wtCon = "<abbr style='color:red' title='the limit time is " + gMinTimeLimit + "-" 
+				+ gMaxTimeLimit +"'>" + wpaArr[i] + "</abbr>";
+		}else{
+			wtCon = "<abbr title='the limit time is " + gMinTimeLimit + "-" 
+			+ gMaxTimeLimit +"'>" + wpaArr[i] + "</abbr>";
+		}
+		$(".workdayPrefAvg .prefTd").eq(i).html(wtCon);
 	}
 	
 	var recDemands = recArr[12];
@@ -307,7 +354,7 @@ function loadTmpFunc(demand){
 	var colorShift = ['','primary','success','info','warning','danger'];
 	var levelName = ["N0:Nurse","N1:Nurse Practitioner","N2:Nurse-in-charge","N3:Associate Professor of Nursing","N4:Professor of Nursing"];
 	for(var sh in demand[0]){
-		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(demand[i][sh].name)] + "><b>" + demand[i][sh].name +"</b></td>";
+		contShift = contShift + "<tr><td rowspan='10' style='width:15%' class=" +colorShift[strNum(demand[0][sh].name)] + "><b>" + demand[0][sh].name +"</b></td>";
 		for(var idxL=0;idxL<5;idxL++){
 			if(idxL!=0){
 				contShift += "<tr>"
@@ -628,10 +675,11 @@ function init(){
 		<div class="panel panel-primary">
 		    
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Recommend Most Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Recommend Most Report</a>
+               	</h3>
 		    </div>
-		    <div class="panel-body">
-		    
+		    <div id="collapse1" class="panel-body panel-collapse collapse in">
 		    	<table class="table">
 				  <caption>
 				  	<div><b>Meet Time Limit:<span class="timeLimitOk"></span></b></div>
@@ -722,9 +770,11 @@ function init(){
 	<div id="shiftPrefMin" class="shiftPrefMin">
 		<div class="panel panel-info">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Min ShiftPre First Report</h3>
+		        <h3 class="panel-title">
+		       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Min ShiftPre First Report</a>
+		       	</h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse2" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
@@ -819,9 +869,11 @@ function init(){
 	<div id="shiftPrefAvg" class="shiftPrefAvg">
 		<div class="panel panel-success">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Avg ShiftPref First Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Avg ShiftPref First Report</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse3" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
@@ -915,9 +967,11 @@ function init(){
 	<div id="workTimeLong" class="workTimeLong">
 		<div class="panel panel-warning">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Long WorkTime First Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Long WorkTime First Report</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse4" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
@@ -1009,9 +1063,11 @@ function init(){
 	<div id="workTimeShort" class="workTimeShort">
 		<div class="panel panel-danger">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Short WorkTime First Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Short WorkTime First Report</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse5" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
@@ -1104,9 +1160,11 @@ function init(){
 	<div id="workdayPrefMin" class="workdayPrefMin">
 		<div class="panel panel-primary">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Min WorkdayPref First Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse6">Min WorkdayPref First Report</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse6" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
@@ -1199,9 +1257,11 @@ function init(){
 	<div id="workdayPrefAvg" class="workdayPrefAvg">
 		<div class="panel panel-info">
 		    <div class="panel-heading">
-		        <h3 class="panel-title">Avg WorkdayPref First Report</h3>
+		        <h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse7">Avg WorkdayPref First Report</a>
+		        </h3>
 		    </div>
-		    <div class="panel-body">
+		    <div id="collapse7" class="panel-body panel-collapse collapse in">
 		    	
 		    	<table class="table">
 				  <caption>
