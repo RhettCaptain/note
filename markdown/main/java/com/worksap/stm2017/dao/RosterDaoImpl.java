@@ -60,6 +60,8 @@ public class RosterDaoImpl implements RosterDao{
 	
 	private final String GET_TIME_LIMIT_SQL = "SELECT * FROM \"timeLimit\"";
 	private final String AVG_TIME_LIMIT_REC_SQL = "SELECT AVG(\"minTimeRec\"),AVG(\"maxTimeRec\") FROM \"timeLimitRec\"";
+	private final String AVG_MIN_TIME_LIMIT_REC_SQL = "SELECT AVG(\"minTimeRec\") FROM \"timeLimitRec\"";
+	private final String AVG_MAX_TIME_LIMIT_REC_SQL = "SELECT AVG(\"maxTimeRec\") FROM \"timeLimitRec\"";
 	private final String UPDATE_TIME_LIMIT_SQL = "UPDATE \"timeLimit\" SET \"minTime\"=?, \"maxTime\"=?";
 	private final String GET_TIME_LIMIT_REC_BY_USERID_SQL = "SELECT * FROM \"timeLimitRec\" WHERE \"userId\"=?";
 	private final String UPDATE_TIME_LIMIT_REC_SQL = "UPDATE \"timeLimitRec\" SET \"minTimeRec\"=?, \"maxTimeRec\"=? WHERE \"userId\"=?";
@@ -332,21 +334,7 @@ public class RosterDaoImpl implements RosterDao{
 					ps.setBoolean(5, stv.getUsed());
 				});
 		
-		//modify shiftScore
-		//add default scores for everyone
-		List<Integer> userIds = template.query(GET_USER_IDS_SQL, 
-				(rs,rowNum) -> new Integer(rs.getInt(1)));
-		for(Integer user : userIds){
-			template.update(ADD_SHIFT_SCORE_SQL,
-					ps -> {
-						ps.setInt(1, id);
-						ps.setInt(2, user);
-						for(int i=3;i<=7;i++){
-							ps.setInt(i, 0);
-						}
-						ps.setDouble(8, 3.0);
-					});
-		}
+		
 		
 		//modify shiftDemand
 		//add default demand for new shift 
@@ -381,6 +369,23 @@ public class RosterDaoImpl implements RosterDao{
 					ps.setInt(6, sum.getLv5());
 				});
 		
+		//modify shiftScore
+				//add default scores for everyone
+		List<Integer> userIds = template.query(GET_USER_IDS_SQL, 
+				(rs,rowNum) -> new Integer(rs.getInt(1)));
+		for(Integer user : userIds){
+			template.update(ADD_SHIFT_SCORE_SQL,
+					ps -> {
+						ps.setInt(1, id);
+						ps.setInt(2, user);
+						ps.setInt(3, sum.getLv1());
+						ps.setInt(4, sum.getLv2());
+						ps.setInt(5, sum.getLv3());
+						ps.setInt(6, sum.getLv4());
+						ps.setInt(7, sum.getLv5());
+						ps.setDouble(8, 3.0);
+					});
+		}
 	}
 
 	@Override
@@ -486,14 +491,14 @@ public class RosterDaoImpl implements RosterDao{
 	public TimeLimitVo getTimeLimitVo() {
 		TimeLimitVo rec = DataAccessUtils.requiredSingleResult(
 				template.query(AVG_TIME_LIMIT_REC_SQL,
-						(rs,rowNum) -> new TimeLimitVo(0.0,0.0,rs.getDouble(1),rs.getDouble(2))
+						(rs,rowNum) -> new TimeLimitVo(rs.getDouble(1),rs.getDouble(2),rs.getDouble(1),rs.getDouble(2))
 				));
-				
+	
 		TimeLimitVo one = DataAccessUtils.requiredSingleResult(
 				template.query(GET_TIME_LIMIT_SQL,
 						(rs,rowNum) -> new TimeLimitVo(rs.getDouble(1),rs.getDouble(2),rec.getMinTimeRec(),rec.getMaxTimeRec())
 				));
-				
+
 		return one;
 	}
 
@@ -974,7 +979,7 @@ public class RosterDaoImpl implements RosterDao{
 		workTimeShort = new ArrayList();
 		workdayPrefMin = new ArrayList();
 		workdayPrefAvg = new ArrayList();
-	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+
 		List<RosterVo> base = baseRoster(lvs,demands,typeMap,timeMap,usedMap,minTimeLimit);
 		recommend.addAll(base);
 		shiftPrefMin.addAll(base);
@@ -996,11 +1001,11 @@ public class RosterDaoImpl implements RosterDao{
 		baseReport.setMinWorkTime(baseReport.getAvgWorkTime());
 		
 		//multi
-		int round=3;
-	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+		int round=10;
+
 		for(int rou=0;rou<round;rou++){
 			base = baseRoster(lvs,demands,typeMap,timeMap,usedMap,minTimeLimit);
-	System.out.println(lvs.get(0).get(0).getMonShift()+lvs.get(0).get(0).getMonShift());
+
 			List<Roster> newRos = new ArrayList();
 			for(int i=0;i<base.size();i++){
 				newRos.add(new Roster(base.get(i).getUserId(),base.get(i).getMonId(),base.get(i).getTueId(),base.get(i).getWedId(),
@@ -1014,6 +1019,7 @@ public class RosterDaoImpl implements RosterDao{
 				recommend.addAll(base);
 				baseReport.setTimeLimitOk(true);
 				baseReport.setDemandOk(true);
+
 			}else if((baseReport.getDemandOk() && baseReport.getDemandOk()) 
 					&& (!newReport.getTimeLimitOk() || !newReport.getDemandOk())){
 			}else if((baseReport.getDemandOk() || baseReport.getDemandOk()) 
@@ -1023,29 +1029,33 @@ public class RosterDaoImpl implements RosterDao{
 					recommend.clear();
 					recommend.addAll(base);
 					baseReport.setCompScore(newReport.getCompScore());
+
 				}
 			}
 			//shift pref
 			if(newReport.getMinShiftPref() > baseReport.getMinShiftPref()){
 				shiftPrefMin.clear();
 				shiftPrefMin.addAll(base);
-				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMinShiftPref(newReport.getMinShiftPref());
+
 			}
 			if(newReport.getAvgShiftPref() > baseReport.getAvgShiftPref()){
 				shiftPrefAvg.clear();
 				shiftPrefAvg.addAll(base);
 				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+
 			}
 			//work time
 			if(newReport.getAvgWorkTime() > baseReport.getMaxWorkTime()){
 				workTimeLong.clear();
 				workTimeLong.addAll(base);
-				baseReport.setMaxShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMaxWorkTime(newReport.getAvgWorkTime());
 			}
 			if(newReport.getAvgWorkTime() < baseReport.getMinWorkTime()){
 				workTimeShort.clear();
 				workTimeShort.addAll(base);
-				baseReport.setMinShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMinWorkTime(newReport.getAvgWorkTime());
+
 			}
 			//workday pref
 			if(newReport.getMinWorkdayPref() > baseReport.getMinWorkdayPref()){
@@ -1056,9 +1066,10 @@ public class RosterDaoImpl implements RosterDao{
 			if(newReport.getAvgWorkdayPref() > baseReport.getAvgWorkdayPref()){
 				workdayPrefAvg.clear();
 				workdayPrefAvg.addAll(base);
+				
 				baseReport.setAvgWorkdayPref(newReport.getAvgWorkdayPref());
 			}
-			/*
+			
 			//rand rest
 			int shiftNum = demands.size();
 			for(RosterVo rv : base){
@@ -1150,7 +1161,7 @@ public class RosterDaoImpl implements RosterDao{
 			if(newReport.getMinShiftPref() > baseReport.getMinShiftPref()){
 				shiftPrefMin.clear();
 				shiftPrefMin.addAll(base);
-				baseReport.setAvgShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMinShiftPref(newReport.getMinShiftPref());
 			}
 			if(newReport.getAvgShiftPref() > baseReport.getAvgShiftPref()){
 				shiftPrefAvg.clear();
@@ -1161,26 +1172,64 @@ public class RosterDaoImpl implements RosterDao{
 			if(newReport.getAvgWorkTime() > baseReport.getMaxWorkTime()){
 				workTimeLong.clear();
 				workTimeLong.addAll(base);
-				baseReport.setMaxShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMaxWorkTime(newReport.getAvgWorkTime());
 			}
 			if(newReport.getAvgWorkTime() < baseReport.getMinWorkTime()){
 				workTimeShort.clear();
 				workTimeShort.addAll(base);
-				baseReport.setMinShiftPref(newReport.getAvgShiftPref());
+				baseReport.setMinWorkTime(newReport.getAvgWorkTime());
 			}
 			//workday pref
 			if(newReport.getMinWorkdayPref() > baseReport.getMinWorkdayPref()){
 				workdayPrefMin.clear();
 				workdayPrefMin.addAll(base);
+	
 				baseReport.setMinWorkdayPref(newReport.getMinWorkdayPref());
 			}
 			if(newReport.getAvgWorkdayPref() > baseReport.getAvgWorkdayPref()){
 				workdayPrefAvg.clear();
 				workdayPrefAvg.addAll(base);
+				
 				baseReport.setAvgWorkdayPref(newReport.getAvgWorkdayPref());
 			}
-			*/
+			
 		}
+		//sort
+		Collections.sort(recommend,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(shiftPrefMin,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(shiftPrefAvg,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(workTimeLong,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(workTimeShort,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(workdayPrefMin,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
+		Collections.sort(workdayPrefAvg,new Comparator<RosterVo>(){
+            public int compare(RosterVo arg0, RosterVo arg1) {
+                return arg0.getUserId().compareTo(arg1.getUserId());
+            }
+        });
 		
 	}
 	
@@ -1453,7 +1502,7 @@ public class RosterDaoImpl implements RosterDao{
 		List<Roster> nextWeekRoster = template.query(GET_NEXT_ROSTER_SQL, 
 				(rs,rowNum) -> new Roster(rs.getInt(1),rs.getInt(2),rs.getInt(3),
 						rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getInt(8)));
-		generateRosters();
+	//	generateRosters();
 		for(Roster ros : nextWeekRoster){
 			template.update(UPDATE_THISWEEK_ROSTER_BYID_SQL,
 					ps -> {
@@ -1467,6 +1516,7 @@ public class RosterDaoImpl implements RosterDao{
 						ps.setInt(8, ros.getUserId());
 					});
 		}
+		/*
 		for(RosterVo rv:recommend){
 			template.update(UPDATE_NEXTWEEK_ROSTER_BYID_SQL,
 					ps -> {
@@ -1480,6 +1530,7 @@ public class RosterDaoImpl implements RosterDao{
 						ps.setInt(8, rv.getUserId());
 					});
 		}
+		*/
 		
 	}
 
