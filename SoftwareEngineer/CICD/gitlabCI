@@ -1,0 +1,73 @@
+GitLab CI/CD
+一、概述
+GitLab提供持续集成服务。如果添加一个.gitlab-ci.yml文件到项目根目录，并配置GitLab项目使用某个Runner，然后每一次提交或者是推送都会触发CI pipeline.
+.gitlab-ci.yml文件会告诉GitLab Runner 做什么。默认情况下，它运行一个pipeline，分为三个阶段：build，test，deploy。你并不需要用到所有的阶段，没有job的阶段会被忽略。
+如果一切运行正常(没有非零的返回值)，您将得到与commit关联的漂亮的绿色标记。这使得在查看代码之前，很容易就能看出是否有一个提交导致了测试失败。
+大多数项目使用GitLab CI服务来运行测试套件，这样如果开发人员发现问题就会及时得到反馈。
+---
+因此，简而言之，CI所需要的步骤可以归结为：
+1. 添加.gitlab-ci.yml到项目的根目录
+2. 配置一个Runner
+---
+从此刻开始，在每一次push到Git仓库的过程中，Runner会自动开启pipline，pipline将显示在项目的Pipline页面中。
+
+二、.gitlab-ci.yml
+1..gitlab-ci.yml是什么
+.gitlab-ci.yml是用来配置CI在我们的项目中做些什么工作。它位于项目的根目录。
+在任何的push操作，GitLab都会寻找.gitlab-ci.yml文件，并对此次commit开始jobs，jobs的内容来源于.gitlab-ci.yml文件。
+因为.gitlab-ci.yml是存在于我们的项目仓库中，并且受版本控制的，所以旧版本也可以执行成功，且使用CI可以让forks更容易，
+分支可也以拥有不同的pipelines和jobs，而且对于CI来说只会拥有单一的来源。
+
+2.创建一个简单的.gitlab-ci.yml
+注意：.gitlab-ci.yml是一个*&####&*_10_*&####&*文件，所以必须要格外注意锁紧。使用空格，而不是tabs。
+在项目的根目录创建一个名为.gitlab-ci.yml的文件。下面是一个Ruby on Rails项目的示例。
+'''
+before_script:
+  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - ruby -v
+  - which ruby
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install --jobs $(nproc)  "${FLAGS[@]}"
+
+rspec:
+  script:
+    - bundle exec rspec
+
+rubocop:
+  script:
+    - bundle exec rubocop
+'''
+-定义了两个jobs，rspec和rubocop（名字可以随便取），他们执行不同的命令。
+-在每个jobs之前，before_script定义的命令都将会被执行。
+.gitlab-ci.yml定义了一系列的jobs，其中包含如何运行和何时运行的限制。jobs必须定义一个名称（在示例中分别是rspec和rubocop）作为顶级元素，而且总是必须包含script关键字。
+Jobs被用来创建任务，它们会被Runners接受和环境中的Runner执行。
+更多语法https://docs.gitlab.com/ee/ci/yaml/README.html
+推送.gitlab-ci.yml到GitLab
+一旦创建了.gitlab-ci.yml，你应该及时添加到Git仓库并推送到GitLab。
+'''
+git add .gitlab-ci.yml
+git commit -m "Add .gitlab-ci.yml"
+git push origin master
+'''
+现在到Pipelines页面查看，将会看到该Pipline处于等待状态。
+你也可以到Commits页面查看，并会发现SHA旁边的暂停按钮。
+
+3.配置Runner
+在GitLab中，Runners将会运行你在.gitlab-ci.yml中定义的jobs。Runner可以是虚拟机，VPS，裸机，docker容器，甚至一堆容器。GitLab和Runners通过API通信，所以唯一的要求就是运行Runners的机器可以联网。
+一个Runner可以服务GitLab中的某个特定的项目或者是多个项目。如果它服务所有的项目，则被称为共享的Runner。
+你可以通过Settings->CI/CD查找是否有Runners分配到你的项目中。
+(1)安装
+https://docs.gitlab.com/runner/install/
+(2)配置
+按照上面的连接设置你自己的Runner或者使用下一节介绍的共享Runner。
+https://docs.gitlab.com/ee/ci/runners/README.html#registering-a-specific-runner
+一旦Runner安装好，你可以从项目的Settings->CI/CD找到Runner页面。
+共享Runners
+如果你用的是GitLab.com，你可以使用GitLab公司提供的共享Runners。
+这些是运行在GitLab基础设置上面的特殊虚拟机，可以构建任何项目。
+你可以通过项目中的Settings->CI/CD找到Shared Runners，并点击开启它。
+
+4.查看pipeline和jobs的状态
+成功的配置好Runner后，你应该查看最后一次提交后的状态，从pending、到执行中、成功或失败。
+你可以通过项目中的Piplines页面查看所有的piplines。
+也可以通过Piplines->Jobs页面查看所有的jobs。

@@ -1,0 +1,212 @@
+Gitlab CI YAML
+1.Jobs
+'''
+job1:
+  script: "execute-script-for-job1"
+job2:
+  script: "execute-script-for-job2"
+'''
+独立执行两个脚本任务
+最简单demo：
+'''
+run:
+  script: echo 'run'
+test:
+  script: echo 'test'
+'''
+
+保留的job命名关键词
+image	services	stages	types	before_script	after_script	variables	cache
+
+2.pages 
+pages is a special job that is used to upload static content to GitLab that can be used to serve your website. 
+It has a special syntax, so the two requirements below must be met:
+（1）Any static content must be placed under a public/ directory
+（2）artifacts with a path to the public/ directory must be defined
+The example below simply moves all files from the root of the project to the public/ directory. The .public workaround is so cp doesn't also copy public/ to itself in an infinite loop:
+'''
+pages:
+  stage: deploy
+  script:
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+'''
+
+3.image and services 
+This allows to specify a custom Docker image and a list of services that can be used for time of the job. 
+The configuration of this feature is covered in a separate document
+
+4.before_script and after_script
+全局指令，在每个job前/后执行，可被覆盖
+'''
+before_script:
+  - global before script
+
+job:
+  before_script:
+    - execute this instead of global before script
+  script:
+    - my command
+  after_script:
+    - execute this after my script
+'''
+
+5.stages
+定义阶段，每个任务的相同阶段会并行运行，不同阶段会依次运行（前一阶段成功）
+'''
+stages:
+  - build
+  - test
+
+job 1:
+  stage: build
+  script: make build dependencies
+
+job 2:
+  stage: build
+  script: make build artifacts
+
+job 3:
+  stage: test
+  script: make test
+'''
+
+6.script
+script is the only required keyword that a job needs. It's a shell script which is executed by the Runner. 
+'''
+job1:
+  script: "bundle exec rspec"
+job2:
+  script:
+    - uname -a
+    - bundle exec rspec
+'''
+
+7.only and except
+only and except are two parameters that set a job policy to limit when jobs are created:
+only defines the names of branches and tags for which the job will run.
+except defines the names of branches and tags for which the job will not run.
+---
+only and except are inclusive. If both only and except are defined in a job specification, the ref is filtered by only and except.
+only and except allow the use of regular expressions.
+only and except allow to specify a repository path to filter jobs for forks.
+'''
+job:
+  # use regexp
+  only:
+    - /^issue-.*$/
+  # use special keyword
+  except:
+    - branches
+'''
+'''
+job:
+  only:
+    - branches@gitlab-org/gitlab-ce
+  except:
+    - master@gitlab-org/gitlab-ce
+'''
+
+8.tags 
+tags is used to select specific Runners from the list of all Runners that are allowed to run this project.
+During the registration of a Runner, you can specify the Runner's tags, for example ruby, postgres, development.
+tags allow you to run jobs with Runners that have the specified tags assigned to them:
+'''
+job:
+  tags:
+    - ruby
+    - postgres
+'''
+
+9.allow_failure 
+allow_failure is used when you want to allow a job to fail without impacting the rest of the CI suite. 
+Failed jobs don't contribute to the commit status.
+'''
+job1:
+  stage: test
+  script:
+    - execute_script_that_will_fail
+  allow_failure: true
+'''
+
+10.when 
+when is used to implement jobs that are run in case of failure or despite the failure.
+when can be set to one of the following values:
+- on_success - execute job only when all jobs from prior stages succeed. This is the default.
+- on_failure - execute job only when at least one job from prior stages fails.
+- always - execute job regardless of the status of jobs from prior stages.
+- manual - execute job manually (added in GitLab 8.10). Read about manual actions below.
+'''
+cleanup_build_job:
+  stage: cleanup_build
+  script:
+    - cleanup build when failed
+  when: on_failure
+'''
+
+11.environment 
+environment is used to define that a job deploys to a specific environment. 
+If environment is specified and no environment under that name exists, a new one will be created automatically.
+'''
+deploy to production:
+  stage: deploy
+  script: git push production HEAD:master
+  environment:
+    name: production
+'''
+In the above example, the deploy to production job will be marked as doing a deployment to the production environment.
+(1)environment:name 
+(2)environment:url 
+This is an optional value that when set, it exposes buttons in various places in GitLab which when clicked take you to the defined URL.
+'''
+deploy to production:
+  stage: deploy
+  script: git push production HEAD:master
+  environment:
+    name: production
+    url: https://prod.example.com
+'''
+(3)environment:on_stop
+Closing (stoping) environments can be achieved with the on_stop keyword defined under environment
+(4)environment:action 
+The action keyword is to be used in conjunction with on_stop and is defined in the job that is called to close the environment.
+'''
+review_app:
+  stage: deploy
+  script: make deploy-app
+  environment:
+    name: review
+    on_stop: stop_review_app
+
+stop_review_app:
+  stage: deploy
+  script: make delete-app
+  when: manual
+  environment:
+    name: review
+    action: stop
+'''
+(5)Dynamic environments
+'''
+deploy as review app:
+  stage: deploy
+  script: make deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_ENVIRONMENT_SLUG.example.com/
+'''
+ $CI_COMMIT_REF_NAME is an environment variable set by the Runner. 
+ 
+12.cache 
+cache is used to specify a list of files and directories which should be cached between jobs.
+You can only use paths that are within the project workspace
+If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition.
+(1)cache:paths 
+
+https://docs.gitlab.com/ce/ci/yaml/#allow_failure
