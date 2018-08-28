@@ -58,7 +58,14 @@ git push origin master
 你可以通过Settings->CI/CD查找是否有Runners分配到你的项目中。
 (1)安装
 https://docs.gitlab.com/runner/install/
+-windows 
+	装一个 gitlab-runner.exe
+	用管理员权限打开cmd
+	注册runner，根据gitlab的token
+	安装启动gitlab-runner install	gitlab-runner start
 (2)配置
+主要是token
+(3)启动主机
 按照上面的连接设置你自己的Runner或者使用下一节介绍的共享Runner。
 https://docs.gitlab.com/ee/ci/runners/README.html#registering-a-specific-runner
 一旦Runner安装好，你可以从项目的Settings->CI/CD找到Runner页面。
