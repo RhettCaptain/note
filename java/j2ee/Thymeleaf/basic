@@ -1,0 +1,61 @@
+Thymeleaf基础
+一、概述
+Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，它可以完全替代 JSP 
+
+二、HelloWorld
+1.引入依赖
+-springboot直接引入：
+　　<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+-非springboot项目使用如下依赖：
+	<dependency>
+    <groupId>org.thymeleaf</groupId>
+    <artifactId>thymeleaf</artifactId>
+    <version>2.1.4</version>
+	</dependency>
+-默认的模板映射路径是：src/main/resources/templates，
+
+2.配置thymeleaf视图解析器
+#thymeleaf start
+spring.thymeleaf.mode=HTML5
+spring.thymeleaf.encoding=UTF-8
+spring.thymeleaf.content-type=text/html
+#开发时关闭缓存,不然没法看到实时页面
+spring.thymeleaf.cache=false
+#thymeleaf end
+---
+实际项目中可能会有不太严格的HTML格式，此时设置mode=HTML5将会对非严格的报错，可以参考以下配置：
+spring.thymeleaf.mode=LEGACYHTML5
+需要注意的是，LEGACYHTML5需要搭配一个额外的库NekoHTML才可用。
+<dependency>  
+       <groupId>net.sourceforge.nekohtml</groupId>  
+       <artifactId>nekohtml</artifactId>  
+       <version>1.9.22</version>  
+</dependency>  
+
+3.编写控制器
+@Controller
+public class HelloController {
+    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+    @GetMapping(value = "/hello")
+    public String hello(Model model) {
+        String name = "jiangbei";
+        model.addAttribute("name", name);
+        return "hello";
+    }
+}
+
+4.编写模板html
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+    <!--/*@thymesVar id="name" type="java.lang.String"*/-->
+    <p th:text="'Hello！, ' + ${name} + '!'">3333</p>
+</body>
+</html>
