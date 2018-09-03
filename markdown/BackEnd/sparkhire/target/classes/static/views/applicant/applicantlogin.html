@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" media="all" href="css/signin.css"
+          th:href="@{/assets/css/applicant/signin.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="css/applicant.css"
+          th:href="@{/assets/css/applicant/applicant.css}"/>
+</head>
+
+<body class="text-center">
+<form class="form-signin" th:action="@{/applicant/login}" modelAttribute="applicant" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label class="sr-only">Username</label>
+    <input id="inputUsername" name="username" class="form-control" placeholder="Username"
+           th:value="${applicant.username}"
+           th:field="${applicant.username}" required="required"></input>
+    <label class="sr-only">Password</label>
+    <input type="password" name="password" class="form-control" placeholder="Password"
+           th:value="${applicant.password}"
+           th:field="${applicant.password}" required="required"></input>
+
+    <span class="help-block" th:if="${msg}" th:text="${msg}"></span>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <a id="register_link" th:href="@{./register}">No account? please click here to register!</a>
+</form>
+</body>
+<script th:inline="javascript">
+</script>
+</html>

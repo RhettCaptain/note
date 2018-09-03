@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="template/hr/header :: header"></div>
+<link rel="stylesheet" href="" th:href="@{/assets/css/hr/index.css}"></link>
+<link rel="stylesheet" href="" th:href="@{/assets/css/hr/employeemanager.css}"></link>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper  skin-blue-light">
+
+  <div th:replace="template/hr/nav :: nav"></div>
+  
+  <div th:replace="template/hr/sidebar :: sidebar"></div>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Employee Management
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active">
+	              <a href="#tab_1" data-toggle="tab" aria-expanded="true">
+	              	<p class="applicant-number">3</p>
+	              	<p class="interview-step">HR</p>
+	              </a>
+              </li>
+              <li class="">
+              	<a href="#tab_2" data-toggle="tab" aria-expanded="false">
+					<p class="applicant-number">45</p>
+	              	<p class="interview-step">Common Employee</p>
+				</a>
+			  </li>
+              <li class="">
+              	<a href="#tab_3" data-toggle="tab" aria-expanded="false">
+              		<p class="applicant-number">28</p>
+	              	<p class="interview-step">Department Manager</p>
+              	</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+		          <div class="box">
+		          	<div class="box-header">
+						<h3 class="box-title">HR List</h3>
+		              <div class="box-tools">
+		                  <button type="button" class="btn btn-flat btn-primary add-modal-btn"><i class="fa  fa-plus"></i>Add</button>
+			              <button type="button" class="btn btn-flat btn-danger"><i class="fa fa-trash"></i>Delete</button>
+		              </div>
+		            </div>
+		            <div class="box-body table-responsive no-padding hr-table">
+<script type="text/html" id="hr-list">
+					<table class="table table-hover">
+		                <tbody><tr>
+		                  <th>
+		                  	<label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label>
+			              </th>
+		                  <th>Name</th>
+		                  <th>Username</th>
+		                  <th>Phone</th>
+		                  <th>E-mail</th>
+		                  <th>Operation</th>
+		                </tr>
+					{{each list as value i}}
+		                <tr class="basic-info-tr">
+		                  <td><label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label></td>
+		                  <td>
+		                  	{{value.realname}}
+		                  </td>
+		                  <td>{{value.username}}</td>
+		                  <td>{{value.phone}}</td>
+		                  <td>{{value.email}}</td>
+		                  <td>
+			                  <div class="form-group">
+			                  	<button type="button" class="btn btn-flat btn-primary edit-btn" 
+data-staffid="{{value.userid}}" 
+data-realname="{{value.realname}}" 
+data-username="{{value.username}}"
+data-phone="{{value.phone}}"
+data-email="{{value.email}}"
+data-roleid="{{value.roleid}}"><i class="fa  fa-edit"></i>Edit</button>
+			                  	<button type="button" class="btn btn-flat btn-danger delete-btn" data-staffid="{{value.userid}}"><i class="fa fa-trash"></i>Delete</button>
+			                  </div>
+		                  </td>
+		                </tr>
+					{{/each}}
+		              </tbody></table>		                    					
+</script>
+		              
+		            </div>
+		            <!-- /.box-body -->
+		          </div>
+		          <!-- /.box -->
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                The European languages are members of the same family. Their separate existence is a myth.
+                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                new common language would be desirable: one could refuse to pay expensive translators. To
+                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                words. If several languages coalesce, the grammar of the resulting language is more simple
+                and regular than that of the individual languages.
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                It has survived not only five centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                like Aldus PageMaker including versions of Lorem Ipsum.
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <!-- Main row -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+   	<!-- Button trigger modal -->
+	<button type="button" style="display:none" class="btn btn-primary btn-lg" id="add-modal-trigger" data-toggle="modal" data-target="#transferModal">XXX</button>
+   
+	<!-- Modal -->
+	<div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Transfer Application</h4>
+	      </div>
+	      <div class="modal-body">
+	        
+	        								<div id="id-container-hidden" style="display:none">-1</div>
+	        								<div id="roleid-container-hidden" style="display:none">-1</div>
+											<div class="form-group">
+												<label class="control-label">RealName</label>
+												<input type="text" value="" id="realname" placeholder="RealName" class="form-control" />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Username</label>
+												<input type="text" value="" id="username" placeholder="Username" class="form-control" />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Password</label>
+												<input type="password" value="" id="password" placeholder="Password" class="form-control" />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Confirm Password</label>
+												<input type="password" value="" id="confirmpassword" placeholder="Confirm Password" class="form-control" />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Phone</label>
+												<input type="text" value="" id="phone" placeholder="Phone" class="form-control" />
+											</div>
+											<div class="form-group">
+												<label class="control-label">E-mail</label>
+												<input type="email" value="" id="email" placeholder="E-mail" class="form-control" />
+											</div>
+											<div class="form-group" style="display: none;">
+												<label class="control-label">Type</label>
+										    	<div class="btn-group">
+								                  <button type="button" class="btn btn-default" id="typeid-container" data-typeid="1">1</button>
+								                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								                    <span class="caret"></span>
+								                    <span class="sr-only">Toggle Dropdown</span>
+								                  </button>
+								                  <ul class="dropdown-menu add-menu" role="menu">
+								                    <li data-typeid="0"><a href="#">Staff</a></li>
+								                    <li data-typeid="1"><a href="#">HR</a></li>
+								                  </ul>
+								                </div>
+											</div>
+	        
+	        
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" id="modal-close-button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" id="submit-addhr" class="btn btn-primary pull-right">Submit<div class="ripple-container"></div></button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+<div th:replace="template/hr/scripts :: scripts"></div>
+
+<script type="text/javascript">
+$(function(){
+	$("body").on("click",".add-modal-btn",function(){
+		$("#add-modal-trigger").click();
+	})
+	$("body").on("click",".add-menu li",function(){
+		var typeid = $(this).data("typeid");
+		$("#typeid-container").html($(this).find("a").html());
+		$("#typeid-container").attr("data-typeid",typeid);
+	})
+	
+	$("body").on("click",".delete-btn",function(){
+		var userid = $(this).data("staffid");
+	})
+	
+	$("body").on("click","#submit-addhr",function(){
+		if($("#password").val() != $("#confirmpassword").val()){
+			notify_error("Password Match Error!");
+			return;
+		}
+		$.ajax({
+			  type: "POST",
+			  url: "./add",
+			  dataType:"json",
+			  data: {
+				  username:$("#username").val(),
+				  realname:$("#realname").val(),
+				  password:$("#password").val(),
+				  roleid:$("#typeid-container").html(),
+				  phone:$("#phone").val(),
+				  email:$("#email").val()
+				}
+			}).always(function( msg ) {
+				if(msg.responseText == "success"){
+					notify_success(msg.responseText);
+				}else{
+					notify_error(msg.responseText);
+				}
+			});
+	})
+	
+	$("body").on("click",".delete-btn",function(){
+			$.ajax({
+			  type: "POST",
+			  url: "./delete",
+			  dataType:"json",
+			  data: {
+				  staffid:$(this).data("staffid")
+				}
+			}).always(function( msg ) {
+				if(msg.responseText == "success"){
+					notify_success(msg.responseText);
+				}else{
+					notify_error(msg.responseText);
+				}
+			});
+	})
+	
+	$("body").on("click",".edit-btn",function(){
+		 var userid=$(this).data("staffid");
+		 var username=$(this).data("username");
+		 var realname=$(this).data("realname");
+		 var password=$(this).data("password");
+		 var roleid=$(this).data("roleid");
+		 var phone=$(this).data("phone");
+		 var email=$(this).data("email");
+		 $("#username").val(username)
+		 $("#realname").val(realname)
+		 $("#password").val(password)
+		 $("#phone").val(phone)
+		 $("#email").val(email)
+		 $("#id-container-hidden").html(userid);
+		 $("#roleid-container-hidden").html(roleid);
+			/* $.ajax({
+			  type: "POST",
+			  url: "./update",
+			  dataType:"json",
+			  data: {
+				  staffid:$(this).data("staffid")
+				}
+			}).always(function( msg ) {
+				if(msg.responseText == "success"){
+					notify_success(msg.responseText);
+				}else{
+					notify_error(msg.responseText);
+				}
+			}); */
+	})
+	
+	$.ajax({
+		  type: "GET",
+		  url: "./loadhr",
+		  dataType:"json",
+		}).always(function( msg ) {
+				var html1 = template("hr-list",{list:msg})
+				$(".hr-table").html(html1);
+		});
+	
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+.nav-tabs p{
+	color:#aaa;
+	text-align: center;
+	width:160px;
+}
+
+.nav-tabs a{
+	border-left: 1px solid #ddd !important;
+}
+
+.nav-tabs li{
+	margin-right:0 !important
+}
+
+.nav-tabs .active p{
+	color:#333;
+}
+
+.applicant-number{
+	font-size:28px;
+}
+
+.interview-step{
+	font-size:16px;
+}
+
+.basic-info-tr{
+	color:#666
+}
+.basic-info-tr div{
+	margin:10px 0;
+}
+.basic-info-tr span{
+	margin-right:5px;
+}
+.basic-info-tr td{
+	vertical-align: middle !important;
+}
+.box i{
+	margin-right:5px;
+}
+.name-span{
+	color:#333;
+	font-weight: bold;
+}
+
+/* body{
+	font-family: Arial,'Source Sans Pro','Helvetica Neue',Helvetica,sans-serif;
+} */

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="template/hr/header :: header"></div>
+<link rel="stylesheet" href="" th:href="@{/assets/css/hr/index.css}"></link>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper  skin-blue-light">
+
+  <div th:replace="template/hr/nav :: nav"></div>
+  
+  <div th:replace="template/hr/sidebar :: sidebar"></div>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Recruitment situation
+        <small>Control panel</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active">
+	              <a href="#tab_1" data-toggle="tab" aria-expanded="true">
+	              	<p class="applicant-number">361</p>
+	              	<p class="interview-step">First test</p>
+	              </a>
+              </li>
+              <li class="">
+              	<a href="#tab_2" data-toggle="tab" aria-expanded="false">
+					<p class="applicant-number">45</p>
+	              	<p class="interview-step">Department Review</p>
+				</a>
+			  </li>
+              <li class="">
+              	<a href="#tab_3" data-toggle="tab" aria-expanded="false">
+              		<p class="applicant-number">28</p>
+	              	<p class="interview-step">Technical Review</p>
+              	</a>
+              </li>
+              <li class="">
+                <a href="#tab_4" data-toggle="tab" aria-expanded="false">
+                	<p class="applicant-number">60</p>
+	              	<p class="interview-step">Offer Communication</p>
+                </a>
+              </li>
+              <li class="">
+                <a href="#tab_5" data-toggle="tab" aria-expanded="false">
+                	<p class="applicant-number">361</p>
+	              	<p class="interview-step">Waiting for Entry</p>	
+                </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+		          <div class="box">
+		            <div class="box-body table-responsive no-padding">
+		              <table class="table table-hover">
+		                <tbody><tr>
+		                  <th>
+		                  	<label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label>
+			              </th>
+		                  <th>Basic Information</th>
+		                  <th>Application Date</th>
+		                  <th>Interviewer</th>
+		                  <th>Position Applied</th>
+		                  <th>Source</th>
+		                  <th>State</th>
+		                </tr>
+		                <tr class="basic-info-tr">
+		                  <td><label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label></td>
+		                  <td>
+		                  	<div class="row">
+		                  		<span class="name-span">John Doe</span>
+		                  		<span>-</span>
+			                  	<span>male</span>
+			                  	<span>-</span>
+			                  	<span>26</span>
+			                  	<span>-</span>
+			                  	<span>3 years of work experience</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span><i class="fa fa-book"></i></span>
+		                  		<span>Nanjing University</span>
+		                  		<span>-</span>
+		                  		<span>Software Engineering</span>
+		                  		<span>-</span>
+		                  		<span>Master</span>
+		                  		<span>-</span>
+		                  		<span>2015.9</span>
+		                  		<span>~</span>
+		                  		<span>2018.7</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span class="label label-primary">BAT</span>
+		                  		<span class="label label-primary">985</span>
+		                  	</div>
+		                  </td>
+		                  <td>2018-8-30</td>
+		                  <td>Zhang san</td>
+		                  <td>Front-end engineer</td>
+		                  <td>Intrapolation</td>
+		                  <td>
+		                  	<span class="label label-danger"><i class="fa fa-remove"></i>rejected</span>
+		                  </td>
+		                </tr>
+		                <tr class="basic-info-tr">
+		                  <td><label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label></td>
+		                  <td>
+		                  	<div class="row">
+		                  		<span class="name-span">John Doe</span>
+		                  		<span>-</span>
+			                  	<span>male</span>
+			                  	<span>-</span>
+			                  	<span>26</span>
+			                  	<span>-</span>
+			                  	<span>3 years of work experience</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span><i class="fa fa-book"></i></span>
+		                  		<span>Nanjing University</span>
+		                  		<span>-</span>
+		                  		<span>Software Engineering</span>
+		                  		<span>-</span>
+		                  		<span>Master</span>
+		                  		<span>-</span>
+		                  		<span>2015.9</span>
+		                  		<span>~</span>
+		                  		<span>2018.7</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span class="label label-primary">BAT</span>
+		                  		<span class="label label-primary">985</span>
+		                  	</div>
+		                  </td>
+		                  <td>2018-8-30</td>
+		                  <td>Zhang san</td>
+		                  <td>Front-end engineer</td>
+		                  <td>Intrapolation</td>
+		                  <td>
+		                  	<span class="label label-danger"><i class="fa fa-remove"></i>rejected</span>
+		                  </td>
+		                </tr>
+		                <tr class="basic-info-tr">
+		                  <td><label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label></td>
+		                  <td>
+		                  	<div class="row">
+		                  		<span class="name-span">John Doe</span>
+		                  		<span>-</span>
+			                  	<span>male</span>
+			                  	<span>-</span>
+			                  	<span>26</span>
+			                  	<span>-</span>
+			                  	<span>3 years of work experience</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span><i class="fa fa-book"></i></span>
+		                  		<span>Nanjing University</span>
+		                  		<span>-</span>
+		                  		<span>Software Engineering</span>
+		                  		<span>-</span>
+		                  		<span>Master</span>
+		                  		<span>-</span>
+		                  		<span>2015.9</span>
+		                  		<span>~</span>
+		                  		<span>2018.7</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span class="label label-primary">BAT</span>
+		                  		<span class="label label-primary">985</span>
+		                  	</div>
+		                  </td>
+		                  <td>2018-8-30</td>
+		                  <td>Zhang san</td>
+		                  <td>Front-end engineer</td>
+		                  <td>Intrapolation</td>
+		                  <td>
+		                  	<span class="label label-danger"><i class="fa fa-remove"></i>rejected</span>
+		                  </td>
+		                </tr>
+		                <tr class="basic-info-tr">
+		                  <td><label>
+			                  <input type="checkbox" class="flat-red" />
+			                </label></td>
+		                  <td>
+		                  	<div class="row">
+		                  		<span class="name-span">John Doe</span>
+		                  		<span>-</span>
+			                  	<span>male</span>
+			                  	<span>-</span>
+			                  	<span>26</span>
+			                  	<span>-</span>
+			                  	<span>3 years of work experience</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span><i class="fa fa-book"></i></span>
+		                  		<span>Nanjing University</span>
+		                  		<span>-</span>
+		                  		<span>Software Engineering</span>
+		                  		<span>-</span>
+		                  		<span>Master</span>
+		                  		<span>-</span>
+		                  		<span>2015.9</span>
+		                  		<span>~</span>
+		                  		<span>2018.7</span>
+		                  	</div>
+		                  	<div class="row">
+		                  		<span class="label label-primary">BAT</span>
+		                  		<span class="label label-primary">985</span>
+		                  	</div>
+		                  </td>
+		                  <td>2018-8-30</td>
+		                  <td>Zhang san</td>
+		                  <td>Front-end engineer</td>
+		                  <td>Intrapolation</td>
+		                  <td>
+		                  	<span class="label label-danger"><i class="fa fa-remove"></i>rejected</span>
+		                  </td>
+		                </tr>
+		              </tbody></table>
+		            </div>
+		            <!-- /.box-body -->
+		          </div>
+		          <!-- /.box -->
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                The European languages are members of the same family. Their separate existence is a myth.
+                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                new common language would be desirable: one could refuse to pay expensive translators. To
+                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                words. If several languages coalesce, the grammar of the resulting language is more simple
+                and regular than that of the individual languages.
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                It has survived not only five centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                like Aldus PageMaker including versions of Lorem Ipsum.
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <!-- Main row -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<div th:replace="template/hr/scripts :: scripts"></div>
+</body>
+</html>

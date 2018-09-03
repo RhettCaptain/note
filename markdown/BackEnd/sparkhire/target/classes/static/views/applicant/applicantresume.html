@@ -1,0 +1,297 @@
+<!-- /.MultiStep Form -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <title>Jonaki | Job Board Template</title>
+    <meta name="description" content="company is a free job board template"></meta>
+    <meta name="author" content="Ohidul"></meta>
+    <meta name="keyword" content="html, css, bootstrap, job-board"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet'
+          type='text/css'></link>
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"></link>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"></link>
+
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/normalize.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/fontello.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/owl.theme.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/owl.transitions.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/responsive.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/applicant/profile.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+
+    <script th:src="@{/assets/js/applicant/vendor/modernizr-2.6.2.min.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script th:src="@{/assets/js/applicant/vendor/jquery-1.10.2.min.js}"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <script th:src="@{/assets/js/applicant/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/applicant/owl.carousel.min.js}"></script>
+    <script th:src="@{/assets/js/applicant/wow.js}"></script>
+    <script th:src="@{/assets/js/applicant/main.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#logout").click(function () {
+                window.location.href = './login';
+            });
+        });
+    </script>
+
+</head>
+<body>
+
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
+<!-- Body content -->
+<nav class="navbar navbar-default">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-head er">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img th:src="@{/assets/img/applicant/logo.png}" alt=""></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="z-index: 4 ;position: relative;">
+            <ul class="main-nav nav navbar-nav navbar-left" style="z-index: 4 ;position: relative;">
+                <li class="wow fadeInDown" data-wow-delay="0s"><a class="active" href="#">Home</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">My Application</a></li>
+                <li class="wow fadeInDown pull-right" data-wow-delay="0.2s">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Profile<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="./resume">My resume</a></li>
+                        <li><a href="./login">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="content-area">
+    <div class="content-area">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="msform">
+                    <!-- progressbar -->
+                    <ul id="progressbar">
+                        <li class="active">Personal Details</li>
+                        <li>Social Profiles</li>
+                        <li>Account Setup</li>
+                    </ul>
+                    <!-- fieldsets -->
+                    <fieldset class="form" id="basis_form">
+                        <h2 class="fs-title">Personal Details</h2>
+                        <h3 class="fs-subtitle">Tell us something more about you</h3>
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name"  th:placeholder="${applicant.name}" th:value="${applicant.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="identityid">Identity Id</label>
+                            <input type="text" class="form-control" id="identityid"  th:placeholder="${applicant.identityid}" th:value="${applicant.identityid}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phonenumber">Phone number</label>
+                            <input type="number" class="form-control" id="phonenumber" aria-describedby="phoneHelp"  th:placeholder="${applicant.phonenumber}" th:value="${applicant.phonenumber}">
+                            <small id="phoneHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">Birthday</label>
+                            <input type="email" class="form-control" id="birthdate"  th:placeholder="${applicant.birthdate}" th:value="${applicant.birthdate}">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" th:placeholder="${applicant.gender}" th:value="${applicant.gender}">
+                                <option value="MALE" selected>Male</option>
+                                <option value="FEMALE">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="education">Education</label>
+                            <select class="form-control" id="education" th:placeholder="${applicant.education}" th:value="${applicant.education}">
+                                <option value="JUNIOR" selected>Junior</option>
+                                <option value="HIGH" selected>High</option>
+                                <option value="BACHELOR" selected>Bachelor</option>
+                                <option value="MASTER" selected>Master</option>
+                                <option value="DOCTOR" selected>Doctor</option>
+                                <option value="MBA" selected>Mba</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">Phone number</label>
+                            <input type="text" class="form-control" id="city" th:placeholder="${applicant.city}" th:value="${applicant.city}">
+                        </div>
+
+                        <input id="personalDetails" type="submit" name="next" class="next action-button" value="Next"/>
+
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Social Profiles</h2>
+                        <h3 class="fs-subtitle">Your presence on the social network</h3>
+                        <input type="text" name="twitter" placeholder="Twitter"/>
+                        <input type="text" name="facebook" placeholder="Facebook"/>
+                        <input type="text" name="gplus" placeholder="Google Plus"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Create your account</h2>
+                        <h3 class="fs-subtitle">Fill in your credentials</h3>
+                        <input type="text" name="email" placeholder="Email"/>
+                        <input type="password" name="pass" placeholder="Password"/>
+                        <input type="password" name="cpass" placeholder="Confirm Password"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                        <input type="submit" name="submit" class="submit action-button" value="Submit"/>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <script>
+            //jQuery time
+            var current_fs, next_fs, previous_fs; //fieldsets
+            var left, opacity, scale; //fieldset properties which we will animate
+            var animating; //flag to prevent quick multi-click glitches
+
+            $(".next").click(function () {
+                if (animating) return false;
+                animating = true;
+
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+
+                //activate next step on progressbar using the index of next_fs
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                //show the next fieldset
+                next_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function (now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale current_fs down to 80%
+                        scale = 1 - (1 - now) * 0.2;
+                        //2. bring next_fs from the right(50%)
+                        left = (now * 50) + "%";
+                        //3. increase opacity of next_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({
+                            'transform': 'scale(' + scale + ')',
+                            'position': 'absolute'
+                        });
+                        next_fs.css({'left': left, 'opacity': opacity});
+                    },
+                    duration: 800,
+                    complete: function () {
+                        current_fs.hide();
+                        animating = false;
+                    },
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+            });
+
+            $(".previous").click(function () {
+                if (animating) return false;
+                animating = true;
+
+                current_fs = $(this).parent();
+                previous_fs = $(this).parent().prev();
+
+                //de-activate current step on progressbar
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+                //show the previous fieldset
+                previous_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function (now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale previous_fs from 80% to 100%
+                        scale = 0.8 + (1 - now) * 0.2;
+                        //2. take current_fs to the right(50%) - from 0%
+                        left = ((1 - now) * 50) + "%";
+                        //3. increase opacity of previous_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({'left': left});
+                        previous_fs.css({'transform': 'scale(' + scale + ')', 'opacity': opacity});
+                    },
+                    duration: 800,
+                    complete: function () {
+                        current_fs.hide();
+                        animating = false;
+                    },
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+            });
+
+            $(".submit").click(function () {
+                return false;
+            })
+        </script>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#basis_form").submit(function (e) {
+
+            alert("affasdf");
+            e.e_preventDefault()
+            var data = {
+                name: $("#name").val(),
+                identityid: $("#identityid").val(),
+                phonenumber: $("#phonenumber").val(),
+                birthdate:$("#birthdate").val(),
+                gender:$("#gender").val(),
+                education:$("#education").val(),
+                city:$("#city").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: './resume',
+                data: data,
+                success: function (response) {
+                    alert("success");
+                }
+            });
+        })
+    })
+</script>
+</body>
+</html>
+
