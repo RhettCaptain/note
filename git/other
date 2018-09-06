@@ -4,3 +4,6 @@
 	git的控制文件都在.git下，不想要删掉这个就好
 3.如何保持多机合作秩序
 	使用前git pull,使用后git push
+4.如何修改推到远程的commit
+  git commit  --amend 
+  git push origin xx --force

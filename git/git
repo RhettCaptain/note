@@ -57,4 +57,18 @@
 	git pull		//抓取远程新的提交
 8.忽略特殊文件
 	编写.gitignore，里面的内容会被忽略
+9.协作流程
+  一般远程建立master分支用于固化稳定版本和持续发布，develop分支用于开发
+  本地clone，并从develop拉出新的分支。如feature-xx,bugfix-xx
+  开发完在本地develop融合并推到远程，具体步骤如下：
+  - git add * 
+  - git commit -m "#xx feature..."
+  - git checkout develop
+  - git pull -r origin develop
+  - git checkout feature-xx
+  - git rebase develop
+  - git checkout develop
+  - git merge feature-xx
+  - git push origin develop
 
+  
