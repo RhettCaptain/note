@@ -1,41 +1,41 @@
-Thymeleaf»ù´¡
-Ò»¡¢¸ÅÊö
-Thymeleaf ÊÇÒ»¸ö¸ú Velocity¡¢FreeMarker ÀàËÆµÄÄ£°åÒıÇæ£¬Ëü¿ÉÒÔÍêÈ«Ìæ´ú JSP 
+ï»¿ThymeleafåŸºç¡€
+ä¸€ã€æ¦‚è¿°
+Thymeleaf æ˜¯ä¸€ä¸ªè·Ÿ Velocityã€FreeMarker ç±»ä¼¼çš„æ¨¡æ¿å¼•æ“ï¼Œå®ƒå¯ä»¥å®Œå…¨æ›¿ä»£ JSP 
 
-¶ş¡¢HelloWorld
-1.ÒıÈëÒÀÀµ
--springbootÖ±½ÓÒıÈë£º
-¡¡¡¡<dependency>
+äºŒã€HelloWorld
+1.å¼•å…¥ä¾èµ–
+-springbootç›´æ¥å¼•å…¥ï¼š
+ã€€ã€€<dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
--·ÇspringbootÏîÄ¿Ê¹ÓÃÈçÏÂÒÀÀµ£º
+-éspringbooté¡¹ç›®ä½¿ç”¨å¦‚ä¸‹ä¾èµ–ï¼š
 	<dependency>
     <groupId>org.thymeleaf</groupId>
     <artifactId>thymeleaf</artifactId>
     <version>2.1.4</version>
 	</dependency>
--Ä¬ÈÏµÄÄ£°åÓ³ÉäÂ·¾¶ÊÇ£ºsrc/main/resources/templates£¬
+-é»˜è®¤çš„æ¨¡æ¿æ˜ å°„è·¯å¾„æ˜¯ï¼šsrc/main/resources/templatesï¼Œ
 
-2.ÅäÖÃthymeleafÊÓÍ¼½âÎöÆ÷
+2.é…ç½®thymeleafè§†å›¾è§£æå™¨
 #thymeleaf start
 spring.thymeleaf.mode=HTML5
 spring.thymeleaf.encoding=UTF-8
 spring.thymeleaf.content-type=text/html
-#¿ª·¢Ê±¹Ø±Õ»º´æ,²»È»Ã»·¨¿´µ½ÊµÊ±Ò³Ãæ
+#å¼€å‘æ—¶å…³é—­ç¼“å­˜,ä¸ç„¶æ²¡æ³•çœ‹åˆ°å®æ—¶é¡µé¢
 spring.thymeleaf.cache=false
 #thymeleaf end
 ---
-Êµ¼ÊÏîÄ¿ÖĞ¿ÉÄÜ»áÓĞ²»Ì«ÑÏ¸ñµÄHTML¸ñÊ½£¬´ËÊ±ÉèÖÃmode=HTML5½«»á¶Ô·ÇÑÏ¸ñµÄ±¨´í£¬¿ÉÒÔ²Î¿¼ÒÔÏÂÅäÖÃ£º
+å®é™…é¡¹ç›®ä¸­å¯èƒ½ä¼šæœ‰ä¸å¤ªä¸¥æ ¼çš„HTMLæ ¼å¼ï¼Œæ­¤æ—¶è®¾ç½®mode=HTML5å°†ä¼šå¯¹éä¸¥æ ¼çš„æŠ¥é”™ï¼Œå¯ä»¥å‚è€ƒä»¥ä¸‹é…ç½®ï¼š
 spring.thymeleaf.mode=LEGACYHTML5
-ĞèÒª×¢ÒâµÄÊÇ£¬LEGACYHTML5ĞèÒª´îÅäÒ»¸ö¶îÍâµÄ¿âNekoHTML²Å¿ÉÓÃ¡£
+éœ€è¦æ³¨æ„çš„æ˜¯ï¼ŒLEGACYHTML5éœ€è¦æ­é…ä¸€ä¸ªé¢å¤–çš„åº“NekoHTMLæ‰å¯ç”¨ã€‚
 <dependency>  
        <groupId>net.sourceforge.nekohtml</groupId>  
        <artifactId>nekohtml</artifactId>  
        <version>1.9.22</version>  
 </dependency>  
 
-3.±àĞ´¿ØÖÆÆ÷
+3.ç¼–å†™æ§åˆ¶å™¨
 @Controller
 public class HelloController {
     private static final Logger log = LoggerFactory.getLogger(HelloController.class);
@@ -47,7 +47,7 @@ public class HelloController {
     }
 }
 
-4.±àĞ´Ä£°åhtml
+4.ç¼–å†™æ¨¡æ¿html
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -56,6 +56,6 @@ public class HelloController {
 </head>
 <body>
     <!--/*@thymesVar id="name" type="java.lang.String"*/-->
-    <p th:text="'Hello£¡, ' + ${name} + '!'">3333</p>
+    <p th:text="'Helloï¼, ' + ${name} + '!'">3333</p>
 </body>
 </html>

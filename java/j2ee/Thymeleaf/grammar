@@ -1,0 +1,200 @@
+语法
+一、基本语法
+1.创建HTML
+在html中添加：
+<html xmlns:th="http://www.thymeleaf.org">
+这样，下文才能正确使用th:*形式的标签！
+
+2.获取变量值${...}
+通过${…}进行取值！
+<!--/*@thymesVar id="name" type="java.lang.String"*/-->
+<p th:text="'Hello！, ' + ${name} + '!'">3333</p>
+ 　　　
+选择变量表达式*{...}
+<div th:object="${session.user}">
+    <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
+    <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p> 
+    <p>Nationality: <span th:text="*nationality}">Saturn</span>.</p>
+</div> 
+等价于
+<div>
+    <p>Name: <span th:text="${session.user.firstName}">Sebastian</span>.</p> 
+    <p>Surname: <span th:text="${session.user.lastName}">Pepper</span>.</p> 
+    <p>Nationality: <span th:text="${session.user.nationality}">Saturn</span>.</p>
+</div>
+
+3.链接表达式: @{…} 
+用来配合link src href使用的语法，类似的标签有:th:href和th:src
+<!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) --> 
+
+<a href="details.html" th:href="@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}">view</a> 
+<!-- Will produce '/gtvg/order/details?orderId=3' (plus rewriting) -->
+<a href="details.html" th:href="@{/order/details(orderId=${o.id})}">view</a>
+<a href="details.html" th:href="@{order/{orderId}/details(orderId=${o.id})}">Content路径,默认访问static下的order文件夹</a>
+
+4.文本替换
+<span th:text="'Welcome to our application, ' + ${user.name} + '!'">
+或者下面的表达方式：（只能包含表达式变量，而不能有条件判断等！）
+<span th:text="|Welcome to our application, ${user.name}!|">
+
+5.运算符
+数学运算
+二元操作：+, - , * , / , %
+一元操作: - （负）
+逻辑运算
+一元 : and or
+二元 : !,not
+比较运算（为避免转义尴尬，可以使用括号中的英文进行比较运算！）
+比较：> , < , >= , <= ( gt , lt , ge , le )
+等于：== , != ( eq , ne )
+条件运算
+If-then: (if) ? (then)
+If-then-else: (if) ? (then) : (else)
+Default: (value) ?: (defaultvalue)
+'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
+
+6.条件
+if/unless
+使用th:if和th:unless属性进行条件判断，th:unless于th:if恰好相反，只有表达式中的条件不成立，才会显示其内容。
+<a th:href="@{/login}" th:unless=${session.user != null}>Login</a>
+switch
+<div th:switch="${user.role}">
+  <p th:case="'admin'">User is an administrator</p>
+  <p th:case="#{roles.manager}">User is a manager</p>
+  <p th:case="*">User is some other thing</p>
+</div>
+
+7.循环
+通过th:each
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+    <!-- 不存在则忽略，显示hello null!(可以通过默认值进行设置)-->
+    <p th:text="'Hello ' + (${name}?:'admin')">3333</p>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>AGE</th>
+        </tr>
+        <tr th:each="emp : ${empList}">
+            <td th:text="${emp.id}">1</td>
+            <td th:text="${emp.name}">海</td>
+            <td th:text="${emp.age}">18</td>
+        </tr>
+    </table>
+</body>
+</html>
+
+后台
+@GetMapping(value = "/hello")
+    public String hello(Model model) {
+        List<Emp> empList = new ArrayList<>();
+        empList.add(new Emp(1, "校长", 24));
+        empList.add(new Emp(2, "书记", 28));
+        empList.add(new Emp(3, "小海", 25));
+        model.addAttribute("empList", empList);
+        return "hello";
+	}
+
+8.内置对象Utilites
+	一般不推荐在前端进行这些处理，前端页面以减少逻辑为宜
+	
+二、常用标签
+th:id				替换id
+<input th:id="'xxx' + ${collect.id}"/>
+---
+th:text			文本替换
+<p th:text="${collect.description}">description</p>
+---
+th:utext		支持html的文本替换
+<p th:utext="${htmlcontent}">content</p>
+---
+th:object		替换对象
+<div th:object="${session.user}">
+---
+th:value		属性赋值
+<input th:value="${user.name}" />
+---
+th:with			变量赋值运算
+<div th:with="isEven=${prodStat.count}%2==0"></div>
+---
+th:style		设置样式
+th:style="'display:' + @{(${sitrue}?'none':'inline-block'）}+''"
+---
+th:onclick	点击事件
+th:onclick="'getCollect()'"
+---
+th:each		循环
+<tr th:each="user,userStat:${users}">
+---
+th:if			判断条件
+<a th:if="${userId == collect.userId}">
+---
+th:unless	判断条件
+<a th:href="@{/login}" th:unless=${session.user != null}>login</a>
+
+三、实例
+1.判断操作
+后台：
+@RequestMapping("/if")
+	public String learnif(ModelMap map){
+		List<ClassA> vos = new ArrayList();
+		vos.add(new ClassA(1,"a"));
+		vos.add(new ClassA(2,"b"));
+		vos.add(new ClassA(3,"c"));
+		map.put("test", vos);
+		return "if";
+	}
+前端：
+<div th:each="t:${test}">
+		<p th:if="${t.num} lt 3" th:text="${t.str}"></p>
+	</div>
+	
+2.模板操作
+模板：
+底部模板代码
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="footer">
+    © 2016 xxx
+</div>
+</body>
+</html>
+
+Springboot整合引入模块
+<!--写入绝对路径即可引入 -->
+<div th:include="/back/import/footer :: footer"></div>
+
+3.循环下标判断
+<th:block th:each="mylist,iterStat:${list}">
+    111
+    <span th:text="${mylist}"></span>
+        <th:block th:if="${iterStat.index le 1}">
+            <span th:text="${mylist}"></span>
+        </th:block>
+</th:block>
+
+4.常用操作
+日期格式化
+ <td th:text="${#dates.format(content.createDate,'yyyy-MM-dd HH:mm:ss')}"  ></td>
+---
+字符截取长度
+<td th:if="${#strings.length(content.title) gt 5 } "  th:text="${#strings.substring(content.title,0,5) + '…'}"></td>
+----
+下拉选择
+ <select name="subId" id="subId" lay-verify="" >
+            <option value="">请选择</option>
+            <option th:each="channelsub:${subchannels}" th:selected="${channelsub.id == subId}"    th:value="${channelsub.id}" th:text="${channelsub.name}"></option>
+        </select>
+        
+5. js取值
+	<script th:inline="javascript"  >
+        var size= [[${test.size()}]];
+        console.info(size)
+    </script>

@@ -1,0 +1,34 @@
+数据交互
+一、后台->前端（Model,ModelMap...）
+1.后端通过Model传值到前端
+ @GetMapping("/message")
+public String getMessage(Model model){
+    model.addAttribute("message","This is your message");
+    return "index";
+}
+2.页面通过Model取值显示 
+<p th:text="${message}">default message</p>
+3.js通过Model取值作为变量使用
+<script th:inline="javascript">
+    var message = [[${message}]];
+    console.log(message);
+</script>
+
+二、前端->后台（表单）
+1.后台
+@RequestMapping("/if")
+	public String learnif(,Model model){
+		model.addAttribute("obj",new ClassA(4,"d"));	//必须先传入一个obj对象
+		return "if";
+	}
+	
+	@RequestMapping("/getform")
+	@ResponseBody
+	public String getForm(ClassA obj){	//获取非常
+		return obj.getStr();
+	}put 标签中，可以使用任何的路径属性表达式)
+2.前端
+<form th:action="@{/getform}" th:object="${obj}" >
+		<input type="text" th:field="*{str}"/>
+		<input type="submit"/>
+	</form>
