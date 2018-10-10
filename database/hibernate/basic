@@ -1,0 +1,275 @@
+基础
+一、配置
+1.配置
+Hibernate 需要事先知道在哪里找到映射信息，这些映射信息定义了 Java 类怎样关联到数据库表。
+Hibernate 也需要一套相关数据库和其它相关参数的配置设置。所有这些信息通常是作为一个标准的 Java 属性文件提供的，
+名叫 hibernate.properties。又或者是作为 XML 文件提供的，名叫 hibernate.cfg.xml。
+
+2.demo
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+   <session-factory>
+   <property name="hibernate.dialect">
+      org.hibernate.dialect.MySQLDialect
+   </property>
+   <property name="hibernate.connection.driver_class">
+      com.mysql.jdbc.Driver
+   </property>
+
+   <!-- Assume test is the database name -->
+   <property name="hibernate.connection.url">
+      jdbc:mysql://localhost/test
+   </property>
+   <property name="hibernate.connection.username">
+      root
+   </property>
+   <property name="hibernate.connection.password">
+      root123
+   </property>
+
+   <!-- List of XML mapping files -->
+   <mapping resource="Employee.hbm.xml"/>
+
+</session-factory>
+</hibernate-configuration> 
+
+上面的配置文件包含与 hibernate-mapping 文件相关的 <mapping> 标签，我们将在下章看看 hibernate mapping 文件到底是什么并且要知道为什么用它，怎样用它。
+以下是各种重要数据库同源语属性类型的列表:
+数据库	方言属性
+DB2	org.hibernate.dialect.DB2Dialect
+HSQLDB	org.hibernate.dialect.HSQLDialect
+HypersonicSQL	org.hibernate.dialect.HSQLDialect
+Informix	org.hibernate.dialect.InformixDialect
+Ingres	org.hibernate.dialect.IngresDialect
+Interbase	org.hibernate.dialect.InterbaseDialect
+Microsoft SQL Server 2000	org.hibernate.dialect.SQLServerDialect
+Microsoft SQL Server 2005	org.hibernate.dialect.SQLServer2005Dialect
+Microsoft SQL Server 2008	org.hibernate.dialect.SQLServer2008Dialect
+MySQL	org.hibernate.dialect.MySQLDialect
+Oracle (any version)	org.hibernate.dialect.OracleDialect
+Oracle 11g	org.hibernate.dialect.Oracle10gDialect
+Oracle 10g	org.hibernate.dialect.Oracle10gDialect
+Oracle 9i	org.hibernate.dialect.Oracle9iDialect
+PostgreSQL	org.hibernate.dialect.PostgreSQLDialect
+Progress	org.hibernate.dialect.ProgressDialect
+SAP DB	org.hibernate.dialect.SAPDBDialect
+Sybase	org.hibernate.dialect.SybaseDialect
+Sybase Anywhere	org.hibernate.dialect.SybaseAnywhereDialec
+
+二、会话
+1.会话
+Session 用于获取与数据库的物理连接。 Session 对象是轻量级的，并且设计为在每次需要与数据库进行交互时被实例化。持久态对象被保存，并通过 Session 对象检索找回。
+这些实例可能在给定时间点时存在于以下三种状态之一：
+
+瞬时状态: 一种新的持久性实例，被 Hibernate 认为是瞬时的，它不与 Session 相关联，在数据库中没有与之关联的记录且无标识符值。
+持久状态：可以将一个瞬时状态实例通过与一个 Session 关联的方式将其转化为持久状态实例。持久状态实例在数据库中没有与之关联的记录，有标识符值，并与一个 Session 关联。
+脱管状态：一旦关闭 Hibernate Session，持久状态实例将会成为脱管状态实例。
+
+一个典型的事务应该使用以下语法：
+
+Session session = factory.openSession();
+Transaction tx = null;
+try {
+   tx = session.beginTransaction();
+   // do some work
+   ...
+   tx.commit();
+}
+catch (Exception e) {
+   if (tx!=null) tx.rollback();
+   e.printStackTrace(); 
+}finally {
+   session.close();
+}
+如果 Session 引发异常，则事务必须被回滚，该 session 必须被丢弃。
+
+三、持久化类
+1.持久化类
+-所有将被持久化的 Java 类都需要一个默认的构造函数。
+-为了使对象能够在 Hibernate 和数据库中容易识别，所有类都需要包含一个 ID。此属性映射到数据库表的主键列。
+-所有将被持久化的属性都应该声明为 private，并具有由 JavaBean 风格定义的 getXXX 和 setXXX 方法。
+-Hibernate 的一个重要特征为代理，它取决于该持久化类是处于非 final 的，还是处于一个所有方法都声明为 public 的接口。
+-所有的类是不可扩展或按 EJB 要求实现的一些特殊的类和接口。
+
+2.一个简单的 POJO 的例子
+基于以上所述规则，我们能够定义如下 POJO 类：
+
+public class Employee {
+   private int id;
+   private String firstName; 
+   private String lastName;   
+   private int salary;  
+
+   public Employee() {}
+   public Employee(String fname, String lname, int salary) {
+      this.firstName = fname;
+      this.lastName = lname;
+      this.salary = salary;
+   }
+   //getter setter
+}
+
+四、映射文件
+1.映射文件
+一个对象/关系型映射一般定义在 XML 文件中。映射文件指示 Hibernate 如何将已经定义的类或类组与数据库中的表对应起来。
+基于这两个实体之上，我们可以定义下列映射文件来指示 Hibernate 如何将已定义的类或类组与数据库表匹配。
+
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="Employee" table="EMPLOYEE">
+      <meta attribute="class-description">
+         This class contains the employee detail. 
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="firstName" column="first_name" type="string"/>
+      <property name="lastName" column="last_name" type="string"/>
+      <property name="salary" column="salary" type="int"/>
+   </class>
+</hibernate-mapping>
+你需要以格式 <classname>.hbm.xml保存映射文件。
+在 id 元素中的 <generator> 标签用来自动生成主键值。
+设置 generator 标签中的 class 属性可以设置 native 使 Hibernate 可以使用 identity, sequence 或 hilo 算法根据底层数据库的情况来创建主键。
+
+2.映射类型
+https://www.w3cschool.cn/hibernate/fzum1iem.html
+
+五、例子
+0.安装和配置hibernate.cfg.xml
+1.创建 POJO 类
+2.创建数据库表
+3.创建映射配置文件
+'''
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="Employee" table="EMPLOYEE">
+      <meta attribute="class-description">
+         This class contains the employee detail. 
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="firstName" column="first_name" type="string"/>
+      <property name="lastName" column="last_name" type="string"/>
+      <property name="salary" column="salary" type="int"/>
+   </class>
+</hibernate-mapping>
+'''
+你需要将映射文档以<classname>.hbm.xml的格式保存在一个文件中。我们将映射文档保存在 Employee.hbm.xml文件中。
+4.使用
+public class ManageEmployee {
+   private static SessionFactory factory; 
+   public static void main(String[] args) {
+      try{
+         factory = new Configuration().configure().buildSessionFactory();
+      }catch (Throwable ex) { 
+         System.err.println("Failed to create sessionFactory object." + ex);
+         throw new ExceptionInInitializerError(ex); 
+      }
+      ManageEmployee ME = new ManageEmployee();
+
+      /* Add few employee records in database */
+      Integer empID1 = ME.addEmployee("Zara", "Ali", 1000);
+      Integer empID2 = ME.addEmployee("Daisy", "Das", 5000);
+      Integer empID3 = ME.addEmployee("John", "Paul", 10000);
+
+      /* List down all the employees */
+      ME.listEmployees();
+
+      /* Update employee's records */
+      ME.updateEmployee(empID1, 5000);
+
+      /* Delete an employee from the database */
+      ME.deleteEmployee(empID2);
+
+      /* List down new list of the employees */
+      ME.listEmployees();
+   }
+   /* Method to CREATE an employee in the database */
+   public Integer addEmployee(String fname, String lname, int salary){
+      Session session = factory.openSession();
+      Transaction tx = null;
+      Integer employeeID = null;
+      try{
+         tx = session.beginTransaction();
+         Employee employee = new Employee(fname, lname, salary);
+         employeeID = (Integer) session.save(employee); 
+         tx.commit();
+      }catch (HibernateException e) {
+         if (tx!=null) tx.rollback();
+         e.printStackTrace(); 
+      }finally {
+         session.close(); 
+      }
+      return employeeID;
+   }
+   /* Method to  READ all the employees */
+   public void listEmployees( ){
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+         tx = session.beginTransaction();
+         List employees = session.createQuery("FROM Employee").list(); 
+         for (Iterator iterator = 
+                           employees.iterator(); iterator.hasNext();){
+            Employee employee = (Employee) iterator.next(); 
+            System.out.print("First Name: " + employee.getFirstName()); 
+            System.out.print("  Last Name: " + employee.getLastName()); 
+            System.out.println("  Salary: " + employee.getSalary()); 
+         }
+         tx.commit();
+      }catch (HibernateException e) {
+         if (tx!=null) tx.rollback();
+         e.printStackTrace(); 
+      }finally {
+         session.close(); 
+      }
+   }
+   /* Method to UPDATE salary for an employee */
+   public void updateEmployee(Integer EmployeeID, int salary ){
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+         tx = session.beginTransaction();
+         Employee employee = 
+                    (Employee)session.get(Employee.class, EmployeeID); 
+         employee.setSalary( salary );
+         session.update(employee); 
+         tx.commit();
+      }catch (HibernateException e) {
+         if (tx!=null) tx.rollback();
+         e.printStackTrace(); 
+      }finally {
+         session.close(); 
+      }
+   }
+   /* Method to DELETE an employee from the records */
+   public void deleteEmployee(Integer EmployeeID){
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+         tx = session.beginTransaction();
+         Employee employee = 
+                   (Employee)session.get(Employee.class, EmployeeID); 
+         session.delete(employee); 
+         tx.commit();
+      }catch (HibernateException e) {
+         if (tx!=null) tx.rollback();
+         e.printStackTrace(); 
+      }finally {
+         session.close(); 
+      }
+   }
+}

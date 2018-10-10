@@ -1,0 +1,180 @@
+spring data jpa
+零、概念
+1.JPA
+JPA(Java Persistence API)是Sun官方提出的Java持久化规范。
+注意:JPA是一套规范，不是一套产品，那么像Hibernate,TopLink,JDO他们是一套产品，
+如果说这些产品实现了这个JPA规范，那么我们就可以叫他们为JPA的实现产品。
+2.spring data jpa
+Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，
+可使开发者用极简的代码即可实现对数据的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！
+学习并使用 Spring Data JPA 可以极大提高开发效率！
+spring data jpa让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现
+一、基本查询
+基本查询也分为两种，一种是spring data默认已经实现，一种是根据查询的方法来自动解析成SQL。
+1.预先生成方法
+spring data jpa 默认预先生成了一些基本的CURD的方法，例如：增、删、改等等
+-继承JpaRepository
+public interface UserRepository extends JpaRepository<User, Long> {}
+-使用默认方法
+@Test
+public void testBaseQuery() throws Exception {
+    User user=new User();
+    userRepository.findAll();
+    userRepository.findOne(1l);
+    userRepository.save(user);
+    userRepository.delete(user);
+    userRepository.count();
+    userRepository.exists(1l);
+    // ...
+}
+
+2.自定义简单查询
+自定义的简单查询就是根据方法名来自动生成SQL，
+主要的语法是findXXBy,readAXXBy,queryXXBy,countXXBy, getXXBy后面跟属性名称：
+User findByUserName(String userName);
+也使用一些加一些关键字And、 Or
+User findByUserNameOrEmail(String username, String email);
+修改、删除、统计也是类似语法
+Long deleteById(Long id);
+Long countByUserName(String userName)
+基本上SQL体系中的关键词都可以使用，例如：LIKE、 IgnoreCase、 OrderBy。
+List<User> findByEmailLike(String email);
+User findByUserNameIgnoreCase(String userName);
+List<User> findByUserNameOrderByEmailDesc(String email);
+
+二、复杂查询
+在实际的开发中我们需要用到分页、删选、连表等查询的时候就需要特殊的方法或者自定义SQL
+1.分页查询
+分页查询在实际使用中非常普遍了，spring data jpa已经帮我们实现了分页的功能，在查询的方法中，需要传入参数Pageable
+,当查询中有多个参数的时候Pageable建议做为最后一个参数传入
+Page<User> findALL(Pageable pageable);
+Page<User> findByUserName(String userName,Pageable pageable);
+Pageable 是spring封装的分页实现类，使用的时候需要传入页数、每页条数和排序规则
+@Test
+public void testPageQuery() throws Exception {
+    int page=1,size=10;
+    Sort sort = new Sort(Direction.DESC, "id");
+    Pageable pageable = new PageRequest(page, size, sort);
+    userRepository.findALL(pageable);
+    userRepository.findByUserName("testName", pageable);
+}
+
+2.限制查询
+有时候我们只需要查询前N个元素，或者支取前一个实体。
+User findFirstByOrderByLastnameAsc();
+User findTopByOrderByAgeDesc();
+Page<User> queryFirst10ByLastname(String lastname, Pageable pageable);
+List<User> findFirst10ByLastname(String lastname, Sort sort);
+List<User> findTop10ByLastname(String lastname, Pageable pageable);
+
+3.自定义SQL查询
+其实Spring data 觉大部分的SQL都可以根据方法名定义的方式来实现，但是由于某些原因我们想使用自定义的SQL来查询，spring data也是完美支持的；
+在SQL的查询方法上面使用@Query注解，如涉及到删除和修改在需要加上@Modifying.也可以根据需要添加 @Transactional 对事物的支持，查询超时的设置等
+@Modifying
+@Query("update User u set u.userName = ?1 where c.id = ?2")
+int modifyByIdAndUserId(String  userName, Long id);
+    
+@Transactional
+@Modifying
+@Query("delete from User where id = ?1")
+void deleteByUserId(Long id);
+  
+@Transactional(timeout = 10)
+@Query("select u from User u where u.emailAddress = ?1")
+    User findByEmailAddress(String emailAddress);
+
+4.多表查询
+多表查询在spring data jpa中有两种实现方式，第一种是利用hibernate的级联查询来实现，
+第二种是创建一个结果集的接口来接收连表查询后的结果，
+
+三、使用示例
+1.工程配置
+在pom.xml中添加相关依赖，加入以下内容：
+···
+<dependency
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+···
+在application.xml中配置：数据库连接信息（如使用嵌入式数据库则不需要）、自动创建表结构的设置，例如使用mysql的情况如下：
+···
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.jpa.properties.hibernate.hbm2ddl.auto=create-drop
+
+spring.jpa.properties.hibernate.hbm2ddl.auto是hibernate的配置属性，其主要作用是：自动创建、更新、验证数据库表结构。该参数的几种配置如下：
+create：每次加载hibernate时都会删除上一次的生成的表，然后根据你的model类再重新来生成新表，哪怕两次没有任何改变也要这样执行，这就是导致数据库表数据丢失的一个重要原因。
+create-drop：每次加载hibernate时根据model类生成表，但是sessionFactory一关闭,表就自动删除。
+update：最常用的属性，第一次加载hibernate时根据model类会自动建立起表的结构（前提是先建立好数据库），以后加载hibernate时根据model类自动更新表结构，
+即使表结构改变了但表中的行仍然存在不会删除以前的行。要注意的是当部署到服务器后，表结构是不会被马上建立起来的，是要等应用第一次运行起来后才会。
+validate：每次加载hibernate时，验证创建数据库表结构，只会和数据库中的表进行比较，不会创建新表，但是会插入新值。
+至此已经完成基础配置，如果您有在Spring下整合使用过它的话，相信你已经感受到Spring Boot的便利之处：JPA的传统配置在persistence.xml文件中，
+但是这里我们不需要。当然，最好在构建项目时候按照之前提过的最佳实践的工程结构来组织，这样以确保各种配置都能被框架扫描到。
+
+2.创建实体
+创建一个User实体，包含id（主键）、name（姓名）、age（年龄）属性，通过ORM框架其会被映射到数据库表中，
+由于配置了hibernate.hbm2ddl.auto，在应用启动的时候框架会自动去数据库中创建对应的表。
+@Entity
+public class User {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    // 省略构造函数
+    // 省略getter和setter
+}
+
+3.创建数据访问接口
+下面针对User实体创建对应的Repository接口实现对该实体的数据访问，如下代码：
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByName(String name);
+    User findByNameAndAge(String name, Integer age);
+    @Query("from User u where u.name=:name")
+    User findUser(@Param("name") String name);
+}
+
+4.单元测试
+在完成了上面的数据访问接口之后，按照惯例就是编写对应的单元测试来验证编写的内容是否正确。这里就不多做介绍，主要通过数据操作和查询来反复验证操作的正确性。
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(Application.class)
+public class ApplicationTests {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Test
+	public void test() throws Exception {
+
+		// 创建条记录
+		userRepository.save(new User("AAA", 10));
+		userRepository.save(new User("BBB", 20));
+		userRepository.save(new User("CCC", 30));
+
+		// 测试findAll, 查询所有记录
+		Assert.assertEquals(10, userRepository.findAll().size());
+
+		// 测试findByName, 查询姓名为FFF的User
+		Assert.assertEquals(60, userRepository.findByName("FFF").getAge().longValue());
+
+		// 测试findUser, 查询姓名为FFF的User
+		Assert.assertEquals(60, userRepository.findUser("FFF").getAge().longValue());
+
+		// 测试findByNameAndAge, 查询姓名为FFF并且年龄为60的User
+		Assert.assertEquals("FFF", userRepository.findByNameAndAge("FFF", 60).getName());
+
+		// 测试删除姓名为AAA的User
+		userRepository.delete(userRepository.findByName("AAA"));
+
+		// 测试findAll, 查询所有记录, 验证上面的删除是否成功
+		Assert.assertEquals(9, userRepository.findAll().size());
+	}
+}

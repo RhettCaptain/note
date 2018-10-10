@@ -9,3 +9,16 @@
 	最终解决方案：git clone github上的版本，用里面的.git替换文档的.git
 4.Permission denied (publickey). 
 	windows下使用ssh,生成的id_rsa和id_rsa.pub要放在C:\User\.ssh下面
+	多个时需要些config文件，如
+	Host stm-sh-gitlab.internal.worksap.com
+		HostName stm-sh-gitlab.internal.worksap.com
+		IdentityFile C:\\Users\\洪宇\\.ssh\\id_rsa
+		PreferredAuthentications publickey
+		User git
+	
+	Host scm.hue.workslan
+		HostName scm.hue.workslan
+		IdentityFile C:\\Users\\洪宇\\.ssh\\company_bt_rsa
+		PreferredAuthentications publickey
+		User git
+

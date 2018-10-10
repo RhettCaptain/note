@@ -1,0 +1,129 @@
+概述
+一、JPA 实体管理器
+1.创建实体管理器
+所有实体管理器都来自类型javax.persistence.EntityManagerFactory的工厂。
+//以下示例演示为名为“EmployeeService”的持久性单元创建一个EntityManagerFactory：
+EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory("EmployeeService");
+//以下示例演示如何在上一个示例中获取的工厂创建实体管理器：
+EntityManager em = emf.createEntityManager();
+
+2.保存实体
+//我们使用实体管理器来持久化Employee的实例。
+Employee emp = new Employee(158);
+em.persist(emp);
+//以下代码显示如何在创建新员工并将其保留到数据库的方法中使用EntityManager。
+public Employee createEmployee(int id, String name, long salary) {
+    Employee emp = new Employee(id);
+    emp.setName(name);
+    emp.setSalary(salary);
+    em.persist(emp);	//!!
+    return emp;
+}
+
+3.查找实体
+//一旦实体在数据库中，下一行代码显示如何找到它。
+Employee emp = em.find(Employee.class, 1);
+
+4.删除实体
+//要从数据库中删除实体，请从EntityManager调用remove方法。
+Employee emp = em.find(Employee.class, 1);
+em.remove(emp);
+
+5.更新实体
+//要更新实体，我们可以在被管实体上调用setter方法。被管实体是从EntityManager返回的实体。
+Employee emp = em.find(Employee.class, 1);
+emp.setName("new Name");
+
+6.事务
+//以下代码显示如何启动和提交事务。
+em.getTransaction().begin(); 
+Employee emp = new Employee(158); 
+em.persist(emp); 
+em.getTransaction().commit();
+
+7.查询
+在JPA中，有一种称为Java持久性查询语言（JP QL）的新的查询语言。
+以下示例显示如何创建动态查询，然后执行它以获取数据库中的所有员工。
+TypedQuery<Employee> query = 
+     em.createQuery("SELECT e FROM Employee e",
+                     Employee.class);
+List<Employee> emps = query.getResultList();
+
+8.例子
+以下代码显示了一个简单的完全功能类，可用于对Employee实体发出典型的创建，读取，更新和删除（CRUD）操作。
+public class EmployeeService {
+  protected EntityManager em;
+
+  public EmployeeService(EntityManager em) {
+    this.em = em;
+  }
+
+  public Employee createEmployee(int id, String name, long salary) {
+    Employee emp = new Employee(id);
+    emp.setName(name);
+    emp.setSalary(salary);
+    em.persist(emp);
+    return emp;
+  }
+
+  public void removeEmployee(int id) {
+    Employee emp = findEmployee(id);
+    if (emp != null) {
+      em.remove(emp);
+    }
+  }
+
+  public Employee raiseEmployeeSalary(int id, long raise) {
+    Employee emp = em.find(Employee.class, id);
+    if (emp != null) {
+      emp.setSalary(emp.getSalary() + raise);
+    }
+    return emp;
+  }
+
+  public Employee findEmployee(int id) {
+    return em.find(Employee.class, id);
+  }
+
+  public List<Employee> findAllEmployees() {
+    TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e",
+        Employee.class);
+    return query.getResultList();
+  }
+}
+主类
+public class Main {
+
+  public static void main(String[] args) {
+    EntityManagerFactory emf = Persistence
+        .createEntityManagerFactory("EmployeeService");
+    EntityManager em = emf.createEntityManager();
+    EmployeeService service = new EmployeeService(em);
+
+    em.getTransaction().begin();
+    Employee emp = service.createEmployee(1, "Tom", 5000);
+    em.getTransaction().commit();
+    System.out.println("Persisted " + emp);
+
+    emp = service.findEmployee(1);
+    System.out.println("Found " + emp);
+
+    List<Employee> emps = service.findAllEmployees();
+    for (Employee e : emps)
+      System.out.println("Found employee: " + e);
+
+    em.getTransaction().begin();
+    emp = service.raiseEmployeeSalary(1, 1000);
+    em.getTransaction().commit();
+    System.out.println("Updated " + emp);
+
+    em.getTransaction().begin();
+    service.removeEmployee(158);
+    em.getTransaction().commit();
+    System.out.println("Removed Employee 158");
+
+    em.close();
+    emf.close();
+  }
+}
