@@ -89,6 +89,12 @@ error fix:
   Add skip-grant-tables under [mysqld]
   Restart Mysql.
   You should be able to login to mysql now using the below command mysql -u root -p.
+  use mysql;
+  update user set authentication_string=PASSWORD("") where User='root';
+  update user set plugin="mysql_native_password" where User='root';  # THIS LINE
+  flush privileges;
+  quit;
+  REMOVE skip-grant-tables under [mysqld]
  
 2./etc/my.cnf 文件配置
 一般情况下，你不需要修改该配置文件，该文件默认配置如下：
